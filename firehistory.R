@@ -645,7 +645,7 @@ compress <- function(x, series.name, compress.p = 0.2) {
   for ( i in seq(1, year.n) ) {
     count <- dim(subset(x$rings, x$rings$year == year.seq[i] & x$rings$type %in% targets))[1]
     if ( (count / series.n) >= compress.p )
-      values[i] <- "unknown.fi"
+      values[i] <- "unknown.fs"
   }
   f <- list(first.year = NA,  # First year of all the series.
             last.year = NA,  # Last year of all the series.

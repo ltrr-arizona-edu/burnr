@@ -239,67 +239,6 @@ fhx <- function(est) {
       tmp.type[k] <- foo
     }
   }
-###############################################################################
-########################### OLD METHOD ########################################
-#  for ( i in (f$series.names) ) {
-#    print(i)  # DEBUG.
-#    count <- count + 1; print(count)  # DEBUG
-#    tmp.pith.date <- est$pith.date[est$unique == i]
-#    tmp.inner.ring.date <- est$inner.ring.date[est$unique == i]
-#    tmp.outer.ring.date <- est$outer.ring.date[est$unique == i]
-#    tmp.bark.date <- est$bark.date[est$unique == i]
-#    # Now to try to catch some errors:
-#    if ( is.na(tmp.pith.date) & is.na(tmp.inner.ring.date) )
-#      next
-#    if ( is.na(tmp.outer.ring.date) & is.na(tmp.bark.date) )
-#      next
-#    for ( y in seq(f$first.year, f$last.year) ) {
-#      foo <- NA
-#      # This is a mess, especially in dealing with NAs. Very sorry.
-#      if ( y < min(c(tmp.pith.date, tmp.inner.ring.date), na.rm = TRUE) )  {
-#        foo <- "null.year"
-#      } else if ( (!is.na(tmp.pith.date) & y == tmp.pith.date) & 
-#                 (is.na(tmp.inner.ring.date) | 
-#                  tmp.pith.date <= tmp.inner.ring.date) ) {
-#        foo <- "pith.year"
-#      } else if ( (!is.na(tmp.pith.date) & y > tmp.pith.date) & 
-#                 ( !is.na(tmp.inner.ring.date) & y < tmp.inner.ring.date) &
-#                 (!is.na(tmp.pith.date) & !is.na(tmp.inner.ring.date)) ) {
-#        foo <- "estimate"
-#      } else if ( (!is.na(tmp.inner.ring.date) & y == tmp.inner.ring.date) & 
-#                 (is.na(tmp.pith.date) | 
-#                  tmp.pith.date != tmp.inner.ring.date) ) {
-#        foo <- "inner.year"
-#      } else if ( ((!is.na(tmp.inner.ring.date) & y > tmp.inner.ring.date) | 
-#                   (is.na(tmp.inner.ring.date) & y > tmp.pith.date)) & 
-#                 y < min(c(tmp.outer.ring.date, tmp.bark.date), na.rm = TRUE) ) {
-#        foo <- "null.year"
-#      } else if ( !is.na(tmp.outer.ring.date) & 
-#                 y == tmp.outer.ring.date & 
-#                 is.na(tmp.bark.date) ) {
-#        foo <- "outer.year"
-#      } else if ( !is.na(tmp.bark.date) & y == tmp.bark.date ) {
-#        foo <- "bark.year"
-#      } else if ((!is.na(tmp.bark.date) & y > tmp.bark.date ) |
-#                 (is.na(tmp.bark.date) & y > tmp.outer.ring.date) |
-#                 (tmp.bark.date == tmp.outer.ring.date & y > tmp.bark.date) ) {
-#        foo <- "null.year"
-#      } else {
-#        # If all else fails, a weak debug message:
-#        cat("\n\nSomething went wrong! Here is some debugging data:\n")
-#        cat(paste("series name: ", i, "\n", "iter year: ", y, "\n", sep = ""))
-#        cat(paste("pith.date: ", tmp.pith.date, "\n",
-#                  "inner.ring.date: ", tmp.inner.ring.date, "\n",
-#                  "outer.ring.date: ", tmp.outer.ring.date, "\n",
-#                  "bark.date: ", tmp.bark.date, "\n", sep = ""))
-#        stop()
-#      }
-#      tmp.year <- c(tmp.year, y)
-#      tmp.series <- c(tmp.series, i)
-#      tmp.type <- c(tmp.type, foo)
-#    }
-#  }
-###############################################################################
   f$rings <- data.frame(year = tmp.year, series = factor(tmp.series),
                         type = factor(tmp.type, 
                                       levels = c("null.year", "recorder.year", 
@@ -676,4 +615,49 @@ ggplot.fhx <- function(x, vline=FALSE) {
 plot.fhx <- function(x, vline=FALSE) {
   # Plot an fhx object.
   print(ggplot.fhx(x, vline = vline))
+}
+
+compress <- function(x, series.name, compress.p = 0.2) {
+  # Create a compressed or composite FHX object from a larger FHX object.
+  #
+  # Input:
+  #   x - The target FHX object.
+  #   series.name - A string giving the desired name of the composite.
+  #       Must be no greater than 8 characters.
+  #   compress.p - For each year, if the proportion of total series is >= 
+  #       compress.p, an unknown fire injury will be noted for that year.
+  # 
+  # Output:
+  #   An FHX object representing a composite or compression of the original.
+  stopifnot(class(x) == "fhx")
+  stopifnot(compress.p > 0 & compress.p < 1)
+  stopifnot(nchar(series.name) < 9)
+  year.seq <- seq(x$first.year, x$last.year)
+  year.n <- length(year.seq)
+  series.n <- length(x$series.names)
+  values <- rep("null.year", year.n)
+  targets = c("unknown.fs", "unknown.fi", 
+              "dormant.fs", "dormant.fi", 
+              "early.fs", "early.fi", 
+              "middle.fs", "middle.fi", 
+              "late.fs", "late.fi", 
+              "latewd.fs", "latewd.fi") 
+  for ( i in seq(1, year.n) ) {
+    count <- dim(subset(x$rings, x$rings$year == year.seq[i] & x$rings$type %in% targets))[1]
+    if ( (count / series.n) >= compress.p )
+      values[i] <- "unknown.fi"
+  }
+  f <- list(first.year = NA,  # First year of all the series.
+            last.year = NA,  # Last year of all the series.
+            series.names = NA,  # Ordered factor of the series.names.
+            meta = list(),  # Odd list for collecting various bits of metadata.
+            rings = NA)  # Data frame that actually contains the ring data.
+  class(f) <- "fhx"
+  f$first.year <- x$first.year
+  f$last.year <- x$last.year
+  f$series.names <- c(series.name)
+  f$rings <- data.frame(year = year.seq,
+                        type = values, 
+                        series = rep(series.name, year.n))
+  f
 }

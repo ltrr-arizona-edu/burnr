@@ -635,7 +635,14 @@ compress <- function(x, series.name, compress.p = 0.2) {
   year.seq <- seq(x$first.year, x$last.year)
   year.n <- length(year.seq)
   series.n <- length(x$series.names)
-  values <- rep("null.year", year.n)
+  values <- factor(rep("null.year", year.n),
+                   levels = c("null.year", "recorder.year", "unknown.fs",
+                              "unknown.fi", "dormant.fs", "dormant.fi",
+                              "early.fs", "early.fi", "middle.fs",
+                              "middle.fi", "late.fs", "late.fi",
+                              "latewd.fs", "latewd.fi", "pith.year",
+                              "bark.year", "inner.year", "outer.year",
+                              "estimate"))
   targets = c("unknown.fs", "unknown.fi", 
               "dormant.fs", "dormant.fi", 
               "early.fs", "early.fi", 
@@ -647,6 +654,8 @@ compress <- function(x, series.name, compress.p = 0.2) {
     if ( (count / series.n) >= compress.p )
       values[i] <- "unknown.fs"
   }
+  values[1] <- "inner.year"
+  values[year.n] <- "outer.year"
   f <- list(first.year = NA,  # First year of all the series.
             last.year = NA,  # Last year of all the series.
             series.names = NA,  # Ordered factor of the series.names.

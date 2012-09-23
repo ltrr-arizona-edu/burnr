@@ -602,8 +602,9 @@ ggplot.fhx <- function(x, vline=FALSE) {
                         y = series, yend = series, linetype = type, size = type),
                         data = segs) +
        scale_linetype_manual(values = c(1, 3, 1)) +
-       scale_size_manual(values = c(0.5, 0.5, 0.3)) + 
-       geom_point(data = ends, shape = 16)
+       scale_size_manual(values = c(0.5, 0.5, 0.3))
+  if (dim(ends)[1] > 0)  # If we have bark and pith years.
+    p <- p + geom_point(data = ends, shape = 16)
   if (dim(events)[1] > 0) { # If we actually have events...
     p <- p + geom_point(data = events, shape = 25)
     if (vline == TRUE)

@@ -165,4 +165,4 @@ Another possiblity is that you do not have the script within your R path, or the
 
 ## When (not "if") you find a bug...
 
-If you do run into a problem, [file a bug report](https://github.com/brews/fhxR/issues) or at the very least, write me a nice email. In either case be sure to describe exactly what you did, what happened and what you expected to happen. It also would be a good idea to include your data, if you can.
+If you do run into a problem, [file a bug report](https://github.com/ltrr-arizona-edu/fhxR/issues) or at the very least, write me a nice email. In either case be sure to describe exactly what you did, what happened and what you expected to happen. It also would be a good idea to include your data, if you can.

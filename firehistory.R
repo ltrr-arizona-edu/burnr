@@ -1,4 +1,4 @@
-#   Copyright 2011 S. Brewster Malevich <malevich@email.arizona.edu>
+#   Copyright 2011-2014 S. Brewster Malevich <malevich@email.arizona.edu>
 #
 #   This is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 require("ggplot2")
-require("reshape")
+require("reshape2")
 
 
 read.fhx <- function(fname, encoding=getOption("encoding")) {
@@ -305,7 +305,7 @@ write.fhx <- function(x, fname="") {
                         type = unlist(type.key[as.character(x$rings$type)]))
   # TODO: This is creating output about using type as value column. Get rid of this.
   # TODO: This also fails if there are multiple measurements for a single series year.
-  out <- cast(victims, year ~ series)
+  out <- dcast(victims, year ~ series)
 
   # Weird thing to move year to the last column of the data.frame.
   out$yr <- out$year
@@ -529,7 +529,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, vline=FALSE) {
+ggplot.fhx <- function(x, vline=FALSE, vlinealpha=0.05) {
   # Return a ggplot2 object for plotting.
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
@@ -608,14 +608,14 @@ ggplot.fhx <- function(x, vline=FALSE) {
   if (dim(events)[1] > 0) { # If we actually have events...
     p <- p + geom_point(data = events, shape = 25)
     if (vline == TRUE)
-        p <- p + geom_vline(xintercept = events$year, alpha = 0.05, size = 1.5) 
+        p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
   }
   p
 }
 
-plot.fhx <- function(x, vline=FALSE) {
+plot.fhx <- function(x, vline=FALSE, vlinealpha=0.05) {
   # Plot an fhx object.
-  print(ggplot.fhx(x, vline = vline))
+  print(ggplot.fhx(x, vline = vline, vlinealpha = vlinealpha))
 }
 
 compress <- function(x, series.name, compress.p = 0.2) {

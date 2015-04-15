@@ -79,9 +79,10 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   # TODO: These loops will be slow and need to be redone. Maybe C?
   for (i in seq(1, meta[3])) {
     for (j in seq(1, meta[2])) {
-      f$series.names[j] <- paste(f$series.names[j], 
+      uncleaned <- paste(f$series.names[j], 
                                  series.names.bad[[i]][j], 
                                  sep = "")
+      f$series.names[j] <- gsub("^\\s+|\\s+$", "", uncleaned) # Remove leading or trailing whitespace.
     }
   }
   # Filling the class with info from the fhx file body.

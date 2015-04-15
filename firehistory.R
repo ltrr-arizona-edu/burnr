@@ -530,7 +530,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, vline=FALSE, vlinealpha=0.05) {
+ggplot.fhx <- function(x, spp, sppid, vline=FALSE, vlinealpha=0.05) {
   # Return a ggplot2 object for plotting.
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
@@ -597,26 +597,46 @@ ggplot.fhx <- function(x, vline=FALSE, vlinealpha=0.05) {
   levels(segs$type) <- c("recording", "non-recording", "estimate")
   #levels(events$type) <- c()
   #levels(ends$type) <- c()
-  p <- ggplot(data = x$rings, aes(y = series, x = year))
-  p <- p +
-       geom_segment(aes(x = first, xend = last,
-                        y = series, yend = series, linetype = type, size = type),
-                        data = segs) +
-       scale_linetype_manual(values = c(1, 3, 1)) +
-       scale_size_manual(values = c(0.5, 0.5, 0.3))
-  if (dim(ends)[1] > 0)  # If we have bark and pith years.
-    p <- p + geom_point(data = ends, shape = 16)
-  if (dim(events)[1] > 0) { # If we actually have events...
-    p <- p + geom_point(data = events, shape = 25)
-    if (vline == TRUE)
-        p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
+  p <- NULL
+  if (missing(spp) | missing(sppid)) {
+    p <- ggplot(data = x$rings, aes(y = series, x = year))
+    p <- p +
+         geom_segment(aes(x = first, xend = last,
+                          y = series, yend = series, linetype = type), data = segs) +
+         scale_linetype_manual(values = c(1, 3, 1))
+         scale_size_manual(values = c(0.5, 0.5, 0.3))
+    if (dim(ends)[1] > 0)  # If we have bark and pith years.
+      p <- p + geom_point(data = ends, shape = 16)
+    if (dim(events)[1] > 0) { # If we actually have events...
+      p <- p + geom_point(data = events, shape = 25)
+      if (vline == TRUE)
+          p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
+    }
+  } else {
+    merged <- merge(x$rings, data.frame(series = sppid, species = spp), by = "series")
+    p <- ggplot(merged, aes(y = series, x = year, color = species))
+    segs <- merge(segs, data.frame(series = sppid, species = spp), by = "series")
+    p <- p +
+         geom_segment(aes(x = first, xend = last,
+                          y = series, yend = series, linetype = type), data = segs) +
+         scale_linetype_manual(values = c(1, 3, 1))
+         scale_size_manual(values = c(0.5, 0.5, 0.3))
+    if (dim(ends)[1] > 0)  # If we have bark and pith years.
+      ends <- merge(ends, data.frame(series = sppid, species = spp), by = "series")
+      p <- p + geom_point(data = ends, shape = 16)
+    if (dim(events)[1] > 0) { # If we actually have events...
+      events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
+      p <- p + geom_point(data = events, shape = 25)
+      if (vline == TRUE)
+          p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
+    }
   }
   p
 }
 
-plot.fhx <- function(x, vline=FALSE, vlinealpha=0.05) {
+plot.fhx <- function(x, spp, sppid, vline=FALSE, vlinealpha=0.05) {
   # Plot an fhx object.
-  print(ggplot.fhx(x, vline = vline, vlinealpha = vlinealpha))
+  print(ggplot.fhx(x, spp, sppid, vline = vline, vlinealpha = vlinealpha))
 }
 
 compress <- function(x, series.name, compress.p = 0.2) {

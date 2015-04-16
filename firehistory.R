@@ -16,7 +16,6 @@
 require("ggplot2")
 require("reshape2")
 
-
 read.fhx <- function(fname, encoding=getOption("encoding")) {
   # Read input FHX file body from 'fname' and use to return an fhx object.
   #
@@ -117,6 +116,52 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
                         type = tmp.type, 
                         series = tmp.series)
   order.fhx(f)
+}
+
+rug.filter <- function(x, filter_prop=0.25, filter_min=2) {
+  # Filter fire events in `x` returning years with prominent fires.
+  #
+  # Input:
+  #   filter_prop - The proportion of fire events to recording series needed
+  #       in order to be considered. Default is 0.25.
+  #   filter_min  - The minimum number of recording series needed to be
+  #       considered a fire event. Default is 2 recording series.
+  #
+  # Output:
+  #   A vector of years from `x`.
+  stopifnot(class(x) == "fhx")
+  recording <- list("|" = "recorder.year",
+                   "U" = "unknown.fs",
+                   "u" = "unknown.fi",
+                   "D" = "dormant.fs",
+                   "d" = "dormant.fi",
+                   "E" = "early.fs",
+                   "e" = "early.fi",
+                   "M" = "middle.fs",
+                   "m" = "middle.fi",
+                   "L" = "late.fs",
+                   "l" = "late.fi",
+                   "A" = "latewd.fs",
+                   "a" = "latewd.fi")
+  event <- list("U" = "unknown.fs",
+               "u" = "unknown.fi",
+               "D" = "dormant.fs",
+               "d" = "dormant.fi",
+               "E" = "early.fs",
+               "e" = "early.fi",
+               "M" = "middle.fs",
+               "m" = "middle.fi",
+               "L" = "late.fs",
+               "l" = "late.fi",
+               "A" = "latewd.fs",
+               "a" = "latewd.fi")
+  event_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% event)$year))
+  recording_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
+  counts <- merge(event_count, recording_count, by = "Var1")
+  counts$prop <- counts$Freq.x / counts$Freq.y
+  conditions <- (counts$prop >= filter_prop) & (counts$Freq.y >= filter_min)
+  out <- subset(counts, conditions)$Var1
+  as.integer(levels(out)[out])
 }
 
 fhx <- function(est) {
@@ -608,7 +653,7 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, vlinealpha=0.05) {
     if (dim(ends)[1] > 0)  # If we have bark and pith years.
       p <- p + geom_point(data = ends, shape = 16)
     if (dim(events)[1] > 0) { # If we actually have events...
-      p <- p + geom_point(data = events, shape = 25)
+      p <- p + geom_point(data = events, shape = "|", size = 6) # `shape` 25 is empty triangles
       if (vline == TRUE)
           p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
     }

@@ -159,7 +159,7 @@ rug.filter <- function(x, filter_prop=0.25, filter_min=2) {
   recording_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
   counts <- merge(event_count, recording_count, by = "Var1")
   counts$prop <- counts$Freq.x / counts$Freq.y
-  conditions <- (counts$prop >= filter_prop) & (counts$Freq.y >= filter_min)
+  conditions <- (counts$prop >= filter_prop) & (counts$Freq.x >= filter_min)
   out <- subset(counts, conditions)$Var1
   as.integer(levels(out)[out])
 }
@@ -575,7 +575,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, vline=FALSE, vlinealpha=0.05) {
+ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2) {
   # Return a ggplot2 object for plotting.
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
@@ -643,22 +643,23 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, vlinealpha=0.05) {
   #levels(events$type) <- c()
   #levels(ends$type) <- c()
   p <- NULL
+  rings <- x$rings
   if (missing(spp) | missing(sppid)) {
-    p <- ggplot(data = x$rings, aes(y = series, x = year))
+    p <- ggplot(data = rings, aes(y = series, x = year))
     p <- p +
          geom_segment(aes(x = first, xend = last,
                           y = series, yend = series, linetype = type), data = segs) +
-         scale_linetype_manual(values = c(1, 3, 1))
+         scale_linetype_manual(values = c("solid", "dashed", "solid"))
          scale_size_manual(values = c(0.5, 0.5, 0.3))
     if (dim(ends)[1] > 0)  # If we have bark and pith years.
-      p <- p + geom_point(data = ends, shape = 16)
+      p <- p + geom_point(data = ends, shape = 16)  # size = 4
     if (dim(events)[1] > 0) { # If we actually have events...
-      p <- p + geom_point(data = events, shape = "|", size = 6) # `shape` 25 is empty triangles
+      p <- p + geom_point(data = events, shape = "|", size = 4) # `shape` 25 is empty triangles
       if (vline == TRUE)
           p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
     }
   } else {
-    merged <- merge(x$rings, data.frame(series = sppid, species = spp), by = "series")
+    merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
     p <- ggplot(merged, aes(y = series, x = year, color = species))
     segs <- merge(segs, data.frame(series = sppid, species = spp), by = "series")
     p <- p +
@@ -676,12 +677,19 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, vlinealpha=0.05) {
           p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
     }
   }
+  if (rug) {
+    p <- (p + geom_rug(data = subset(rings,
+                                     rings$year %in% rug.filter(d, filter_prop = filter_prop, filter_min = filter_min)),
+                       sides = "b", length = 0.5)
+            + scale_y_discrete(limits = c("", levels(rings$series)))
+          ) 
+  }
   p
 }
 
-plot.fhx <- function(x, spp, sppid, vline=FALSE, vlinealpha=0.05) {
+plot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2) {
   # Plot an fhx object.
-  print(ggplot.fhx(x, spp, sppid, vline = vline, vlinealpha = vlinealpha))
+  print(ggplot.fhx(x, spp, sppid, vline = vline, rug = rug, vlinealpha = vlinealpha, filter_prop = filter_prop, filter_min = filter_min))
 }
 
 compress <- function(x, series.name, compress.p = 0.2) {

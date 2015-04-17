@@ -679,11 +679,21 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, f
   }
   if (rug) {
     p <- (p + geom_rug(data = subset(rings,
-                                     rings$year %in% rug.filter(d, filter_prop = filter_prop, filter_min = filter_min)),
-                       sides = "b", length = 0.5)
-            + scale_y_discrete(limits = c("", levels(rings$series)))
-          ) 
+                                     rings$year %in% rug.filter(d, 
+                                                                filter_prop = filter_prop,
+                                                                filter_min = filter_min)),
+                       sides = "b")
+            + scale_y_discrete(limits = c("", levels(rings$series))) ) 
   }
+  p <- (p + scale_x_continuous(breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100),
+                               minor_breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 25))
+          + theme_bw()
+          + theme(panel.grid.major.y = element_blank(),
+                  panel.grid.minor.y = element_blank(),
+                  axis.title.x = element_blank(),
+                  axis.title.y = element_blank(),
+                  legend.title = element_blank(),
+                  legend.position = "bottom") )
   p
 }
 

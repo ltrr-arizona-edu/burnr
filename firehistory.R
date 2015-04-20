@@ -507,6 +507,7 @@ remove_duplicates <- function(x) {
 #        # Catch errors.  # This is creating trouble. DEBUG.
 #        stop()  # DEBUG.
       } else if ( victim.len == 2) { # If we have two copies.
+        message(paste("Duplicate found in series", i, "year", j))
         # Do our parsing here.
         type.tmp <- NA
         if ( all(victim[1] == victim) )  # See if all have the same value.

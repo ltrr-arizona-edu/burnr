@@ -666,14 +666,14 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, f
     p <- p +
          geom_segment(aes(x = first, xend = last,
                           y = series, yend = series, linetype = type), data = segs) +
-         scale_linetype_manual(values = c(1, 3, 1))
+         scale_linetype_manual(values = c("solid", "dashed", "solid"))
          scale_size_manual(values = c(0.5, 0.5, 0.3))
     if (dim(ends)[1] > 0)  # If we have bark and pith years.
       ends <- merge(ends, data.frame(series = sppid, species = spp), by = "series")
       p <- p + geom_point(data = ends, shape = 16)
     if (dim(events)[1] > 0) { # If we actually have events...
       events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
-      p <- p + geom_point(data = events, shape = 25)
+      p <- p + geom_point(data = events, shape = "|", size = 4)
       if (vline == TRUE)
           p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
     }

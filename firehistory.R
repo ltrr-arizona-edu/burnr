@@ -673,7 +673,7 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, f
       p <- p + geom_point(data = ends, shape = 16)
     if (dim(events)[1] > 0) { # If we actually have events...
       events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
-      p <- p + geom_point(data = events, shape = "|", size = 4)
+      p <- p + geom_point(data = events, shape = "|", size = 4, color = "black")
       if (vline == TRUE)
           p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
     }

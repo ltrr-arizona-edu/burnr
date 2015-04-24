@@ -683,7 +683,7 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, f
                                      rings$year %in% rug.filter(d, 
                                                                 filter_prop = filter_prop,
                                                                 filter_min = filter_min)),
-                       sides = "b")
+                       sides = "b", color = "black")
             + scale_y_discrete(limits = c("", levels(rings$series))) ) 
   }
   p <- (p + scale_x_continuous(breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100),

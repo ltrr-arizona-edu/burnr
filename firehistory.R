@@ -118,16 +118,16 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   order.fhx(f)
 }
 
-rug.filter <- function(x, filter_prop=0.25, filter_min=2) {
+rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
   # Filter fire events in `x` returning years with prominent fires.
   #
-  # Input:
-  #   filter_prop - The proportion of fire events to recording series needed
-  #       in order to be considered. Default is 0.25.
-  #   filter_min  - The minimum number of recording series needed to be
-  #       considered a fire event. Default is 2 recording series.
+  # Args:
+  #   filter_prop: The proportion of fire events to recording series needed
+  #     in order to be considered. Default is 0.25.
+  #   filter.min: The minimum number of recording series needed to be
+  #     considered a fire event. Default is 2 recording series.
   #
-  # Output:
+  # Returns:
   #   A vector of years from `x`.
   stopifnot(class(x) == "fhx")
   recording <- list("|" = "recorder.year",
@@ -159,7 +159,7 @@ rug.filter <- function(x, filter_prop=0.25, filter_min=2) {
   recording_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
   counts <- merge(event_count, recording_count, by = "Var1")
   counts$prop <- counts$Freq.x / counts$Freq.y
-  conditions <- (counts$prop >= filter_prop) & (counts$Freq.x >= filter_min)
+  conditions <- (counts$prop >= filter_prop) & (counts$Freq.x >= filter.min)
   out <- subset(counts, conditions)$Var1
   as.integer(levels(out)[out])
 }
@@ -576,8 +576,42 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter_prop=0.25, filter_min=2, legend=FALSE, eventsize=4, rugbuffersize=2) {
+ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2) {
   # Return a ggplot2 object for plotting.
+  #
+  # Args:
+  #   x: An `fhx` instance.
+  #   spp: Option to plot series with colors by species. A vector of species 
+  #     which corresponds to the series names given in `sppid`. Both `spp` and 
+  #     `sppid` need to be specified. Default plot gives no species colors.
+  #   sppid: Option to plot series with colors by species. A vector of series 
+  #     names corresponding to species names given in `spp`. Every unique 
+  #     values in `x`'s series.names needs to have a corresponding species 
+  #     value. Both `spp` and `sppid` need to be specified. Default plot gives
+  #     no species colors.
+  #   yearlims: Option to limit the plot to a range of years. This is a vector 
+  #     with two integers. The first integer gives the lower year for the range 
+  #     while the second integer gives the upper year. The default is to plot 
+  #     the full range of data given by `x`.
+  #   rug: A boolean option to plot a rug on the bottom of the plot. Default is 
+  #     FALSE.
+  #   filter.prop: An optional argument if the user chooses to include a rug in 
+  #     their plot. This is passed to `rug.filter()'. See this function for 
+  #     details.
+  #   filter.min: An optional argument if the user chooses to include a rug in 
+  #     their plot. This is passed to `rug.filter()'. See this function for 
+  #     details.
+  #   legend: A boolean option allowing the user to choose whether a legend is 
+  #     included in the plot or not. Default is FALSE.
+  #   event.size: An optional numeric that adjusts the size of fire event 
+  #     symbols on the plot. Default is 4.
+  #   rugbuffer.size: An optional integer. If the user plots a rug, this
+  #     controls the amount of buffer whitespace along the y-axis between 
+  #     the rug and the main plot.
+  #
+  # Returns:
+  # A ggplot object for plotting or manipulation.
+  #
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
   #       "pith/bark" into a legend.
@@ -654,7 +688,7 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter_prop=0.2
     if (dim(ends)[1] > 0)  # If we have bark and pith years.
       p <- p + geom_point(data = ends, shape = 16)  # size = 4
     if (dim(events)[1] > 0) { # If we actually have events...
-      p <- p + geom_point(data = events, shape = "|", size = eventsize) # `shape` 25 is empty triangles
+      p <- p + geom_point(data = events, shape = "|", size = event.size) # `shape` 25 is empty triangles
     }
   } else {
     merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
@@ -670,16 +704,16 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter_prop=0.2
       p <- p + geom_point(data = ends, shape = 16)
     if (dim(events)[1] > 0) { # If we actually have events...
       events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
-      p <- p + geom_point(data = events, shape = "|", size = eventsize, color = "black")
+      p <- p + geom_point(data = events, shape = "|", size = event.size, color = "black")
     }
   }
   if (rug) {
     p <- (p + geom_rug(data = subset(rings,
                                      rings$year %in% rug.filter(d, 
-                                                                filter_prop = filter_prop,
-                                                                filter_min = filter_min)),
+                                                                filter.prop = filter.prop,
+                                                                filter.min = filter.min)),
                        sides = "b", color = "black")
-            + scale_y_discrete(limits = c(rep("", rugbuffersize), levels(rings$series))) ) 
+            + scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series))) ) 
   }
   p <- (p + scale_x_continuous(breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100),
                                minor_breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 25))

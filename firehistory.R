@@ -576,7 +576,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2) {
+ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2, legend=FALSE) {
   # Return a ggplot2 object for plotting.
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
@@ -695,12 +695,15 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, f
                   axis.title.y = element_blank(),
                   legend.title = element_blank(),
                   legend.position = "bottom") )
+  if (!legend) {
+    p <- p + theme(legend.position = "none")
+  }
   p
 }
 
-plot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2) {
+plot.fhx <- function(...) {
   # Plot an fhx object.
-  print(ggplot.fhx(x, spp, sppid, vline = vline, rug = rug, vlinealpha = vlinealpha, filter_prop = filter_prop, filter_min = filter_min))
+  print(ggplot.fhx(...))
 }
 
 compress <- function(x, series.name, compress.p = 0.2) {

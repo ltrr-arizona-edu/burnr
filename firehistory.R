@@ -576,7 +576,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2, legend=FALSE) {
+ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2, legend=FALSE) {
   # Return a ggplot2 object for plotting.
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
@@ -697,6 +697,9 @@ ggplot.fhx <- function(x, spp, sppid, vline=FALSE, rug=FALSE, vlinealpha=0.05, f
                   legend.position = "bottom") )
   if (!legend) {
     p <- p + theme(legend.position = "none")
+  }
+  if (!missing(yearlims)) {
+    p <- p + coord_cartesian(xlim = yearlims)
   }
   p
 }

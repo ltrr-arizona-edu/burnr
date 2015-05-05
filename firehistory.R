@@ -607,7 +607,7 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter.prop=0.2
   #     symbols on the plot. Default is 4.
   #   rugbuffer.size: An optional integer. If the user plots a rug, this
   #     controls the amount of buffer whitespace along the y-axis between 
-  #     the rug and the main plot.
+  #     the rug and the main plot. Must be >= 2.
   #
   # Returns:
   # A ggplot object for plotting or manipulation.
@@ -615,6 +615,7 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter.prop=0.2
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
   #       "pith/bark" into a legend.
+  stopifnot(rugbuffer.size >= 2)
   clean <- subset(x$rings, x$rings$type != "null.year")
   clean.nonrec <- subset(clean, clean$type != "recorder.year")
   events <- subset(clean.nonrec, clean.nonrec$type %in% c("unknown.fs",
@@ -713,7 +714,9 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter.prop=0.2
                                                                 filter.prop = filter.prop,
                                                                 filter.min = filter.min)),
                        sides = "b", color = "black")
-            + scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series))) ) 
+            + scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series)))
+            + geom_hline(yintercept = 2, color = "grey50")
+         )
   }
   p <- (p + scale_x_continuous(breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100),
                                minor_breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 25))

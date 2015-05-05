@@ -576,7 +576,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2, legend=FALSE) {
+ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2, legend=FALSE, eventsize = 4) {
   # Return a ggplot2 object for plotting.
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
@@ -655,7 +655,7 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vl
     if (dim(ends)[1] > 0)  # If we have bark and pith years.
       p <- p + geom_point(data = ends, shape = 16)  # size = 4
     if (dim(events)[1] > 0) { # If we actually have events...
-      p <- p + geom_point(data = events, shape = "|", size = 4) # `shape` 25 is empty triangles
+      p <- p + geom_point(data = events, shape = "|", size = eventsize) # `shape` 25 is empty triangles
       if (vline == TRUE)
           p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
     }
@@ -673,7 +673,7 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vl
       p <- p + geom_point(data = ends, shape = 16)
     if (dim(events)[1] > 0) { # If we actually have events...
       events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
-      p <- p + geom_point(data = events, shape = "|", size = 4, color = "black")
+      p <- p + geom_point(data = events, shape = "|", size = eventsize, color = "black")
       if (vline == TRUE)
           p <- p + geom_vline(xintercept = events$year, alpha = vlinealpha, size = 1.5) 
     }

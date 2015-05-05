@@ -576,7 +576,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2, legend=FALSE, eventsize = 4) {
+ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vlinealpha=0.05, filter_prop=0.25, filter_min=2, legend=FALSE, eventsize=4, rugbuffersize=2) {
   # Return a ggplot2 object for plotting.
   # TODO: Merge ends and events into a single df. with a factor to handle the 
   #       different event types... this will allow us to put these "fire events" and
@@ -684,7 +684,7 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, vline=FALSE, rug=FALSE, vl
                                                                 filter_prop = filter_prop,
                                                                 filter_min = filter_min)),
                        sides = "b", color = "black")
-            + scale_y_discrete(limits = c("", levels(rings$series))) ) 
+            + scale_y_discrete(limits = c(rep("", rugbuffersize), levels(rings$series))) ) 
   }
   p <- (p + scale_x_continuous(breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100),
                                minor_breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 25))

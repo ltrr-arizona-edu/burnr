@@ -122,7 +122,7 @@ rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
   # Filter fire events in `x` returning years with prominent fires.
   #
   # Args:
-  #   filter_prop: The proportion of fire events to recording series needed
+  #   filter.prop: The proportion of fire events to recording series needed
   #     in order to be considered. Default is 0.25.
   #   filter.min: The minimum number of recording series needed to be
   #     considered a fire event. Default is 2 recording series.
@@ -159,7 +159,7 @@ rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
   recording_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
   counts <- merge(event_count, recording_count, by = "Var1")
   counts$prop <- counts$Freq.x / counts$Freq.y
-  conditions <- (counts$prop >= filter_prop) & (counts$Freq.x >= filter.min)
+  conditions <- (counts$prop >= filter.prop) & (counts$Freq.x >= filter.min)
   out <- subset(counts, conditions)$Var1
   as.integer(levels(out)[out])
 }

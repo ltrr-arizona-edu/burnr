@@ -576,7 +576,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2) {
+ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2) {
   # Return a ggplot2 object for plotting.
   #
   # Args:
@@ -589,6 +589,8 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter.prop=0.2
   #     values in `x`'s series.names needs to have a corresponding species 
   #     value. Both `spp` and `sppid` need to be specified. Default plot gives
   #     no species colors.
+  #   ylabels: Optional boolean to remove y-axis (series name) labels and tick 
+  #     marks. Default is TRUE.
   #   yearlims: Option to limit the plot to a range of years. This is a vector 
   #     with two integers. The first integer gives the lower year for the range 
   #     while the second integer gives the upper year. The default is to plot 
@@ -732,6 +734,9 @@ ggplot.fhx <- function(x, spp, sppid, yearlims=FALSE, rug=FALSE, filter.prop=0.2
   }
   if (!missing(yearlims)) {
     p <- p + coord_cartesian(xlim = yearlims)
+  }
+  if (!ylabels) {
+    p <- p + scale_y_discrete(breaks = NULL)
   }
   p
 }

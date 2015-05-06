@@ -736,7 +736,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, f
     p <- p + coord_cartesian(xlim = yearlims)
   }
   if (!ylabels) {
-    p <- p + scale_y_discrete(breaks = NULL)
+   p <- p + theme(axis.ticks = element_blank(), axis.text.y = element_blank())
   }
   p
 }

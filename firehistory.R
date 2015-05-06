@@ -576,7 +576,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2, rugdivide.pos=1.5) {
+ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2, rugdivide.pos=1.5) {
   # Return a ggplot2 object for plotting.
   #
   # Args:
@@ -595,8 +595,8 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, f
   #     with two integers. The first integer gives the lower year for the range 
   #     while the second integer gives the upper year. The default is to plot 
   #     the full range of data given by `x`.
-  #   rug: A boolean option to plot a rug on the bottom of the plot. Default is 
-  #     FALSE.
+  #   plot.rug: A boolean option to plot a rug on the bottom of the plot.
+  #     Default is FALSE.
   #   filter.prop: An optional argument if the user chooses to include a rug in 
   #     their plot. This is passed to `rug.filter()'. See this function for 
   #     details.
@@ -712,7 +712,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, f
       p <- p + geom_point(data = events, shape = "|", size = event.size, color = "black")
     }
   }
-  if (rug) {
+  if (plot.rug) {
     p <- (p + geom_rug(data = subset(rings,
                                      rings$year %in% rug.filter(d, 
                                                                 filter.prop = filter.prop,

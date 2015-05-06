@@ -576,7 +576,7 @@ remove_duplicates <- function(x) {
   x
 }
 
-ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2) {
+ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2, rugdivide.pos=1.5) {
   # Return a ggplot2 object for plotting.
   #
   # Args:
@@ -610,6 +610,8 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, f
   #   rugbuffer.size: An optional integer. If the user plots a rug, this
   #     controls the amount of buffer whitespace along the y-axis between 
   #     the rug and the main plot. Must be >= 2.
+  #   rugdivide.pos: Optional integer if plotting a rug. Adjust the 
+  #     placement of the rug divider along the y-axis. Default is 1.5.
   #
   # Returns:
   # A ggplot object for plotting or manipulation.
@@ -717,7 +719,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, rug=FALSE, f
                                                                 filter.min = filter.min)),
                        sides = "b", color = "black")
             + scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series)))
-            + geom_hline(yintercept = 2, color = "grey50")
+            + geom_hline(yintercept = rugdivide.pos, color = "grey50")
          )
   }
   p <- (p + scale_x_continuous(breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100),

@@ -9,4 +9,4 @@ We have a [tutorial on the project's wiki](https://github.com/ltrr-arizona-edu/f
 
 Please be sure to file bugs in the [bug tracker](https://github.com/ltrr-arizona-edu/fhxR/issues).
 
-Feel free to submit code to the development branch. Please be sure your follows [Google's R Style Guide](https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml).
+Feel free to submit code to the development branch. Please be sure you follow [Google's R Style Guide](https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml).

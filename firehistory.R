@@ -28,30 +28,25 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   con <- file(fname, encoding = encoding)
   on.exit(close(con))
   # Error checking and basic variables.
-  if (length(readLines(con, n = 1)) == 0) {
+  if (length(readLines(con, n = 1)) == 0)
     stop("file appears to be empty")
-  }
-  fl <- readLines(con)
-  if (!any(suppressWarnings(grepl("FHX2 FORMAT", fl)))) {
-    stop("cannot find line 'FHX2 FORMAT' ")
-  }
-  first <- suppressWarnings(grep("FHX2 FORMAT", fl))
-  meta <- as.numeric(strsplit(fl[[first + 1]], " ")[[1]])
-  if (length(meta) != 3) {  # First year; no. sites; length of site id.
-    stop(paste("The 'meta' information that should be on line ",
+  fl <- readLines(con, warn = FALSE)
+  if (!any(suppressWarnings(grepl("FHX2 FORMAT|FIRE2 FORMAT", fl, ignore.case = TRUE))))
+    stop("Cannot find line 'FHX2 FORMAT' or 'FIRE2 FORMAT'.")
+
+  first <- suppressWarnings(grep("FHX2 FORMAT|FIRE2 FORMAT", fl, ignore.case = TRUE))
+  describe <- as.numeric(strsplit(fl[[first + 1]], " ")[[1]])
+  if (length(describe) != 3) {  # First year; no. sites; length of site id.
+    stop(paste("Three-digit descriptive information that should be on line ",
                first + 1,
                " needs to have 3 elements separated by spaces."))
   }
-  # TODO: Need error check that row length = meta[2] + year.
+  # TODO: Need error check that row length = describe[2] + year.
   # TODO: Need error check that first year in body is first year in meta.
   
-  # Define fhx class. Oh, brave new world!
-  # Trying to stay true to the vocab used in the FHX2 manual...
-  f <- list(first.year = NA,  # First year of all the series.
-            last.year = NA,  # Last year of all the series.
-            series.names = NA,  # Ordered factor of the series.names.
-            meta = list(),  # Odd list for collecting various bits of metadata.
-            rings = NA)  # Data frame that actually contains the ring data.
+  # Define fhx class.
+  f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
+            rings = NA)     # Data frame that actually contains the ring data.
   class(f) <- "fhx"
   type.key <- list("?" = "estimate",  # My own creation for estimated years to pith.
                    "." = "null.year",
@@ -72,49 +67,55 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
                    "]" = "bark.year",
                    "{" = "inner.year",
                    "}" = "outer.year")
-  # Defining the series names.
-  f$series.names <- rep("", meta[2])
-  series.names.bad <- strsplit(fl[(first + 2):(first + 2 + meta[3])], "")
-  # TODO: These loops will be slow and need to be redone. Maybe C?
-  for (i in seq(1, meta[3])) {
-    for (j in seq(1, meta[2])) {
-      uncleaned <- paste(f$series.names[j], 
-                                 series.names.bad[[i]][j], 
-                                 sep = "")
-      f$series.names[j] <- gsub("^\\s+|\\s+$", "", uncleaned) # Remove leading or trailing whitespace.
-    }
-  }
+  # Parse series names.
+  uncleaned <- as.matrix(unlist(strsplit(fl[(first + 2):(first + 2 + describe[3])], "")))
+  dim(uncleaned) <- c(describe[2], describe[3])
+  series.names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
   # Filling the class with info from the fhx file body.
-  meat.bad <- strsplit(fl[(first + 3 + meta[3]) : length(fl)], split = "")
-  f$first.year = meta[1]
-  f$last.year = meta[1] + length(meat.bad) - 1
-  tmp.year <- rep(NA, length(meat.bad) * length(f$series))
-  tmp.series <- rep(NA, length(meat.bad) * length(f$series))
-  tmp.type <- factor(rep(NA, length(meat.bad) * length(f$series)),
-                     levels = c("null.year", "recorder.year", "unknown.fs",
+  fl.body <- strsplit(fl[(first + 3 + describe[3]) : length(fl)], split = "")
+  first.year <- describe[1]
+  fl.body <- as.data.frame(t(sapply(fl.body, function(x) x[1:describe[2]])), stringsAsFactors = FALSE)
+  # Should try doing the lines below as part of the above function and see the time dif.
+  names(fl.body) <- series.names
+  fl.body$year <- seq(first.year, first.year + dim(fl.body)[1] - 1)
+  fl.body.melt <- melt(fl.body, id.vars = "year", value.name = "type", variable.name = "series")
+  fl.body.melt <- subset(fl.body.melt, type != ".")
+  fl.body.melt$type <- vapply(fl.body.melt$type, function(x) type.key[[x]], "a") 
+  fl.body.melt$type <- factor(fl.body.melt$type, levels = c("null.year", "recorder.year", "unknown.fs",
                                 "unknown.fi", "dormant.fs", "dormant.fi",
                                 "early.fs", "early.fi", "middle.fs",
                                 "middle.fi", "late.fs", "late.fi",
                                 "latewd.fs", "latewd.fi", "pith.year",
                                 "bark.year", "inner.year", "outer.year",
                                 "estimate"))
-  k <- 0
-  for (i in seq(1, length(meat.bad))) {
-    yr <- as.numeric(paste(meat.bad[[i]][(meta[2] + 1):length(meat.bad[[i]])],
-                           sep = "", collapse = ""))
-    for (j in seq(1, meta[2])) {
-      k <- k + 1
-      target <- meat.bad[[i]][j]
-      tmp.year[k] <- yr
-      tmp.type[k] <- type.key[[target]]
-      tmp.series[k] <- f$series.name[j]
-    }
-  }
-  # Need f$rings$year as type int to get around casting problems with writing
-  # the fhx file out from R.
-  f$rings <- data.frame(year = as.integer(tmp.year),
-                        type = tmp.type, 
-                        series = tmp.series)
+  #tmp.year <- rep(NA, length(fl.body) * length(f$series))
+  #tmp.series <- rep(NA, length(fl.body) * length(f$series))
+  #tmp.type <- factor(rep(NA, length(fl.body) * length(f$series)),
+  #                   levels = c("null.year", "recorder.year", "unknown.fs",
+  #                              "unknown.fi", "dormant.fs", "dormant.fi",
+  #                              "early.fs", "early.fi", "middle.fs",
+  #                              "middle.fi", "late.fs", "late.fi",
+  #                              "latewd.fs", "latewd.fi", "pith.year",
+  #                              "bark.year", "inner.year", "outer.year",
+  #                              "estimate"))
+  #k <- 0
+  #for (i in seq(1, length(fl.body))) {
+  #  yr <- as.numeric(paste(fl.body[[i]][(describe[2] + 1):length(fl.body[[i]])],
+  #                         sep = "", collapse = ""))
+  #  for (j in seq(1, describe[2])) {
+  #    k <- k + 1
+  #    target <- fl.body[[i]][j]
+  #    tmp.year[k] <- yr
+  #    tmp.type[k] <- type.key[[target]]
+  #    tmp.series[k] <- f$series.name[j]
+  #  }
+  #}
+  ## Need f$rings$year as type int to get around casting problems with writing
+  ## the fhx file out from R.
+  #f$rings <- data.frame(year = as.integer(tmp.year),
+  #                      type = tmp.type, 
+  #                      series = tmp.series)
+  f$rings <- fl.body.melt
   order.fhx(f)
 }
 
@@ -325,8 +326,7 @@ write.fhx <- function(x, fname="") {
           for writing.")
     stop()
   }
-  type.key <- list("estimate"     = "?", 
-                   "null.year"    = ".", 
+  type.key <- list("null.year"    = ".", 
                    "recorder.year"= "|", 
                    "unknown.fs"   = "U", 
                    "unknown.fi"   = "u", 
@@ -344,7 +344,6 @@ write.fhx <- function(x, fname="") {
                    "bark.year"    = "]", 
                    "inner.year"   = "{", 
                    "outer.year"   = "}")
-  x <- estimate.omit(x)
   victims <- x$rings
   victims <- data.frame(year = x$rings$year,
                         series = x$rings$series,
@@ -389,27 +388,6 @@ write.fhx <- function(x, fname="") {
 }
 
 
-estimate.omit <- function(x) {
-  # Remove estimated pith and ring values from an fhx object, x.
-  # This is needed because the FHX2 format has no specs for estimated pith.
-  # TODO: This needs testing.
-  stopifnot(class(x) == "fhx")
-  # This gets messy:
-  for (i in x$series.names) {  # Remove estimate pith.years.
-    if ( !"estimate" %in% x$rings$type[x$rings$series == i] ) {  # Has no estimate year?
-      next
-    } else if ( "pith.year" %in% x$rings$type[x$rings$series == i] ) {  # Has a pith year?
-      pith.yr <- x$rings$year[x$rings$type == "pith.year" & x$rings$series == i]
-      if ( x$rings$type[x$rings$year == pith.yr + 1 & x$rings$series == i] == "estimate" ) {  # If next year is estimate...
-        x$rings$type[x$rings$year == pith.yr & x$rings$series == i] <- "null.year"
-      }
-    }
-  }
-  # Turn all "estimate" to "null.year".
-  x$rings$type[x$rings$type == "estimate"] <- "null.year"
-  x
-}
-
 order.fhx <- function(x) {
   stopifnot(class(x) == "fhx")
   test <- subset(x$rings,
@@ -418,7 +396,6 @@ order.fhx <- function(x) {
   x$rings$series <- factor(x$rings$series,
                            levels = unique(test$series[i]),
                            ordered = TRUE)
-  x$series.names <- levels(x$rings$series)  # Push the ordering to series.names
   i <- order(x$rings$series, x$rings$year, decreasing = TRUE)
   x$rings <- x$rings[i, ]
   x

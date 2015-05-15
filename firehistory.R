@@ -75,7 +75,7 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   fl.body <- strsplit(fl[(first + 3 + describe[3]) : length(fl)], split = "")
   first.year <- describe[1]
   fl.body <- as.data.frame(t(sapply(fl.body, function(x) x[1:describe[2]])), stringsAsFactors = FALSE)
-  # Should try doing the lines below as part of the above function and see the time dif.
+  # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
   names(fl.body) <- series.names
   fl.body$year <- seq(first.year, first.year + dim(fl.body)[1] - 1)
   fl.body.melt <- melt(fl.body, id.vars = "year", value.name = "type", variable.name = "series")
@@ -88,33 +88,6 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
                                 "latewd.fs", "latewd.fi", "pith.year",
                                 "bark.year", "inner.year", "outer.year",
                                 "estimate"))
-  #tmp.year <- rep(NA, length(fl.body) * length(f$series))
-  #tmp.series <- rep(NA, length(fl.body) * length(f$series))
-  #tmp.type <- factor(rep(NA, length(fl.body) * length(f$series)),
-  #                   levels = c("null.year", "recorder.year", "unknown.fs",
-  #                              "unknown.fi", "dormant.fs", "dormant.fi",
-  #                              "early.fs", "early.fi", "middle.fs",
-  #                              "middle.fi", "late.fs", "late.fi",
-  #                              "latewd.fs", "latewd.fi", "pith.year",
-  #                              "bark.year", "inner.year", "outer.year",
-  #                              "estimate"))
-  #k <- 0
-  #for (i in seq(1, length(fl.body))) {
-  #  yr <- as.numeric(paste(fl.body[[i]][(describe[2] + 1):length(fl.body[[i]])],
-  #                         sep = "", collapse = ""))
-  #  for (j in seq(1, describe[2])) {
-  #    k <- k + 1
-  #    target <- fl.body[[i]][j]
-  #    tmp.year[k] <- yr
-  #    tmp.type[k] <- type.key[[target]]
-  #    tmp.series[k] <- f$series.name[j]
-  #  }
-  #}
-  ## Need f$rings$year as type int to get around casting problems with writing
-  ## the fhx file out from R.
-  #f$rings <- data.frame(year = as.integer(tmp.year),
-  #                      type = tmp.type, 
-  #                      series = tmp.series)
   f$rings <- fl.body.melt
   order.fhx(f)
 }
@@ -165,160 +138,6 @@ rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
   as.integer(levels(out)[out])
 }
 
-fhx <- function(est) {
-  # Read input "establishment" data.frame return an fhx object.
-  #
-  # Input:
-  #   est - "establishment" data.frame.
-  #
-  # Output:
-  #   An fhx object.
-  stopifnot(class(est) == "data.frame")
-  stopifnot(c("unique", "site", "plot", "tree", "species",
-              "pith.date", "inner.ring.date", "outer.ring.date",
-              "bark.date") %in% names(est))
-  # Draw out the columns we need from est:
-  est <- data.frame("unique" = est$unique,
-                    "site" = est$site,
-                    "plot" = est$plot,
-                    "tree" = est$tree,
-                    "species" = est$species,
-                    "pith.date" = est$pith.date,
-                    "inner.ring.date" = est$inner.ring.date,
-                    "outer.ring.date" = est$outer.ring.date,
-                    "bark.date" = est$bark.date)
-  #Cleaning
-  est <- subset(est, 
-                (!(is.na(est$pith.date) & is.na(est$inner.ring.date)) |
-                 !(is.na(est$bark.date) & is.na(est$outer.ring.date))) )
-  est$unique <- factor(est$unique)  # To reset the levels.
-
-  # Trying to stay true to the vocab used in the FHX2 manual...
-  f <- list(first.year = NA,  # First year of all the series.
-            last.year = NA,  # Last year of all the series.
-            series.names = NA,  # Ordered factor of the series.names.
-            meta = list(),  # Odd list for collecting various bits of metadata.
-            rings = NA)  # Data frame that actually contains the ring data.
-  class(f) <- "fhx"
-  f$series.names <- unique(est$unique)
-  f$meta$est <- data.frame("series" = est$unique,
-                           "site" = est$site,
-                           "plot" = est$plot,
-                           "tree" = est$tree,
-                           "species" = est$species)
- 
-  est <- est[, c("unique", "pith.date", "inner.ring.date",
-                 "outer.ring.date", "bark.date")]
-  f$first.year <- with(est, min(c(min(pith.date, na.rm = TRUE),
-                                  min(inner.ring.date, na.rm = TRUE))))
-  f$last.year <- with(est, max(c(max(bark.date, na.rm = TRUE),
-                                 max(outer.ring.date, na.rm = TRUE))))
-  est.melt <- melt(est, id = "unique")
-  tmp.year <- rep(NA, length(f$series.names) * (f$last.year - f$first.year + 1)) 
-  tmp.type <- factor(rep(NA, length(f$series.names) * (f$last.year - f$first.year + 1)),
-                     levels = c("null.year", "recorder.year", "unknown.fs",
-                                "unknown.fi", "dormant.fs", "dormant.fi",
-                                "early.fs", "early.fi", "middle.fs",
-                                "middle.fi", "late.fs", "late.fi",
-                                "latewd.fs", "latewd.fi", "pith.year",
-                                "bark.year", "inner.year", "outer.year",
-                                "estimate"))
-  tmp.series <- rep(NA, length(f$series.names) * (f$last.year - f$first.year))
-  yr.seq <- seq(f$first.year, f$last.year)
-  k <- 0
-  for ( i in seq(1, length(f$series.names)) ) {
-    s <- f$series.names[i]
-    tmp.pith.date <- est$pith.date[est$unique == s]
-    tmp.inner.ring.date <- est$inner.ring.date[est$unique == s]
-    tmp.outer.ring.date <- est$outer.ring.date[est$unique == s]
-    tmp.bark.date <- est$bark.date[est$unique == s]
-    for ( j in seq(1, length(yr.seq)) ) {
-      k <- k + 1
-      #print(k)  # DEBUG
-      foo <- NA
-      y <- yr.seq[j]
-      # Now to try to catch some errors:
-      if ( is.na(tmp.pith.date) & is.na(tmp.inner.ring.date) )
-        next
-      if ( is.na(tmp.outer.ring.date) & is.na(tmp.bark.date) )
-        next
-      # This is a mess, especially in dealing with NAs. Very sorry.
-      if ( y < min(c(tmp.pith.date, tmp.inner.ring.date), na.rm = TRUE) )  {
-        foo <- "null.year"
-      } else if ( (!is.na(tmp.pith.date) & y == tmp.pith.date) & 
-                 (is.na(tmp.inner.ring.date) | 
-                  tmp.pith.date <= tmp.inner.ring.date) ) {
-        foo <- "pith.year"
-      } else if ( (!is.na(tmp.pith.date) & y > tmp.pith.date) & 
-                 ( !is.na(tmp.inner.ring.date) & y < tmp.inner.ring.date) &
-                 (!is.na(tmp.pith.date) & !is.na(tmp.inner.ring.date)) ) {
-        foo <- "estimate"
-      } else if ( (!is.na(tmp.inner.ring.date) & y == tmp.inner.ring.date) & 
-                 (is.na(tmp.pith.date) | 
-                  tmp.pith.date != tmp.inner.ring.date) ) {
-        foo <- "inner.year"
-      } else if ( ((!is.na(tmp.inner.ring.date) & y > tmp.inner.ring.date) | 
-                   (is.na(tmp.inner.ring.date) & y > tmp.pith.date)) & 
-                 y < min(c(tmp.outer.ring.date, tmp.bark.date), na.rm = TRUE) ) {
-        foo <- "null.year"
-      } else if ( !is.na(tmp.outer.ring.date) & 
-                 y == tmp.outer.ring.date & 
-                 is.na(tmp.bark.date) ) {
-        foo <- "outer.year"
-      } else if ( !is.na(tmp.bark.date) & y == tmp.bark.date ) {
-        foo <- "bark.year"
-      } else if ((!is.na(tmp.bark.date) & y > tmp.bark.date ) |
-                 (is.na(tmp.bark.date) & y > tmp.outer.ring.date) |
-                 (tmp.bark.date == tmp.outer.ring.date & y > tmp.bark.date) ) {
-        foo <- "null.year"
-      } else {
-        # If all else fails, a weak debug message:
-        cat("\n\nSomething went wrong! Here is some debugging data:\n")
-        cat(paste("series name: ", s, "\n", "iter year: ", y, "\n", sep = ""))
-        cat(paste("pith.date: ", tmp.pith.date, "\n",
-                  "inner.ring.date: ", tmp.inner.ring.date, "\n",
-                  "outer.ring.date: ", tmp.outer.ring.date, "\n",
-                  "bark.date: ", tmp.bark.date, "\n", sep = ""))
-        stop()
-      }
-      tmp.year[k] <- y
-      tmp.series[k] <- as.character(s)  # Gets around inserting numbers bug.
-      tmp.type[k] <- foo
-    }
-  }
-  f$rings <- data.frame(year = tmp.year, series = factor(tmp.series),
-                        type = factor(tmp.type, 
-                                      levels = c("null.year", "recorder.year", 
-                                                 "unknown.fs", "unknown.fi", 
-                                                 "dormant.fs", "dormant.fi", 
-                                                 "early.fs", "early.fi", 
-                                                 "middle.fs", "middle.fi", 
-                                                 "late.fs", "late.fi", 
-                                                 "latewd.fs", "latewd.fi", 
-                                                 "pith.year", "bark.year", 
-                                                 "inner.year", "outer.year", 
-                                                 "estimate")))
-  order.fhx(f)
-}
-
-
-read.establish <- function(fname, encoding=getOption("encoding")) {
-  # Read input FHX file body from 'fname' and use to return an fhx object.
-  #
-  # Input:
-  #   fname - Name of target establishment file.
-  #   encoding - Encoding to use when reading the file. The default is to
-  #              use whatever the system default is.
-  # Output:
-  #   An fhx object.
-  est <- read.csv(fname,
-                  encoding = encoding,
-                  na.strings = c(-999, "NA"),
-                  row.names = NULL)
-  fhx(est)
-}
-
-
 write.fhx <- function(x, fname="") {
   # Write an fhx object to a new FHX v2 format file.
   if ( fname == "" ) {
@@ -344,31 +163,33 @@ write.fhx <- function(x, fname="") {
                    "bark.year"    = "]", 
                    "inner.year"   = "{", 
                    "outer.year"   = "}")
-  victims <- x$rings
-  victims <- data.frame(year = x$rings$year,
-                        series = x$rings$series,
-                        type = unlist(type.key[as.character(x$rings$type)]))
   # TODO: This is creating output about using type as value column. Get rid of this.
   # TODO: This also fails if there are multiple measurements for a single series year.
-  out <- dcast(victims, year ~ series)
-
-  # Weird thing to move year to the last column of the data.frame.
+  out <- x$rings
+  out$type <- vapply(out$type, function(x) type.key[[x]], "a") 
+  year.range <- seq(min(out$year), max(out$year))
+  filler <- data.frame(year = year.range,
+                       series = rep("hackishSolution", length(year.range)),
+                       type = rep(".", length(year.range)))
+  out <- rbind(out, filler)
+  out <- dcast(out, year ~ series, value.var = "type", fill = ".")
+  out$hackishSolution <- NULL
+  # Weird thing to move year to the last column of the data.frame:
   out$yr <- out$year
   out$year <- NULL
-  
-  no.series <- length(x$series.names)
-  max.series.name.length <- max(sapply(x$series.names, nchar))
+  series.names <- rev(as.character(unique(x$rings$series)))
+  no.series <- length(series.names)
+  max.series.name.length <- max(sapply(series.names, nchar))
   head.line <- "FHX2 FORMAT"
-  subhead.line <- paste(x$first.year, no.series, max.series.name.length)
+  subhead.line <- paste(min(x$rings$year), no.series, max.series.name.length)
 
-  # Now for the vertical series name heading. Ugg...
-  series.heading <- matrix(" ", ncol = max.series.name.length, nrow = no.series)
+  # Vertical series name heading.
+  series.heading <- matrix(" ", nrow = max.series.name.length, ncol = no.series)
   for ( i in seq(1, no.series) ) {
-    ingoing <- strsplit(x$series.names[i], split = "")[[1]]
+    ingoing <- strsplit(series.names[i], split = "")[[1]]
     n <- length(ingoing)
-    series.heading[i, 1:n] <- ingoing
+    series.heading[1:n, i] <- ingoing
   }
-  series.heading <- t(series.heading)
 
   # Now we quickly open and write to the file.
   fl <- file(fname, open = "wt")
@@ -383,7 +204,6 @@ write.fhx <- function(x, fname="") {
               append = TRUE, quote = FALSE,
               sep = "", na = "!",
               row.names = FALSE, col.names = FALSE)
-
   close(fl)
 }
 
@@ -401,47 +221,19 @@ order.fhx <- function(x) {
   x
 }
 
-
 "+.fhx" <- function(a, b) {
   # Concatenate two fhx objects and return the combination.
   stopifnot(class(b) == "fhx")
-  f <- list(first.year = NA,  # First year of all the series.
-            last.year = NA,  # Last year of all the series.
-            series.names = NA,  # Ordered factor of the series.names.
-            meta = list(),  # Odd list for collecting various bits of metadata.
+  f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
             rings = NA)  # Data frame that actually contains the ring data.
   class(f) <- "fhx"
-  f$first.year <- min(a$first.year, b$first.year)
-  f$last.year <- max(a$last.year, b$last.year)
-  f$series.names <- c(a$series.names, b$series.names)
   f$rings <- rbind(a$rings, b$rings)
-  if ( length(a$meta) | length(b$meta) > 0 ) {  # If meta data present...
+  if ( length(a$meta) | length(b$meta) > 0 )  # If meta data present...
     f$meta <- c(a$meta, b$meta)
-  }
-  tmp.year <- c()
-  tmp.series <- c()
-  tmp.type <- c()
-  # Stuffing data so that it matches the combined year-range of a and b.
-  for ( i in f$series.names ) {
-    i.min <- with(f$rings, min(year[series == i], na.rm = TRUE))
-    i.max <- with(f$rings, max(year[series == i], na.rm = TRUE))
-    low.seq <- c()
-    high.seq <- c()
-    if (i.min > f$first.year)
-      low.seq <- c(seq(i.min, f$first.year), low.seq)
-    if (i.max < f$last.year)
-      high.seq <- c(high.seq, seq(i.max, f$last.year))
-    tmp.year <- c(tmp.year, low.seq, high.seq)
-    tmp.series <- c( tmp.series, rep(i, length(c(low.seq, high.seq))) )
-  }
-  tmp.type <- rep("null.year", length(tmp.year))
-  tmp.rings <- data.frame(year = tmp.year,
-                          series = tmp.series,
-                          type = tmp.type)
-  f$rings <- rbind(f$rings, tmp.rings)
   f <- remove_duplicates(f)  # DEBUG
   order.fhx(f)
 }
+
 
 remove_duplicates <- function(x) {
   # Merge/remove duplicate observations in an fhx object.
@@ -462,19 +254,9 @@ remove_duplicates <- function(x) {
   type <- c()
   year <- c()
   series <- c()
-
-#                     levels = c("null.year", "recorder.year", "unknown.fs",
-#                                "unknown.fi", "dormant.fs", "dormant.fi",
-#                                "early.fs", "early.fi", "middle.fs",
-#                                "middle.fi", "late.fs", "late.fi",
-#                                "latewd.fs", "latewd.fi", "pith.year",
-#                                "bark.year", "inner.year", "outer.year",
-#                                "estimate"))
-
   # Now parse each series for each year.
-  for ( i in x$series.names ) {
-    for ( j in seq(x$first.year, x$last.year) ) {
-      # Having troubles with large no. of NAs in 1313 of LYT18D45...???
+  for ( i in unique(x$rings$series) ) {
+    for ( j in seq(range(x$rings$year)) ) {
       victim <- na.omit(x$rings$type[x$rings$series == i & x$rings$year == j])
       victim.len <- length(victim)
       if ( victim.len == 1 ) {
@@ -549,7 +331,6 @@ remove_duplicates <- function(x) {
                                                  "pith.year", "bark.year", 
                                                  "inner.year", "outer.year", 
                                                  "estimate")) ))
-  x$series.names <- factor(unique(x$rings$series))
   x
 }
 
@@ -723,58 +504,4 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
 plot.fhx <- function(...) {
   # Plot an fhx object.
   print(ggplot.fhx(...))
-}
-
-compress <- function(x, series.name, compress.p = 0.2) {
-  # Create a compressed or composite FHX object from a larger FHX object.
-  #
-  # Input:
-  #   x - The target FHX object.
-  #   series.name - A string giving the desired name of the composite.
-  #       Must be no greater than 8 characters.
-  #   compress.p - For each year, if the proportion of total series is >= 
-  #       compress.p, an unknown fire injury will be noted for that year.
-  # 
-  # Output:
-  #   An FHX object representing a composite or compression of the original.
-  stopifnot(class(x) == "fhx")
-  stopifnot(compress.p > 0 & compress.p < 1)
-  stopifnot(nchar(series.name) < 9)
-  year.seq <- seq(x$first.year, x$last.year)
-  year.n <- length(year.seq)
-  series.n <- length(x$series.names)
-  values <- factor(rep("null.year", year.n),
-                   levels = c("null.year", "recorder.year", "unknown.fs",
-                              "unknown.fi", "dormant.fs", "dormant.fi",
-                              "early.fs", "early.fi", "middle.fs",
-                              "middle.fi", "late.fs", "late.fi",
-                              "latewd.fs", "latewd.fi", "pith.year",
-                              "bark.year", "inner.year", "outer.year",
-                              "estimate"))
-  targets = c("unknown.fs", "unknown.fi", 
-              "dormant.fs", "dormant.fi", 
-              "early.fs", "early.fi", 
-              "middle.fs", "middle.fi", 
-              "late.fs", "late.fi", 
-              "latewd.fs", "latewd.fi") 
-  for ( i in seq(1, year.n) ) {
-    count <- dim(subset(x$rings, x$rings$year == year.seq[i] & x$rings$type %in% targets))[1]
-    if ( (count / series.n) >= compress.p )
-      values[i] <- "unknown.fs"
-  }
-  values[1] <- "inner.year"
-  values[year.n] <- "outer.year"
-  f <- list(first.year = NA,  # First year of all the series.
-            last.year = NA,  # Last year of all the series.
-            series.names = NA,  # Ordered factor of the series.names.
-            meta = list(),  # Odd list for collecting various bits of metadata.
-            rings = NA)  # Data frame that actually contains the ring data.
-  class(f) <- "fhx"
-  f$first.year <- x$first.year
-  f$last.year <- x$last.year
-  f$series.names <- c(series.name)
-  f$rings <- data.frame(year = year.seq,
-                        type = values, 
-                        series = rep(series.name, year.n))
-  f
 }

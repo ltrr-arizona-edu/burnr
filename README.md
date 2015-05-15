@@ -1,8 +1,12 @@
 fhxR
 ====
 
-An experiment in fire history plotting and parsing with FHX data files and R. This will (with luck) be merged into the dplR.
+An experiment in analyzing forest fire history data files (e.g. FHX2) in R. This is a tool targeted towards power users and projects with special needs.
 
-We have a [tutorial on the project's wiki](https://github.com/ltrr-arizona-edu/fhxR/wiki/fhxR-Tutorial).
+This code is still under heavy development. The project might be renamed. We do not promise backwards compatability (sorry). Here be dragons.
 
-Please be sure to file any bugs you find with our [bug tracker](https://github.com/ltrr-arizona-edu/fhxR/issues).
+We have a [tutorial on the project's wiki](https://github.com/ltrr-arizona-edu/fhxR/wiki/fhxR-Tutorial). Code at the bleeding edge of the project should be documented within the source files.
+
+Please be sure to file bugs in the [bug tracker](https://github.com/ltrr-arizona-edu/fhxR/issues).
+
+Feel free to submit code to the development branch. Please be sure your follows [Google's R Style Guide](https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml).

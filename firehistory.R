@@ -182,7 +182,6 @@ write.fhx <- function(x, fname="") {
   max.series.name.length <- max(sapply(series.names, nchar))
   head.line <- "FHX2 FORMAT"
   subhead.line <- paste(min(x$rings$year), no.series, max.series.name.length)
-
   # Vertical series name heading.
   series.heading <- matrix(" ", nrow = max.series.name.length, ncol = no.series)
   for ( i in seq(1, no.series) ) {
@@ -190,7 +189,6 @@ write.fhx <- function(x, fname="") {
     n <- length(ingoing)
     series.heading[1:n, i] <- ingoing
   }
-
   # Now we quickly open and write to the file.
   fl <- file(fname, open = "wt")
   cat(paste(head.line, "\n", subhead.line, "\n", sep = ""),
@@ -206,7 +204,6 @@ write.fhx <- function(x, fname="") {
               row.names = FALSE, col.names = FALSE)
   close(fl)
 }
-
 
 order.fhx <- function(x) {
   stopifnot(class(x) == "fhx")
@@ -228,110 +225,114 @@ order.fhx <- function(x) {
             rings = NA)  # Data frame that actually contains the ring data.
   class(f) <- "fhx"
   f$rings <- rbind(a$rings, b$rings)
-  if ( length(a$meta) | length(b$meta) > 0 )  # If meta data present...
+  if (length(a$meta) | length(b$meta) > 0)  # If meta data present...
     f$meta <- c(a$meta, b$meta)
-  f <- remove_duplicates(f)  # DEBUG
-  order.fhx(f)
+  order.fhx(resolve_duplicates(f))
 }
 
-
-remove_duplicates <- function(x) {
+resolve_duplicates <- function(x) {
   # Merge/remove duplicate observations in an fhx object.
   stopifnot(class(x) == "fhx")
-  # Not very elegant, and very slow. Should be written in C.
-  # TODO: If I can come up with a quick check, this could work with
-  # 3-replications via recursion.
-  
-  # Define constants for use in parsing.
-  SCARS <- c("unknown.fs", "dormant.fs", "early.fs",
-             "middle.fs", "late.fs", "latewd.fs")
-  INJURIES <- c("unknown.fi", "dormant.fi", "early.fi",
-                "middle.fi", "late.fi", "latewd.fi")
-  SOLID <- c("bark.year", "pith.year")
-  SOFT <- c("inner.year", "outer.year")
-  y <- x$rings
-  # No way to predetermine the size of these without making assumptions...?
-  type <- c()
-  year <- c()
-  series <- c()
-  # Now parse each series for each year.
-  for ( i in unique(x$rings$series) ) {
-    for ( j in seq(range(x$rings$year)) ) {
-      victim <- na.omit(x$rings$type[x$rings$series == i & x$rings$year == j])
-      victim.len <- length(victim)
-      if ( victim.len == 1 ) {
-        # If no extra observations.
-        next
-#      } else if ( is.na(victim) ) {
-#        # Catch errors.  # This is creating trouble. DEBUG.
-#        stop()  # DEBUG.
-      } else if ( victim.len == 2) { # If we have two copies.
-        message(paste("Duplicate found in series", i, "year", j))
-        # Do our parsing here.
-        type.tmp <- NA
-        if ( all(victim[1] == victim) )  # See if all have the same value.
-          type.tmp <- as.character(victim[1])
-        else if ("estimate" %in% victim)
-          type.tmp <- "estimate"
-        else if ( victim[1] %in% SOFT )
-          type.tmp <- as.character(victim[1])
-        else if ( victim[1] %in% SOLID & victim[2] %in% SOFT )
-          type.tmp <- as.character(victim[2])
-        else if ( victim[1] %in% SOLID )
-          type.tmp <- as.character(victim[1])
-        else if ( victim[1] == "null.year")
-          type.tmp <- as.character(victim[2])
-        else if ( victim[1] == "recorder.year" )
-          type.tmp <- as.character(victim[2])
-        else if ( victim[1] %in% SCARS & victim[2] %in% SCARS )
-          type.tmp <- "unknown.fs"
-        else if ( victim[1] %in% SCARS & victim[2] %in% INJURIES )
-          type.tmp <- "unknown.fi"
-        else if ( victim[1] %in% INJURIES )
-          type.tmp <- "unknown.fi"
-      # TODO: Really need this to be recursive. We're only handling two
-      # instances properly.
-      } else if ( victim.len == 3 ) {  # If have three copies...
-        if ( all(victim[1] == victim) ) { 
-          type.tmp <- as.character(victim[1])
-        } else {
-        cat("There are more than two values is a series.", "\n")
-        stop()
+  if (!anyDuplicated(x$rings)) {
+    return(x)
+  } else {
+      duplicates <- x$rings[duplicated(x$rings), ]
+      print(duplicates)
+      stop(c(dim(duplicates)[1], " duplicate(s) found. Please resolve duplicate records."))
+      # Not very elegant, and very slow. Should be written in C.
+      # TODO: If I can come up with a quick check, this could work with
+      # 3-replications via recursion.
+      # Define constants for use in parsing.
+      SCARS <- c("unknown.fs", "dormant.fs", "early.fs",
+                 "middle.fs", "late.fs", "latewd.fs")
+      INJURIES <- c("unknown.fi", "dormant.fi", "early.fi",
+                    "middle.fi", "late.fi", "latewd.fi")
+      SOLID <- c("bark.year", "pith.year")
+      SOFT <- c("inner.year", "outer.year")
+      y <- x$rings
+      # No way to predetermine the size of these without making assumptions...?
+      type <- c()
+      year <- c()
+      series <- c()
+      # Now parse each series for each year.
+      for ( i in unique(x$rings$series) ) {
+        for ( j in seq(range(x$rings$year)) ) {
+          victim <- na.omit(x$rings$type[x$rings$series == i & x$rings$year == j])
+          victim.len <- length(victim)
+          if ( victim.len == 1 ) {
+            # If no extra observations.
+            next
+    #      } else if ( is.na(victim) ) {
+    #        # Catch errors.  # This is creating trouble. DEBUG.
+    #        stop()  # DEBUG.
+          } else if ( victim.len == 2) { # If we have two copies.
+            message(paste("Duplicate found in series", i, "year", j))
+            # Do our parsing here.
+            type.tmp <- NA
+            if ( all(victim[1] == victim) )  # See if all have the same value.
+              type.tmp <- as.character(victim[1])
+            else if ("estimate" %in% victim)
+              type.tmp <- "estimate"
+            else if ( victim[1] %in% SOFT )
+              type.tmp <- as.character(victim[1])
+            else if ( victim[1] %in% SOLID & victim[2] %in% SOFT )
+              type.tmp <- as.character(victim[2])
+            else if ( victim[1] %in% SOLID )
+              type.tmp <- as.character(victim[1])
+            else if ( victim[1] == "null.year")
+              type.tmp <- as.character(victim[2])
+            else if ( victim[1] == "recorder.year" )
+              type.tmp <- as.character(victim[2])
+            else if ( victim[1] %in% SCARS & victim[2] %in% SCARS )
+              type.tmp <- "unknown.fs"
+            else if ( victim[1] %in% SCARS & victim[2] %in% INJURIES )
+              type.tmp <- "unknown.fi"
+            else if ( victim[1] %in% INJURIES )
+              type.tmp <- "unknown.fi"
+          # TODO: Really need this to be recursive. We're only handling two
+          # instances properly.
+          } else if ( victim.len == 3 ) {  # If have three copies...
+            if ( all(victim[1] == victim) ) { 
+              type.tmp <- as.character(victim[1])
+            } else {
+            cat("There are more than two values is a series.", "\n")
+            stop()
+            }
+          } else if ( victim.len == 4 ) {
+            if ( all(victim[1] == victim) ) {
+                type.tmp <- as.character(victim[1])
+            } else {
+              cat("There are more than two values in a series.", "\n")
+              stop()
+            }
+          } else {
+            print(i)  # DEBUG.
+            print(j)  # DEBUG.
+            cat("There are more than two values in this series:", victim, "\n")
+            stop()
+          }
+          # This is harsh because we're rewriting x$rings with each iteration.
+          y <- y[!(y$year == j & y$series == i),]
+          type <- c(type, type.tmp)
+          year <- c(year, j)
+          series <- c(series, i)
         }
-      } else if ( victim.len == 4 ) {
-        if ( all(victim[1] == victim) ) {
-            type.tmp <- as.character(victim[1])
-        } else {
-          cat("There are more than two values in a series.", "\n")
-          stop()
-        }
-      } else {
-        print(i)  # DEBUG.
-        print(j)  # DEBUG.
-        cat("There are more than two values in this series:", victim, "\n")
-        stop()
       }
-      # This is harsh because we're rewriting x$rings with each iteration.
-      y <- y[!(y$year == j & y$series == i),]
-      type <- c(type, type.tmp)
-      year <- c(year, j)
-      series <- c(series, i)
-    }
+      x$rings <- rbind(y, data.frame(series = factor(series),
+                                     year = year, 
+                                     type = factor(type, 
+                                          levels = c("null.year", "recorder.year", 
+                                                     "unknown.fs", "unknown.fi", 
+                                                     "dormant.fs", "dormant.fi", 
+                                                     "early.fs", "early.fi", 
+                                                     "middle.fs", "middle.fi", 
+                                                     "late.fs", "late.fi", 
+                                                     "latewd.fs", "latewd.fi", 
+                                                     "pith.year", "bark.year", 
+                                                     "inner.year", "outer.year", 
+                                                     "estimate")) ))
+      return(x)
   }
-  x$rings <- rbind(y, data.frame(series = factor(series),
-                                 year = year, 
-                                 type = factor(type, 
-                                      levels = c("null.year", "recorder.year", 
-                                                 "unknown.fs", "unknown.fi", 
-                                                 "dormant.fs", "dormant.fi", 
-                                                 "early.fs", "early.fi", 
-                                                 "middle.fs", "middle.fi", 
-                                                 "late.fs", "late.fi", 
-                                                 "latewd.fs", "latewd.fi", 
-                                                 "pith.year", "bark.year", 
-                                                 "inner.year", "outer.year", 
-                                                 "estimate")) ))
-  x
 }
 
 ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2, rugdivide.pos=1.5) {

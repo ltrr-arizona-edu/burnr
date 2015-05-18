@@ -132,9 +132,9 @@ rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
                "l" = "late.fi",
                "A" = "latewd.fs",
                "a" = "latewd.fi")
-  event_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% event)$year))
-  recording_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
-  counts <- merge(event_count, recording_count, by = "Var1")
+  event.count <- as.data.frame(table(subset(x$rings, x$rings$type %in% event)$year))
+  recording.count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
+  counts <- merge(event.count, recording.count, by = "Var1")
   counts$prop <- counts$Freq.x / counts$Freq.y
   conditions <- (counts$prop >= filter.prop) & (counts$Freq.x >= filter.min)
   out <- subset(counts, conditions)$Var1

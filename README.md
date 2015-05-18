@@ -1,7 +1,7 @@
 fhxR
 ====
 
-An experiment in analyzing forest fire history data files (e.g. FHX2) in R. This is a tool targeted towards power users and projects with special needs.
+An experiment in analyzing forest fire history data files (e.g. FHX2) in R. This is a tool designed for power users and projects with special needs.
 
 This code is still under heavy development. The project might be renamed. We do not promise backwards compatability (sorry). Here be dragons.
 

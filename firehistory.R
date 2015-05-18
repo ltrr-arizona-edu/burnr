@@ -472,8 +472,17 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
             + geom_hline(yintercept = rugdivide.pos, color = "grey50")
          )
   }
-  p <- (p + scale_x_continuous(breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100),
-                               minor_breaks = seq(round(min(rings$year), -2), round(max(rings$year), -2), 25))
+  brks.major <- NA
+  brks.minor <- NA
+  yr.range <- diff(range(rings$year)) < 100
+  if (yr.range < 100) {
+      brks.major = seq(round(min(rings$year), -1), round(max(rings$year), -1), 10)
+      brks.minor = seq(round(min(rings$year), -1), round(max(rings$year), -1), 5)
+  } else if (yr.range >= 100) {
+      brks.major = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100)
+      brks.minor = seq(round(min(rings$year), -2), round(max(rings$year), -2), 25)
+  }
+  p <- (p + scale_x_continuous(breaks = brks.major, minor_breaks = brks.minor)
           + theme_bw()
           + theme(panel.grid.major.y = element_blank(),
                   panel.grid.minor.y = element_blank(),

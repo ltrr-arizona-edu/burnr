@@ -243,95 +243,95 @@ resolve_duplicates <- function(x) {
       # TODO: If I can come up with a quick check, this could work with
       # 3-replications via recursion.
       # Define constants for use in parsing.
-      SCARS <- c("unknown.fs", "dormant.fs", "early.fs",
-                 "middle.fs", "late.fs", "latewd.fs")
-      INJURIES <- c("unknown.fi", "dormant.fi", "early.fi",
-                    "middle.fi", "late.fi", "latewd.fi")
-      SOLID <- c("bark.year", "pith.year")
-      SOFT <- c("inner.year", "outer.year")
-      y <- x$rings
-      # No way to predetermine the size of these without making assumptions...?
-      type <- c()
-      year <- c()
-      series <- c()
-      # Now parse each series for each year.
-      for ( i in unique(x$rings$series) ) {
-        for ( j in seq(range(x$rings$year)) ) {
-          victim <- na.omit(x$rings$type[x$rings$series == i & x$rings$year == j])
-          victim.len <- length(victim)
-          if ( victim.len == 1 ) {
-            # If no extra observations.
-            next
-    #      } else if ( is.na(victim) ) {
-    #        # Catch errors.  # This is creating trouble. DEBUG.
-    #        stop()  # DEBUG.
-          } else if ( victim.len == 2) { # If we have two copies.
-            message(paste("Duplicate found in series", i, "year", j))
-            # Do our parsing here.
-            type.tmp <- NA
-            if ( all(victim[1] == victim) )  # See if all have the same value.
-              type.tmp <- as.character(victim[1])
-            else if ("estimate" %in% victim)
-              type.tmp <- "estimate"
-            else if ( victim[1] %in% SOFT )
-              type.tmp <- as.character(victim[1])
-            else if ( victim[1] %in% SOLID & victim[2] %in% SOFT )
-              type.tmp <- as.character(victim[2])
-            else if ( victim[1] %in% SOLID )
-              type.tmp <- as.character(victim[1])
-            else if ( victim[1] == "null.year")
-              type.tmp <- as.character(victim[2])
-            else if ( victim[1] == "recorder.year" )
-              type.tmp <- as.character(victim[2])
-            else if ( victim[1] %in% SCARS & victim[2] %in% SCARS )
-              type.tmp <- "unknown.fs"
-            else if ( victim[1] %in% SCARS & victim[2] %in% INJURIES )
-              type.tmp <- "unknown.fi"
-            else if ( victim[1] %in% INJURIES )
-              type.tmp <- "unknown.fi"
-          # TODO: Really need this to be recursive. We're only handling two
-          # instances properly.
-          } else if ( victim.len == 3 ) {  # If have three copies...
-            if ( all(victim[1] == victim) ) { 
-              type.tmp <- as.character(victim[1])
-            } else {
-            cat("There are more than two values is a series.", "\n")
-            stop()
-            }
-          } else if ( victim.len == 4 ) {
-            if ( all(victim[1] == victim) ) {
-                type.tmp <- as.character(victim[1])
-            } else {
-              cat("There are more than two values in a series.", "\n")
-              stop()
-            }
-          } else {
-            print(i)  # DEBUG.
-            print(j)  # DEBUG.
-            cat("There are more than two values in this series:", victim, "\n")
-            stop()
-          }
-          # This is harsh because we're rewriting x$rings with each iteration.
-          y <- y[!(y$year == j & y$series == i),]
-          type <- c(type, type.tmp)
-          year <- c(year, j)
-          series <- c(series, i)
-        }
-      }
-      x$rings <- rbind(y, data.frame(series = factor(series),
-                                     year = year, 
-                                     type = factor(type, 
-                                          levels = c("null.year", "recorder.year", 
-                                                     "unknown.fs", "unknown.fi", 
-                                                     "dormant.fs", "dormant.fi", 
-                                                     "early.fs", "early.fi", 
-                                                     "middle.fs", "middle.fi", 
-                                                     "late.fs", "late.fi", 
-                                                     "latewd.fs", "latewd.fi", 
-                                                     "pith.year", "bark.year", 
-                                                     "inner.year", "outer.year", 
-                                                     "estimate")) ))
-      return(x)
+#       SCARS <- c("unknown.fs", "dormant.fs", "early.fs",
+#                  "middle.fs", "late.fs", "latewd.fs")
+#       INJURIES <- c("unknown.fi", "dormant.fi", "early.fi",
+#                     "middle.fi", "late.fi", "latewd.fi")
+#       SOLID <- c("bark.year", "pith.year")
+#       SOFT <- c("inner.year", "outer.year")
+#       y <- x$rings
+#       # No way to predetermine the size of these without making assumptions...?
+#       type <- c()
+#       year <- c()
+#       series <- c()
+#       # Now parse each series for each year.
+#       for ( i in unique(x$rings$series) ) {
+#         for ( j in seq(range(x$rings$year)) ) {
+#           victim <- na.omit(x$rings$type[x$rings$series == i & x$rings$year == j])
+#           victim.len <- length(victim)
+#           if ( victim.len == 1 ) {
+#             # If no extra observations.
+#             next
+#     #      } else if ( is.na(victim) ) {
+#     #        # Catch errors.  # This is creating trouble. DEBUG.
+#     #        stop()  # DEBUG.
+#           } else if ( victim.len == 2) { # If we have two copies.
+#             message(paste("Duplicate found in series", i, "year", j))
+#             # Do our parsing here.
+#             type.tmp <- NA
+#             if ( all(victim[1] == victim) )  # See if all have the same value.
+#               type.tmp <- as.character(victim[1])
+#             else if ("estimate" %in% victim)
+#               type.tmp <- "estimate"
+#             else if ( victim[1] %in% SOFT )
+#               type.tmp <- as.character(victim[1])
+#             else if ( victim[1] %in% SOLID & victim[2] %in% SOFT )
+#               type.tmp <- as.character(victim[2])
+#             else if ( victim[1] %in% SOLID )
+#               type.tmp <- as.character(victim[1])
+#             else if ( victim[1] == "null.year")
+#               type.tmp <- as.character(victim[2])
+#             else if ( victim[1] == "recorder.year" )
+#               type.tmp <- as.character(victim[2])
+#             else if ( victim[1] %in% SCARS & victim[2] %in% SCARS )
+#               type.tmp <- "unknown.fs"
+#             else if ( victim[1] %in% SCARS & victim[2] %in% INJURIES )
+#               type.tmp <- "unknown.fi"
+#             else if ( victim[1] %in% INJURIES )
+#               type.tmp <- "unknown.fi"
+#           # TODO: Really need this to be recursive. We're only handling two
+#           # instances properly.
+#           } else if ( victim.len == 3 ) {  # If have three copies...
+#             if ( all(victim[1] == victim) ) { 
+#               type.tmp <- as.character(victim[1])
+#             } else {
+#             cat("There are more than two values is a series.", "\n")
+#             stop()
+#             }
+#           } else if ( victim.len == 4 ) {
+#             if ( all(victim[1] == victim) ) {
+#                 type.tmp <- as.character(victim[1])
+#             } else {
+#               cat("There are more than two values in a series.", "\n")
+#               stop()
+#             }
+#           } else {
+#             print(i)  # DEBUG.
+#             print(j)  # DEBUG.
+#             cat("There are more than two values in this series:", victim, "\n")
+#             stop()
+#           }
+#           # This is harsh because we're rewriting x$rings with each iteration.
+#           y <- y[!(y$year == j & y$series == i),]
+#           type <- c(type, type.tmp)
+#           year <- c(year, j)
+#           series <- c(series, i)
+#         }
+#       }
+#       x$rings <- rbind(y, data.frame(series = factor(series),
+#                                      year = year, 
+#                                      type = factor(type, 
+#                                           levels = c("null.year", "recorder.year", 
+#                                                      "unknown.fs", "unknown.fi", 
+#                                                      "dormant.fs", "dormant.fi", 
+#                                                      "early.fs", "early.fi", 
+#                                                      "middle.fs", "middle.fi", 
+#                                                      "late.fs", "late.fi", 
+#                                                      "latewd.fs", "latewd.fi", 
+#                                                      "pith.year", "bark.year", 
+#                                                      "inner.year", "outer.year", 
+#                                                      "estimate")) ))
+#       return(x)
   }
 }
 
@@ -379,46 +379,30 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   #       different event types... this will allow us to put these "fire events" and
   #       "pith/bark" into a legend.
   stopifnot(rugbuffer.size >= 2)
-  clean <- subset(x$rings, x$rings$type != "null.year")
-  clean.nonrec <- subset(clean, clean$type != "recorder.year")
+  clean.nonrec <- subset(x$rings, x$rings$type != "recorder.year")
   events <- subset(clean.nonrec, clean.nonrec$type %in% c("unknown.fs",
                                 "unknown.fi", "dormant.fs", "dormant.fi",
                                 "early.fs", "early.fi", "middle.fs",
                                 "middle.fi", "late.fs", "late.fi",
                                 "latewd.fs", "latewd.fi"))
+
+  
   ends <- subset(clean.nonrec, clean.nonrec$type %in% c("pith.year", "bark.year") &
                  !(clean.nonrec$type %in% c("estimate")))
-
-  estimate <- subset(clean, clean$type == "estimate")
-  live <- NA
-  if ( dim(estimate)[1] > 0 ) {  # If we have estimate years.
-    # Get the min and max of the estimate years.
-    estimate <- aggregate(estimate$year,
-                          by = list(estimate$series),
-                          FUN = range,
-                          na.rm = TRUE)
-    estimate <- data.frame(series = estimate$Group.1,
-                           first = estimate$x[, 1],
-                           last = estimate$x[, 2],
-                           type = rep("estimate", dim(estimate)[1]))
-    live <- subset(clean, clean$type != "estimate")
-    # TODO: This is a problem because it will plot on top of "estimate" years.
-    # Get min and max of living years.
-    live <- aggregate(live$year,
-                      by = list(live$series),
-                      FUN = range,
-                      na.rm = TRUE)
-  } else {  # If we don't have estimate years.
-    live <- aggregate(clean$year,
-                      by = list(clean$series),
-                      FUN = range,
-                      na.rm = TRUE)
-  }
+#  scar.types <- c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs")
+#  injury.types <- c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi")
+#  pithbark.types <- c("pith.year", "bark.year")
+#  events <- subset(clean.nonrec, (type %in% scar.types) | (type %in% injury.types) | (type %in% pithbark.types))
+#  levels(events$type)[levels(events$type) %in% scar.types] <- "Scar"
+#  levels(events$type)[levels(events$type) %in% injury.types] <- "Injury"
+#  levels(events$type)[levels(events$type) %in% pithbark.types] <- "Pith/Bark"
+#  events$type <- factor(events$type, levels = c("Scar", "Injury", "Pith/Bark"))
+  
+  live <- aggregate(x$rings$year, by = list(x$rings$series), FUN = range, na.rm = TRUE)
   live <- data.frame(series = live$Group.1,
                      first = live$x[, 1],
                      last = live$x[, 2],
                      type = rep("non-recording", dim(live)[1]))
-
   recorder <- subset(x$rings, x$rings$type == "recorder.year")
   if ( dim(recorder)[1] > 0 ) {  # If there are recorder years...
     # Get the min and max of the recorder years.
@@ -434,12 +418,8 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   } else {  # If there are no recorder years...
     segs <- live
   }
-  if ( dim(estimate)[1] > 0 ) { # If we have estimate years.
-    segs <- rbind(segs, estimate)
-  }
   levels(segs$type) <- c("recording", "non-recording", "estimate")
-  #levels(events$type) <- c()
-  #levels(ends$type) <- c()
+  
   p <- NULL
   rings <- x$rings
   if (missing(spp) | missing(sppid)) {
@@ -452,7 +432,11 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
     if (dim(ends)[1] > 0)  # If we have bark and pith years.
       p <- p + geom_point(data = ends, shape = 16)  # size = 4
     if (dim(events)[1] > 0) { # If we actually have events...
-      p <- p + geom_point(data = events, shape = "|", size = event.size) # `shape` 25 is empty triangles
+      #p <- p + geom_point(data = events, shape = "|", size = event.size) # `shape` 25 is empty triangles
+      injuries <- subset(events, type %in% c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi"))
+      scars <- subset(events, type %in% c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs"))
+      p <- p + geom_point(data = scars, shape = "|", size = event.size) # `shape` 25 is empty triangles
+      p <- p + geom_point(data = injuries, shape = 6) # `shape` 25 is empty triangles
     }
   } else {
     merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
@@ -463,12 +447,16 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
                           y = series, yend = series, linetype = type), data = segs) +
          scale_linetype_manual(values = c("solid", "dashed", "solid"))
          scale_size_manual(values = c(0.5, 0.5, 0.3))
-    if (dim(ends)[1] > 0)  # If we have bark and pith years.
+    if (dim(ends)[1] > 0)  { # If we have bark and pith years.
       ends <- merge(ends, data.frame(series = sppid, species = spp), by = "series")
       p <- p + geom_point(data = ends, shape = 16)
+    }
     if (dim(events)[1] > 0) { # If we actually have events...
       events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
-      p <- p + geom_point(data = events, shape = "|", size = event.size, color = "black")
+      injuries <- subset(events, type %in% c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi"))
+      scars <- subset(events, type %in% c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs"))
+      p <- p + geom_point(data = scars, shape = "|", size = event.size, color = "black") # `shape` 25 is empty triangles
+      p <- p + geom_point(data = injuries, shape = 6, color = "black") # `shape` 25 is empty triangles
     }
   }
   if (plot.rug) {

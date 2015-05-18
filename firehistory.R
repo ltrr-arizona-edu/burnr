@@ -388,7 +388,6 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
                                 "early.fs", "early.fi", "middle.fs",
                                 "middle.fi", "late.fs", "late.fi",
                                 "latewd.fs", "latewd.fi"))
-
   
   ends <- subset(clean.nonrec, clean.nonrec$type %in% c("pith.year", "bark.year") &
                  !(clean.nonrec$type %in% c("estimate")))
@@ -474,7 +473,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   }
   brks.major <- NA
   brks.minor <- NA
-  yr.range <- diff(range(rings$year)) < 100
+  yr.range <- diff(range(rings$year))
   if (yr.range < 100) {
       brks.major = seq(round(min(rings$year), -1), round(max(rings$year), -1), 10)
       brks.minor = seq(round(min(rings$year), -1), round(max(rings$year), -1), 5)

@@ -68,7 +68,7 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
                    "{" = "inner.year",
                    "}" = "outer.year")
   # Parse series names.
-  uncleaned <- as.matrix(unlist(strsplit(fl[(first + 2):(first + 2 + describe[3])], "")))
+  uncleaned <- as.matrix(unlist(strsplit(fl[(first + 2):(first + 1 + describe[3])], "")))
   dim(uncleaned) <- c(describe[2], describe[3])
   series.names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
   # Filling the class with info from the fhx file body.

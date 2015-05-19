@@ -348,7 +348,7 @@ resolve_duplicates <- function(x) {
   }
 }
 
-ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2, rugdivide.pos=1.5) {
+ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2, rugdivide.pos=2) {
   # Return a ggplot2 object for plotting.
   #
   # Args:
@@ -383,7 +383,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   #     controls the amount of buffer whitespace along the y-axis between 
   #     the rug and the main plot. Must be >= 2.
   #   rugdivide.pos: Optional integer if plotting a rug. Adjust the 
-  #     placement of the rug divider along the y-axis. Default is 1.5.
+  #     placement of the rug divider along the y-axis. Default is 2.
   #
   # Returns:
   # A ggplot object for plotting or manipulation.

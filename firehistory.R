@@ -383,22 +383,14 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   #       "pith/bark" into a legend.
   stopifnot(rugbuffer.size >= 2)
   clean.nonrec <- subset(x$rings, x$rings$type != "recorder.year")
-  events <- subset(clean.nonrec, clean.nonrec$type %in% c("unknown.fs",
-                                "unknown.fi", "dormant.fs", "dormant.fi",
-                                "early.fs", "early.fi", "middle.fs",
-                                "middle.fi", "late.fs", "late.fi",
-                                "latewd.fs", "latewd.fi"))
-  
-  ends <- subset(clean.nonrec, clean.nonrec$type %in% c("pith.year", "bark.year") &
-                 !(clean.nonrec$type %in% c("estimate")))
-#  scar.types <- c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs")
-#  injury.types <- c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi")
-#  pithbark.types <- c("pith.year", "bark.year")
-#  events <- subset(clean.nonrec, (type %in% scar.types) | (type %in% injury.types) | (type %in% pithbark.types))
-#  levels(events$type)[levels(events$type) %in% scar.types] <- "Scar"
-#  levels(events$type)[levels(events$type) %in% injury.types] <- "Injury"
-#  levels(events$type)[levels(events$type) %in% pithbark.types] <- "Pith/Bark"
-#  events$type <- factor(events$type, levels = c("Scar", "Injury", "Pith/Bark"))
+  scar.types <- c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs")
+  injury.types <- c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi")
+  pithbark.types <- c("pith.year", "bark.year")
+  events <- subset(clean.nonrec, (type %in% scar.types) | (type %in% injury.types) | (type %in% pithbark.types))
+  levels(events$type)[levels(events$type) %in% scar.types] <- "Scar"
+  levels(events$type)[levels(events$type) %in% injury.types] <- "Injury"
+  levels(events$type)[levels(events$type) %in% pithbark.types] <- "Pith/Bark"
+  events$type <- factor(events$type, levels = c("Scar", "Injury", "Pith/Bark"))
   
   live <- aggregate(x$rings$year, by = list(x$rings$series), FUN = range, na.rm = TRUE)
   live <- data.frame(series = live$Group.1,
@@ -420,26 +412,20 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   } else {  # If there are no recorder years...
     segs <- live
   }
-  levels(segs$type) <- c("recording", "non-recording", "estimate")
+  levels(segs$type) <- c("recording", "non-recording")
   
   p <- NULL
   rings <- x$rings
   if (missing(spp) | missing(sppid)) {
     p <- ggplot(data = rings, aes(y = series, x = year))
-    p <- p +
+    p <- (p +
          geom_segment(aes(x = first, xend = last,
                           y = series, yend = series, linetype = type), data = segs) +
-         scale_linetype_manual(values = c("solid", "dashed", "solid"))
-         scale_size_manual(values = c(0.5, 0.5, 0.3))
-    if (dim(ends)[1] > 0)  # If we have bark and pith years.
-      p <- p + geom_point(data = ends, shape = 16)  # size = 4
-    if (dim(events)[1] > 0) { # If we actually have events...
-      #p <- p + geom_point(data = events, shape = "|", size = event.size) # `shape` 25 is empty triangles
-      injuries <- subset(events, type %in% c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi"))
-      scars <- subset(events, type %in% c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs"))
-      p <- p + geom_point(data = scars, shape = "|", size = event.size) # `shape` 25 is empty triangles
-      p <- p + geom_point(data = injuries, shape = 6) # `shape` 25 is empty triangles
-    }
+         scale_linetype_manual(values = c("solid", "dashed", "solid")) +
+         scale_size_manual(values = c(0.5, 0.5, 0.3)))
+    p <- (p +
+            geom_point(data = events, aes(shape = type), size = event.size) +
+            scale_shape_manual(guide = "legend", labels = c(levels(events$type)), values = c(124, 6, 20))) # `shape` 25 is empty triangles
   } else {
     merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
     p <- ggplot(merged, aes(y = series, x = year, color = species))
@@ -449,17 +435,10 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
                           y = series, yend = series, linetype = type), data = segs) +
          scale_linetype_manual(values = c("solid", "dashed", "solid"))
          scale_size_manual(values = c(0.5, 0.5, 0.3))
-    if (dim(ends)[1] > 0)  { # If we have bark and pith years.
-      ends <- merge(ends, data.frame(series = sppid, species = spp), by = "series")
-      p <- p + geom_point(data = ends, shape = 16)
-    }
-    if (dim(events)[1] > 0) { # If we actually have events...
-      events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
-      injuries <- subset(events, type %in% c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi"))
-      scars <- subset(events, type %in% c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs"))
-      p <- p + geom_point(data = scars, shape = "|", size = event.size, color = "black") # `shape` 25 is empty triangles
-      p <- p + geom_point(data = injuries, shape = 6, color = "black") # `shape` 25 is empty triangles
-    }
+    events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
+    p <- (p +
+            geom_point(data = events, aes(shape = type), size = event.size, color = "black") +
+            scale_shape_manual(guide = "legend", labels = c(levels(events$type)), values = c(124, 6, 20))) # `shape` 25 is empty triangles
   }
   if (plot.rug) {
     p <- (p + geom_rug(data = subset(rings,

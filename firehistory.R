@@ -74,8 +74,18 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   dim(uncleaned) <- c(describe[2], describe[3])
   #series.names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
   series.names <- apply(uncleaned, 1, paste, collapse = "")
-  # Filling the class with info from the fhx file body.
-  fl.body <- strsplit(fl[(first + 3 + describe[3]) : length(fl)], split = "")
+  databuff <- 2
+  while (TRUE) {
+    if (gsub("^\\s+|\\s+$", "", fl[first + databuff + describe[3]]) == "") {
+      databuff <- databuff + 1
+    } else {
+      break
+    }
+  }
+  if (fl[first + databuff - 1 + describe[3]] != "")
+      Stop("The line before the annual FHX data should be blank.")
+  # Filling with info from the fhx file body.
+  fl.body <- strsplit(fl[(first + databuff + describe[3]) : length(fl)], split = "")
   first.year <- describe[1]
   fl.body <- as.data.frame(t(sapply(fl.body, function(x) x[1:describe[2]])), stringsAsFactors = FALSE)
   # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
@@ -458,7 +468,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
       brks.minor = seq(round(min(rings$year), -1), round(max(rings$year), -1), 5)
   } else if (yr.range >= 100) {
       brks.major = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100)
-      brks.minor = seq(round(min(rings$year), -2), round(max(rings$year), -2), 25)
+      brks.minor = seq(round(min(rings$year), -2), round(max(rings$year), -2), 50)
   }
   p <- (p + scale_x_continuous(breaks = brks.major, minor_breaks = brks.minor)
           + theme_bw()

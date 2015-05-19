@@ -422,7 +422,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   } else {  # If there are no recorder years...
     segs <- live
   }
-  levels(segs$type) <- c("recording", "non-recording")
+  levels(segs$type) <- c("Recording", "Non-recording")
   
   p <- NULL
   rings <- x$rings

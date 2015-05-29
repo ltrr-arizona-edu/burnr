@@ -76,7 +76,8 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   # Parse series names.
   uncleaned <- as.matrix(unlist(strsplit(fl[(first + 2):(first + 1 + describe[3])], "")))
   if ((describe[2] * describe[3]) != dim(uncleaned)[1])
-      stop("The file's three-digit descriptive information on line ", first + 1, " does not match the series titles in the file. Please correct this discrepancy.")
+      stop("The file's three-digit descriptive information on line ", first + 1,
+           " does not match the series titles in the file. Please correct this discrepancy.")
   dim(uncleaned) <- c(describe[2], describe[3])
   #series.names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
   series.names <- apply(uncleaned, 1, paste, collapse = "")
@@ -93,22 +94,25 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   # Filling with info from the fhx file body.
   fl.body <- strsplit(fl[(first + databuff + describe[3]) : length(fl)], split = "")
   first.year <- describe[1]
-  fl.body <- as.data.frame(t(sapply(fl.body, function(x) x[1:describe[2]])), stringsAsFactors = FALSE)
+  fl.body <- as.data.frame(t(sapply(fl.body, function(x) x[1:describe[2]])),
+                           stringsAsFactors = FALSE)
   # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
   names(fl.body) <- series.names
   fl.body$year <- seq(first.year, first.year + dim(fl.body)[1] - 1)
-  fl.body.melt <- melt(fl.body, id.vars = "year", value.name = "type", variable.name = "series")
+  fl.body.melt <- melt(fl.body, id.vars = "year", value.name = "type",
+                       variable.name = "series")
   fl.body.melt <- subset(fl.body.melt, type != ".")
   fl.body.melt$type <- vapply(fl.body.melt$type, function(x) type.key[[x]], "a") 
-  fl.body.melt$type <- factor(fl.body.melt$type, levels = c("null.year", "recorder.year", "unknown.fs",
-                                "unknown.fi", "dormant.fs", "dormant.fi",
-                                "early.fs", "early.fi", "middle.fs",
-                                "middle.fi", "late.fs", "late.fi",
-                                "latewd.fs", "latewd.fi", "pith.year",
-                                "bark.year", "inner.year", "outer.year",
-                                "estimate"))
-  f <- fhx(year = fl.body.melt$year, series = fl.body.melt$series, type = fl.body.melt$type)
-  # f$rings <- fl.body.melt
+  fl.body.melt$type <- factor(fl.body.melt$type,
+                              levels = c("null.year", "recorder.year", "unknown.fs",
+                                         "unknown.fi", "dormant.fs", "dormant.fi",
+                                         "early.fs", "early.fi", "middle.fs",
+                                         "middle.fi", "late.fs", "late.fi",
+                                         "latewd.fs", "latewd.fi", "pith.year",
+                                         "bark.year", "inner.year", "outer.year",
+                                         "estimate"))
+  f <- fhx(year = fl.body.melt$year, series = fl.body.melt$series,
+           type = fl.body.melt$type)
   order.fhx(f)
 }
 
@@ -183,8 +187,6 @@ write.fhx <- function(x, fname="") {
                    "bark.year"    = "]", 
                    "inner.year"   = "{", 
                    "outer.year"   = "}")
-  # TODO: This is creating output about using type as value column. Get rid of this.
-  # TODO: This also fails if there are multiple measurements for a single series year.
   out <- x$rings
   out$type <- vapply(out$type, function(x) type.key[[x]], "a") 
   year.range <- seq(min(out$year), max(out$year))
@@ -258,11 +260,15 @@ resolve_duplicates <- function(x) {
   } else {
       duplicates <- x$rings[duplicated(x$rings), ]
       print(duplicates)
-      stop(c(dim(duplicates)[1], " duplicate(s) found. Please resolve duplicate records."))
+      stop(c(dim(duplicates)[1],
+           " duplicate(s) found. Please resolve duplicate records."))
   }
 }
 
-ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25, filter.min=2, legend=FALSE, event.size=4, rugbuffer.size=2, rugdivide.pos=2) {
+ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE,
+                       plot.rug=FALSE, filter.prop=0.25, filter.min=2,
+                       legend=FALSE, event.size=4, rugbuffer.size=2,
+                       rugdivide.pos=2) {
   # Return a ggplot2 object for plotting.
   #
   # Args:
@@ -307,8 +313,10 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   #       "pith/bark" into a legend.
   stopifnot(rugbuffer.size >= 2)
   clean.nonrec <- subset(x$rings, x$rings$type != "recorder.year")
-  scar.types <- c("unknown.fs", "dormant.fs", "early.fs","middle.fs", "late.fs", "latewd.fs")
-  injury.types <- c("unknown.fi", "dormant.fi","early.fi", "middle.fi", "late.fi", "latewd.fi")
+  scar.types <- c("unknown.fs", "dormant.fs", "early.fs",
+                  "middle.fs", "late.fs", "latewd.fs")
+  injury.types <- c("unknown.fi", "dormant.fi", "early.fi",
+                    "middle.fi", "late.fi", "latewd.fi")
   pithbark.types <- c("pith.year", "bark.year")
   events <- subset(clean.nonrec, (type %in% scar.types) | (type %in% injury.types) | (type %in% pithbark.types))
   levels(events$type)[levels(events$type) %in% scar.types] <- "Scar"
@@ -338,31 +346,33 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
   }
   levels(segs$type) <- c("Recording", "Non-recording")
   
-  p <- NULL
+  p <- NA
   rings <- x$rings
   if (missing(spp) | missing(sppid)) {
     p <- ggplot(data = rings, aes(y = series, x = year))
-    p <- (p +
-         geom_segment(aes(x = first, xend = last,
-                          y = series, yend = series, linetype = type), data = segs) +
-         scale_linetype_manual(values = c("solid", "dashed", "solid")) +
-         scale_size_manual(values = c(0.5, 0.5, 0.3)))
-    p <- (p +
-            geom_point(data = events, aes(shape = type), size = event.size) +
-            scale_shape_manual(guide = "legend", labels = c(levels(events$type)), values = c(124, 6, 20))) # `shape` 25 is empty triangles
+    p <- (p + geom_segment(aes(x = first, xend = last, y = series, yend = series, linetype = type),
+                           data = segs)
+            + scale_linetype_manual(values = c("solid", "dashed", "solid"))
+            + scale_size_manual(values = c(0.5, 0.5, 0.3)))
+    p <- (p + geom_point(data = events, aes(shape = type), size = event.size)
+            + scale_shape_manual(guide = "legend",
+                                 labels = c(levels(events$type)),
+                                 values = c(124, 6, 20))) # `shape` 25 is empty triangles
   } else {
     merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
     p <- ggplot(merged, aes(y = series, x = year, color = species))
     segs <- merge(segs, data.frame(series = sppid, species = spp), by = "series")
-    p <- p +
-         geom_segment(aes(x = first, xend = last,
-                          y = series, yend = series, linetype = type), data = segs) +
-         scale_linetype_manual(values = c("solid", "dashed", "solid"))
-         scale_size_manual(values = c(0.5, 0.5, 0.3))
-    events <- merge(events, data.frame(series = sppid, species = spp), by = "series")
-    p <- (p +
-            geom_point(data = events, aes(shape = type), size = event.size, color = "black") +
-            scale_shape_manual(guide = "legend", labels = c(levels(events$type)), values = c(124, 6, 20))) # `shape` 25 is empty triangles
+    p <- (p + geom_segment(aes(x = first, xend = last, y = series, yend = series, linetype = type),
+                           data = segs)
+            + scale_linetype_manual(values = c("solid", "dashed", "solid"))
+            + scale_size_manual(values = c(0.5, 0.5, 0.3)))
+    events <- merge(events, data.frame(series = sppid, species = spp),
+                    by = "series")
+    p <- (p + geom_point(data = events, aes(shape = type),
+                         size = event.size, color = "black")
+            + scale_shape_manual(guide = "legend",
+                                 labels = c(levels(events$type)),
+                                 values = c(124, 6, 20))) # `shape` 25 is empty triangles
   }
   if (plot.rug) {
     p <- (p + geom_rug(data = subset(rings,
@@ -371,18 +381,25 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
                                                                 filter.min = filter.min)),
                        sides = "b", color = "black")
             + scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series)))
-            + geom_hline(yintercept = rugdivide.pos, color = "grey50")
-         )
+            + geom_hline(yintercept = rugdivide.pos, color = "grey50"))
   }
   brks.major <- NA
   brks.minor <- NA
   yr.range <- diff(range(rings$year))
   if (yr.range < 100) {
-      brks.major = seq(round(min(rings$year), -1), round(max(rings$year), -1), 10)
-      brks.minor = seq(round(min(rings$year), -1), round(max(rings$year), -1), 5)
+      brks.major = seq(round(min(rings$year), -1),
+                       round(max(rings$year), -1),
+                       10)
+      brks.minor = seq(round(min(rings$year), -1),
+                       round(max(rings$year), -1),
+                       5)
   } else if (yr.range >= 100) {
-      brks.major = seq(round(min(rings$year), -2), round(max(rings$year), -2), 100)
-      brks.minor = seq(round(min(rings$year), -2), round(max(rings$year), -2), 50)
+      brks.major = seq(round(min(rings$year), -2),
+                       round(max(rings$year), -2),
+                       100)
+      brks.minor = seq(round(min(rings$year), -2),
+                       round(max(rings$year), -2),
+                       50)
   }
   p <- (p + scale_x_continuous(breaks = brks.major, minor_breaks = brks.minor)
           + theme_bw()
@@ -391,7 +408,7 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE, plot.rug=FAL
                   axis.title.x = element_blank(),
                   axis.title.y = element_blank(),
                   legend.title = element_blank(),
-                  legend.position = "bottom") )
+                  legend.position = "bottom"))
   if (!legend) {
     p <- p + theme(legend.position = "none")
   }

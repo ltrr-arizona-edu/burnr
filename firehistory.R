@@ -265,10 +265,10 @@ resolve_duplicates <- function(x) {
   }
 }
 
-ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE,
-                       plot.rug=FALSE, filter.prop=0.25, filter.min=2,
-                       legend=FALSE, event.size=4, rugbuffer.size=2,
-                       rugdivide.pos=2) {
+ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
+                       yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25,
+                       filter.min=2, legend=FALSE, event.size=4, 
+                       rugbuffer.size=2, rugdivide.pos=2) {
   # Return a ggplot2 object for plotting.
   #
   # Args:
@@ -281,6 +281,15 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE,
   #     values in `x`'s series.names needs to have a corresponding species 
   #     value. Both `spp` and `sppid` need to be specified. Default plot gives
   #     no species colors.
+  #   cluster: Option to plot series with facetted by a factor. A vector of
+  #     factors or characters which corresponds to the series names given in
+  #     `clusterid`. Both `cluster` and `clusterid` need to be specified. 
+  #     Default plot is not facetted.
+  #   clusterid: Option to plot series with facetted by a factor. A vector of
+  #     series names corresponding to species names given in `cluster`. Every 
+  #     unique values in `x`'s series.names needs to have a corresponding 
+  #     cluster value. Both `cluster` and `clusterid` need to be specified. 
+  #     Default plot is not facetted.
   #   ylabels: Optional boolean to remove y-axis (series name) labels and tick 
   #     marks. Default is TRUE.
   #   yearlims: Option to limit the plot to a range of years. This is a vector 
@@ -348,6 +357,12 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE,
   
   p <- NA
   rings <- x$rings
+  if (!missing(cluster) & !missing(clusterid)) {
+    merged <- merge(rings, data.frame(series = clusterid, cluster = cluster), by = "series")
+    segs <- merge(segs, data.frame(series = clusterid, cluster = cluster), by = "series")
+    events <- merge(events, data.frame(series = clusterid, cluster = cluster),
+                    by = "series")
+  }
   if (missing(spp) | missing(sppid)) {
     p <- ggplot(data = rings, aes(y = series, x = year))
     p <- (p + geom_segment(aes(x = first, xend = last, y = series, yend = series, linetype = type),
@@ -373,6 +388,9 @@ ggplot.fhx <- function(x, spp, sppid, ylabels=TRUE, yearlims=FALSE,
             + scale_shape_manual(guide = "legend",
                                  labels = c(levels(events$type)),
                                  values = c(124, 6, 20))) # `shape` 25 is empty triangles
+  }
+  if (!missing(cluster) & !missing(clusterid)) {
+    p <- p + facet_wrap(~ cluster, scales = "free_y")
   }
   if (plot.rug) {
     p <- (p + geom_rug(data = subset(rings,

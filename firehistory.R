@@ -16,6 +16,16 @@
 require("ggplot2")
 require("reshape2")
 
+fhx <- function(year,  series, type, metalist=list()){
+  # Constructor for S3 fhx class.
+  if (!is.numeric(year)) stop("year must be numeric")
+  if (!is.factor(series)) stop("series must be character")
+  if (!is.factor(type)) stop("type must be factor")
+  if (!is.list(metalist)) stop("metalist must be list")
+  ringsdf = data.frame(year = year, series = series, type = type)
+  structure(list(meta = metalist, rings = ringsdf), class = "fhx")
+}
+
 read.fhx <- function(fname, encoding=getOption("encoding")) {
   # Read input FHX file body from 'fname' and use to return an fhx object.
   #
@@ -44,10 +54,6 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   # TODO: Need error check that row length = describe[2] + year.
   # TODO: Need error check that first year in body is first year in meta.
   
-  # Define fhx class.
-  f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
-            rings = NA)     # Data frame that actually contains the ring data.
-  class(f) <- "fhx"
   type.key <- list("?" = "estimate",  # My own creation for estimated years to pith.
                    "." = "null.year",
                    "|" = "recorder.year",
@@ -101,7 +107,8 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
                                 "latewd.fs", "latewd.fi", "pith.year",
                                 "bark.year", "inner.year", "outer.year",
                                 "estimate"))
-  f$rings <- fl.body.melt
+  f <- fhx(year = fl.body.melt$year, series = fl.body.melt$series, type = fl.body.melt$type)
+  # f$rings <- fl.body.melt
   order.fhx(f)
 }
 

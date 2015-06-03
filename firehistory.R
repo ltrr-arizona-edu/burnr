@@ -79,8 +79,8 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
       stop("The file's three-digit descriptive information on line ", first + 1,
            " does not match the series titles in the file. Please correct this discrepancy.")
   dim(uncleaned) <- c(describe[2], describe[3])
-  #series.names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
-  series.names <- apply(uncleaned, 1, paste, collapse = "")
+  series.names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
+  # series.names <- apply(uncleaned, 1, paste, collapse = "")
   databuff <- 2
   while (TRUE) {
     if (gsub("^\\s+|\\s+$", "", fl[first + databuff + describe[3]]) == "") {

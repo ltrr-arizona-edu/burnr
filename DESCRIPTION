@@ -6,6 +6,6 @@ Description: An experiment in fire history plotting with FHX data files and R.
 Depends: R (>= 3.1.2)
 License: GPL-3
 LazyData: true
-Imports:
-    ggplot2,
+Suggests: testthat
+Imports: ggplot2,
     reshape2

@@ -1,0 +1,11 @@
+Package: fhxR
+Title: Fire history analysis in R
+Version: 0.0.0.9000
+Authors@R: person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre"))
+Description: An experiment in fire history plotting with FHX data files and R. 
+Depends: R (>= 3.1.2)
+License: GPL-3
+LazyData: true
+Imports:
+    ggplot2
+    reshape2

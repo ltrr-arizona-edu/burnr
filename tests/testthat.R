@@ -1,4 +1,4 @@
 library(testthat)
-library(triforce)
+library(fhxR)
 
-test_check("triforce")
+test_check("fhxR")

@@ -1,5 +1,7 @@
-fhxR
-====
+# fhxR
+
+[![Travis-CI Build Status](https://travis-ci.org/ltrr-arizona-edu/triforce.svg?branch=master)](https://travis-ci.org/ltrr-arizona-edu/fhxR)
+[![Coverage Status](https://coveralls.io/repos/ltrr-arizona-edu/triforce/badge.svg)](https://coveralls.io/r/ltrr-arizona-edu/fhxR)
 
 An experiment in analyzing forest fire history data files (e.g. FHX2) in R. This is a tool designed for power users and projects with special needs.
 

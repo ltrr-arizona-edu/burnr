@@ -7,6 +7,12 @@ An experiment in analyzing forest fire history data files (e.g. FHX2) in R. This
 
 This code is still under heavy development. The project might be renamed. We do not promise backwards compatability (sorry). Here be dragons.
 
-We have a [tutorial on the project's wiki](https://github.com/ltrr-arizona-edu/fhxR/wiki/fhxR-Tutorial). Code at the bleeding edge of the project should be documented within the source files.
+This package is not in CRAN (yet). If you'd like to install it, first be sure you have the `devtools` package installed in R. Then, install this package with:
+
+```R
+devtools::install_github("ltrr-arizona-edu/fhxR")
+```
+
+Want to contribute? Great! We're following [Hadley's packaging workflow](http://r-pkgs.had.co.nz/) and [code style](http://adv-r.had.co.nz/Style.html). Fork away.
 
 Please file bugs in the [bug tracker](https://github.com/ltrr-arizona-edu/fhxR/issues).

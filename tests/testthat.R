@@ -1,4 +1,4 @@
 library(testthat)
-library(fhxR)
+library(burnr)
 
-test_check("fhxR")
+test_check("burnr")

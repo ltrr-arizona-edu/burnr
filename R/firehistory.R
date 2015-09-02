@@ -1,5 +1,5 @@
+#' Constructor for S3 fhx class.
 fhx <- function(year,  series, type, metalist=list()){
-  # Constructor for S3 fhx class.
   if (!is.numeric(year)) stop("year must be numeric")
   if (!is.factor(series)) stop("series must be character")
   if (!is.factor(type)) stop("type must be factor")
@@ -8,15 +8,12 @@ fhx <- function(year,  series, type, metalist=list()){
   structure(list(meta = metalist, rings = ringsdf), class = "fhx")
 }
 
+#' Read input FHX file body from \code{fname} and use to return an \code{fhx} object.
+#'
+#' @param fname Name of target FHX file. Needs to be in format version 2.
+#' @param encoding Encoding to use when reading the FHX file. The default is to use the system.
+#' @return An \code{fhx} object.
 read.fhx <- function(fname, encoding=getOption("encoding")) {
-  # Read input FHX file body from 'fname' and use to return an fhx object.
-  #
-  # Input:
-  #   fname - Name of target FHX file. Needs to be in format version 2.
-  #   encoding - Encoding to use when reading the FHX file. The default is to
-  #              use whatever the system default is.
-  # Output:
-  #   An fhx object.
   con <- file(fname, encoding = encoding)
   on.exit(close(con))
   # Error checking and basic variables.
@@ -98,17 +95,12 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   order.fhx(f)
 }
 
+#' Filter fire events in `x` returning years with prominent fires.
+#'
+#' @param filter.prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
+#' @param filter.min The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
+#' @return A vector of years from `x`.
 rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
-  # Filter fire events in `x` returning years with prominent fires.
-  #
-  # Args:
-  #   filter.prop: The proportion of fire events to recording series needed
-  #     in order to be considered. Default is 0.25.
-  #   filter.min: The minimum number of recording series needed to be
-  #     considered a fire event. Default is 2 recording series.
-  #
-  # Returns:
-  #   A vector of years from `x`.
   stopifnot(class(x) == "fhx")
   recording <- list("|" = "recorder.year",
                    "U" = "unknown.fs",
@@ -144,8 +136,8 @@ rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
   as.integer(levels(out)[out])
 }
 
+#' Write an fhx object to a new FHX v2 format file.
 write.fhx <- function(x, fname="") {
-  # Write an fhx object to a new FHX v2 format file.
   if ( fname == "" ) {
     print("Please specify a character string naming a file or connection open
           for writing.")
@@ -222,8 +214,9 @@ order.fhx <- function(x) {
   x
 }
 
-"+.fhx" <- function(a, b) {
-  # Concatenate two fhx objects and return the combination.
+
+#' Concatenate two fhx objects.
+"append.fhx" <- function(a, b) {
   stopifnot(class(b) == "fhx")
   f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
             rings = NA)  # Data frame that actually contains the ring data.
@@ -234,8 +227,8 @@ order.fhx <- function(x) {
   order.fhx(resolve_duplicates(f))
 }
 
+#' Merge/remove duplicate observations in an fhx object.
 resolve_duplicates <- function(x) {
-  # Merge/remove duplicate observations in an fhx object.
   stopifnot(class(x) == "fhx")
   if (!anyDuplicated(x$rings)) {
     return(x)
@@ -247,61 +240,30 @@ resolve_duplicates <- function(x) {
   }
 }
 
+#' Create an ggplot2 object for plotting.
+#
+#' @param x An \code{fhx} instance.
+#' @param spp Option to plot series with colors by species. A vector of species which corresponds to the series names given in \code{sppid}. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.
+#' @param sppid Option to plot series with colors by species. A vector of series names corresponding to species names given in \code{spp}. Every unique values in \code{x} series.names needs to have a corresponding species value. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.
+#' @param cluster Option to plot series with facetted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not facetted.
+#' @param clusterid Option to plot series with facetted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not facetted.
+#' @param labels Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.
+#' @param yearlims Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.
+#' @param plot.rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE.
+#' @param filter.prop An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter()}. See this function for details.
+#' @param filter.min An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter()}. See this function for details.
+#' @param legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
+#' @param event.size An optional numeric that adjusts the size of fire event symbols on the plot. Default is 4.
+#' @param rugbuffer.size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
+#' @param rugdivide.pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
+#' @return A ggplot object for plotting or manipulation.
 ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
+# TODO: Merge ends and events into a single df. with a factor to handle the 
+#       different event types... this will allow us to put these "fire events" and
+#       "pith/bark" into a legend.
                        yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25,
                        filter.min=2, legend=FALSE, event.size=4, 
                        rugbuffer.size=2, rugdivide.pos=2) {
-  # Return a ggplot2 object for plotting.
-  #
-  # Args:
-  #   x: An `fhx` instance.
-  #   spp: Option to plot series with colors by species. A vector of species 
-  #     which corresponds to the series names given in `sppid`. Both `spp` and 
-  #     `sppid` need to be specified. Default plot gives no species colors.
-  #   sppid: Option to plot series with colors by species. A vector of series 
-  #     names corresponding to species names given in `spp`. Every unique 
-  #     values in `x`'s series.names needs to have a corresponding species 
-  #     value. Both `spp` and `sppid` need to be specified. Default plot gives
-  #     no species colors.
-  #   cluster: Option to plot series with facetted by a factor. A vector of
-  #     factors or characters which corresponds to the series names given in
-  #     `clusterid`. Both `cluster` and `clusterid` need to be specified. 
-  #     Default plot is not facetted.
-  #   clusterid: Option to plot series with facetted by a factor. A vector of
-  #     series names corresponding to species names given in `cluster`. Every 
-  #     unique values in `x`'s series.names needs to have a corresponding 
-  #     cluster value. Both `cluster` and `clusterid` need to be specified. 
-  #     Default plot is not facetted.
-  #   ylabels: Optional boolean to remove y-axis (series name) labels and tick 
-  #     marks. Default is TRUE.
-  #   yearlims: Option to limit the plot to a range of years. This is a vector 
-  #     with two integers. The first integer gives the lower year for the range 
-  #     while the second integer gives the upper year. The default is to plot 
-  #     the full range of data given by `x`.
-  #   plot.rug: A boolean option to plot a rug on the bottom of the plot.
-  #     Default is FALSE.
-  #   filter.prop: An optional argument if the user chooses to include a rug in 
-  #     their plot. This is passed to `rug.filter()'. See this function for 
-  #     details.
-  #   filter.min: An optional argument if the user chooses to include a rug in 
-  #     their plot. This is passed to `rug.filter()'. See this function for 
-  #     details.
-  #   legend: A boolean option allowing the user to choose whether a legend is 
-  #     included in the plot or not. Default is FALSE.
-  #   event.size: An optional numeric that adjusts the size of fire event 
-  #     symbols on the plot. Default is 4.
-  #   rugbuffer.size: An optional integer. If the user plots a rug, this
-  #     controls the amount of buffer whitespace along the y-axis between 
-  #     the rug and the main plot. Must be >= 2.
-  #   rugdivide.pos: Optional integer if plotting a rug. Adjust the 
-  #     placement of the rug divider along the y-axis. Default is 2.
-  #
-  # Returns:
-  # A ggplot object for plotting or manipulation.
-  #
-  # TODO: Merge ends and events into a single df. with a factor to handle the 
-  #       different event types... this will allow us to put these "fire events" and
-  #       "pith/bark" into a legend.
   stopifnot(rugbuffer.size >= 2)
   clean.nonrec <- subset(x$rings, x$rings$type != "recorder.year")
   scar.types <- c("unknown.fs", "dormant.fs", "early.fs",
@@ -421,7 +383,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
   p
 }
 
+#' Plot an fhx object.
 plot.fhx <- function(...) {
-  # Plot an fhx object.
   print(ggplot.fhx(...))
 }

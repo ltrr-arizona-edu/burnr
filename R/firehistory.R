@@ -84,7 +84,7 @@ read.fhx <- function(fname, encoding=getOption("encoding")) {
   # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
   names(fl.body) <- series.names
   fl.body$year <- seq(first.year, first.year + dim(fl.body)[1] - 1)
-  fl.body.melt <- melt(fl.body, id.vars = "year", value.name = "type",
+  fl.body.melt <- reshape2::melt(fl.body, id.vars = "year", value.name = "type",
                        variable.name = "series")
   fl.body.melt <- subset(fl.body.melt, type != ".")
   fl.body.melt$type <- vapply(fl.body.melt$type, function(x) type.key[[x]], "a") 
@@ -178,7 +178,7 @@ write.fhx <- function(x, fname="") {
                        series = rep("hackishSolution", length(year.range)),
                        type = rep(".", length(year.range)))
   out <- rbind(out, filler)
-  out <- dcast(out, year ~ series, value.var = "type", fill = ".")
+  out <- reshape2::dcast(out, year ~ series, value.var = "type", fill = ".")
   out$hackishSolution <- NULL
   # Weird thing to move year to the last column of the data.frame:
   out$yr <- out$year
@@ -328,40 +328,40 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
                     by = "series")
   }
   if (missing(spp) | missing(sppid)) {
-    p <- ggplot(data = rings, aes(y = series, x = year))
-    p <- (p + geom_segment(aes(x = first, xend = last, y = series, yend = series, linetype = type),
+    p <- ggplot2::ggplot(data = rings, ggplot2::aes(y = series, x = year))
+    p <- (p + ggplot2::geom_segment(ggplot2::aes(x = first, xend = last, y = series, yend = series, linetype = type),
                            data = segs)
-            + scale_linetype_manual(values = c("solid", "dashed", "solid"))
-            + scale_size_manual(values = c(0.5, 0.5, 0.3)))
-    p <- (p + geom_point(data = events, aes(shape = type), size = event.size)
-            + scale_shape_manual(guide = "legend",
+            + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid"))
+            + ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
+    p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type), size = event.size)
+            + ggplot2::scale_shape_manual(guide = "legend",
                                  values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   } else {
     merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
-    p <- ggplot(merged, aes(y = series, x = year, color = species))
+    p <- ggplot2::ggplot(merged, ggplot2::aes(y = series, x = year, color = species))
     segs <- merge(segs, data.frame(series = sppid, species = spp), by = "series")
-    p <- (p + geom_segment(aes(x = first, xend = last, y = series, yend = series, linetype = type),
+    p <- (p + ggplot2::geom_segment(ggplot2::aes(x = first, xend = last, y = series, yend = series, linetype = type),
                            data = segs)
-            + scale_linetype_manual(values = c("solid", "dashed", "solid"))
-            + scale_size_manual(values = c(0.5, 0.5, 0.3)))
+            + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid"))
+            + ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
     events <- merge(events, data.frame(series = sppid, species = spp),
                     by = "series")
-    p <- (p + geom_point(data = events, aes(shape = type),
+    p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type),
                          size = event.size, color = "black")
-            + scale_shape_manual(guide = "legend",
+            + ggplot2::scale_shape_manual(guide = "legend",
                                  values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   }
   if (!missing(cluster) & !missing(clusterid)) {
-    p <- p + facet_wrap(~ cluster, scales = "free_y")
+    p <- p + ggplot2::facet_wrap(~ cluster, scales = "free_y")
   }
   if (plot.rug) {
-    p <- (p + geom_rug(data = subset(rings,
+    p <- (p + ggplot2::geom_rug(data = subset(rings,
                                      rings$year %in% rug.filter(d, 
                                                                 filter.prop = filter.prop,
                                                                 filter.min = filter.min)),
                        sides = "b", color = "black")
-            + scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series)))
-            + geom_hline(yintercept = rugdivide.pos, color = "grey50"))
+            + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series)))
+            + ggplot2::geom_hline(yintercept = rugdivide.pos, color = "grey50"))
   }
   brks.major <- NA
   brks.minor <- NA
@@ -381,22 +381,22 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
                        round(max(rings$year), -2),
                        50)
   }
-  p <- (p + scale_x_continuous(breaks = brks.major, minor_breaks = brks.minor)
-          + theme_bw()
-          + theme(panel.grid.major.y = element_blank(),
-                  panel.grid.minor.y = element_blank(),
-                  axis.title.x = element_blank(),
-                  axis.title.y = element_blank(),
-                  legend.title = element_blank(),
+  p <- (p + ggplot2::scale_x_continuous(breaks = brks.major, minor_breaks = brks.minor)
+          + ggplot2::theme_bw()
+          + ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
+                  panel.grid.minor.y = ggplot2::element_blank(),
+                  axis.title.x = ggplot2::element_blank(),
+                  axis.title.y = ggplot2::element_blank(),
+                  legend.title = ggplot2::element_blank(),
                   legend.position = "bottom"))
   if (!legend) {
-    p <- p + theme(legend.position = "none")
+    p <- p + ggplot2::theme(legend.position = "none")
   }
   if (!missing(yearlims)) {
-    p <- p + coord_cartesian(xlim = yearlims)
+    p <- p + ggplot2::coord_cartesian(xlim = yearlims)
   }
   if (!ylabels) {
-   p <- p + theme(axis.ticks = element_blank(), axis.text.y = element_blank())
+   p <- p + ggplot2::theme(axis.ticks = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank())
   }
   p
 }

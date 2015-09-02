@@ -6,6 +6,12 @@
 \usage{
 resolve_duplicates(x)
 }
+\arguments{
+\item{x}{An fhx instance.}
+}
+\value{
+A copy of \code{x} with duplicates removed.
+}
 \description{
 Merge/remove duplicate observations in an fhx object.
 }

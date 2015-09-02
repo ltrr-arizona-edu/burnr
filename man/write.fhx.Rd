@@ -6,6 +6,11 @@
 \usage{
 write.fhx(x, fname = "")
 }
+\arguments{
+\item{x}{An fhx instance.}
+
+\item{fname}{Output filename.}
+}
 \description{
 Write an fhx object to a new FHX v2 format file.
 }

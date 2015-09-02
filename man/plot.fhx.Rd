@@ -6,6 +6,9 @@
 \usage{
 \method{plot}{fhx}(...)
 }
+\arguments{
+\item{...}{Arguments passed on to \code{ggplot.fhx}.}
+}
 \description{
 Plot an fhx object.
 }

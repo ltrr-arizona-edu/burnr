@@ -20,13 +20,15 @@ ggplot.fhx(x, spp, sppid, cluster, clusterid, ylabels = TRUE,
 
 \item{clusterid}{Option to plot series with facetted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not facetted.}
 
+\item{ylabels}{Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.}
+
 \item{yearlims}{Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.}
 
 \item{plot.rug}{A boolean option to plot a rug on the bottom of the plot. Default is FALSE.}
 
-\item{filter.prop}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter()}. See this function for details.}
+\item{filter.prop}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.}
 
-\item{filter.min}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter()}. See this function for details.}
+\item{filter.min}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.}
 
 \item{legend}{A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.}
 
@@ -35,8 +37,6 @@ ggplot.fhx(x, spp, sppid, cluster, clusterid, ylabels = TRUE,
 \item{rugbuffer.size}{An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.}
 
 \item{rugdivide.pos}{Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.}
-
-\item{labels}{Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.}
 }
 \value{
 A ggplot object for plotting or manipulation.

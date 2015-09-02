@@ -265,12 +265,12 @@ resolve_duplicates <- function(x) {
 #' @param rugdivide.pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
 #' @return A ggplot object for plotting or manipulation.
 ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
-# TODO: Merge ends and events into a single df. with a factor to handle the 
-#       different event types... this will allow us to put these "fire events" and
-#       "pith/bark" into a legend.
                        yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25,
                        filter.min=2, legend=FALSE, event.size=4, 
                        rugbuffer.size=2, rugdivide.pos=2) {
+# TODO: Merge ends and events into a single df. with a factor to handle the 
+#       different event types... this will allow us to put these "fire events" and
+#       "pith/bark" into a legend.
   stopifnot(rugbuffer.size >= 2)
   clean.nonrec <- subset(x$rings, x$rings$type != "recorder.year")
   scar.types <- c("unknown.fs", "dormant.fs", "early.fs",

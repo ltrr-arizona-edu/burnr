@@ -2,11 +2,19 @@
 % Please edit documentation in R/firehistory.R
 \name{append.fhx}
 \alias{append.fhx}
-\title{Concatenate two fhx objects.}
+\title{Concatenate two fhx instance.}
 \usage{
 append.fhx(a, b)
 }
+\arguments{
+\item{a}{An fhx instance.}
+
+\item{b}{The fhx instance to be appended.}
+}
+\value{
+An fhx instance with the information from \code{a} and \code{b}. Duplicates are resolved with \code{fire::resolve_duplicates()}.
+}
 \description{
-Concatenate two fhx objects.
+Concatenate two fhx instance.
 }
 

@@ -200,7 +200,10 @@ write.fhx <- function(x, fname="") {
               row.names = FALSE, col.names = FALSE)
   close(fl)
 }
-
+#' Reorder the series names of an fhx instance.
+#'
+#' @param x An fhx instance to be reorder.
+#' @return A copy of \code{x} with reordered series.
 order.fhx <- function(x) {
   stopifnot(class(x) == "fhx")
   test <- subset(x$rings,
@@ -215,7 +218,11 @@ order.fhx <- function(x) {
 }
 
 
-#' Concatenate two fhx objects.
+#' Concatenate two fhx instance.
+#'
+#' @param a An fhx instance.
+#' @param b The fhx instance to be appended.
+#' @return An fhx instance with the information from \code{a} and \code{b}. Duplicates are resolved with \code{fire::resolve_duplicates()}.
 "append.fhx" <- function(a, b) {
   stopifnot(class(b) == "fhx")
   f <- list(meta = list(),  # Odd list for collecting various bits of metadata.

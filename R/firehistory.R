@@ -233,7 +233,7 @@ order.fhx <- function(x) {
 #' @param a An fhx instance.
 #' @param b The fhx instance to be appended.
 #' @return An fhx instance with the information from \code{a} and \code{b}. Duplicates are resolved with \code{fire::resolve_duplicates()}.
-"append.fhx" <- function(a, b) {
+"+.fhx" <- function(a, b) {
   stopifnot(class(b) == "fhx")
   f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
             rings = NA)  # Data frame that actually contains the ring data.
@@ -335,8 +335,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
             + scale_size_manual(values = c(0.5, 0.5, 0.3)))
     p <- (p + geom_point(data = events, aes(shape = type), size = event.size)
             + scale_shape_manual(guide = "legend",
-                                 labels = c(levels(events$type)),
-                                 values = c(124, 6, 20))) # `shape` 25 is empty triangles
+                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   } else {
     merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
     p <- ggplot(merged, aes(y = series, x = year, color = species))
@@ -350,8 +349,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
     p <- (p + geom_point(data = events, aes(shape = type),
                          size = event.size, color = "black")
             + scale_shape_manual(guide = "legend",
-                                 labels = c(levels(events$type)),
-                                 values = c(124, 6, 20))) # `shape` 25 is empty triangles
+                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   }
   if (!missing(cluster) & !missing(clusterid)) {
     p <- p + facet_wrap(~ cluster, scales = "free_y")

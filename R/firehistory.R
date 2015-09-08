@@ -356,7 +356,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
   }
   if (plot.rug) {
     p <- (p + ggplot2::geom_rug(data = subset(rings,
-                                     rings$year %in% rug.filter(d, 
+                                     rings$year %in% rug.filter(x, 
                                                                 filter.prop = filter.prop,
                                                                 filter.min = filter.min)),
                        sides = "b", color = "black")

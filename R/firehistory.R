@@ -335,7 +335,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
             + ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
     p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type), size = event.size)
             + ggplot2::scale_shape_manual(guide = "legend",
-                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
+                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 1))) # `shape` 25 is empty triangles
   } else {
     merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
     p <- ggplot2::ggplot(merged, ggplot2::aes(y = series, x = year, color = species))
@@ -349,7 +349,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
     p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type),
                          size = event.size, color = "black")
             + ggplot2::scale_shape_manual(guide = "legend",
-                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
+                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 1))) # `shape` 25 is empty triangles
   }
   if (!missing(cluster) & !missing(clusterid)) {
     p <- p + ggplot2::facet_wrap(~ cluster, scales = "free_y")

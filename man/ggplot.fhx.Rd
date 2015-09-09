@@ -4,10 +4,10 @@
 \alias{ggplot.fhx}
 \title{Create an ggplot2 object for plotting.}
 \usage{
-ggplot.fhx(x, spp, sppid, cluster, clusterid, ylabels = TRUE,
-  yearlims = FALSE, plot.rug = FALSE, filter.prop = 0.25,
-  filter.min = 2, legend = FALSE, event.size = 4, rugbuffer.size = 2,
-  rugdivide.pos = 2)
+\method{ggplot}{fhx}(x, spp, sppid, cluster, clusterid, facet_type = "grid",
+  ylabels = TRUE, yearlims = FALSE, plot.rug = FALSE,
+  filter.prop = 0.25, filter.min = 2, legend = FALSE, event.size = 4,
+  rugbuffer.size = 2, rugdivide.pos = 2)
 }
 \arguments{
 \item{x}{An \code{fhx} instance.}
@@ -19,6 +19,8 @@ ggplot.fhx(x, spp, sppid, cluster, clusterid, ylabels = TRUE,
 \item{cluster}{Option to plot series with faceted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not faceted.}
 
 \item{clusterid}{Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not faceted.}
+
+\item{facet_type}{Type of \code{ggplot2} facet to use, if faceting. Must be either "grid" or "wrap". Default is "grid".}
 
 \item{ylabels}{Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.}
 

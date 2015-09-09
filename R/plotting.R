@@ -5,6 +5,7 @@
 #' @param sppid Option to plot series with colors by species. A vector of series names corresponding to species names given in \code{spp}. Every unique values in \code{x} series.names needs to have a corresponding species value. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.
 #' @param cluster Option to plot series with faceted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not faceted.
 #' @param clusterid Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not faceted.
+#' @param facet_type Type of \code{ggplot2} facet to use, if faceting. Must be either "grid" or "wrap". Default is "grid".
 #' @param ylabels Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.
 #' @param yearlims Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.
 #' @param plot.rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE.
@@ -15,13 +16,14 @@
 #' @param rugbuffer.size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
 #' @param rugdivide.pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
 #' @return A ggplot object for plotting or manipulation.
-ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
+ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", ylabels=TRUE,
                        yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25,
                        filter.min=2, legend=FALSE, event.size=4, 
                        rugbuffer.size=2, rugdivide.pos=2) {
 # TODO: Merge ends and events into a single df. with a factor to handle the 
 #       different event types... this will allow us to put these "fire events" and
 #       "pith/bark" into a legend.
+  stopifnot(facet_type %in% c("grid", "wrap"))
   stopifnot(rugbuffer.size >= 2)
   clean.nonrec <- subset(x$rings, x$rings$type != "recorder.year")
   scar.types <- c("unknown.fs", "dormant.fs", "early.fs",
@@ -93,8 +95,12 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
             + ggplot2::geom_hline(yintercept = rugdivide.pos, color = "grey50"))
   }
   if (!missing(cluster) & !missing(clusterid)) {
-    p <- p + ggplot2::facet_wrap(~ cluster, scales = "free_y")
-    #p <- p + ggplot2::facet_grid(cluster~., scales = "free_y", space = "free_y")
+    if (facet_type == "grid") {
+      p <- p + ggplot2::facet_grid(cluster~., scales = "free_y", space = "free_y")
+    }
+    if (facet_type == "wrap") {
+      p <- p + ggplot2::facet_wrap(~ cluster, scales = "free_y")
+    }
   }
   brks.major <- NA
   brks.minor <- NA

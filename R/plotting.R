@@ -3,8 +3,8 @@
 #' @param x An \code{fhx} instance.
 #' @param spp Option to plot series with colors by species. A vector of species which corresponds to the series names given in \code{sppid}. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.
 #' @param sppid Option to plot series with colors by species. A vector of series names corresponding to species names given in \code{spp}. Every unique values in \code{x} series.names needs to have a corresponding species value. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.
-#' @param cluster Option to plot series with facetted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not facetted.
-#' @param clusterid Option to plot series with facetted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not facetted.
+#' @param cluster Option to plot series with faceted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not faceted.
+#' @param clusterid Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not faceted.
 #' @param ylabels Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.
 #' @param yearlims Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.
 #' @param plot.rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE.
@@ -60,38 +60,29 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
   p <- NA
   rings <- x$rings
   if (!missing(cluster) & !missing(clusterid)) {
-    merged <- merge(rings, data.frame(series = clusterid, cluster = cluster), by = "series")
+    rings <- merge(rings, data.frame(series = clusterid, cluster = cluster), by = "series")
     segs <- merge(segs, data.frame(series = clusterid, cluster = cluster), by = "series")
     events <- merge(events, data.frame(series = clusterid, cluster = cluster),
                     by = "series")
   }
   if (missing(spp) | missing(sppid)) {
     p <- ggplot2::ggplot(data = rings, ggplot2::aes(y = series, x = year))
-    p <- (p + ggplot2::geom_segment(ggplot2::aes(x = first, xend = last, y = series, yend = series, linetype = type),
-                           data = segs)
-            + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid"))
-            + ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
-    p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type), size = event.size)
-            + ggplot2::scale_shape_manual(guide = "legend",
-                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 1))) # `shape` 25 is empty triangles
   } else {
-    merged <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
-    p <- ggplot2::ggplot(merged, ggplot2::aes(y = series, x = year, color = species))
+    rings <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
     segs <- merge(segs, data.frame(series = sppid, species = spp), by = "series")
-    p <- (p + ggplot2::geom_segment(ggplot2::aes(x = first, xend = last, y = series, yend = series, linetype = type),
-                           data = segs)
-            + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid"))
-            + ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
     events <- merge(events, data.frame(series = sppid, species = spp),
                     by = "series")
-    p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type),
-                         size = event.size, color = "black")
-            + ggplot2::scale_shape_manual(guide = "legend",
-                                 values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 1))) # `shape` 25 is empty triangles
+    p <- ggplot2::ggplot(rings, ggplot2::aes(y = series, x = year, color = species))
   }
-  if (!missing(cluster) & !missing(clusterid)) {
-    p <- p + ggplot2::facet_wrap(~ cluster, scales = "free_y")
-  }
+  p <- (p + ggplot2::geom_segment(ggplot2::aes(x = first, xend = last, y = series, yend = series, linetype = type),
+                         data = segs)
+          + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid"))
+          + ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
+  p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type),
+                       size = event.size, color = "black")
+          + ggplot2::scale_shape_manual(guide = "legend",
+                               values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 1))) # `shape` 25 is empty triangles
+  
   if (plot.rug) {
     p <- (p + ggplot2::geom_rug(data = subset(rings,
                                      rings$year %in% rug.filter(x, 
@@ -100,6 +91,10 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, ylabels=TRUE,
                        sides = "b", color = "black")
             + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series)))
             + ggplot2::geom_hline(yintercept = rugdivide.pos, color = "grey50"))
+  }
+  if (!missing(cluster) & !missing(clusterid)) {
+    p <- p + ggplot2::facet_wrap(~ cluster, scales = "free_y")
+    #p <- p + ggplot2::facet_grid(cluster~., scales = "free_y", space = "free_y")
   }
   brks.major <- NA
   brks.minor <- NA

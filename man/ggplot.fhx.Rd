@@ -16,9 +16,9 @@ ggplot.fhx(x, spp, sppid, cluster, clusterid, ylabels = TRUE,
 
 \item{sppid}{Option to plot series with colors by species. A vector of series names corresponding to species names given in \code{spp}. Every unique values in \code{x} series.names needs to have a corresponding species value. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.}
 
-\item{cluster}{Option to plot series with facetted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not facetted.}
+\item{cluster}{Option to plot series with faceted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not faceted.}
 
-\item{clusterid}{Option to plot series with facetted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not facetted.}
+\item{clusterid}{Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not faceted.}
 
 \item{ylabels}{Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.}
 

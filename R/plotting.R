@@ -83,7 +83,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", yla
   p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type),
                        size = event.size, color = "black")
           + ggplot2::scale_shape_manual(guide = "legend",
-                               values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 1))) # `shape` 25 is empty triangles
+                               values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 42))) # `shape` 25 is empty triangles
   
   if (plot.rug) {
     p <- (p + ggplot2::geom_rug(data = subset(rings,

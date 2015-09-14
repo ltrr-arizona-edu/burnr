@@ -12,13 +12,13 @@
 #' @param filter.prop An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.
 #' @param filter.min An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.
 #' @param legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
-#' @param event.size An optional numeric that adjusts the size of fire event symbols on the plot. Default is 4.
+#' @param event.size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
 #' @param rugbuffer.size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
 #' @param rugdivide.pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
 #' @return A ggplot object for plotting or manipulation.
 ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", ylabels=TRUE,
                        yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25,
-                       filter.min=2, legend=FALSE, event.size=4, 
+                       filter.min=2, legend=FALSE, event.size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
                        rugbuffer.size=2, rugdivide.pos=2) {
 # TODO: Merge ends and events into a single df. with a factor to handle the 
 #       different event types... this will allow us to put these "fire events" and
@@ -83,7 +83,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", yla
   p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type, size = type),
                        #size = event.size, color = "black")
                        color = "black")
-          + ggplot2::scale_size_manual(values = c("Scar" = 5, "Injury" = 2, "Pith/Bark" = 1.5)) # `shape` 25 is empty triangles
+          + ggplot2::scale_size_manual(values = event.size)
           + ggplot2::scale_shape_manual(guide = "legend",
                                values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   

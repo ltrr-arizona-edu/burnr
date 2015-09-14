@@ -4,9 +4,10 @@
 \alias{ggplot.fhx}
 \title{Create an ggplot2 object for plotting.}
 \usage{
-\method{ggplot}{fhx}(x, spp, sppid, cluster, clusterid, facet_type = "grid",
+ggplot.fhx(x, spp, sppid, cluster, clusterid, facet_type = "grid",
   ylabels = TRUE, yearlims = FALSE, plot.rug = FALSE,
-  filter.prop = 0.25, filter.min = 2, legend = FALSE, event.size = 4,
+  filter.prop = 0.25, filter.min = 2, legend = FALSE,
+  event.size = c(Scar = 4, Injury = 2, `Pith/Bark` = 1.5),
   rugbuffer.size = 2, rugdivide.pos = 2)
 }
 \arguments{
@@ -34,7 +35,7 @@
 
 \item{legend}{A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.}
 
-\item{event.size}{An optional numeric that adjusts the size of fire event symbols on the plot. Default is 4.}
+\item{event.size}{An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.}
 
 \item{rugbuffer.size}{An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.}
 

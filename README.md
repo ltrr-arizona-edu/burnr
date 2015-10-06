@@ -5,7 +5,7 @@
 
 A core tool set to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
 
-The project is still under heavy development. We do yet not promise backwards compatability (sorry). Hic sunt dracones.
+The project is still under heavy development. We do not yet promise backwards compatability (sorry). Hic sunt dracones.
 
 This package is not yet in CRAN. If you'd like to install it, first be sure you have the `devtools` package installed in R. Install `burnr` with:
 

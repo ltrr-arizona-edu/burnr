@@ -3,15 +3,17 @@
 [![Travis-CI Build Status](https://travis-ci.org/ltrr-arizona-edu/burnr.svg?branch=master)](https://travis-ci.org/ltrr-arizona-edu/burnr)
 [![Coverage Status](https://coveralls.io/repos/ltrr-arizona-edu/burnr/badge.svg)](https://coveralls.io/r/ltrr-arizona-edu/burnr)
 
-An experiment in analyzing forest fire history data files (e.g. FHX2) in R. This is a tool designed for power users and projects with special needs.
+A core tool set to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
 
-This code is still under heavy development. The project might be renamed. We do not promise backwards compatability (sorry). Here be dragons.
+The project is still under heavy development. We do yet not promise backwards compatability (sorry). Hic sunt dracones.
 
-This package is not in CRAN (yet). If you'd like to install it, first be sure you have the `devtools` package installed in R. Then, install this package with:
+This package is not yet in CRAN. If you'd like to install it, first be sure you have the `devtools` package installed in R. Install `burnr` with:
 
 ```R
 devtools::install_github("ltrr-arizona-edu/burnr")
 ```
+
+Be sure to use the `develop` branch, if you want the bleeding edge or if you're a developer.
 
 Want to contribute? Great! We're following [Hadley's packaging workflow](http://r-pkgs.had.co.nz/) and [code style](http://adv-r.had.co.nz/Style.html). Fork away.
 

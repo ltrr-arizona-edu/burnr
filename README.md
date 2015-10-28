@@ -15,8 +15,6 @@ This package is not yet in CRAN. If you'd like to install it, first be sure you 
 devtools::install_github("ltrr-arizona-edu/burnr")
 ```
 
-Be sure to use the `develop` branch, if you want the bleeding edge or if you're a developer.
-
 Want to contribute? Great! We're following [Hadley's packaging workflow](http://r-pkgs.had.co.nz/) and [code style](http://adv-r.had.co.nz/Style.html). Fork away.
 
 Please file bugs in the [bug tracker](https://github.com/ltrr-arizona-edu/burnr/issues).

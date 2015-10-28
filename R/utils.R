@@ -14,13 +14,13 @@ fhx <- function(year,  series, type, metalist=list()){
   structure(list(meta = metalist, rings = ringsdf), class = "fhx")
 }
 
-#' Filter fire events in `x` returning years with prominent fires.
+#' Composite fire events in `x` returning years with prominent fires.
 #'
 #' @param x An fhx instance.
 #' @param filter.prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
 #' @param filter.min The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
 #' @return A vector of years from `x`.
-rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
+composite <- function(x, filter.prop=0.25, filter.min=2) {
   stopifnot(class(x) == "fhx")
   recording <- list("|" = "recorder.year",
                    "U" = "unknown.fs",

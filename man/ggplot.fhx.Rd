@@ -29,9 +29,9 @@ ggplot.fhx(x, spp, sppid, cluster, clusterid, facet_type = "grid",
 
 \item{plot.rug}{A boolean option to plot a rug on the bottom of the plot. Default is FALSE.}
 
-\item{filter.prop}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.}
+\item{filter.prop}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.}
 
-\item{filter.min}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.}
+\item{filter.min}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.}
 
 \item{legend}{A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.}
 

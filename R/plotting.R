@@ -9,8 +9,8 @@
 #' @param ylabels Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.
 #' @param yearlims Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.
 #' @param plot.rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE.
-#' @param filter.prop An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.
-#' @param filter.min An optional argument if the user chooses to include a rug in their plot. This is passed to \code{rug.filter}. See this function for details.
+#' @param filter.prop An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param filter.min An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
 #' @param event.size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
 #' @param rugbuffer.size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
@@ -89,7 +89,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", yla
   
   if (plot.rug) {
     p <- (p + ggplot2::geom_rug(data = subset(rings,
-                                     rings$year %in% rug.filter(x, 
+                                     rings$year %in% composite(x, 
                                                                 filter.prop = filter.prop,
                                                                 filter.min = filter.min)),
                        sides = "b", color = "black")

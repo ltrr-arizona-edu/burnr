@@ -14,13 +14,13 @@ fhx <- function(year,  series, type, metalist=list()){
   structure(list(meta = metalist, rings = ringsdf), class = "fhx")
 }
 
-#' Filter fire events in `x` returning years with prominent fires.
+#' Composite fire events in `x` returning years with prominent fires.
 #'
 #' @param x An fhx instance.
-#' @param filter.prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
-#' @param filter.min The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
+#' @param filter_prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
+#' @param filter_min The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
 #' @return A vector of years from `x`.
-rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
+composite <- function(x, filter_prop=0.25, filter_min=2) {
   stopifnot(class(x) == "fhx")
   recording <- list("|" = "recorder.year",
                    "U" = "unknown.fs",
@@ -47,20 +47,22 @@ rug.filter <- function(x, filter.prop=0.25, filter.min=2) {
                "l" = "late.fi",
                "A" = "latewd.fs",
                "a" = "latewd.fi")
-  event.count <- as.data.frame(table(subset(x$rings, x$rings$type %in% event)$year))
-  recording.count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
-  counts <- merge(event.count, recording.count, by = "Var1")
+  event_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% event)$year))
+  recording_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
+  counts <- merge(event_count, recording_count, by = "Var1")
   counts$prop <- counts$Freq.x / counts$Freq.y
-  conditions <- (counts$prop >= filter.prop) & (counts$Freq.x >= filter.min)
+  conditions <- (counts$prop >= filter_prop) & (counts$Freq.x >= filter_min)
   out <- subset(counts, conditions)$Var1
   as.integer(levels(out)[out])
 }
 
-#' Reorder the series names of an fhx instance.
+#' Resort the series names of an fhx instance.
 #'
 #' @param x An fhx instance to be reorder.
+#' @param decreasing Logical. Increasing or decreasing sorting.
+#' @param ... Additional arguments that fall off the face of the universe.
 #' @return A copy of \code{x} with reordered series.
-order.fhx <- function(x) {
+sort.fhx <- function(x, decreasing, ...) {
   stopifnot(class(x) == "fhx")
   test <- subset(x$rings,
                  x$rings$type == "inner.year" | x$ring$type == "pith.year")
@@ -68,7 +70,7 @@ order.fhx <- function(x) {
   x$rings$series <- factor(x$rings$series,
                            levels = unique(test$series[i]),
                            ordered = TRUE)
-  i <- order(x$rings$series, x$rings$year, decreasing = TRUE)
+  i <- order(x$rings$series, x$rings$year, decreasing = decreasing)
   x$rings <- x$rings[i, ]
   x
 }
@@ -78,7 +80,8 @@ order.fhx <- function(x) {
 #' @param a An fhx instance.
 #' @param b The fhx instance to be appended.
 #' @return An fhx instance with the information from \code{a} and \code{b}. Duplicates are resolved with \code{fire::resolve_duplicates()}.
-"+.fhx" <- function(a, b) {
+concatenate <- function(a, b) {
+  stopifnot(class(a) == "fhx")
   stopifnot(class(b) == "fhx")
   f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
             rings = NA)  # Data frame that actually contains the ring data.
@@ -86,7 +89,7 @@ order.fhx <- function(x) {
   f$rings <- rbind(a$rings, b$rings)
   if (length(a$meta) | length(b$meta) > 0)  # If meta data present...
     f$meta <- c(a$meta, b$meta)
-  order.fhx(resolve_duplicates(f))
+  sort(resolve_duplicates(f))
 }
 
 #' Merge/remove duplicate observations in an fhx object.

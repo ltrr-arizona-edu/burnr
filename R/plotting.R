@@ -8,23 +8,23 @@
 #' @param facet_type Type of \code{ggplot2} facet to use, if faceting. Must be either "grid" or "wrap". Default is "grid".
 #' @param ylabels Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.
 #' @param yearlims Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.
-#' @param plot.rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE.
-#' @param filter.prop An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
-#' @param filter.min An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param composite_rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE.
+#' @param filter_prop An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param filter_min An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
-#' @param event.size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
-#' @param rugbuffer.size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
-#' @param rugdivide.pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
+#' @param event_size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
+#' @param rugbuffer_size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
+#' @param rugdivide_pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
 #' @return A ggplot object for plotting or manipulation.
-ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", ylabels=TRUE,
-                       yearlims=FALSE, plot.rug=FALSE, filter.prop=0.25,
-                       filter.min=2, legend=FALSE, event.size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
-                       rugbuffer.size=2, rugdivide.pos=2) {
+get_ggplot <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", ylabels=TRUE,
+                       yearlims=FALSE, composite_rug=FALSE, filter_prop=0.25,
+                       filter_min=2, legend=FALSE, event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
+                       rugbuffer_size=2, rugdivide_pos=2) {
 # TODO: Merge ends and events into a single df. with a factor to handle the 
 #       different event types... this will allow us to put these "fire events" and
 #       "pith/bark" into a legend.
   stopifnot(facet_type %in% c("grid", "wrap"))
-  stopifnot(rugbuffer.size >= 2)
+  stopifnot(rugbuffer_size >= 2)
   clean.nonrec <- subset(x$rings, x$rings$type != "recorder.year")
   scar.types <- c("unknown.fs", "dormant.fs", "early.fs",
                   "middle.fs", "late.fs", "latewd.fs")
@@ -81,20 +81,20 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", yla
           + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid")))
           #+ ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
   p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = type, size = type),
-                       #size = event.size, color = "black")
+                       #size = event_size, color = "black")
                        color = "black")
-          + ggplot2::scale_size_manual(values = event.size)
+          + ggplot2::scale_size_manual(values = event_size)
           + ggplot2::scale_shape_manual(guide = "legend",
                                values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   
-  if (plot.rug) {
+  if (composite_rug) {
     p <- (p + ggplot2::geom_rug(data = subset(rings,
                                      rings$year %in% composite(x, 
-                                                                filter.prop = filter.prop,
-                                                                filter.min = filter.min)),
+                                                               filter_prop = filter_prop,
+                                                               filter_min = filter_min)),
                        sides = "b", color = "black")
-            + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer.size), levels(rings$series)))
-            + ggplot2::geom_hline(yintercept = rugdivide.pos, color = "grey50"))
+            + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer_size), levels(rings$series)))
+            + ggplot2::geom_hline(yintercept = rugdivide_pos, color = "grey50"))
   }
   if (!missing(cluster) & !missing(clusterid)) {
     if (facet_type == "grid") {
@@ -144,7 +144,7 @@ ggplot.fhx <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", yla
 
 #' Plot an fhx object.
 #'
-#' @param ... Arguments passed on to \code{ggplot.fhx}.
+#' @param ... Arguments passed on to \code{get_ggplot}.
 plot.fhx <- function(...) {
-  print(ggplot.fhx(...))
+  print(get_ggplot(...))
 }

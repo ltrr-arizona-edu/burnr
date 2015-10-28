@@ -7,7 +7,7 @@
 \method{plot}{fhx}(...)
 }
 \arguments{
-\item{...}{Arguments passed on to \code{ggplot.fhx}.}
+\item{...}{Arguments passed on to \code{get_ggplot}.}
 }
 \description{
 Plot an fhx object.

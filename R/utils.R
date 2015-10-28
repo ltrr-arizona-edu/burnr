@@ -60,8 +60,9 @@ composite <- function(x, filter_prop=0.25, filter_min=2) {
 #'
 #' @param x An fhx instance to be reorder.
 #' @param decreasing Logical. Increasing or decreasing sorting.
+#' @param ... Additional arguments that fall off the face of the universe.
 #' @return A copy of \code{x} with reordered series.
-sort.fhx <- function(x, decreasing) {
+sort.fhx <- function(x, decreasing, ...) {
   stopifnot(class(x) == "fhx")
   test <- subset(x$rings,
                  x$rings$type == "inner.year" | x$ring$type == "pith.year")

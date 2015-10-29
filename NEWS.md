@@ -1,4 +1,4 @@
-# burnr v0.0.1
+# burnr v0.0.1.9000
 
 * Added `NEWS.md` file. Existing users should check back here for changes.
 

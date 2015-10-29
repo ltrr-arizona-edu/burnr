@@ -4,22 +4,22 @@
 \alias{get_ggplot}
 \title{Create an ggplot2 object for plotting.}
 \usage{
-get_ggplot(x, spp, sppid, cluster, clusterid, facet_type = "grid",
-  ylabels = TRUE, yearlims = FALSE, composite_rug = FALSE,
-  filter_prop = 0.25, filter_min = 2, legend = FALSE,
-  event_size = c(Scar = 4, Injury = 2, `Pith/Bark` = 1.5),
+get_ggplot(x, color_group, color_id, facet_group, facet_id,
+  facet_type = "grid", ylabels = TRUE, yearlims = FALSE,
+  composite_rug = FALSE, filter_prop = 0.25, filter_min = 2,
+  legend = FALSE, event_size = c(Scar = 4, Injury = 2, `Pith/Bark` = 1.5),
   rugbuffer_size = 2, rugdivide_pos = 2)
 }
 \arguments{
 \item{x}{An \code{fhx} instance.}
 
-\item{spp}{Option to plot series with colors by species. A vector of species which corresponds to the series names given in \code{sppid}. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.}
+\item{color_group}{Option to plot series with colors. This is a character vector or factor which corresponds to the series names given in \code{color_id}. Both \code{color_group} and \code{color_id} need to be specified. Default plot gives no color.}
 
-\item{sppid}{Option to plot series with colors by species. A vector of series names corresponding to species names given in \code{spp}. Every unique values in \code{x} series.names needs to have a corresponding species value. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.}
+\item{color_id}{Option to plot series with colors. A character vector of series names corresponding to groups given in \code{color_group}. Every unique value in \code{x} series.names needs to have a corresponding color_group value. Both \code{color_group} and \code{color_id} need to be specified. Default plot gives no species colors.}
 
-\item{cluster}{Option to plot series with faceted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not faceted.}
+\item{facet_group}{Option to plot series with faceted by a factor. A vector of factors or character vector which corresponds to the series names given in \code{facet_id}. Both \code{facet_group} and \code{facet_id} need to be specified. Default plot is not faceted.}
 
-\item{clusterid}{Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not faceted.}
+\item{facet_id}{Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{facet_group}. Every unique values in \code{x} series.names needs to have a corresponding facet_group value. Both \code{facet_group} and \code{facet_id} need to be specified.  Default plot is not faceted.}
 
 \item{facet_type}{Type of \code{ggplot2} facet to use, if faceting. Must be either "grid" or "wrap". Default is "grid".}
 

@@ -1,3 +1,7 @@
+# burnr v0.0.2
+
+* In `get_ggplot`, spp argument is renamed to color_group. sppid is now color_id. cluster is now facet_group. clusterid is now cluster_id. 
+
 # burnr v0.0.1
 
 * Added `NEWS.md` file. Existing users should check back here for changes.

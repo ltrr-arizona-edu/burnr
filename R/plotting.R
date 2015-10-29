@@ -1,10 +1,10 @@
 #' Create an ggplot2 object for plotting.
 #'
 #' @param x An \code{fhx} instance.
-#' @param spp Option to plot series with colors by species. A vector of species which corresponds to the series names given in \code{sppid}. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.
-#' @param sppid Option to plot series with colors by species. A vector of series names corresponding to species names given in \code{spp}. Every unique values in \code{x} series.names needs to have a corresponding species value. Both \code{spp} and \code{sppid} need to be specified. Default plot gives no species colors.
-#' @param cluster Option to plot series with faceted by a factor. A vector of factors or characters which corresponds to the series names given in \code{clusterid}. Both \code{cluster} and \code{clusterid} need to be specified. Default plot is not faceted.
-#' @param clusterid Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{cluster}. Every unique values in \code{x} series.names needs to have a corresponding cluster value. Both \code{cluster} and \code{clusterid} need to be specified.  Default plot is not faceted.
+#' @param color_group Option to plot series with colors. This is a character vector or factor which corresponds to the series names given in \code{color_id}. Both \code{color_group} and \code{color_id} need to be specified. Default plot gives no color.
+#' @param color_id Option to plot series with colors. A character vector of series names corresponding to groups given in \code{color_group}. Every unique value in \code{x} series.names needs to have a corresponding color_group value. Both \code{color_group} and \code{color_id} need to be specified. Default plot gives no species colors.
+#' @param facet_group Option to plot series with faceted by a factor. A vector of factors or character vector which corresponds to the series names given in \code{facet_id}. Both \code{facet_group} and \code{facet_id} need to be specified. Default plot is not faceted.
+#' @param facet_id Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{facet_group}. Every unique values in \code{x} series.names needs to have a corresponding facet_group value. Both \code{facet_group} and \code{facet_id} need to be specified.  Default plot is not faceted.
 #' @param facet_type Type of \code{ggplot2} facet to use, if faceting. Must be either "grid" or "wrap". Default is "grid".
 #' @param ylabels Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.
 #' @param yearlims Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.
@@ -16,7 +16,7 @@
 #' @param rugbuffer_size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
 #' @param rugdivide_pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
 #' @return A ggplot object for plotting or manipulation.
-get_ggplot <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", ylabels=TRUE,
+get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_type="grid", ylabels=TRUE,
                        yearlims=FALSE, composite_rug=FALSE, filter_prop=0.25,
                        filter_min=2, legend=FALSE, event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
                        rugbuffer_size=2, rugdivide_pos=2) {
@@ -61,18 +61,18 @@ get_ggplot <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", yla
   
   p <- NA
   rings <- x$rings
-  if (!missing(cluster) & !missing(clusterid)) {
-    rings <- merge(rings, data.frame(series = clusterid, cluster = cluster), by = "series")
-    segs <- merge(segs, data.frame(series = clusterid, cluster = cluster), by = "series")
-    events <- merge(events, data.frame(series = clusterid, cluster = cluster),
+  if (!missing(facet_group) & !missing(facet_id)) {
+    rings <- merge(rings, data.frame(series = facet_id, facet_group = facet_group), by = "series")
+    segs <- merge(segs, data.frame(series = facet_id, facet_group = facet_group), by = "series")
+    events <- merge(events, data.frame(series = facet_id, facet_group = facet_group),
                     by = "series")
   }
-  if (missing(spp) | missing(sppid)) {
+  if (missing(color_group) | missing(color_id)) {
     p <- ggplot2::ggplot(data = rings, ggplot2::aes(y = series, x = year))
   } else {
-    rings <- merge(rings, data.frame(series = sppid, species = spp), by = "series")
-    segs <- merge(segs, data.frame(series = sppid, species = spp), by = "series")
-    events <- merge(events, data.frame(series = sppid, species = spp),
+    rings <- merge(rings, data.frame(series = color_id, species = color_group), by = "series")
+    segs <- merge(segs, data.frame(series = color_id, species = color_group), by = "series")
+    events <- merge(events, data.frame(series = color_id, species = color_group),
                     by = "series")
     p <- ggplot2::ggplot(rings, ggplot2::aes(y = series, x = year, color = species))
   }
@@ -96,12 +96,12 @@ get_ggplot <- function(x, spp, sppid, cluster, clusterid, facet_type="grid", yla
             + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer_size), levels(rings$series)))
             + ggplot2::geom_hline(yintercept = rugdivide_pos, color = "grey50"))
   }
-  if (!missing(cluster) & !missing(clusterid)) {
+  if (!missing(facet_group) & !missing(facet_id)) {
     if (facet_type == "grid") {
-      p <- p + ggplot2::facet_grid(cluster~., scales = "free_y", space = "free_y")
+      p <- p + ggplot2::facet_grid(facet_group~., scales = "free_y", space = "free_y")
     }
     if (facet_type == "wrap") {
-      p <- p + ggplot2::facet_wrap(~ cluster, scales = "free_y")
+      p <- p + ggplot2::facet_wrap(~ facet_group, scales = "free_y")
     }
   }
   brks.major <- NA

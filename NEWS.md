@@ -1,14 +1,12 @@
-# burnr v0.0.2
-
-* In `get_ggplot`, spp argument is renamed to color_group. sppid is now color_id. cluster is now facet_group. clusterid is now cluster_id. 
-
 # burnr v0.0.1
+
+* In `get_ggplot`, 
 
 * Added `NEWS.md` file. Existing users should check back here for changes.
 
 * `rug.filter` function is renamed `composite`.
 
-* `ggplot.fhx` is now `get_ggplot`. This is more descriptive. The following arguments for this function have been changed as a part of this fix: `plot.rug` is now `composite_rug`, `filter.min` is now `filter_min`, `filter.prop` is now `filter_prop`, `event.size` is now `event_size`, `rugbuffer.size` is now `rugbuffer_size`, `rugdivide.pos` is now `rugdivide_pos`.
+* `ggplot.fhx` is now `get_ggplot`. This is more descriptive. The following arguments for this function have been changed as a part of this fix: `plot.rug` is now `composite_rug`, `filter.min` is now `filter_min`, `filter.prop` is now `filter_prop`, `event.size` is now `event_size`, `rugbuffer.size` is now `rugbuffer_size`, `rugdivide.pos` is now `rugdivide_pos`. `spp` argument is renamed to `color_group`. `sppid` is now `color_id`. `cluster` is now `facet_group`. `clusterid` is now `cluster_id`. 
 
 * `read.fhx` function is renamed `read_fhx`.
 

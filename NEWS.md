@@ -13,3 +13,5 @@
 * `order.fhx` is now `sort` (see method `sort.fhx`). Also, added a boolean argument `decreasing`, which defaults to FALSE. Previously this has been TRUE..
 
 * `+` with `fhx` objects, (`+.fhx`) is now `concatenate`. So, `a + b` should now be `concatenate(a, b)`.
+
+* Fixed bug that disappeared a series which started or ended with fire scars.

@@ -64,11 +64,14 @@ composite <- function(x, filter_prop=0.25, filter_min=2) {
 #' @return A copy of \code{x} with reordered series.
 sort.fhx <- function(x, decreasing, ...) {
   stopifnot(class(x) == "fhx")
-  test <- subset(x$rings,
-                 x$rings$type == "inner.year" | x$ring$type == "pith.year")
-  i <- order(test$year, decreasing = TRUE)
+  #test <- subset(x$rings,
+                 #x$rings$type == "inner.year" | x$ring$type == "pith.year")
+  #i <- order(test$year, decreasing = TRUE)
+  series_minyears <- aggregate(year ~ series, x$rings, min) 
+  i <- order(series_minyears$year, decreasing = TRUE)
   x$rings$series <- factor(x$rings$series,
-                           levels = unique(test$series[i]),
+                           #levels = series_levels,
+                           levels = series_minyears$series[i],
                            ordered = TRUE)
   i <- order(x$rings$series, x$rings$year, decreasing = decreasing)
   x$rings <- x$rings[i, ]

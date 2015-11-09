@@ -4,12 +4,12 @@
 \alias{sort.fhx}
 \title{Resort the series names of an fhx instance.}
 \usage{
-\method{sort}{fhx}(x, decreasing, ...)
+\method{sort}{fhx}(x, decreasing = FALSE, ...)
 }
 \arguments{
 \item{x}{An fhx instance to be reorder.}
 
-\item{decreasing}{Logical. Increasing or decreasing sorting.}
+\item{decreasing}{Logical. Decreasing sorting? Defaults to FALSE.}
 
 \item{...}{Additional arguments that fall off the face of the universe.}
 }

@@ -78,12 +78,12 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
   x
 }
 
-#' Concatenate two fhx instance.
+#' Combine two fhx objects.
 #'
 #' @param a An fhx instance.
 #' @param b The fhx instance to be appended.
 #' @return An fhx instance with the information from \code{a} and \code{b}. Duplicates are resolved with \code{fire::resolve_duplicates()}.
-concatenate <- function(a, b) {
+combine <- function(a, b) {
   stopifnot(class(a) == "fhx")
   stopifnot(class(b) == "fhx")
   f <- list(meta = list(),  # Odd list for collecting various bits of metadata.

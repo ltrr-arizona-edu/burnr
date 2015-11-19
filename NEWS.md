@@ -1,3 +1,12 @@
+# burnr v0.0.2
+
+Changes in this patch:
+
+* `concatenate()` has been renamed `combine()` at the request of beloved users.
+
+* `lgr2` and `pgm` are available fire-history datasets when you load this package. The metadata for each of these sets is `lgr2_meta` and `pgm_meta`. Load the data with `data()`.
+
+
 # burnr v0.0.1
 
 * First github release

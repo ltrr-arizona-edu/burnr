@@ -2,6 +2,8 @@
 
 Changes in this patch:
 
+* In `get_ggplot()` the `legend` argument is now `plot_legend` to avoid clash with common functions.
+
 * Can now read FHX files with a single series (closes bug #43).
 
 * `concatenate()` has been renamed `combine()` at the request of beloved users.

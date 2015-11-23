@@ -11,14 +11,14 @@
 #' @param composite_rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE.
 #' @param filter_prop An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param filter_min An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.
-#' @param legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
+#' @param plot_legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
 #' @param event_size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
 #' @param rugbuffer_size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
 #' @param rugdivide_pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
 #' @return A ggplot object for plotting or manipulation.
 get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_type="grid", ylabels=TRUE,
                        yearlims=FALSE, composite_rug=FALSE, filter_prop=0.25,
-                       filter_min=2, legend=FALSE, event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
+                       filter_min=2, plot_legend=FALSE, event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
                        rugbuffer_size=2, rugdivide_pos=2) {
 # TODO: Merge ends and events into a single df. with a factor to handle the 
 #       different event types... this will allow us to put these "fire events" and
@@ -130,7 +130,7 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_ty
                   axis.title.y = ggplot2::element_blank(),
                   legend.title = ggplot2::element_blank(),
                   legend.position = "bottom"))
-  if (!legend) {
+  if (!plot_legend) {
     p <- p + ggplot2::theme(legend.position = "none")
   }
   if (!missing(yearlims)) {

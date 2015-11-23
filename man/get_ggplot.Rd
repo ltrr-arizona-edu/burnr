@@ -7,8 +7,8 @@
 get_ggplot(x, color_group, color_id, facet_group, facet_id,
   facet_type = "grid", ylabels = TRUE, yearlims = FALSE,
   composite_rug = FALSE, filter_prop = 0.25, filter_min = 2,
-  legend = FALSE, event_size = c(Scar = 4, Injury = 2, `Pith/Bark` = 1.5),
-  rugbuffer_size = 2, rugdivide_pos = 2)
+  plot_legend = FALSE, event_size = c(Scar = 4, Injury = 2, `Pith/Bark` =
+  1.5), rugbuffer_size = 2, rugdivide_pos = 2)
 }
 \arguments{
 \item{x}{An \code{fhx} instance.}
@@ -33,7 +33,7 @@ get_ggplot(x, color_group, color_id, facet_group, facet_id,
 
 \item{filter_min}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.}
 
-\item{legend}{A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.}
+\item{plot_legend}{A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.}
 
 \item{event_size}{An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.}
 

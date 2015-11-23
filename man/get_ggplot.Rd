@@ -19,19 +19,19 @@ get_ggplot(x, color_group, color_id, facet_group, facet_id,
 
 \item{facet_group}{Option to plot series with faceted by a factor. A vector of factors or character vector which corresponds to the series names given in \code{facet_id}. Both \code{facet_group} and \code{facet_id} need to be specified. Default plot is not faceted.}
 
-\item{facet_id}{Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{facet_group}. Every unique values in \code{x} series.names needs to have a corresponding facet_group value. Both \code{facet_group} and \code{facet_id} need to be specified.  Default plot is not faceted.}
+\item{facet_id}{Option to plot series with faceted by a factor. A vector of series names corresponding to species names given in \code{facet_group}. Every unique values in \code{x} series.names needs to have a corresponding facet_group value. Both \code{facet_group} and \code{facet_id} need to be specified.  Default plot is not faceted. Note that composite_rug and facet_group, facet_id cannot be used in the same plot. You must choose facets or a composite rug.}
 
-\item{facet_type}{Type of \code{ggplot2} facet to use, if faceting. Must be either "grid" or "wrap". Default is "grid".}
+\item{facet_type}{Type of \code{ggplot2} facet to use, if faceting. Must be either "grid" or "wrap". Default is "grid". Note that composite_rug and facet_group, facet_id cannot be used in the same plot. You must choose facets or a composite rug.}
 
 \item{ylabels}{Optional boolean to remove y-axis (series name) labels and tick  marks. Default is TRUE.}
 
 \item{yearlims}{Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.}
 
-\item{composite_rug}{A boolean option to plot a rug on the bottom of the plot. Default is FALSE.}
+\item{composite_rug}{A boolean option to plot a rug on the bottom of the plot. Default is FALSE. Note that composite_rug and facet_group, facet_id cannot be used in the same plot. You must choose facets or a composite rug.}
 
-\item{filter_prop}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.}
+\item{filter_prop}{An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.}
 
-\item{filter_min}{An optional argument if the user chooses to include a rug in their plot. This is passed to \code{composite}. See this function for details.}
+\item{filter_min}{An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.}
 
 \item{plot_legend}{A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.}
 

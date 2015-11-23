@@ -2,6 +2,8 @@
 
 Changes in this patch:
 
+* `plot()` and `get_ggplot()` should no longer allow the user to plot facets and composite rugs in the same plot. This closes bug #25.
+
 * Ring types (the `rec_type` column in `x$rings`) has "." in all levels replaced with a "_". For example, 'dormant.fs' is now 'dormant_fs.' Closes #45.
 
 * In `get_ggplot()` the `legend` argument is now `plot_legend` to avoid clash with common functions.

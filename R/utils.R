@@ -22,31 +22,31 @@ fhx <- function(year,  series, rec_type, metalist=list()){
 #' @return A vector of years from `x`.
 composite <- function(x, filter_prop=0.25, filter_min=2) {
   stopifnot(class(x) == "fhx")
-  recording <- list("|" = "recorder.year",
-                   "U" = "unknown.fs",
-                   "u" = "unknown.fi",
-                   "D" = "dormant.fs",
-                   "d" = "dormant.fi",
-                   "E" = "early.fs",
-                   "e" = "early.fi",
-                   "M" = "middle.fs",
-                   "m" = "middle.fi",
-                   "L" = "late.fs",
-                   "l" = "late.fi",
-                   "A" = "latewd.fs",
-                   "a" = "latewd.fi")
-  event <- list("U" = "unknown.fs",
-               "u" = "unknown.fi",
-               "D" = "dormant.fs",
-               "d" = "dormant.fi",
-               "E" = "early.fs",
-               "e" = "early.fi",
-               "M" = "middle.fs",
-               "m" = "middle.fi",
-               "L" = "late.fs",
-               "l" = "late.fi",
-               "A" = "latewd.fs",
-               "a" = "latewd.fi")
+  recording <- list("|" = "recorder_year",
+                   "U" = "unknown_fs",
+                   "u" = "unknown_fi",
+                   "D" = "dormant_fs",
+                   "d" = "dormant_fi",
+                   "E" = "early_fs",
+                   "e" = "early_fi",
+                   "M" = "middle_fs",
+                   "m" = "middle_fi",
+                   "L" = "late_fs",
+                   "l" = "late_fi",
+                   "A" = "latewd_fs",
+                   "a" = "latewd_fi")
+  event <- list("U" = "unknown_fs",
+               "u" = "unknown_fi",
+               "D" = "dormant_fs",
+               "d" = "dormant_fi",
+               "E" = "early_fs",
+               "e" = "early_fi",
+               "M" = "middle_fs",
+               "m" = "middle_fi",
+               "L" = "late_fs",
+               "l" = "late_fi",
+               "A" = "latewd_fs",
+               "a" = "latewd_fi")
   event_count <- as.data.frame(table(subset(x$rings, x$rings$rec_type %in% event)$year))
   recording_count <- as.data.frame(table(subset(x$rings, x$rings$rec_type %in% recording)$year))
   counts <- merge(event_count, recording_count, by = "Var1")
@@ -68,7 +68,7 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
     return(x)
   }
   #test <- subset(x$rings,
-                 #x$rings$rec_type == "inner.year" | x$ring$rec_type == "pith.year")
+                 #x$rings$rec_type == "inner_year" | x$ring$rec_type == "pith_year")
   #i <- order(test$year, decreasing = TRUE)
   series_minyears <- aggregate(year ~ series, x$rings, min) 
   i <- order(series_minyears$year, decreasing = TRUE)

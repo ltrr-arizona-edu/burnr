@@ -25,12 +25,12 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_ty
 #       "pith/bark" into a legend.
   stopifnot(facet_type %in% c("grid", "wrap"))
   stopifnot(rugbuffer_size >= 2)
-  clean.nonrec <- subset(x$rings, x$rings$rec_type != "recorder.year")
-  scar.types <- c("unknown.fs", "dormant.fs", "early.fs",
-                  "middle.fs", "late.fs", "latewd.fs")
-  injury.types <- c("unknown.fi", "dormant.fi", "early.fi",
-                    "middle.fi", "late.fi", "latewd.fi")
-  pithbark.types <- c("pith.year", "bark.year")
+  clean.nonrec <- subset(x$rings, x$rings$rec_type != "recorder_year")
+  scar.types <- c("unknown_fs", "dormant_fs", "early_fs",
+                  "middle_fs", "late_fs", "latewd_fs")
+  injury.types <- c("unknown_fi", "dormant_fi", "early_fi",
+                    "middle_fi", "late_fi", "latewd_fi")
+  pithbark.types <- c("pith_year", "bark_year")
   events <- subset(clean.nonrec, (rec_type %in% scar.types) | (rec_type %in% injury.types) | (rec_type %in% pithbark.types))
   levels(events$rec_type)[levels(events$rec_type) %in% scar.types] <- "Scar"
   levels(events$rec_type)[levels(events$rec_type) %in% injury.types] <- "Injury"
@@ -42,10 +42,10 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_ty
                      first = live$x[, 1],
                      last = live$x[, 2],
                      rec_type = rep("non-recording", dim(live)[1]))
-  recorder <- subset(x$rings, x$rings$rec_type == "recorder.year")
-  if ( dim(recorder)[1] > 0 ) {  # If there are recorder years...
-    # Get the min and max of the recorder years.
-    recorder <- aggregate(recorder$year,  # TODO: rename this var.
+  recorder <- subset(x$rings, x$rings$rec_type == "recorder_year")
+  if ( dim(recorder)[1] > 0 ) {  # If there are recorder_years...
+    # Get the min and max of the recorder_years.
+    recorder <- aggregate(recorder_year,  # TODO: rename this var.
                            by = list(recorder$series, recorder$rec_type),
                            FUN = range,
                            na.rm = TRUE)
@@ -54,7 +54,7 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_ty
                            last = recorder$x[, 2],
                            rec_type = rep("recording", dim(recorder)[1]))
     segs <- rbind(recorder, live)
-  } else {  # If there are no recorder years...
+  } else {  # If there are no recorder_years...
     segs <- live
   }
   levels(segs$rec_type) <- c("Recording", "Non-recording")

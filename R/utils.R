@@ -64,6 +64,9 @@ composite <- function(x, filter_prop=0.25, filter_min=2) {
 #' @return A copy of \code{x} with reordered series.
 sort.fhx <- function(x, decreasing=FALSE, ...) {
   stopifnot(class(x) == "fhx")
+  if (length(names(x$rings)) > 1) {
+    return(x)
+  }
   #test <- subset(x$rings,
                  #x$rings$type == "inner.year" | x$ring$type == "pith.year")
   #i <- order(test$year, decreasing = TRUE)

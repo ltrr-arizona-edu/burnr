@@ -4,6 +4,8 @@ Changes in this patch:
 
 * In `get_ggplot()` the `legend` argument is now `plot_legend` to avoid clash with common functions.
 
+* In `fhx$rings` and all functions, `type` arugment is now `rec_type` to avoid clash with `type` function. `rec_type` is short for `record_type`.
+
 * Can now read FHX files with a single series (closes bug #43).
 
 * `concatenate()` has been renamed `combine()` at the request of beloved users.

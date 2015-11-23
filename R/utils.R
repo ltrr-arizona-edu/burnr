@@ -1,16 +1,16 @@
 #' Constructor for S3 fhx class.
 #'
-#' @param year A numeric vector of observation years for each \code{series} and \code{type} argument.
-#' @param series A factor of series names for each \code{year} and \code{type} argument.
-#' @param type A factor of ring types for each element in \code{year} and \code{series}.
+#' @param year A numeric vector of observation years for each \code{series} and \code{rec_type} argument.
+#' @param series A factor of series names for each \code{year} and \code{rec_type} argument.
+#' @param rec_type A factor of ring types for each element in \code{year} and \code{series}.
 #' @param metalist An option list of arbitrary metadata to be included in the fhx instance.
 #' @return An fhx instance.
-fhx <- function(year,  series, type, metalist=list()){
+fhx <- function(year,  series, rec_type, metalist=list()){
   if (!is.numeric(year)) stop("year must be numeric")
   if (!is.factor(series)) stop("series must be character")
-  if (!is.factor(type)) stop("type must be factor")
+  if (!is.factor(rec_type)) stop("rec_type must be factor")
   if (!is.list(metalist)) stop("metalist must be list")
-  ringsdf = data.frame(year = year, series = series, type = type)
+  ringsdf = data.frame(year = year, series = series, rec_type = rec_type)
   structure(list(meta = metalist, rings = ringsdf), class = "fhx")
 }
 
@@ -47,8 +47,8 @@ composite <- function(x, filter_prop=0.25, filter_min=2) {
                "l" = "late.fi",
                "A" = "latewd.fs",
                "a" = "latewd.fi")
-  event_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% event)$year))
-  recording_count <- as.data.frame(table(subset(x$rings, x$rings$type %in% recording)$year))
+  event_count <- as.data.frame(table(subset(x$rings, x$rings$rec_type %in% event)$year))
+  recording_count <- as.data.frame(table(subset(x$rings, x$rings$rec_type %in% recording)$year))
   counts <- merge(event_count, recording_count, by = "Var1")
   counts$prop <- counts$Freq.x / counts$Freq.y
   conditions <- (counts$prop >= filter_prop) & (counts$Freq.x >= filter_min)
@@ -68,7 +68,7 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
     return(x)
   }
   #test <- subset(x$rings,
-                 #x$rings$type == "inner.year" | x$ring$type == "pith.year")
+                 #x$rings$rec_type == "inner.year" | x$ring$rec_type == "pith.year")
   #i <- order(test$year, decreasing = TRUE)
   series_minyears <- aggregate(year ~ series, x$rings, min) 
   i <- order(series_minyears$year, decreasing = TRUE)

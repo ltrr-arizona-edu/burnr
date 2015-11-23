@@ -74,11 +74,11 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
   # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
   names(fl_body) <- series_names
   fl_body$year <- seq(first_year, first_year + dim(fl_body)[1] - 1)
-  fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "type",
+  fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "rec_type",
                        variable.name = "series")
-  fl_body_melt <- subset(fl_body_melt, type != ".")
-  fl_body_melt$type <- vapply(fl_body_melt$type, function(x) type_key[[x]], "a") 
-  fl_body_melt$type <- factor(fl_body_melt$type,
+  fl_body_melt <- subset(fl_body_melt, rec_type != ".")
+  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) type_key[[x]], "a") 
+  fl_body_melt$rec_type <- factor(fl_body_melt$rec_type,
                               levels = c("null.year", "recorder.year", "unknown.fs",
                                          "unknown.fi", "dormant.fs", "dormant.fi",
                                          "early.fs", "early.fi", "middle.fs",
@@ -87,7 +87,7 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
                                          "bark.year", "inner.year", "outer.year",
                                          "estimate"))
   f <- fhx(year = fl_body_melt$year, series = fl_body_melt$series,
-           type = fl_body_melt$type)
+           rec_type = fl_body_melt$rec_type)
   sort(f, decreasing = TRUE)
 }
 
@@ -120,13 +120,13 @@ write_fhx <- function(x, fname="") {
                    "inner.year"   = "{", 
                    "outer.year"   = "}")
   out <- x$rings
-  out$type <- vapply(out$type, function(x) type_key[[x]], "a") 
+  out$rec_type <- vapply(out$rec_type, function(x) type_key[[x]], "a") 
   year_range <- seq(min(out$year), max(out$year))
   filler <- data.frame(year = year_range,
                        series = rep("hackishSolution", length(year_range)),
-                       type = rep(".", length(year_range)))
+                       rec_type = rep(".", length(year_range)))
   out <- rbind(out, filler)
-  out <- reshape2::dcast(out, year ~ series, value.var = "type", fill = ".")
+  out <- reshape2::dcast(out, year ~ series, value.var = "rec_type", fill = ".")
   out$hackishSolution <- NULL
   # Weird thing to move year to the last column of the data.frame:
   out$yr <- out$year

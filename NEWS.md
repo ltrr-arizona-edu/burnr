@@ -2,9 +2,11 @@
 
 Changes in this patch:
 
+* Ring types (the `rec_type` column in `x$rings`) has "." in all levels replaced with a "_". For example, 'dormant.fs' is now 'dormant_fs.' Closes #45.
+
 * In `get_ggplot()` the `legend` argument is now `plot_legend` to avoid clash with common functions.
 
-* In `fhx$rings` and all functions, `type` arugment is now `rec_type` to avoid clash with `type` function. `rec_type` is short for `record_type`.
+* In `fhx$rings` and all functions, `type` arugment is now `rec_type` to avoid clash with `type` function. `rec_type` is short for "record_type".
 
 * Can now read FHX files with a single series (closes bug #43).
 

@@ -1,6 +1,8 @@
-# burnr v0.0.2.9000
+# burnr v0.0.2.9001
 
 Changes in this patch:
+
+* Can now read FHX files with a single series (closes bug #43).
 
 * `concatenate()` has been renamed `combine()` at the request of beloved users.
 

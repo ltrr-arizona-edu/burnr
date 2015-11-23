@@ -63,8 +63,14 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
   # Filling with info from the fhx file body.
   fl_body <- strsplit(fl[(first + databuff + describe[3]) : length(fl)], split = "")
   first_year <- describe[1]
-  fl_body <- as.data.frame(t(sapply(fl_body, function(x) x[1:describe[2]])),
-                           stringsAsFactors = FALSE)
+  if (length(series_names) == 1) {
+    # For whatever reason R wants to flip our dims when we have a single series.
+    fl_body <- as.data.frame(sapply(fl_body, function(x) x[1:describe[2]]),
+                             stringsAsFactors = FALSE)
+  } else {
+    fl_body <- as.data.frame(t(sapply(fl_body, function(x) x[1:describe[2]])),
+                             stringsAsFactors = FALSE)
+  }
   # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
   names(fl_body) <- series_names
   fl_body$year <- seq(first_year, first_year + dim(fl_body)[1] - 1)

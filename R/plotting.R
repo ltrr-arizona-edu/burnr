@@ -23,8 +23,8 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_ty
 # TODO: Merge ends and events into a single df. with a factor to handle the 
 #       different event types... this will allow us to put these "fire events" and
 #       "pith/bark" into a legend.
-  if (all(composite_rug, facet_group)) {
-    stop("Cannot plot composite rug and facet in same plot")
+  if (composite_rug & !missing('facet_group')) {
+    stop("Cannot have composite rug and facet in same plot")
   }
   stopifnot(facet_type %in% c("grid", "wrap"))
   stopifnot(rugbuffer_size >= 2)
@@ -48,7 +48,7 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_ty
   recorder <- subset(x$rings, x$rings$rec_type == "recorder_year")
   if ( dim(recorder)[1] > 0 ) {  # If there are recorder_years...
     # Get the min and max of the recorder_years.
-    recorder <- aggregate(recorder_year,  # TODO: rename this var.
+    recorder <- aggregate(recorder$year,  # TODO: rename this var.
                            by = list(recorder$series, recorder$rec_type),
                            FUN = range,
                            na.rm = TRUE)

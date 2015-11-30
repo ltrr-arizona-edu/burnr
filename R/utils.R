@@ -67,7 +67,7 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
   #test <- subset(x$rings,
                  #x$rings$type == "inner.year" | x$ring$type == "pith.year")
   #i <- order(test$year, decreasing = TRUE)
-  series_minyears <- aggregate(year ~ series, x$rings, min) 
+  series_minyears <- aggregate(year ~ series, x$rings, min)
   i <- order(series_minyears$year, decreasing = TRUE)
   x$rings$series <- factor(x$rings$series,
                            #levels = series_levels,
@@ -109,4 +109,32 @@ resolve_duplicates <- function(x) {
       stop(c(dim(duplicates)[1],
            " duplicate(s) found. Please resolve duplicate records."))
   }
+}
+
+#' Compute and display tree-level fire history statistics
+#' @param An fhx instance
+#' @return A data.frame providing information about each tree in the fhx instance
+tree.stats <- function(fhx){
+  stopifnot(class(x) == "fhx")
+  x <- fhx$rings
+  series <- sort(levels(x$series))
+  series.stats <- data.frame(matrix(nrow = length(series), ncol = 10)) 
+  names(series.stats) <- c('series', 'first', 'last', 'years', 'inner.type', 'outer.type', 
+                         'number.events', 'number.fires', 'recording.years', 'mean.interval')
+  series.stats$series <- series
+
+for(i in 1:nrow(series.stats)) {
+  tree <- x[x$series == paste(series.stats$series[i]), ]
+  series.stats[i, 'first'] <- min(tree$year)
+  series.stats[i, 'last'] <- max(tree$year)
+  series.stats[i, 'years'] <- series.stats[i, 'last'] - series.stats[i, 'first'] + 1
+  series.stats[i, 'inner.type'] <- paste(tree[tree$year == min(tree$year), ]$type)
+  #inner.type <- substr(inner.type.long, start=0, stop=grepl(".", inner.type.long)) # would to cut it at the period
+  series.stats[i, 'outer.type'] <- paste(tree[tree$year == max(tree$year), ]$type)
+  series.stats[i, 'number.events'] <- length(c(grep('.fs', tree$type), grep('.fi', tree$type))) 
+  series.stats[i, 'number.fires'] <- length(grep('.fs', tree$type)) 
+  series.stats[i, 'recording.years'] <- length(grep('recorder.year', tree$type)) + series.stats[i, 'number.events']
+  series.stats[i, 'mean.interval'] <- round(mean(diff(sort(tree[grep('.fs', tree$type), ]$year))), 1) 
+}
+series.stats
 }

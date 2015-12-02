@@ -24,24 +24,24 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
   # TODO: Need error check that first year in body is first year in meta.
   
   type_key <- list("?" = "estimate",  # My own creation for estimated years to pith.
-                   "." = "null.year",
-                   "|" = "recorder.year",
-                   "U" = "unknown.fs",
-                   "u" = "unknown.fi",
-                   "D" = "dormant.fs",
-                   "d" = "dormant.fi",
-                   "E" = "early.fs",
-                   "e" = "early.fi",
-                   "M" = "middle.fs",
-                   "m" = "middle.fi",
-                   "L" = "late.fs",
-                   "l" = "late.fi",
-                   "A" = "latewd.fs",
-                   "a" = "latewd.fi",
-                   "[" = "pith.year",
-                   "]" = "bark.year",
-                   "{" = "inner.year",
-                   "}" = "outer.year")
+                   "." = "null_year",
+                   "|" = "recorder_year",
+                   "U" = "unknown_fs",
+                   "u" = "unknown_fi",
+                   "D" = "dormant_fs",
+                   "d" = "dormant_fi",
+                   "E" = "early_fs",
+                   "e" = "early_fi",
+                   "M" = "middle_fs",
+                   "m" = "middle_fi",
+                   "L" = "late_fs",
+                   "l" = "late_fi",
+                   "A" = "latewd_fs",
+                   "a" = "latewd_fi",
+                   "[" = "pith_year",
+                   "]" = "bark_year",
+                   "{" = "inner_year",
+                   "}" = "outer_year")
   # Parse series names.
   uncleaned <- as.matrix(unlist(strsplit(fl[(first + 2):(first + 1 + describe[3])], "")))
   if ((describe[2] * describe[3]) != dim(uncleaned)[1])
@@ -63,25 +63,31 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
   # Filling with info from the fhx file body.
   fl_body <- strsplit(fl[(first + databuff + describe[3]) : length(fl)], split = "")
   first_year <- describe[1]
-  fl_body <- as.data.frame(t(sapply(fl_body, function(x) x[1:describe[2]])),
-                           stringsAsFactors = FALSE)
+  if (length(series_names) == 1) {
+    # For whatever reason R wants to flip our dims when we have a single series.
+    fl_body <- as.data.frame(sapply(fl_body, function(x) x[1:describe[2]]),
+                             stringsAsFactors = FALSE)
+  } else {
+    fl_body <- as.data.frame(t(sapply(fl_body, function(x) x[1:describe[2]])),
+                             stringsAsFactors = FALSE)
+  }
   # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
   names(fl_body) <- series_names
   fl_body$year <- seq(first_year, first_year + dim(fl_body)[1] - 1)
-  fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "type",
+  fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "rec_type",
                        variable.name = "series")
-  fl_body_melt <- subset(fl_body_melt, type != ".")
-  fl_body_melt$type <- vapply(fl_body_melt$type, function(x) type_key[[x]], "a") 
-  fl_body_melt$type <- factor(fl_body_melt$type,
-                              levels = c("null.year", "recorder.year", "unknown.fs",
-                                         "unknown.fi", "dormant.fs", "dormant.fi",
-                                         "early.fs", "early.fi", "middle.fs",
-                                         "middle.fi", "late.fs", "late.fi",
-                                         "latewd.fs", "latewd.fi", "pith.year",
-                                         "bark.year", "inner.year", "outer.year",
+  fl_body_melt <- subset(fl_body_melt, rec_type != ".")
+  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) type_key[[x]], "a") 
+  fl_body_melt$rec_type <- factor(fl_body_melt$rec_type,
+                              levels = c("null_year", "recorder_year", "unknown_fs",
+                                         "unknown_fi", "dormant_fs", "dormant_fi",
+                                         "early_fs", "early_fi", "middle_fs",
+                                         "middle_fi", "late_fs", "late_fi",
+                                         "latewd_fs", "latewd_fi", "pith_year",
+                                         "bark_year", "inner_year", "outer_year",
                                          "estimate"))
   f <- fhx(year = fl_body_melt$year, series = fl_body_melt$series,
-           type = fl_body_melt$type)
+           rec_type = fl_body_melt$rec_type)
   sort(f, decreasing = TRUE)
 }
 
@@ -95,32 +101,32 @@ write_fhx <- function(x, fname="") {
           for writing.")
     stop()
   }
-  type_key <- list("null.year"    = ".", 
-                   "recorder.year"= "|", 
-                   "unknown.fs"   = "U", 
-                   "unknown.fi"   = "u", 
-                   "dormant.fs"   = "D", 
-                   "dormant.fi"   = "d", 
-                   "early.fs"     = "E", 
-                   "early.fi"     = "e", 
-                   "middle.fs"    = "M", 
-                   "middle.fi"    = "m", 
-                   "late.fs"      = "L", 
-                   "late.fi"      = "l", 
-                   "latewd.fs"    = "A", 
-                   "latewd.fi"    = "a", 
-                   "pith.year"    = "[", 
-                   "bark.year"    = "]", 
-                   "inner.year"   = "{", 
-                   "outer.year"   = "}")
+  type_key <- list("null_year"    = ".", 
+                   "recorder_year"= "|", 
+                   "unknown_fs"   = "U", 
+                   "unknown_fi"   = "u", 
+                   "dormant_fs"   = "D", 
+                   "dormant_fi"   = "d", 
+                   "early_fs"     = "E", 
+                   "early_fi"     = "e", 
+                   "middle_fs"    = "M", 
+                   "middle_fi"    = "m", 
+                   "late_fs"      = "L", 
+                   "late_fi"      = "l", 
+                   "latewd_fs"    = "A", 
+                   "latewd_fi"    = "a", 
+                   "pith_year"    = "[", 
+                   "bark_year"    = "]", 
+                   "inner_year"   = "{", 
+                   "outer_year"   = "}")
   out <- x$rings
-  out$type <- vapply(out$type, function(x) type_key[[x]], "a") 
+  out$rec_type <- vapply(out$rec_type, function(x) type_key[[x]], "a") 
   year_range <- seq(min(out$year), max(out$year))
   filler <- data.frame(year = year_range,
                        series = rep("hackishSolution", length(year_range)),
-                       type = rep(".", length(year_range)))
+                       rec_type = rep(".", length(year_range)))
   out <- rbind(out, filler)
-  out <- reshape2::dcast(out, year ~ series, value.var = "type", fill = ".")
+  out <- reshape2::dcast(out, year ~ series, value.var = "rec_type", fill = ".")
   out$hackishSolution <- NULL
   # Weird thing to move year to the last column of the data.frame:
   out$yr <- out$year

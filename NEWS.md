@@ -1,3 +1,22 @@
+# burnr v0.0.2
+
+Changes in this patch:
+
+* `plot()` and `get_ggplot()` should no longer allow the user to plot facets and composite rugs in the same plot. This closes bug #25.
+
+* Ring types (the `rec_type` column in `x$rings`) has "." in all levels replaced with a "_". For example, 'dormant.fs' is now 'dormant_fs.' Closes #45.
+
+* In `get_ggplot()` the `legend` argument is now `plot_legend` to avoid clash with common functions.
+
+* In `fhx$rings` and all functions, `type` arugment is now `rec_type` to avoid clash with `type` function. `rec_type` is short for "record_type".
+
+* Can now read FHX files with a single series (closes bug #43).
+
+* `concatenate()` has been renamed `combine()` at the request of beloved users.
+
+* `lgr2` and `pgm` are available fire-history datasets when you load this package. The metadata for each of these sets is `lgr2_meta` and `pgm_meta`. Load the data with `data()`.
+
+
 # burnr v0.0.1
 
 * First github release

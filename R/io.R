@@ -2,7 +2,10 @@
 #'
 #' @param fname Name of target FHX file. Needs to be in format version 2.
 #' @param encoding Encoding to use when reading the FHX file. The default is to use the system.
+#'
 #' @return An \code{fhx} object.
+#'
+#' @export
 read_fhx <- function(fname, encoding=getOption("encoding")) {
   con <- file(fname, encoding = encoding)
   on.exit(close(con))
@@ -95,6 +98,8 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
 #'
 #' @param x An fhx instance.
 #' @param fname Output filename.
+#'
+#' @export
 write_fhx <- function(x, fname="") {
   if ( fname == "" ) {
     print("Please specify a character string naming a file or connection open

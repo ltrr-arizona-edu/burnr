@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{composite}
 \alias{composite}
-\title{Composite fire events in `x` returning years with prominent fires.}
+\title{Composite fire events in x returning years with prominent fires.}
 \usage{
 composite(x, filter_prop = 0.25, filter_min = 2)
 }
@@ -14,9 +14,9 @@ composite(x, filter_prop = 0.25, filter_min = 2)
 \item{filter_min}{The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.}
 }
 \value{
-A vector of years from `x`.
+A vector of years from x.
 }
 \description{
-Composite fire events in `x` returning years with prominent fires.
+Composite fire events in x returning years with prominent fires.
 }
 

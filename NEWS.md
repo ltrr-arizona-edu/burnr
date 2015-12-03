@@ -1,3 +1,15 @@
+# burnr v0.1.0.9999
+
+Changes in this minor release:
+
+* Added several small utility functions: `get_year()`, `get_series()`, `series_names()`, `delete()`.
+
+* `subset()` for `fhx` objects.
+
+* Pretty printing for `fhx` objects.
+
+* Improved documentation!
+
 # burnr v0.0.2
 
 Changes in this patch:

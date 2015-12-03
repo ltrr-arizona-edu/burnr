@@ -213,7 +213,7 @@ combine <- function(a, b) {
   sort(resolve_duplicates(f))
 }
 
-#' Merge/remove duplicate observations in an fhx object.
+#' Test for duplicate observations in an fhx object.
 #'
 #' @param x An fhx instance.
 #'

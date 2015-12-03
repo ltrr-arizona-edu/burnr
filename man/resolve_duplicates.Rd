@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{resolve_duplicates}
 \alias{resolve_duplicates}
-\title{Merge/remove duplicate observations in an fhx object.}
+\title{Test for duplicate observations in an fhx object.}
 \usage{
 resolve_duplicates(x)
 }
@@ -13,6 +13,6 @@ resolve_duplicates(x)
 A copy of \code{x} with duplicates removed.
 }
 \description{
-Merge/remove duplicate observations in an fhx object.
+Test for duplicate observations in an fhx object.
 }
 

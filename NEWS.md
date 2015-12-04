@@ -10,6 +10,8 @@ Changes in this minor release:
 
 * Improved documentation!
 
+* Adding tree_stats function, closes issue #44.
+
 # burnr v0.0.2
 
 Changes in this patch:

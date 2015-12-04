@@ -75,10 +75,10 @@ get_series <- function(x, s) {
 #' @param yr Integer vector of years to erase from x.
 #'
 #' @return An fhx object with observations erased.
-#' 
+#'
 #' @details
 #' You can combine s and yr to specify years within select series to remove.
-#' 
+#'
 #' @export
 delete <- function(x, s, yr) {
   # Hint: It's just an inverse subset.
@@ -182,7 +182,7 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
   #test <- subset(x$rings,
                  #x$rings$rec_type == "inner_year" | x$ring$rec_type == "pith_year")
   #i <- order(test$year, decreasing = TRUE)
-  series_minyears <- aggregate(year ~ series, x$rings, min) 
+  series_minyears <- aggregate(year ~ series, x$rings, min)
   i <- order(series_minyears$year, decreasing = TRUE)
   x$rings$series <- factor(x$rings$series,
                            #levels = series_levels,
@@ -230,4 +230,35 @@ resolve_duplicates <- function(x) {
       stop(c(dim(duplicates)[1],
            " duplicate(s) found. Please resolve duplicate records."))
   }
+}
+
+#' A function to generate tree-level descriptive statics
+#'
+#' @param x An fhx instance
+#' @return A data.frame containing tree-level statistics
+#'
+#' @export
+tree_stats <- function(x){
+  stopifnot(class(x) == "fhx")
+  x <- fhx$rings
+  series <- sort(levels(x$series))
+  series.stats <- data.frame(matrix(nrow = length(series), ncol = 10))
+  names(series.stats) <- c('series', 'first', 'last', 'years', 'inner.type', 'outer.type',
+                           'number.events', 'number.fires', 'recording.years', 'mean.interval')
+  series.stats$series <- series
+
+  for(i in 1:nrow(series.stats)) {
+    tree <- x[x$series == paste(series.stats$series[i]), ]
+    series.stats[i, 'first'] <- min(tree$year)
+    series.stats[i, 'last'] <- max(tree$year)
+    series.stats[i, 'years'] <- series.stats[i, 'last'] - series.stats[i, 'first'] + 1
+    series.stats[i, 'inner.type'] <- paste(tree[tree$year == min(tree$year), ]$rec_type)
+    #   inner.type <- substr(inner.type, start=0, stop=grep("[_]", inner.type, value=TRUE)) # would to cut it at the period
+    series.stats[i, 'outer.type'] <- paste(tree[tree$year == max(tree$year), ]$rec_type)
+    series.stats[i, 'number.events'] <- length(c(grep('_fs', tree$type), grep('_fi', tree$rec_type)))
+    series.stats[i, 'number.fires'] <- length(grep('_fs', tree$rec_type))
+    series.stats[i, 'recording.years'] <- length(grep('recorder_year', tree$rec_type)) + series.stats[i, 'number.events']
+    series.stats[i, 'mean.interval'] <- round(mean(diff(sort(tree[grep('_fs', tree$rec_type), ]$year))), 1)
+  }
+  series.stats
 }

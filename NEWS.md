@@ -1,12 +1,8 @@
-# burnr v0.1.1
-
-Changes in this patch:
-
-* Fixed poor sorting function for FHX objects.
-
-# burnr v0.1.0
+# burnr v0.1.9999
 
 Changes in this minor release:
+
+* Fixed poor sorting function for FHX objects.
 
 * Added several small utility functions: `get_year()`, `get_series()`, `series_names()`, `delete()`.
 

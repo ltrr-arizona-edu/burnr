@@ -165,7 +165,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2) {
   as.integer(levels(out)[out])
 }
 
-#' Sort the series names of an fhx instance by earliest year.
+#' Sort the series names of fhx instance by earliest year.
 #'
 #' @param x An fhx instance to be sorted.
 #' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.

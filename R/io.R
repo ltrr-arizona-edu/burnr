@@ -91,7 +91,6 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
                                          "estimate"))
   f <- fhx(year = fl_body_melt$year, series = fl_body_melt$series,
            rec_type = fl_body_melt$rec_type)
-  sort(f, decreasing = TRUE)
 }
 
 #' Write an fhx object to a new FHX v2 format file.

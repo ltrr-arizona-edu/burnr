@@ -180,7 +180,7 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
     return(x)
   }
   series_minyears <- aggregate(year ~ series, x$rings, min)
-  i <- order(series_minyears$year, decreasing = TRUE)
+  i <- order(series_minyears$year, decreasing = decreasing)
   x$rings$series <- factor(x$rings$series,
                            levels = series_minyears$series[i],
                            ordered = TRUE)
@@ -204,7 +204,7 @@ combine <- function(a, b) {
   f$rings <- rbind(a$rings, b$rings)
   if (length(a$meta) | length(b$meta) > 0)  # If meta data present...
     f$meta <- c(a$meta, b$meta)
-  sort(resolve_duplicates(f))
+  resolve_duplicates(f)
 }
 
 #' Test for duplicate observations in an fhx object.

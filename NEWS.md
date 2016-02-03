@@ -1,6 +1,10 @@
-# burnr v0.1.9002
+# burnr v0.1.9003
 
 Changes in this minor release:
+
+* Removed sorting by default on read_fhx() and combine()
+
+* Fixed sort()s non-responsive decreasing argument.
 
 * Fixed poor sorting function for FHX objects.
 

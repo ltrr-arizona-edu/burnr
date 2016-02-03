@@ -165,9 +165,9 @@ composite <- function(x, filter_prop=0.25, filter_min=2) {
   as.integer(levels(out)[out])
 }
 
-#' Resort the series names of an fhx instance.
+#' Sort the series names of an fhx instance by earliest year.
 #'
-#' @param x An fhx instance to be reorder.
+#' @param x An fhx instance to be sorted.
 #' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
 #' @param ... Additional arguments that fall off the face of the universe.
 #'
@@ -176,20 +176,14 @@ composite <- function(x, filter_prop=0.25, filter_min=2) {
 #' @export
 sort.fhx <- function(x, decreasing=FALSE, ...) {
   stopifnot(class(x) == "fhx")
-  if (length(names(x$rings)) > 1) {
+  if (length(unique(x$rings$series)) == 1) {
     return(x)
   }
-  #test <- subset(x$rings,
-                 #x$rings$rec_type == "inner_year" | x$ring$rec_type == "pith_year")
-  #i <- order(test$year, decreasing = TRUE)
   series_minyears <- aggregate(year ~ series, x$rings, min)
   i <- order(series_minyears$year, decreasing = TRUE)
   x$rings$series <- factor(x$rings$series,
-                           #levels = series_levels,
                            levels = series_minyears$series[i],
                            ordered = TRUE)
-  i <- order(x$rings$series, x$rings$year, decreasing = decreasing)
-  x$rings <- x$rings[i, ]
   x
 }
 

@@ -1,4 +1,10 @@
-# burnr v0.1.0.9999
+# burnr v0.1.1
+
+Changes in this patch:
+
+* Fixed poor sorting function for FHX objects.
+
+# burnr v0.1.0
 
 Changes in this minor release:
 

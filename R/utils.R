@@ -240,7 +240,7 @@ resolve_duplicates <- function(x) {
 #' @export
 tree_stats <- function(x){
   stopifnot(class(x) == "fhx")
-  x <- fhx$rings
+  x <- x$rings
   series <- sort(levels(x$series))
   series.stats <- data.frame(matrix(nrow = length(series), ncol = 10))
   names(series.stats) <- c('series', 'first', 'last', 'years', 'inner.type', 'outer.type',

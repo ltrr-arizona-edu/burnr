@@ -1,6 +1,8 @@
-# burnr v0.1.9003
+# burnr v0.1.9004
 
 Changes in this minor release:
+
+* Fixed minor bug in tree_stats.
 
 * Removed sorting by default on read_fhx() and combine()
 

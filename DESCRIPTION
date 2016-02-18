@@ -1,6 +1,6 @@
 Package: burnr
 Title: Advanced Fire History Analysis in R
-Version: 0.1.0.9004
+Version: 0.1.0.9005
 Authors@R: c(
   person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre")),
   person("Christopher", "Guiterman", role = c("ctb")),
@@ -14,5 +14,6 @@ Suggests:
     testthat
 Imports:
     ggplot2,
-    reshape2
+    reshape2,
+    plyr
 RoxygenNote: 5.0.1

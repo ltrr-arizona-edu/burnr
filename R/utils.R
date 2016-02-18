@@ -119,44 +119,105 @@ subset.fhx <- function(x, subset, ...) {
   fhx(out$year, out$series, out$rec_type)
 }
 
+#' Subset to years that are considered recording.
+#'
+#' @param x A dataframe from an fhx object.
+#' @param injury_event Boolean indicating whether injuries should be considered event.
+#'
+#' @return A dataframe with a column of each year which is 'recording'.
+recording_finder <- function(x, injury_event) {
+  # 'x' is the the 'rings' data.frame for a single series.
+  # Use with: ddply(lgr2$rings, 'series', recorder_finder)
+  x <- x[order(x$year), ]
+  recorder <- list("|" = "recorder_year",
+                    "U" = "unknown_fs",
+                    "D" = "dormant_fs",
+                    "E" = "early_fs",
+                    "M" = "middle_fs",
+                    "L" = "late_fs",
+                    "A" = "latewd_fs")
+  injury <- list("u" = "unknown_fi",
+                   "d" = "dormant_fi",
+                   "e" = "early_fi",
+                   "m" = "middle_fi",
+                   "l" = "late_fi",
+                   "a" = "latewd_fi")
+  scar <- list("U" = "unknown_fs",
+                   "D" = "dormant_fs",
+                   "E" = "early_fs",
+                   "M" = "middle_fs",
+                   "L" = "late_fs",
+                   "A" = "latewd_fs")
+  ends <- list("[" = "pith_year",
+               "]" = "bark_year",
+               "{" = "inner_year",
+               "}" = "outer_year")
+  if (injury_event) {
+    recorder <- c(recorder, injury)
+  }
+  rec <- subset(x, x$rec_type %in% recorder)$year
+  inj <- subset(x, x$rec_type %in% injury)$year
+  end <- subset(x, x$rec_type %in% ends)$year
+  inj_dif <- diff(inj)
+  active <- c(rec, intersect(rec - 1, end), intersect(rec + 1, end))
+  if (any(inj_dif == 1) & injury_event) {
+    active <- c(active, intersect(rec - 1, inj), intersect(rec + 1, inj))
+    for (i in which(inj_dif == 1)) {
+      if (inj_dif[i] %in% active) {
+        active <- c(inj_dif[i + 1], active)
+      }
+    }
+  }
+  data.frame(recording = union(rec, active))
+}
+
+#' Count the number of recording series for each year.
+#'
+#' @param x An fhx object.
+#' @param injury_event Boolean indicating whether injuries should be considered event. Default is FALSE.
+#'
+#' @return A dataframe with a columns giving the year and corresponding number of recording events for that year.
+#'
+#' @export
+get_recording_count <- function(x, injury_event=FALSE) {
+  stopifnot('fhx' %in% class(x))
+  as.data.frame(table(plyr::ddply(x$rings, 'series', recording_finder, injury_event = injury_event)$recording))
+}
+
 #' Composite fire events in x returning years with prominent fires.
 #'
 #' @param x An fhx instance.
 #' @param filter_prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
 #' @param filter_min The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
+#' @param injury_event Boolean indicating whether injuries should be considered events. Default is FALSE.
 #'
 #' @return A vector of years from x.
 #'
 #' @export
-composite <- function(x, filter_prop=0.25, filter_min=2) {
+composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
   stopifnot(class(x) == "fhx")
-  recording <- list("|" = "recorder_year",
-                   "U" = "unknown_fs",
-                   "u" = "unknown_fi",
-                   "D" = "dormant_fs",
-                   "d" = "dormant_fi",
-                   "E" = "early_fs",
-                   "e" = "early_fi",
-                   "M" = "middle_fs",
-                   "m" = "middle_fi",
-                   "L" = "late_fs",
-                   "l" = "late_fi",
-                   "A" = "latewd_fs",
-                   "a" = "latewd_fi")
-  event <- list("U" = "unknown_fs",
-               "u" = "unknown_fi",
+  injury <- list("u" = "unknown_fi",
+                 "d" = "dormant_fi",
+                 "e" = "early_fi",
+                 "m" = "middle_fi",
+                 "l" = "late_fi",
+                 "a" = "latewd_fi")
+  scar <- list("U" = "unknown_fs",
                "D" = "dormant_fs",
-               "d" = "dormant_fi",
                "E" = "early_fs",
-               "e" = "early_fi",
                "M" = "middle_fs",
-               "m" = "middle_fi",
                "L" = "late_fs",
-               "l" = "late_fi",
-               "A" = "latewd_fs",
-               "a" = "latewd_fi")
+               "A" = "latewd_fs")
+  ends <- list("[" = "pith_year",
+               "]" = "bark_year",
+               "{" = "inner_year",
+               "}" = "outer_year")
+  event <- scar
+  if (injury_event) {
+    event <- c(event, injury)
+  }
   event_count <- as.data.frame(table(subset(x$rings, x$rings$rec_type %in% event)$year))
-  recording_count <- as.data.frame(table(subset(x$rings, x$rings$rec_type %in% recording)$year))
+  recording_count <- get_recording_count(x, injury_event = injury_event) 
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count, by = "Var1", suffixes = c('_event', '_recording'))
   counts$prop <- counts$Freq_event / counts$Freq_recording

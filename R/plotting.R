@@ -11,6 +11,7 @@
 #' @param composite_rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE. Note that composite_rug and facet_group, facet_id cannot be used in the same plot. You must choose facets or a composite rug.
 #' @param filter_prop An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param filter_min An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param injury_event Boolean indicating whether injuries should be considered recorders. This is passed to \code{composite}. See this function for details.
 #' @param plot_legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
 #' @param event_size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
 #' @param rugbuffer_size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
@@ -19,9 +20,11 @@
 #' @return A ggplot object for plotting or manipulation.
 #'
 #' @export
-get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_type="grid", ylabels=TRUE,
-                       yearlims=FALSE, composite_rug=FALSE, filter_prop=0.25,
-                       filter_min=2, plot_legend=FALSE, event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
+get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, 
+                       facet_type="grid", ylabels=TRUE, yearlims=FALSE, 
+                       composite_rug=FALSE, filter_prop=0.25, filter_min=2, 
+                       injury_event= FALSE, plot_legend=FALSE, 
+                       event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
                        rugbuffer_size=2, rugdivide_pos=2) {
 # TODO: Merge ends and events into a single df. with a factor to handle the 
 #       different event types... this will allow us to put these "fire events" and
@@ -97,7 +100,8 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, facet_ty
     p <- (p + ggplot2::geom_rug(data = subset(rings,
                                      rings$year %in% composite(x, 
                                                                filter_prop = filter_prop,
-                                                               filter_min = filter_min)),
+                                                               filter_min = filter_min,
+                                                               injury_event = injury_event)),
                        sides = "b", color = "black")
             + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer_size), levels(rings$series)))
             + ggplot2::geom_hline(yintercept = rugdivide_pos, color = "grey50"))

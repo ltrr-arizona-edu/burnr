@@ -4,7 +4,7 @@
 \alias{composite}
 \title{Composite fire events in x returning years with prominent fires.}
 \usage{
-composite(x, filter_prop = 0.25, filter_min = 2)
+composite(x, filter_prop = 0.25, filter_min = 2, injury_event = FALSE)
 }
 \arguments{
 \item{x}{An fhx instance.}
@@ -12,6 +12,8 @@ composite(x, filter_prop = 0.25, filter_min = 2)
 \item{filter_prop}{The proportion of fire events to recording series needed in order to be considered. Default is 0.25.}
 
 \item{filter_min}{The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.}
+
+\item{injury_event}{Boolean indicating whether injuries should be considered events. Default is FALSE.}
 }
 \value{
 A vector of years from x.

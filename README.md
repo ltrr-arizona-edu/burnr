@@ -1,4 +1,4 @@
-# burnr
+# 🔥burnr
 
 [![Travis-CI Build Status](https://travis-ci.org/ltrr-arizona-edu/burnr.svg?branch=master)](https://travis-ci.org/ltrr-arizona-edu/burnr)
 [![Coverage Status](https://coveralls.io/repos/ltrr-arizona-edu/burnr/badge.svg)](https://coveralls.io/r/ltrr-arizona-edu/burnr)

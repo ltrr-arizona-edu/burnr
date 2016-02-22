@@ -249,15 +249,22 @@ tree_stats <- function(x){
 
   for(i in 1:nrow(series.stats)) {
     tree <- x[x$series == paste(series.stats$series[i]), ]
-    series.stats[i, 'first'] <- min(tree$year)
-    series.stats[i, 'last'] <- max(tree$year)
-    series.stats[i, 'years'] <- series.stats[i, 'last'] - series.stats[i, 'first'] + 1
-    series.stats[i, 'inner.type'] <- paste(tree[tree$year == min(tree$year), ]$rec_type)
-    series.stats[i, 'outer.type'] <- paste(tree[tree$year == max(tree$year), ]$rec_type)
-    series.stats[i, 'number.events'] <- length(c(grep('_fs', tree$type), grep('_fi', tree$rec_type)))
-    series.stats[i, 'number.fires'] <- length(grep('_fs', tree$rec_type))
-    series.stats[i, 'recording.years'] <- length(grep('recorder_year', tree$rec_type)) + series.stats[i, 'number.events']
-    series.stats[i, 'mean.interval'] <- round(mean(diff(sort(tree[grep('_fs', tree$rec_type), ]$year))), 1)
+    if (nrow(tree) != 0)
+    {
+      series.stats[i, 'first'] <- min(tree$year)
+      series.stats[i, 'last'] <- max(tree$year)
+      series.stats[i, 'years'] <- series.stats[i, 'last'] - series.stats[i, 'first'] + 1
+      series.stats[i, 'inner.type'] <- paste(tree[tree$year == min(tree$year), ]$rec_type)
+      series.stats[i, 'outer.type'] <- paste(tree[tree$year == max(tree$year), ]$rec_type)
+      series.stats[i, 'number.events'] <- length(c(grep('_fs', tree$type), grep('_fi', tree$rec_type)))
+      series.stats[i, 'number.fires'] <- length(grep('_fs', tree$rec_type))
+      series.stats[i, 'recording.years'] <- length(grep('recorder_year', tree$rec_type)) + series.stats[i, 'number.events']
+      series.stats[i, 'mean.interval'] <- round(mean(diff(sort(tree[grep('_fs', tree$rec_type), ]$year))), 1)
+    }
+    else # Tree has no features
+    {
+      series.stats[i, c(2:9)] <- rep(NA, 9)
+    }
   }
   series.stats
 }

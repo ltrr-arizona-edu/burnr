@@ -1,11 +1,15 @@
 Package: burnr
 Title: Forest Fire History in R
-Version: 0.1.0.9999
+Version: 0.1.0.9006
 Authors@R: person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre"))
 Description: Analysis of fire history data (e.g. FHX) in R.
-Depends: R (>= 3.2)
+Depends:
+    R (>= 3.2)
 License: GPL-3
 LazyData: true
-Suggests: testthat
-Imports: ggplot2,
+Suggests:
+    testthat
+Imports:
+    ggplot2,
     reshape2
+RoxygenNote: 5.0.1

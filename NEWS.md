@@ -1,6 +1,10 @@
-# burnr v0.1.0.9999
+# burnr v0.1.0.9006
 
 Changes in this minor release:
+
+* Added run_sea function to begin to address issue #58
+
+* Bug fix in tree_stats to maintain series IDs for those with no features
 
 * Added several small utility functions: `get_year()`, `get_series()`, `series_names()`, `delete()`.
 

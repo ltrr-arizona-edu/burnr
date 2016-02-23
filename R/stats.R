@@ -1,0 +1,160 @@
+#' A function to generate tree-level descriptive statics
+#'
+#' @param x An fhx instance
+#' @return A data.frame containing tree-level statistics
+#'
+#' @export
+tree_stats <- function(x){
+  stopifnot(class(x) == "fhx")
+  x <- x$rings
+  series <- sort(levels(x$series))
+  series.stats <- data.frame(matrix(nrow = length(series), ncol = 10))
+  names(series.stats) <- c('series', 'first', 'last', 'years', 'inner.type', 'outer.type',
+                           'number.events', 'number.fires', 'recording.years', 'mean.interval')
+  series.stats$series <- series
+
+  for(i in 1:nrow(series.stats)) {
+    tree <- x[x$series == paste(series.stats$series[i]), ]
+    if (nrow(tree) != 0)
+    {
+      series.stats[i, 'first'] <- min(tree$year)
+      series.stats[i, 'last'] <- max(tree$year)
+      series.stats[i, 'years'] <- series.stats[i, 'last'] - series.stats[i, 'first'] + 1
+      series.stats[i, 'inner.type'] <- paste(tree[tree$year == min(tree$year), ]$rec_type)
+      series.stats[i, 'outer.type'] <- paste(tree[tree$year == max(tree$year), ]$rec_type)
+      series.stats[i, 'number.events'] <- length(c(grep('_fs', tree$type), grep('_fi', tree$rec_type)))
+      series.stats[i, 'number.fires'] <- length(grep('_fs', tree$rec_type))
+      series.stats[i, 'recording.years'] <- length(grep('recorder_year', tree$rec_type)) + series.stats[i, 'number.events']
+      series.stats[i, 'mean.interval'] <- round(mean(diff(sort(tree[grep('_fs', tree$rec_type), ]$year))), 1)
+    }
+    else # Tree has no features
+    {
+      series.stats[i, c(2:9)] <- rep(NA, 9)
+    }
+  }
+  series.stats
+}
+
+
+#' A superposed epoch analysis function that attempts to directly replicate the analyses provided in the EVENT program of the dendro
+#' program library and FHX2. In effect, it uses the matrix calculations of the sea function in the dplR library
+#'  with additional output.
+#'
+#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
+#' @param key A vector of event years for superposed epoch, such as fire years
+#' @param years_before  The number of lag years prior to the event year
+#' @param years_after The number of lag years following the event year
+#' @param time_span The length of the x time series to use. Defaults to "key_period"
+#' which constrains the time series to the time period of key events; "all" will use the entire
+#' time series
+#' @param n_iter The number of iterations for bootstrap resampling
+#'
+#' @details It's superposed epoch analysis, it's all been said before. Twice.
+#'
+#' @return A list of three data frames, following the output of EVENT.
+#' (1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
+#'
+#'  @references Holmes and Swetnam 1994, EVENT program desription
+#'  @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
+#'  @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
+#'
+#'  @export
+
+run_sea <- function(x, key, years_before = 6, years_after = 4,
+                      time_span = c("key_period"), n_iter = 1000){
+
+  # set up
+  period <- range(key)
+  rnames <- as.numeric(rownames(x))
+  rnames.cut <- rnames[period[1] : period[2]]
+  n <- length(key)
+  seq.n <- seq_len(n)
+  m <- years_before + years_after + 1
+  yrs.base <- -years_before:years_after
+  out_table <- data.frame(matrix(NA_real_, nrow=m, ncol=16,
+                                 dimnames=list(1:m, c('lag_year', 'mean_value',
+                                                      'n_values', 'St_dev', 'lower_95',
+                                                      'upper_95', 'lower_99', 'upper_99',
+                                                      'lower_99.9', 'upper_99.9', 'lower_95_perc',
+                                                      'upper_95_perc', 'lower_99_perc', 'upper_99_perc',
+                                                      'min_value', 'max_value'))))
+  out_table[, 1] <- yrs.base
+
+  # key-event matrix
+  event.table <- matrix(NA_real_, ncol = m, nrow = n)
+  for (i in seq.n) {
+    yrs <- as.character(key[i] + yrs.base)
+    event.table[i, ] <- x[yrs, ]
+  }
+
+  key_event_table <- out_table[, -c(11:14)]
+  key_event_table[, 2] <- colMeans(event.table, na.rm=TRUE)
+  key_event_table[, 3] <- apply(event.table, 2, function(x) sum(!is.na(x)))
+  key_event_table[, 4] <- apply(event.table, 2, sd, na.rm=TRUE)
+  key_event_table[, 5] <- apply(event.table, 2, function(x) mean(x) - 1.960*sd(x, na.rm=TRUE))
+  key_event_table[, 6] <- apply(event.table, 2, function(x) mean(x) + 1.960*sd(x, na.rm=TRUE))
+  key_event_table[, 7] <- apply(event.table, 2, function(x) mean(x) - 2.575*sd(x, na.rm=TRUE))
+  key_event_table[, 8] <- apply(event.table, 2, function(x) mean(x) + 2.575*sd(x, na.rm=TRUE))
+  key_event_table[, 9] <- apply(event.table, 2, function(x) mean(x) - 3.294*sd(x, na.rm=TRUE))
+  key_event_table[, 10] <- apply(event.table, 2, function(x) mean(x) + 3.294*sd(x, na.rm=TRUE))
+  key_event_table[, 11] <- apply(event.table, 2, min, na.rm=TRUE)
+  key_event_table[, 12] <- apply(event.table, 2, max, na.rm=TRUE)
+  key_event_table <- round(key_event_table, 3)
+
+  # random event matrix
+  re.table <- matrix(NA_real_, ncol = m, nrow = n_iter)
+  re.subtable <- matrix(NA_real_, ncol = m, nrow = n)
+  if(time_span == "key_period"){
+    rand_yrs <- rnames.cut
+  }
+  else {
+    rand_yrs <- rnames
+  }
+
+  for (k in seq_len(n_iter)) {
+    rand.key <- sample(rand_yrs, n, replace = TRUE)
+    for (i in seq.n) {
+      yrs <- as.character(rand.key[i] + yrs.base)
+      re.subtable[i, ] <- x[yrs, ]
+    }
+    re.table[k, ] <- colMeans(re.subtable, na.rm = TRUE)
+  }
+  rand_event_table <- out_table
+  rand_event_table[, 2] <- colMeans(re.table, na.rm=TRUE)
+  rand_event_table[, 3] <- apply(re.table, 2, function(x) sum(!is.na(x)))
+  rand_event_table[, 4] <- apply(re.table, 2, sd, na.rm=TRUE)
+  rand_event_table[, 5] <- apply(re.table, 2, function(x) mean(x) - 1.960*sd(x, na.rm=TRUE))
+  rand_event_table[, 6] <- apply(re.table, 2, function(x) mean(x) + 1.960*sd(x, na.rm=TRUE))
+  rand_event_table[, 7] <- apply(re.table, 2, function(x) mean(x) - 2.575*sd(x, na.rm=TRUE))
+  rand_event_table[, 8] <- apply(re.table, 2, function(x) mean(x) + 2.575*sd(x, na.rm=TRUE))
+  rand_event_table[, 9] <- apply(re.table, 2, function(x) mean(x) - 3.294*sd(x, na.rm=TRUE))
+  rand_event_table[, 10] <- apply(re.table, 2, function(x) mean(x) + 3.294*sd(x, na.rm=TRUE))
+  rand_event_table[, 11] <- apply(re.table, 2, function(x) quantile(x, .025, na.rm=TRUE))
+  rand_event_table[, 12] <- apply(re.table, 2, function(x) quantile(x, .975, na.rm=TRUE))
+  rand_event_table[, 13] <- apply(re.table, 2, function(x) quantile(x, .005, na.rm=TRUE))
+  rand_event_table[, 14] <- apply(re.table, 2, function(x) quantile(x, .995, na.rm=TRUE))
+  rand_event_table[, 15] <- apply(re.table, 2, min, na.rm=TRUE)
+  rand_event_table[, 16] <- apply(re.table, 2, max, na.rm=TRUE)
+  rand_event_table <- round(rand_event_table, 3)
+
+  # Departure table
+
+  departure_table <- out_table[, -c(3, 4, 15, 16)]
+  departure_table[, 2] <- key_event_table[, 2] - rand_event_table[, 2]
+  departure_table[, 3] <- apply(re.table, 2, function(x) -1 * 1.960*sd(x, na.rm=TRUE))
+  departure_table[, 4] <- apply(re.table, 2, function(x)      1.960*sd(x, na.rm=TRUE))
+  departure_table[, 5] <- apply(re.table, 2, function(x) -1 * 2.575*sd(x, na.rm=TRUE))
+  departure_table[, 6] <- apply(re.table, 2, function(x)      2.575*sd(x, na.rm=TRUE))
+  departure_table[, 7] <- apply(re.table, 2, function(x) -1 * 3.294*sd(x, na.rm=TRUE))
+  departure_table[, 8] <- apply(re.table, 2, function(x)      3.294*sd(x, na.rm=TRUE))
+  departure_table[, 9] <- apply(re.table, 2, function(x) quantile(x, .025, na.rm=TRUE) - median(x))
+  departure_table[, 10] <- apply(re.table, 2, function(x) quantile(x, .975, na.rm=TRUE) + median(x))
+  departure_table[, 11] <- apply(re.table, 2, function(x) quantile(x, .005, na.rm=TRUE) - median(x))
+  departure_table[, 12] <- apply(re.table, 2, function(x) quantile(x, .995, na.rm=TRUE) + median(x))
+  departure_table <- round(departure_table, 3)
+
+  out <- list("Actual events" = key_event_table, "Simulated events" = rand_event_table,
+              "Departures of actual from simulated" = departure_table)
+
+  out
+}

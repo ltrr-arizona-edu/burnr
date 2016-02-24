@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Adding new "pretty" output to run_sea
+
 * Added run_sea function to begin to address issue #58
 
 * Bug fix in tree_stats to maintain series IDs for those with no features

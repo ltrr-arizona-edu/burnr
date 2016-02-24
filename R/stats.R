@@ -153,8 +153,17 @@ run_sea <- function(x, key, years_before = 6, years_after = 4,
   departure_table[, 12] <- apply(re.table, 2, function(x) quantile(x, .995, na.rm=TRUE) + median(x))
   departure_table <- round(departure_table, 3)
 
-  out <- list("Actual events" = key_event_table, "Simulated events" = rand_event_table,
-              "Departures of actual from simulated" = departure_table)
+  out_list <- list("Actual events" = key_event_table, "Simulated events" = rand_event_table,
+                   "Departures of actual from simulated" = departure_table)
 
-  out
+  prnt.tbl <- data.frame(lag = departure_table$lag_year,
+                         departure = departure_table$mean_value,
+                         sig = paste(ifelse(departure_table$mean_value < departure_table$lower_95_perc |
+                                              departure_table$mean_value > departure_table$upper_95_perc, '*', ''),
+                                     ifelse(departure_table$mean_value < departure_table$lower_99_perc |
+                                              departure_table$mean_value > departure_table$upper_99_perc, '*', ''),
+                                     sep=''))
+  print(prnt.tbl)
+
+  return(out_list)
 }

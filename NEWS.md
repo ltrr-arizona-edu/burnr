@@ -1,6 +1,10 @@
-# burnr v0.1.9005
+# burnr v0.1.9006
 
 Changes in this minor release:
+
+* Added run_sea function to begin to address issue #58
+
+* Bug fix in tree_stats to maintain series IDs for those with no features
 
 * Changed composite() behavior. Now more similar to FHAES. Can choose to count injuries as "fire events" with the injury_event argument.
 

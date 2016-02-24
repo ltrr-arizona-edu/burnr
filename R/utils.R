@@ -286,33 +286,3 @@ resolve_duplicates <- function(x) {
            " duplicate(s) found. Please resolve duplicate records."))
   }
 }
-
-#' A function to generate tree-level descriptive statics
-#'
-#' @param x An fhx instance
-#' @return A data.frame containing tree-level statistics
-#'
-#' @export
-tree_stats <- function(x){
-  stopifnot(class(x) == "fhx")
-  x <- x$rings
-  series <- sort(levels(x$series))
-  series.stats <- data.frame(matrix(nrow = length(series), ncol = 10))
-  names(series.stats) <- c('series', 'first', 'last', 'years', 'inner.type', 'outer.type',
-                           'number.events', 'number.fires', 'recording.years', 'mean.interval')
-  series.stats$series <- series
-
-  for(i in 1:nrow(series.stats)) {
-    tree <- x[x$series == paste(series.stats$series[i]), ]
-    series.stats[i, 'first'] <- min(tree$year)
-    series.stats[i, 'last'] <- max(tree$year)
-    series.stats[i, 'years'] <- series.stats[i, 'last'] - series.stats[i, 'first'] + 1
-    series.stats[i, 'inner.type'] <- paste(tree[tree$year == min(tree$year), ]$rec_type)
-    series.stats[i, 'outer.type'] <- paste(tree[tree$year == max(tree$year), ]$rec_type)
-    series.stats[i, 'number.events'] <- length(c(grep('_fs', tree$type), grep('_fi', tree$rec_type)))
-    series.stats[i, 'number.fires'] <- length(grep('_fs', tree$rec_type))
-    series.stats[i, 'recording.years'] <- length(grep('recorder_year', tree$rec_type)) + series.stats[i, 'number.events']
-    series.stats[i, 'mean.interval'] <- round(mean(diff(sort(tree[grep('_fs', tree$rec_type), ]$year))), 1)
-  }
-  series.stats
-}

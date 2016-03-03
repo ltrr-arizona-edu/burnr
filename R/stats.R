@@ -4,7 +4,7 @@
 #' @return A data.frame containing tree-level statistics
 #'
 #' @export
-tree_stats <- function(x){
+tree_stats <- function(x) {
   stopifnot(class(x) == "fhx")
   x <- x$rings
   series <- sort(levels(x$series))
@@ -54,14 +54,14 @@ tree_stats <- function(x){
 #' @return A list of three data frames, following the output of EVENT.
 #' (1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
 #'
-#'  @references Holmes and Swetnam 1994, EVENT program desription
-#'  @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
-#'  @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
+#' @references Holmes and Swetnam 1994, EVENT program desription
+#' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
+#' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
 #'
-#'  @export
+#' @export
 
-run_sea <- function(x, key, years_before = 6, years_after = 4,
-                      time_span = c("key_period"), n_iter = 1000){
+run_sea <- function(x, key, years_before=6, years_after=4,
+                      time_span=c('key_period'), n_iter=1000) {
 
   # set up
   period <- range(key)

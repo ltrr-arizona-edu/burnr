@@ -27,12 +27,6 @@ time series}
 \value{
 A list of three data frames, following the output of EVENT.
 (1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
-
- @references Holmes and Swetnam 1994, EVENT program desription
- @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
- @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
-
- @export
 }
 \description{
 A superposed epoch analysis function that attempts to directly replicate the analyses provided in the EVENT program of the dendro
@@ -41,5 +35,12 @@ program library and FHX2. In effect, it uses the matrix calculations of the sea 
 }
 \details{
 It's superposed epoch analysis, it's all been said before. Twice.
+}
+\references{
+Holmes and Swetnam 1994, EVENT program desription
+
+Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
+
+Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
 }
 

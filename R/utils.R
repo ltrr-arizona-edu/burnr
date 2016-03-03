@@ -221,7 +221,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count, by = "Var1", suffixes = c('_event', '_recording'))
   counts$prop <- counts$Freq_event / counts$Freq_recording
-  filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_event >= filter_min)
+  filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min)
   out <- subset(counts, filter_mask)$Var1
   as.integer(levels(out)[out])
 }

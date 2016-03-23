@@ -160,8 +160,8 @@ recording_finder <- function(x, injury_event) {
   end <- subset(x, x$rec_type %in% ends)$year
   inj_dif <- diff(inj)
   active <- c(rec, intersect(rec - 1, end), intersect(rec + 1, end))
-  if (any(inj_dif == 1) & injury_event) {
-    active <- c(active, intersect(rec - 1, inj), intersect(rec + 1, inj))
+  active <- c(active, intersect(active - 1, inj), intersect(active + 1, inj)) # Really only need when injury_event = FALSE.
+  if (any(inj_dif == 1) & !injury_event) {
     for (i in which(inj_dif == 1)) {
       if (inj_dif[i] %in% active) {
         active <- c(inj_dif[i + 1], active)

@@ -15,7 +15,7 @@ series_stats <- function(x) {
 
   for(i in 1:nrow(out_stats)) {
     s <- x[x$series == paste(out_stats$series[i]), ]
-    if (nrow(tree) != 0) {
+    if (nrow(s) != 0) {
       out_stats[i, 'first'] <- min(s$year)
       out_stats[i, 'last'] <- max(s$year)
       out_stats[i, 'years'] <- out_stats[i, 'last'] - out_stats[i, 'first'] + 1

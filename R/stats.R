@@ -1,18 +1,19 @@
 #' A function to generate series-level descriptive statistics
 #'
 #' @param x An fhx instance
+#' @param injury_event Boolean indicating whether injuries should be considered event. Default is FALSE.
+#'
 #' @return A data.frame containing series-level statistics
 #'
 #' @export
-series_stats <- function(x) {
+series_stats <- function(x, injury_event=FALSE) {
   stopifnot(class(x) == "fhx")
   x <- x$rings
   series <- sort(levels(x$series))
-  out_stats <- data.frame(matrix(nrow = length(series), ncol = 10))
+  out_stats <- data.frame(matrix(data = NA, nrow = length(series), ncol = 10))
   names(out_stats) <- c('series', 'first', 'last', 'years', 'inner_type', 'outer_type',
-                           'number_events', 'number_fires', 'recording_years', 'mean_interval')
+                        'number_fires', 'number_injuries', 'recording_years', 'mean_interval')
   out_stats$series <- series
-
   for(i in 1:nrow(out_stats)) {
     s <- x[x$series == paste(out_stats$series[i]), ]
     if (nrow(s) != 0) {
@@ -21,12 +22,19 @@ series_stats <- function(x) {
       out_stats[i, 'years'] <- out_stats[i, 'last'] - out_stats[i, 'first'] + 1
       out_stats[i, 'inner_type'] <- paste(s[s$year == min(s$year), ]$rec_type)
       out_stats[i, 'outer_type'] <- paste(s[s$year == max(s$year), ]$rec_type)
-      out_stats[i, 'number_events'] <- length(c(grep('_fs', s$type), grep('_fi', s$rec_type)))
       out_stats[i, 'number_fires'] <- length(grep('_fs', s$rec_type))
-      out_stats[i, 'recording_years'] <- length(grep('recorder_year', s$rec_type)) + out_stats[i, 'number_events']
-      out_stats[i, 'mean_interval'] <- round(mean(diff(sort(s[grep('_fs', s$rec_type), ]$year))), 1)
+      out_stats[i, 'number_injuries'] <- length(grep('_fi', s$rec_type))
+      out_stats[i, 'recording_years'] <- nrow(recording_finder(s, injury_event = injury_event))
+      event_years <- sort(subset(s, grepl('_fs', s$rec_type))$year)
+      if (injury_event) {
+        event_years <- sort(subset(s, grepl('_fi|_fs', s$rec_type))$year)
+      }
+      if (length(event_years) > 1) {
+        intervals <- diff(event_years)
+        out_stats[i, 'mean_interval'] <- round(mean(intervals), 1)
+      }
     } else { # Tree has no features
-      out_stats[i, c(2:9)] <- rep(NA, 9)
+      out_stats[i, 2:9] <- rep(NA, 8) # Not sure we need this line.
     }
   }
   out_stats

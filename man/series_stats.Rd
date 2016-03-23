@@ -4,10 +4,12 @@
 \alias{series_stats}
 \title{A function to generate series-level descriptive statistics}
 \usage{
-series_stats(x)
+series_stats(x, injury_event = FALSE)
 }
 \arguments{
 \item{x}{An fhx instance}
+
+\item{injury_event}{Boolean indicating whether injuries should be considered event. Default is FALSE.}
 }
 \value{
 A data.frame containing series-level statistics

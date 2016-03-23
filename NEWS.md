@@ -1,16 +1,16 @@
-# burnr v0.1.9006
+# burnr v0.1.9007
 
 Changes in this minor release:
 
 * Added run_sea function to begin to address issue #58. Has pretty table output.
 
-* Bug fix in tree_stats to maintain series IDs for those with no features
+* Bug fix in series_stats to maintain series IDs for those with no features
 
 * Changed composite() behavior. Now more similar to FHAES. Can choose to count injuries as "fire events" with the injury_event argument.
 
 * Added get_recording_count() function.
 
-* Fixed minor bug in tree_stats.
+* Fixed minor bug in series_stats.
 
 * Removed sorting by default on read_fhx() and combine()
 
@@ -26,7 +26,7 @@ Changes in this minor release:
 
 * Improved documentation!
 
-* Adding tree_stats function, closes issue #44.
+* Adding series_stats function, closes issue #44.
 
 # burnr v0.0.2
 

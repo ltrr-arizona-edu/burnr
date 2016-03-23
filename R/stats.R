@@ -1,38 +1,35 @@
-#' A function to generate tree-level descriptive statics
+#' A function to generate series-level descriptive statistics
 #'
 #' @param x An fhx instance
-#' @return A data.frame containing tree-level statistics
+#' @return A data.frame containing series-level statistics
 #'
 #' @export
-tree_stats <- function(x) {
+series_stats <- function(x) {
   stopifnot(class(x) == "fhx")
   x <- x$rings
   series <- sort(levels(x$series))
-  series.stats <- data.frame(matrix(nrow = length(series), ncol = 10))
-  names(series.stats) <- c('series', 'first', 'last', 'years', 'inner.type', 'outer.type',
-                           'number.events', 'number.fires', 'recording.years', 'mean.interval')
-  series.stats$series <- series
+  out_stats <- data.frame(matrix(nrow = length(series), ncol = 10))
+  names(out_stats) <- c('series', 'first', 'last', 'years', 'inner_type', 'outer_type',
+                           'number_events', 'number_fires', 'recording_years', 'mean_interval')
+  out_stats$series <- series
 
-  for(i in 1:nrow(series.stats)) {
-    tree <- x[x$series == paste(series.stats$series[i]), ]
-    if (nrow(tree) != 0)
-    {
-      series.stats[i, 'first'] <- min(tree$year)
-      series.stats[i, 'last'] <- max(tree$year)
-      series.stats[i, 'years'] <- series.stats[i, 'last'] - series.stats[i, 'first'] + 1
-      series.stats[i, 'inner.type'] <- paste(tree[tree$year == min(tree$year), ]$rec_type)
-      series.stats[i, 'outer.type'] <- paste(tree[tree$year == max(tree$year), ]$rec_type)
-      series.stats[i, 'number.events'] <- length(c(grep('_fs', tree$type), grep('_fi', tree$rec_type)))
-      series.stats[i, 'number.fires'] <- length(grep('_fs', tree$rec_type))
-      series.stats[i, 'recording.years'] <- length(grep('recorder_year', tree$rec_type)) + series.stats[i, 'number.events']
-      series.stats[i, 'mean.interval'] <- round(mean(diff(sort(tree[grep('_fs', tree$rec_type), ]$year))), 1)
-    }
-    else # Tree has no features
-    {
-      series.stats[i, c(2:9)] <- rep(NA, 9)
+  for(i in 1:nrow(out_stats)) {
+    s <- x[x$series == paste(out_stats$series[i]), ]
+    if (nrow(tree) != 0) {
+      out_stats[i, 'first'] <- min(s$year)
+      out_stats[i, 'last'] <- max(s$year)
+      out_stats[i, 'years'] <- out_stats[i, 'last'] - out_stats[i, 'first'] + 1
+      out_stats[i, 'inner_type'] <- paste(s[s$year == min(s$year), ]$rec_type)
+      out_stats[i, 'outer_type'] <- paste(s[s$year == max(s$year), ]$rec_type)
+      out_stats[i, 'number_events'] <- length(c(grep('_fs', s$type), grep('_fi', s$rec_type)))
+      out_stats[i, 'number_fires'] <- length(grep('_fs', s$rec_type))
+      out_stats[i, 'recording_years'] <- length(grep('recorder_year', s$rec_type)) + out_stats[i, 'number_events']
+      out_stats[i, 'mean_interval'] <- round(mean(diff(sort(s[grep('_fs', s$rec_type), ]$year))), 1)
+    } else { # Tree has no features
+      out_stats[i, c(2:9)] <- rep(NA, 9)
     }
   }
-  series.stats
+  out_stats
 }
 
 

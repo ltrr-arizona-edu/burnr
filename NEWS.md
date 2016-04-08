@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Adding new function to calculate sample depth
+
 * Adding new "pretty" output to run_sea
 
 * Added run_sea function to begin to address issue #58

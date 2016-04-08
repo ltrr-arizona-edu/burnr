@@ -167,3 +167,28 @@ run_sea <- function(x, key, years_before = 6, years_after = 4,
 
   return(out_list)
 }
+
+#' A function to calculate the sample depth of an fhx object
+#'
+#' @param x An fhx instance
+#' @return A data.frame containing the years and number of trees
+#'
+#' @export
+#'
+samp_depth <- function(x){
+  require(reshape2)
+  stopifnot(class(x) == "fhx")
+  x <- tree_stats(x)
+  n.trees <- nrow(x)
+  aa <- data.frame(year = min(x$first):max(x$last))
+  for(i in 1:n.trees){
+    yrs <- x[i, ]$first : x[i, ]$last
+    bb <- data.frame(year = yrs, z = 1)
+    names(bb)[2] <- x$series[i]
+    aa <- merge(aa, bb, by=c('year'), all=TRUE)
+  }
+  aa$samp_depth <- rowSums(aa[, 2:n.trees + 1], na.rm=TRUE)
+  out <- subset(aa, select=c('year', 'samp_depth'))
+
+  out
+}

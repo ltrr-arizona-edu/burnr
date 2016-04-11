@@ -8,7 +8,7 @@
 #' @return An fhx instance.
 #'
 #' @export
-fhx <- function(year,  series, rec_type, metalist=list()){
+fhx <- function(year,  series, rec_type, metalist=list()) {
   if (!is.numeric(year)) stop("year must be numeric")
   if (!is.factor(series)) stop("series must be character")
   if (!is.factor(rec_type)) stop("rec_type must be factor")
@@ -181,7 +181,9 @@ recording_finder <- function(x, injury_event) {
 #' @export
 get_recording_count <- function(x, injury_event=FALSE) {
   stopifnot('fhx' %in% class(x))
-  as.data.frame(table(plyr::ddply(x$rings, 'series', recording_finder, injury_event = injury_event)$recording))
+  as.data.frame(table(year = plyr::ddply(x$rings, 'series', 
+                                         recording_finder, 
+                                         injury_event = injury_event)$recording))
 }
 
 #' Composite fire events in x returning years with prominent fires.
@@ -216,14 +218,15 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
   if (injury_event) {
     event <- c(event, injury)
   }
-  event_count <- as.data.frame(table(subset(x$rings, x$rings$rec_type %in% event)$year))
+  event_count <- as.data.frame(table(year = subset(x$rings, x$rings$rec_type %in% event)$year))
   recording_count <- get_recording_count(x, injury_event = injury_event) 
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
-  counts <- merge(event_count, recording_count, by = "Var1", suffixes = c('_event', '_recording'))
+  counts <- merge(event_count, recording_count, by = 'year', suffixes = c('_event', '_recording'))
   counts$prop <- counts$Freq_event / counts$Freq_recording
   filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min)
-  out <- subset(counts, filter_mask)$Var1
-  as.integer(levels(out)[out])
+  out <- subset(counts, filter_mask)$year
+  composite_event_years <- as.integer(levels(out)[out])
+  composite_event_years
 }
 
 #' Sort the series names of fhx instance by earliest year.

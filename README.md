@@ -25,7 +25,7 @@ plot(lgr2, color_group = lgr2_meta$SpeciesID, color_id = lgr2_meta$TreeID)
 
 Cool, eh?
 
-See `help(get_ggplot2)` for more options.
+See `help(get_ggplot2)` for more plot options. You can read and write your own FHX files with `read_fhx()` and `write_fhx()`.
 
 ## Installation
 

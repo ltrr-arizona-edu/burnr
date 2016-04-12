@@ -20,7 +20,8 @@ This gives you a basic plot. There are more advanced options. Here for example, 
 
 ```R
 data(lgr2_meta)
-plot(lgr2, color_group = lgr2_meta$SpeciesID, color_id = lgr2_meta$TreeID)
+plot(lgr2, color_group = lgr2_meta$SpeciesID, color_id = lgr2_meta$TreeID,
+     plot_legend = TRUE)
 ```
 
 Cool, eh?

@@ -256,7 +256,7 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
 #' @param a An fhx instance.
 #' @param b The fhx instance to be appended.
 #'
-#' @return An fhx instance with the information from \code{a} and \code{b}. Duplicates are resolved with \code{fire::resolve_duplicates()}.
+#' @return An fhx instance with the information from \code{a} and \code{b}.
 #'
 #' @export
 combine <- function(a, b) {
@@ -268,17 +268,16 @@ combine <- function(a, b) {
   f$rings <- rbind(a$rings, b$rings)
   if (length(a$meta) | length(b$meta) > 0)  # If meta data present...
     f$meta <- c(a$meta, b$meta)
-  resolve_duplicates(f)
+  check_duplicates(f)
 }
 
-#' Test for duplicate observations in an fhx object.
+#' Check for duplicate observations in an fhx object.
 #'
 #' @param x An fhx instance.
 #'
-#' @return A copy of \code{x} with duplicates removed.
+#' @return A \code{x} or stop() is thrown.
 #'
-#' @export
-resolve_duplicates <- function(x) {
+check_duplicates <- function(x) {
   stopifnot(class(x) == "fhx")
   if (!anyDuplicated(x$rings)) {
     return(x)

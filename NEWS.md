@@ -1,6 +1,8 @@
-# burnr v0.1.9007
+# burnr v0.1.9008
 
 Changes in this minor release:
+
+* `resolve_duplicates()` is now `burnr:::check_duplicates()`.
 
 * Added run_sea function to begin to address issue #58. Has pretty table output.
 

@@ -7,13 +7,39 @@ A tool set to analyze forest fire history data (e.g. FHX2) in R. This is designe
 
 The project is under heavy development. Hic sunt dracones.
 
-Documentation is included in the code. More information, including a cookbook, can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
+## A quick example
+
+```R
+library(burnr)
+
+data(lgr2)
+plot(lgr2)
+```
+
+This gives you a basic plot. There are more advanced options. Here for example, we are now coloring our plot by sample species.
+
+```R
+data(lgr2_meta)
+plot(lgr2, color_group = lgr2_meta$SpeciesID, color_id = lgr2_meta$TreeID)
+```
+
+Cool, eh?
+
+See `help(get_ggplot2)` for more options.
+
+## Installation
 
 This package is not yet in CRAN. If you'd like to install it, first be sure you have the `devtools` package installed in R. Install `burnr` with:
 
 ```R
 devtools::install_github("ltrr-arizona-edu/burnr")
 ```
+
+## Support
+
+Documentation is included in the code. More information, including a cookbook, can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
+
+## Development
 
 Want to contribute? Great! We're following [Hadley's packaging workflow](http://r-pkgs.had.co.nz/) and [code style](http://adv-r.had.co.nz/Style.html). Fork away.
 

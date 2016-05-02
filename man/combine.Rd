@@ -12,7 +12,7 @@ combine(a, b)
 \item{b}{The fhx instance to be appended.}
 }
 \value{
-An fhx instance with the information from \code{a} and \code{b}. Duplicates are resolved with \code{fire::resolve_duplicates()}.
+An fhx instance with the information from \code{a} and \code{b}.
 }
 \description{
 Combine two fhx objects.

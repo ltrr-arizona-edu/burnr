@@ -1,8 +1,10 @@
-# burnr v0.1.9008
+# burnr v0.1.9009
 
 Changes in this minor release:
 
 * `resolve_duplicates()` is now `burnr:::check_duplicates()`.
+
+* Added function samp_depth() to get sample depth.
 
 * Added run_sea function to begin to address issue #58. Has pretty table output.
 

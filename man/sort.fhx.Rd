@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{sort.fhx}
 \alias{sort.fhx}
-\title{Sort the series names of fhx instance by earliest year.}
+\title{Sort the series names of fhx object by earliest year.}
 \usage{
 \method{sort}{fhx}(x, decreasing = FALSE, ...)
 }
@@ -17,6 +17,6 @@
 A copy of \code{x} with reordered series.
 }
 \description{
-Sort the series names of fhx instance by earliest year.
+Sort the series names of fhx object by earliest year.
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{delete}
 \alias{delete}
-\title{Remove series or year(s) from an fhx object and return.}
+\title{Remove series or years from an fhx object.}
 \usage{
 delete(x, s, yr)
 }
@@ -17,7 +17,7 @@ delete(x, s, yr)
 An fhx object with observations erased.
 }
 \description{
-Remove series or year(s) from an fhx object and return.
+Remove series or years from an fhx object.
 }
 \details{
 You can combine s and yr to specify years within select series to remove.

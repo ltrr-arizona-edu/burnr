@@ -68,7 +68,7 @@ get_series <- function(x, s) {
   subset(x$rings, series %in% s)
 }
 
-#' Remove series or year(s) from an fhx object and return.
+#' Remove series or years from an fhx object.
 #'
 #' @param x An fhx object.
 #' @param s Character vector of series to erase from x.
@@ -119,7 +119,7 @@ subset.fhx <- function(x, subset, ...) {
   fhx(out$year, out$series, out$rec_type)
 }
 
-#' Subset to years that are considered recording.
+#' Subset `rings` data.frame to years that are considered recording.
 #'
 #' @param x A dataframe from an fhx object.
 #' @param injury_event Boolean indicating whether injuries should be considered event.
@@ -171,7 +171,7 @@ recording_finder <- function(x, injury_event) {
   data.frame(recording = union(rec, active))
 }
 
-#' Count the number of recording series for each year.
+#' Count the number of recording series for each year in an fhx object.
 #'
 #' @param x An fhx object.
 #' @param injury_event Boolean indicating whether injuries should be considered event. Default is FALSE.
@@ -186,7 +186,7 @@ count_recording <- function(x, injury_event=FALSE) {
                                          injury_event = injury_event)$recording))
 }
 
-#' Composite fire events in x returning years with prominent fires.
+#' Composite fire events returning years with prominent fires.
 #'
 #' @param x An fhx instance.
 #' @param filter_prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
@@ -229,7 +229,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
   composite_event_years
 }
 
-#' Sort the series names of fhx instance by earliest year.
+#' Sort the series names of fhx object by earliest year.
 #'
 #' @param x An fhx instance to be sorted.
 #' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.

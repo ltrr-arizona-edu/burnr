@@ -2,7 +2,7 @@
 % Please edit documentation in R/io.R
 \name{read_fhx}
 \alias{read_fhx}
-\title{Read input FHX file body from \code{fname} and use to return an \code{fhx} object.}
+\title{Read FHX2 file and return an \code{fhx} object.}
 \usage{
 read_fhx(fname, encoding = getOption("encoding"))
 }
@@ -15,6 +15,6 @@ read_fhx(fname, encoding = getOption("encoding"))
 An \code{fhx} object.
 }
 \description{
-Read input FHX file body from \code{fname} and use to return an \code{fhx} object.
+Read FHX2 file and return an \code{fhx} object.
 }
 

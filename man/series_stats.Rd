@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{series_stats}
 \alias{series_stats}
-\title{A function to generate series-level descriptive statistics}
+\title{Generate series-level descriptive statistics}
 \usage{
 series_stats(x, injury_event = FALSE)
 }
@@ -15,6 +15,6 @@ series_stats(x, injury_event = FALSE)
 A data.frame containing series-level statistics
 }
 \description{
-A function to generate series-level descriptive statistics
+Generate series-level descriptive statistics
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{composite}
 \alias{composite}
-\title{Composite fire events in x returning years with prominent fires.}
+\title{Composite fire events returning years with prominent fires.}
 \usage{
 composite(x, filter_prop = 0.25, filter_min = 2, injury_event = FALSE)
 }
@@ -19,6 +19,6 @@ composite(x, filter_prop = 0.25, filter_min = 2, injury_event = FALSE)
 A vector of years from x.
 }
 \description{
-Composite fire events in x returning years with prominent fires.
+Composite fire events returning years with prominent fires.
 }
 

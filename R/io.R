@@ -1,4 +1,4 @@
-#' Read input FHX file body from \code{fname} and use to return an \code{fhx} object.
+#' Read FHX2 file and return an \code{fhx} object.
 #'
 #' @param fname Name of target FHX file. Needs to be in format version 2.
 #' @param encoding Encoding to use when reading the FHX file. The default is to use the system.
@@ -93,7 +93,7 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
            rec_type = fl_body_melt$rec_type)
 }
 
-#' Write an fhx object to a new FHX v2 format file.
+#' Write an fhx object to a new FHX2 file.
 #'
 #' @param x An fhx instance.
 #' @param fname Output filename.

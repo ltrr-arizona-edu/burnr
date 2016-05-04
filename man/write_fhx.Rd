@@ -2,7 +2,7 @@
 % Please edit documentation in R/io.R
 \name{write_fhx}
 \alias{write_fhx}
-\title{Write an fhx object to a new FHX v2 format file.}
+\title{Write an fhx object to a new FHX2 file.}
 \usage{
 write_fhx(x, fname = "")
 }
@@ -12,6 +12,6 @@ write_fhx(x, fname = "")
 \item{fname}{Output filename.}
 }
 \description{
-Write an fhx object to a new FHX v2 format file.
+Write an fhx object to a new FHX2 file.
 }
 

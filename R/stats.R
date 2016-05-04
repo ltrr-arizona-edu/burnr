@@ -1,4 +1,4 @@
-#' A function to generate series-level descriptive statistics
+#' Generate series-level descriptive statistics
 #'
 #' @param x An fhx instance
 #' @param injury_event Boolean indicating whether injuries should be considered event. Default is FALSE.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{count_recording}
 \alias{count_recording}
-\title{Count the number of recording series for each year.}
+\title{Count the number of recording series for each year in an fhx object.}
 \usage{
 count_recording(x, injury_event = FALSE)
 }
@@ -15,6 +15,6 @@ count_recording(x, injury_event = FALSE)
 A dataframe with a columns giving the year and corresponding number of recording events for that year.
 }
 \description{
-Count the number of recording series for each year.
+Count the number of recording series for each year in an fhx object.
 }
 

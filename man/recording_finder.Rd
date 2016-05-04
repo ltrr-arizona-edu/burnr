@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{recording_finder}
 \alias{recording_finder}
-\title{Subset to years that are considered recording.}
+\title{Subset `rings` data.frame to years that are considered recording.}
 \usage{
 recording_finder(x, injury_event)
 }
@@ -15,6 +15,6 @@ recording_finder(x, injury_event)
 A dataframe with a column of each year which is 'recording'.
 }
 \description{
-Subset to years that are considered recording.
+Subset `rings` data.frame to years that are considered recording.
 }
 

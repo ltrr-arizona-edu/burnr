@@ -1,4 +1,4 @@
-# burnr v0.1.9009
+# burnr v0.1.9010
 
 Changes in this minor release:
 
@@ -12,7 +12,7 @@ Changes in this minor release:
 
 * Changed composite() behavior. Now more similar to FHAES. Can choose to count injuries as "fire events" with the injury_event argument.
 
-* Added get_recording_count() function.
+* Added count_recording() function.
 
 * Fixed minor bug in series_stats.
 

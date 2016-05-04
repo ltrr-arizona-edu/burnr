@@ -179,7 +179,7 @@ recording_finder <- function(x, injury_event) {
 #' @return A dataframe with a columns giving the year and corresponding number of recording events for that year.
 #'
 #' @export
-get_recording_count <- function(x, injury_event=FALSE) {
+count_recording <- function(x, injury_event=FALSE) {
   stopifnot('fhx' %in% class(x))
   as.data.frame(table(year = plyr::ddply(x$rings, 'series', 
                                          recording_finder, 
@@ -219,7 +219,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
     event <- c(event, injury)
   }
   event_count <- as.data.frame(table(year = subset(x$rings, x$rings$rec_type %in% event)$year))
-  recording_count <- get_recording_count(x, injury_event = injury_event) 
+  recording_count <- count_recording(x, injury_event = injury_event) 
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count, by = 'year', suffixes = c('_event', '_recording'))
   counts$prop <- counts$Freq_event / counts$Freq_recording

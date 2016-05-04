@@ -22,6 +22,10 @@ fhx <- function(year,  series, rec_type, metalist=list()) {
 #' @param x An \code{fhx} object.
 #' @param ... Further arguments to be passed to or from other methods.
 #'
+#' @examples
+#' data(lgr2)
+#' print(lgr2)
+#'
 #' @export
 print.fhx <- function(x, ...) {
   stopifnot(class(x) == 'fhx')
@@ -33,6 +37,11 @@ print.fhx <- function(x, ...) {
 #' @param x An fhx object.
 #'
 #' @return A character vector or \code{NULL}.
+#'
+#'
+#' @examples
+#' data(lgr2)
+#' series_names(lgr2)
 #'
 #' @export
 series_names <- function(x) {
@@ -47,6 +56,12 @@ series_names <- function(x) {
 #'
 #' @return A dataframe with extracted observations.
 #'
+#' @examples
+#' data(lgr2)
+#' get_year(lgr2, 1806)
+#'
+#' get_year(lgr2, 1805:1807)
+#'
 #' @export
 get_year <- function(x, yr) {
   stopifnot(class(x) == 'fhx')
@@ -57,9 +72,15 @@ get_year <- function(x, yr) {
 #' Extract fhx observations for given series.
 #'
 #' @param x An fhx object.
-#' @param s Character vector of years you would like extracted from x.
+#' @param s Character vector of series you would like extracted from x.
 #'
 #' @return A dataframe with extracted observations.
+#'
+#' @examples
+#' data(lgr2)
+#' get_series(lgr2, 'LGR46')
+#'
+#' get_series(lgr2, c('LGR41', 'LGR46'))
 #'
 #' @export
 get_series <- function(x, s) {
@@ -78,6 +99,12 @@ get_series <- function(x, s) {
 #'
 #' @details
 #' You can combine s and yr to specify years within select series to remove.
+#'
+#' @examples
+#' data(lgr2)
+#' plot(delete(lgr2, s = 'LGR46'))
+#'
+#' plot(delete(lgr2, yr = 1300:1550))
 #'
 #' @export
 delete <- function(x, s, yr) {
@@ -105,6 +132,14 @@ delete <- function(x, s, yr) {
 #'
 #' @return An fhx object with extracted observations.
 #'
+#' @examples
+#' data(lgr2)
+#' plot(subset(lgr2, 'LGR46'))
+#'
+#' plot(subset(lgr2, c('LGR41', 'LGR46')))
+#'
+#' plot(subset(lgr2, 1550:2020))
+#'
 #' @export
 subset.fhx <- function(x, subset, ...) {
   stopifnot(class(x) == 'fhx')
@@ -123,6 +158,11 @@ subset.fhx <- function(x, subset, ...) {
 #'
 #' @param x A dataframe from an fhx object.
 #' @param injury_event Boolean indicating whether injuries should be considered event.
+#'
+#' @examples
+#' require(plyr)
+#' data(lgr2)
+#' ddply(lgr2$rings, 'series', burnr:::recording_finder, injury_event = TRUE)
 #'
 #' @return A dataframe with a column of each year which is 'recording'.
 recording_finder <- function(x, injury_event) {
@@ -178,6 +218,10 @@ recording_finder <- function(x, injury_event) {
 #'
 #' @return A dataframe with a columns giving the year and corresponding number of recording events for that year.
 #'
+#' @examples
+#' data(lgr2)
+#' count_recording(lgr2)
+#'
 #' @export
 count_recording <- function(x, injury_event=FALSE) {
   stopifnot('fhx' %in% class(x))
@@ -194,6 +238,10 @@ count_recording <- function(x, injury_event=FALSE) {
 #' @param injury_event Boolean indicating whether injuries should be considered events. Default is FALSE.
 #'
 #' @return A vector of years from x.
+#'
+#' @examples
+#' data(lgr2)
+#' composite(lgr2)
 #'
 #' @export
 composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
@@ -237,6 +285,10 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
 #'
 #' @return A copy of \code{x} with reordered series.
 #'
+#' @examples
+#' data(lgr2)
+#' plot(sort(lgr2, decreasing = TRUE))
+#'
 #' @export
 sort.fhx <- function(x, decreasing=FALSE, ...) {
   stopifnot(class(x) == "fhx")
@@ -258,6 +310,11 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
 #'
 #' @return An fhx instance with the information from \code{a} and \code{b}.
 #'
+#' @examples
+#' data(lgr2)
+#' data(pgm)
+#' plot(combine(lgr2, pgm))
+#'
 #' @export
 combine <- function(a, b) {
   stopifnot(class(a) == "fhx")
@@ -276,6 +333,11 @@ combine <- function(a, b) {
 #' @param x An fhx instance.
 #'
 #' @return A \code{x} or stop() is thrown.
+#'
+#' @examples
+#' data(lgr2)
+#' data(pgm)
+#' burnr:::check_duplicates(combine(lgr2, pgm))
 #'
 check_duplicates <- function(x) {
   stopifnot(class(x) == "fhx")

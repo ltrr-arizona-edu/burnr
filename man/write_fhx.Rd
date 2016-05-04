@@ -7,11 +7,18 @@
 write_fhx(x, fname = "")
 }
 \arguments{
-\item{x}{An fhx instance.}
+\item{x}{An fhx object.}
 
 \item{fname}{Output filename.}
 }
 \description{
 Write an fhx object to a new FHX2 file.
+}
+\examples{
+\dontrun{
+data(lgr2)
+write_fhx(lgr2, 'afile.fhx')
+}
+
 }
 

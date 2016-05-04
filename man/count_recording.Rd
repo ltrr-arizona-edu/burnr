@@ -17,4 +17,9 @@ A dataframe with a columns giving the year and corresponding number of recording
 \description{
 Count the number of recording series for each year in an fhx object.
 }
+\examples{
+data(lgr2)
+count_recording(lgr2)
+
+}
 

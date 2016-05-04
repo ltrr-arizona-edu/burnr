@@ -9,12 +9,19 @@ get_series(x, s)
 \arguments{
 \item{x}{An fhx object.}
 
-\item{s}{Character vector of years you would like extracted from x.}
+\item{s}{Character vector of series you would like extracted from x.}
 }
 \value{
 A dataframe with extracted observations.
 }
 \description{
 Extract fhx observations for given series.
+}
+\examples{
+data(lgr2)
+get_series(lgr2, 'LGR46')
+
+get_series(lgr2, c('LGR41', 'LGR46'))
+
 }
 

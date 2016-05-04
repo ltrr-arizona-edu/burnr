@@ -17,4 +17,10 @@ An fhx instance with the information from \code{a} and \code{b}.
 \description{
 Combine two fhx objects.
 }
+\examples{
+data(lgr2)
+data(pgm)
+plot(combine(lgr2, pgm))
+
+}
 

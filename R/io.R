@@ -5,6 +5,11 @@
 #'
 #' @return An \code{fhx} object.
 #'
+#' @examples
+#' \dontrun{
+#' d <- read_fhx('afile.fhx')
+#' }
+#'
 #' @export
 read_fhx <- function(fname, encoding=getOption("encoding")) {
   con <- file(fname, encoding = encoding)
@@ -95,8 +100,14 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
 
 #' Write an fhx object to a new FHX2 file.
 #'
-#' @param x An fhx instance.
+#' @param x An fhx object.
 #' @param fname Output filename.
+#'
+#' @examples
+#' \dontrun{
+#' data(lgr2)
+#' write_fhx(lgr2, 'afile.fhx')
+#' }
 #'
 #' @export
 write_fhx <- function(x, fname="") {

@@ -2,9 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{run_sea}
 \alias{run_sea}
-\title{A superposed epoch analysis function that attempts to directly replicate the analyses provided in the EVENT program of the dendro
-program library and FHX2. In effect, it uses the matrix calculations of the sea function in the dplR library
- with additional output.}
+\title{Perform superposed epoch analysis.}
 \usage{
 run_sea(x, key, years_before = 6, years_after = 4,
   time_span = c("key_period"), n_iter = 1000)

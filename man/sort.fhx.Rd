@@ -19,4 +19,9 @@ A copy of \code{x} with reordered series.
 \description{
 Sort the series names of fhx object by earliest year.
 }
+\examples{
+data(lgr2)
+plot(sort(lgr2, decreasing = TRUE))
+
+}
 

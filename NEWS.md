@@ -2,7 +2,9 @@
 
 Changes in this minor release:
 
-* `resolve_duplicates()` is now `burnr:::check_duplicates()`.
+* Added examples to all function documentation.
+
+* `resolve_duplicates()` is now hidden (`burnr:::check_duplicates()`).
 
 * Added function samp_depth() to get sample depth.
 

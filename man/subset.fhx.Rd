@@ -19,4 +19,13 @@ An fhx object with extracted observations.
 \description{
 Subset fhx observations for given years or series.
 }
+\examples{
+data(lgr2)
+plot(subset(lgr2, 'LGR46'))
+
+plot(subset(lgr2, c('LGR41', 'LGR46')))
+
+plot(subset(lgr2, 1550:2020))
+
+}
 

@@ -1,9 +1,13 @@
-#' Generate series-level descriptive statistics
+#' Generate series-level descriptive statistics.
 #'
 #' @param x An fhx instance
 #' @param injury_event Boolean indicating whether injuries should be considered event. Default is FALSE.
 #'
 #' @return A data.frame containing series-level statistics
+#'
+#' @examples
+#' data(lgr2)
+#' series_stats(lgr2)
 #'
 #' @export
 series_stats <- function(x, injury_event=FALSE) {
@@ -41,6 +45,8 @@ series_stats <- function(x, injury_event=FALSE) {
 }
 
 
+#' Perform superposed epoch analysis.
+#'
 #' A superposed epoch analysis function that attempts to directly replicate the analyses provided in the EVENT program of the dendro
 #' program library and FHX2. In effect, it uses the matrix calculations of the sea function in the dplR library
 #'  with additional output.

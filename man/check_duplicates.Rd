@@ -15,4 +15,10 @@ A \code{x} or stop() is thrown.
 \description{
 Check for duplicate observations in an fhx object.
 }
+\examples{
+data(lgr2)
+data(pgm)
+burnr:::check_duplicates(combine(lgr2, pgm))
+
+}
 

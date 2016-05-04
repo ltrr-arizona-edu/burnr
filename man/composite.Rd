@@ -21,4 +21,9 @@ A vector of years from x.
 \description{
 Composite fire events returning years with prominent fires.
 }
+\examples{
+data(lgr2)
+composite(lgr2)
+
+}
 

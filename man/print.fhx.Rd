@@ -14,4 +14,9 @@
 \description{
 Print an \code{fhx} object.
 }
+\examples{
+data(lgr2)
+print(lgr2)
+
+}
 

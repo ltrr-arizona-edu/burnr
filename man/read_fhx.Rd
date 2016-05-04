@@ -17,4 +17,10 @@ An \code{fhx} object.
 \description{
 Read FHX2 file and return an \code{fhx} object.
 }
+\examples{
+\dontrun{
+d <- read_fhx('afile.fhx')
+}
+
+}
 

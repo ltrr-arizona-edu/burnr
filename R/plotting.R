@@ -19,6 +19,34 @@
 #'
 #' @return A ggplot object for plotting or manipulation.
 #'
+#' @examples
+#' data(lgr2)
+#' plot(lgr2)
+#'
+#' plot(lgr2, ylabels = FALSE, plot_legend = TRUE)
+#'
+#' data(lgr2_meta)
+#' # With color showing species.
+#' plot(lgr2,
+#'      color_group = lgr2_meta$SpeciesID,
+#'      color_id = lgr2_meta$TreeID,
+#'      plot_legend = TRUE)
+#' # With facets for each species.
+#' plot(lgr2,
+#'      facet_group = lgr2_meta$SpeciesID,
+#'      facet_id = lgr2_meta$TreeID,
+#'      plot_legend = TRUE)
+#'
+#' # Append annotation onto a ggplot object.
+#' require(ggplot2)
+#' p <- get_ggplot(lgr2,
+#'                 color_group = lgr2_meta$SpeciesID,
+#'                 color_id = lgr2_meta$TreeID)
+#' # Add transparent box as annotation to plot.
+#' p + annotate('rect',
+#'              xmin = 1750, xmax = 1805,
+#'              ymin = 3.5, ymax = 13.5, alpha = 0.2)
+#'
 #' @export
 get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, 
                        facet_type="grid", ylabels=TRUE, yearlims=FALSE, 
@@ -155,6 +183,34 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
 #' Plot an fhx object.
 #'
 #' @param ... Arguments passed on to \code{get_ggplot}.
+#'
+#' @examples
+#' data(lgr2)
+#' plot(lgr2)
+#'
+#' plot(lgr2, ylabels = FALSE, plot_legend = TRUE)
+#'
+#' data(lgr2_meta)
+#' # With color showing species.
+#' plot(lgr2,
+#'      color_group = lgr2_meta$SpeciesID,
+#'      color_id = lgr2_meta$TreeID,
+#'      plot_legend = TRUE)
+#' # With facets for each species.
+#' plot(lgr2,
+#'      facet_group = lgr2_meta$SpeciesID,
+#'      facet_id = lgr2_meta$TreeID,
+#'      plot_legend = TRUE)
+#'
+#' # Append annotation onto a ggplot object.
+#' require(ggplot2)
+#' p <- get_ggplot(lgr2,
+#'                 color_group = lgr2_meta$SpeciesID,
+#'                 color_id = lgr2_meta$TreeID)
+#' # Add transparent box as annotation to plot.
+#' p + annotate('rect',
+#'              xmin = 1750, xmax = 1805,
+#'              ymin = 3.5, ymax = 13.5, alpha = 0.2)
 #'
 #' @export
 plot.fhx <- function(...) {

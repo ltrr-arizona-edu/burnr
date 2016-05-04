@@ -15,4 +15,9 @@ A character vector or \code{NULL}.
 \description{
 Get \code{fhx} series names.
 }
+\examples{
+data(lgr2)
+series_names(lgr2)
+
+}
 

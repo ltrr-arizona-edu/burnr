@@ -17,4 +17,10 @@ A dataframe with a column of each year which is 'recording'.
 \description{
 Subset `rings` data.frame to years that are considered recording.
 }
+\examples{
+require(plyr)
+data(lgr2)
+ddply(lgr2$rings, 'series', burnr:::recording_finder, injury_event = TRUE)
+
+}
 

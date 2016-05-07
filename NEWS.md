@@ -1,4 +1,4 @@
-# burnr v0.1.9010
+# burnr v0.1.9011
 
 Changes in this minor release:
 
@@ -16,7 +16,7 @@ Changes in this minor release:
 
 * Added count_recording() function.
 
-* Fixed minor bug in series_stats.
+* Fixed minor bugs in series_stats.
 
 * Removed sorting by default on read_fhx() and combine()
 

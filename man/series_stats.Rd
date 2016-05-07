@@ -4,15 +4,20 @@
 \alias{series_stats}
 \title{Generate series-level descriptive statistics.}
 \usage{
-series_stats(x, injury_event = FALSE)
+series_stats(x, func_list = list(first = s_first_year, last = s_last_year,
+  years = s_count_year, inner_type = s_inner_type, outer_type = s_outer_type,
+  number_fires = s_count_fire, number_injuries = s_count_injury, recording_years
+  = s_count_recording, mean_interval = s_mean_interval))
 }
 \arguments{
-\item{x}{An fhx instance}
+\item{x}{An fhx object.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered event. Default is FALSE.}
+\item{func_list}{A list of named functions that will be run on each series 
+in the fhx object. The list name for each function is the corresponding 
+column name in the output data.frame.}
 }
 \value{
-A data.frame containing series-level statistics
+A data.frame containing series-level statistics.
 }
 \description{
 Generate series-level descriptive statistics.
@@ -20,6 +25,11 @@ Generate series-level descriptive statistics.
 \examples{
 data(lgr2)
 series_stats(lgr2)
+
+# You can create your own list of statistics to output. You can also create
+# your own functions:
+sstats <- series_stats(lgr2)
+head(sstats)
 
 }
 

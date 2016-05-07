@@ -1,49 +1,142 @@
 #' Generate series-level descriptive statistics.
 #'
-#' @param x An fhx instance
-#' @param injury_event Boolean indicating whether injuries should be considered event. Default is FALSE.
+#' @param x An fhx object.
+#' @param func_list A list of named functions that will be run on each series 
+#'   in the fhx object. The list name for each function is the corresponding 
+#'   column name in the output data.frame.
 #'
-#' @return A data.frame containing series-level statistics
+#' @return A data.frame containing series-level statistics.
 #'
 #' @examples
 #' data(lgr2)
 #' series_stats(lgr2)
 #'
+#' # You can create your own list of statistics to output. You can also create
+#' # your own functions:
+# ' flist <- list(n = s_count_year,
+# '               xbar_interval = function(x) s_mean_interval(x, injury_event = TRUE))
+#' sstats <- series_stats(lgr2)
+#' head(sstats)
+#'
 #' @export
-series_stats <- function(x, injury_event=FALSE) {
+series_stats <- function(x, func_list=list(first=s_first_year,last=s_last_year,
+  years=s_count_year,inner_type=s_inner_type,outer_type=s_outer_type,
+  number_fires=s_count_fire,number_injuries=s_count_injury,
+  recording_years=s_count_recording,mean_interval=s_mean_interval)) {
   stopifnot(class(x) == "fhx")
-  x <- x$rings
-  series <- sort(levels(x$series))
-  out_stats <- data.frame(matrix(data = NA, nrow = length(series), ncol = 10))
-  names(out_stats) <- c('series', 'first', 'last', 'years', 'inner_type', 'outer_type',
-                        'number_fires', 'number_injuries', 'recording_years', 'mean_interval')
-  out_stats$series <- series
-  for(i in 1:nrow(out_stats)) {
-    s <- x[x$series == paste(out_stats$series[i]), ]
-    if (nrow(s) != 0) {
-      out_stats[i, 'first'] <- min(s$year)
-      out_stats[i, 'last'] <- max(s$year)
-      out_stats[i, 'years'] <- out_stats[i, 'last'] - out_stats[i, 'first'] + 1
-      out_stats[i, 'inner_type'] <- paste(s[s$year == min(s$year), ]$rec_type)
-      out_stats[i, 'outer_type'] <- paste(s[s$year == max(s$year), ]$rec_type)
-      out_stats[i, 'number_fires'] <- length(grep('_fs', s$rec_type))
-      out_stats[i, 'number_injuries'] <- length(grep('_fi', s$rec_type))
-      out_stats[i, 'recording_years'] <- nrow(recording_finder(s, injury_event = injury_event))
-      event_years <- sort(subset(s, grepl('_fs', s$rec_type))$year)
-      if (injury_event) {
-        event_years <- sort(subset(s, grepl('_fi|_fs', s$rec_type))$year)
-      }
-      if (length(event_years) > 1) {
-        intervals <- diff(event_years)
-        out_stats[i, 'mean_interval'] <- round(mean(intervals), 1)
-      }
-    } else { # Tree has no features
-      out_stats[i, 2:9] <- rep(NA, 8) # Not sure we need this line.
-    }
-  }
-  out_stats
+  plyr::ddply(x$rings, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
 
+#' First (earliest) year of an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#'
+#' @return The minimum or first year of series in 'x'.
+#'
+#' @export
+s_first_year <- function(x) {
+  min(x$year)
+}
+
+#' Last (most recent) year of an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#'
+#' @return The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x$year.
+#'
+#' @export
+s_last_year <- function(x) {
+  max(x$year)
+}
+
+#' Number of years of an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#'
+#' @return The difference between the first and last observations in the series. 'NA' will be returned if 'NA' is in 'x$year'.
+#'
+#' @export
+s_count_year <- function(x) {
+  max(x$year) - min(x$year) + 1
+}
+
+#' Type of observation in the last (most recent) year of an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#'
+#' @return The a factor giving the type of observation in the last observation of the series.
+#'
+#' @export
+s_outer_type <- function(x) {
+  x$rec_type[which.max(x$year)]
+}
+
+#' Type of observation in the first (earliest) year of an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#'
+#' @return The a factor giving the type of observation in the first observation of the series.
+#'
+#' @export
+s_inner_type <- function(x) {
+  x$rec_type[which.min(x$year)]
+}
+
+#' Number of fire events in an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#'
+#' @return The number of fire events observed in the series.
+#'
+#' @export
+s_count_fire <- function(x) {
+  length(grep('_fs', x$rec_type))
+}
+
+#' Number of injury events in an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#'
+#' @return The number of injury events observed in the series.
+#'
+#' @export
+s_count_injury <- function(x) {
+  length(grep('_fi', x$rec_type))
+}
+
+#' Number of recording years in an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#' @param injury_event Boolean indicating whether injuries should be considered event.
+#'
+#' @return The number of recording events observed in the series.
+#'
+#' @export
+s_count_recording <- function(x, injury_event=FALSE) {
+  nrow(recording_finder(x, injury_event = injury_event))
+}
+
+#' Calculate mean fire interval of an fhx series.
+#'
+#' @param x An fhx object's 'rings' data.frame.
+#' @param injury_event Boolean indicating whether injuries should be considered event.
+#'
+#' @return The mean fire interval observed in the series.
+#'
+#' @export
+s_mean_interval <- function(x, injury_event=FALSE) {
+  search_str <- '_fs'
+  if (injury_event) {
+    search_str <- paste0('_fi|', search_str)
+  }
+  event_years <- sort(x$year[grepl(search_str, x$rec_type)])
+  out <- NA
+  if (length(event_years) > 1) {
+    intervals <- diff(event_years)
+    out <- round(mean(intervals), 1)
+  }
+  out
+}
 
 #' Perform superposed epoch analysis.
 #'

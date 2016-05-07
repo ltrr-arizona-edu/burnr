@@ -67,7 +67,7 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
     }
   }
   if (fl[first + databuff - 1 + describe[3]] != "")
-      Stop("The line before the annual FHX data should be blank.")
+      stop("The line before the annual FHX data should be blank.")
   # Filling with info from the fhx file body.
   fl_body <- strsplit(fl[(first + databuff + describe[3]) : length(fl)], split = "")
   first_year <- describe[1]

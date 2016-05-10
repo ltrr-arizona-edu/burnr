@@ -303,20 +303,20 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
   x
 }
 
-#' Combine two fhx objects.
+#' Concatenate or combine two fhx objects.
 #'
-#' @param a An fhx instance.
-#' @param b The fhx instance to be appended.
+#' @param a An fhx object.
+#' @param b The fhx object to be append.
 #'
-#' @return An fhx instance with the information from \code{a} and \code{b}.
+#' @return An fhx object with the series from \code{a} and \code{b}.
 #'
 #' @examples
 #' data(lgr2)
 #' data(pgm)
-#' plot(combine(lgr2, pgm))
+#' plot(lgr2 + pgm)
 #'
 #' @export
-combine <- function(a, b) {
+"+.fhx" <- function(a, b) {
   stopifnot(class(a) == "fhx")
   stopifnot(class(b) == "fhx")
   f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
@@ -337,7 +337,7 @@ combine <- function(a, b) {
 #' @examples
 #' data(lgr2)
 #' data(pgm)
-#' burnr:::check_duplicates(combine(lgr2, pgm))
+#' burnr:::check_duplicates(lgr2 + pgm)
 #'
 check_duplicates <- function(x) {
   stopifnot(class(x) == "fhx")

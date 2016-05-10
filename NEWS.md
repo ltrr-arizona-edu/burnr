@@ -1,6 +1,8 @@
-# burnr v0.1.9011
+# burnr v0.1.9012
 
 Changes in this minor release:
+
+* `concatenate()` and `combine()` was reverted back to '+' at the request of beloved users. This means something like `lgr2 + pgm` will work!
 
 * Added examples to all function documentation.
 
@@ -18,7 +20,7 @@ Changes in this minor release:
 
 * Fixed minor bugs in series_stats.
 
-* Removed sorting by default on read_fhx() and combine()
+* Removed sorting by default on read_fhx() and '+.fhx'
 
 * Fixed sort()s non-responsive decreasing argument.
 
@@ -47,8 +49,6 @@ Changes in this patch:
 * In `fhx$rings` and all functions, `type` arugment is now `rec_type` to avoid clash with `type` function. `rec_type` is short for "record_type".
 
 * Can now read FHX files with a single series (closes bug #43).
-
-* `concatenate()` has been renamed `combine()` at the request of beloved users.
 
 * `lgr2` and `pgm` are available fire-history datasets when you load this package. The metadata for each of these sets is `lgr2_meta` and `pgm_meta`. Load the data with `data()`.
 

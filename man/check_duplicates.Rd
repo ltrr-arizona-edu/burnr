@@ -18,7 +18,7 @@ Check for duplicate observations in an fhx object.
 \examples{
 data(lgr2)
 data(pgm)
-burnr:::check_duplicates(combine(lgr2, pgm))
+burnr:::check_duplicates(lgr2 + pgm)
 
 }
 

@@ -2,7 +2,7 @@
 
 Changes in this minor release:
 
-* `concatenate()` and `combine()` was reverted back to '+' at the request of beloved users. This means something like `lgr2 + pgm` will work!
+* `concatenate()` and `combine()` were reverted back to '+' at the request of beloved users. This means code like `lgr2 + pgm` will combine these objects together into a single fhx object!
 
 * Added examples to all function documentation.
 

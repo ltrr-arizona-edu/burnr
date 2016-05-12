@@ -162,10 +162,10 @@ subset.fhx <- function(x, subset, ...) {
 #' @examples
 #' require(plyr)
 #' data(lgr2)
-#' ddply(lgr2$rings, 'series', burnr:::recording_finder, injury_event = TRUE)
+#' ddply(lgr2$rings, 'series', burnr:::find_recording, injury_event = TRUE)
 #'
 #' @return A dataframe with a column of each year which is 'recording'.
-recording_finder <- function(x, injury_event) {
+find_recording <- function(x, injury_event) {
   # 'x' is the the 'rings' data.frame for a single series.
   # Use with: ddply(lgr2$rings, 'series', recorder_finder)
   x <- x[order(x$year), ]
@@ -226,7 +226,7 @@ recording_finder <- function(x, injury_event) {
 count_recording <- function(x, injury_event=FALSE) {
   stopifnot('fhx' %in% class(x))
   as.data.frame(table(year = plyr::ddply(x$rings, 'series', 
-                                         recording_finder, 
+                                         find_recording, 
                                          injury_event = injury_event)$recording))
 }
 

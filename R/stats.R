@@ -113,7 +113,7 @@ s_count_injury <- function(x) {
 #'
 #' @export
 s_count_recording <- function(x, injury_event=FALSE) {
-  nrow(recording_finder(x, injury_event = injury_event))
+  nrow(find_recording(x, injury_event = injury_event))
 }
 
 #' Calculate mean fire interval of an fhx series.

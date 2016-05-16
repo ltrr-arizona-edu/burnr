@@ -2,9 +2,10 @@
 % Please edit documentation in R/utils.R
 \name{composite}
 \alias{composite}
-\title{Composite fire events returning years with prominent fires.}
+\title{Composite fire events in fhx object returning composited object with prominent fires.}
 \usage{
-composite(x, filter_prop = 0.25, filter_min = 2, injury_event = FALSE)
+composite(x, filter_prop = 0.25, filter_min = 2, injury_event = FALSE,
+  comp_name = "COMP")
 }
 \arguments{
 \item{x}{An fhx instance.}
@@ -14,16 +15,23 @@ composite(x, filter_prop = 0.25, filter_min = 2, injury_event = FALSE)
 \item{filter_min}{The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.}
 
 \item{injury_event}{Boolean indicating whether injuries should be considered events. Default is FALSE.}
+
+\item{comp_name}{Character vector of the series name for the returned fhx object composite series. Default is 'COMP'.}
 }
 \value{
-A vector of years from x.
+An fhx object representing the composited series.
 }
 \description{
-Composite fire events returning years with prominent fires.
+Composite fire events in fhx object returning composited object with prominent fires.
 }
 \examples{
 data(lgr2)
 composite(lgr2)
+
+# Use with composite to get composite years:
+comp <- composite(pgm, comp_name = 'pgm')
+event_yrs <- get_event_years(comp)[['pgm']]
+print(event_yrs)
 
 }
 

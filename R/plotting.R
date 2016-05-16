@@ -125,11 +125,11 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
                                values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   
   if (composite_rug) {
+    comp <-composite(x, filter_prop = filter_prop, 
+                        filter_min = filter_min, 
+                        injury_event = injury_event)
     p <- (p + ggplot2::geom_rug(data = subset(rings,
-                                     rings$year %in% composite(x, 
-                                                               filter_prop = filter_prop,
-                                                               filter_min = filter_min,
-                                                               injury_event = injury_event)),
+                                     rings$year %in% get_event_years(comp, injury_event = injury_event)[['COMP']]),
                        sides = "b", color = "black")
             + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer_size), levels(rings$series)))
             + ggplot2::geom_hline(yintercept = rugdivide_pos, color = "grey50"))

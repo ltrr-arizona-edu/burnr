@@ -17,6 +17,54 @@ fhx <- function(year,  series, rec_type, metalist=list()) {
   structure(list(meta = metalist, rings = ringsdf), class = "fhx")
 }
 
+#' Get years with events for an fhx object.
+#'
+#' @param x An \code{fhx} object.
+#' @param scar_event Boolean indicating whether years with scar events should be returned. Default is TRUE.
+#' @param injury_event Boolean indicating weather years with injury events should be returned. Default is FALSE.
+#' @param custom_grep_str Character string to pass a custom grep search pattern to search rec_type column for. Undefined by default.
+#'
+#' @return A list. Elements of the list are integer vectors giving the years with events for each fhx series. Each element's name reflects the series name.
+#'
+#' @examples
+#' data(pgm)
+#' get_event_years(pgm, scar_event = TRUE, injury_event = TRUE)
+#' 
+#' # Passing a custom string to grep. This one identified recorder years:
+#' get_event_years(pgm, custom_grep_str = 'recorder_')
+#'
+#' # Use with composite to get composite years:
+#' comp <- composite(pgm, comp_name = 'pgm')
+#' event_yrs <- get_event_years(comp)[['pgm']]
+#' print(event_yrs)
+#'
+#' @export
+get_event_years <- function(x, scar_event=TRUE, injury_event=FALSE, custom_grep_str=NULL) {
+  stopifnot('fhx' %in% class(x))
+  if (!is.null(custom_grep_str)) {
+    message('burnr::get_events(): custom_search_str was defined, ignoring scar_event and injury_event arguments')
+  }
+  # Build our search string.
+  search_str <- NA
+  if (is.null(custom_grep_str)) {
+    search_parts <- c()
+    if (scar_event) {
+      search_parts <- c(search_parts, '_fs')
+    }
+    if (injury_event) {
+      search_parts <- c(search_parts, '_fi')
+    }
+    if (length(search_parts) > 1){
+      search_str <- paste(search_parts, collapse = '|')
+    } else {
+      search_str <- search_parts
+    }
+  } else {
+    search_str <- custom_grep_str
+  }
+  plyr::dlply(x$rings, c('series'), function(a) a$year[grepl(search_str, a$rec_type)])
+}
+
 #' Print an \code{fhx} object.
 #'
 #' @param x An \code{fhx} object.
@@ -230,21 +278,27 @@ count_recording <- function(x, injury_event=FALSE) {
                                          injury_event = injury_event)$recording))
 }
 
-#' Composite fire events returning years with prominent fires.
+#' Composite fire events in fhx object returning composited object with prominent fires.
 #'
 #' @param x An fhx instance.
 #' @param filter_prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
 #' @param filter_min The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
 #' @param injury_event Boolean indicating whether injuries should be considered events. Default is FALSE.
+#' @param comp_name Character vector of the series name for the returned fhx object composite series. Default is 'COMP'.
 #'
-#' @return A vector of years from x.
+#' @return An fhx object representing the composited series.
 #'
 #' @examples
 #' data(lgr2)
 #' composite(lgr2)
 #'
+#' # Use with composite to get composite years:
+#' comp <- composite(pgm, comp_name = 'pgm')
+#' event_yrs <- get_event_years(comp)[['pgm']]
+#' print(event_yrs)
+#'
 #' @export
-composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
+composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, comp_name='COMP') {
   stopifnot(class(x) == "fhx")
   injury <- list("u" = "unknown_fi",
                  "d" = "dormant_fi",
@@ -269,12 +323,36 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE) {
   event_count <- as.data.frame(table(year = subset(x$rings, x$rings$rec_type %in% event)$year))
   recording_count <- count_recording(x, injury_event = injury_event) 
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
-  counts <- merge(event_count, recording_count, by = 'year', suffixes = c('_event', '_recording'))
+  counts <- merge(event_count, recording_count, 
+                  by = 'year', suffixes = c('_event', '_recording'))
   counts$prop <- counts$Freq_event / counts$Freq_recording
   filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min)
   out <- subset(counts, filter_mask)$year
   composite_event_years <- as.integer(levels(out)[out])
-  composite_event_years
+  # Make composite events unknown firescars.
+  out_year <- composite_event_years
+  out_rec_type <- rep("unknown_fs", length(composite_event_years))
+  # Make first year in x the inner year.
+  out_year <- c(out_year, min(x$rings$year))
+  out_rec_type <- c(out_rec_type, "inner_year")
+  # Make last year in x the outer year.
+  out_year <- c(out_year, max(x$rings$year))
+  out_rec_type <- c(out_rec_type, "outer_year")
+  # Make all years after the first event 'recording'.
+  new_recording <- setdiff(seq(min(composite_event_years), max(x$rings$year)),
+                           out_year)
+  out_year <- c(out_year, new_recording)
+  out_rec_type <- c(out_rec_type, rep("recorder_year", length(new_recording)))
+  out_series <- factor(rep(comp_name, length(out_year)))
+  out_rec_type <- factor(out_rec_type,
+                        levels = c("null_year", "recorder_year", "unknown_fs",
+                                   "unknown_fi", "dormant_fs", "dormant_fi",
+                                   "early_fs", "early_fi", "middle_fs",
+                                   "middle_fi", "late_fs", "late_fi",
+                                   "latewd_fs", "latewd_fi", "pith_year",
+                                   "bark_year", "inner_year", "outer_year",
+                                   "estimate"))
+  fhx(year = out_year, series = out_series, rec_type = out_rec_type)
 }
 
 #' Sort the series names of fhx object by earliest year.

@@ -1,6 +1,10 @@
-# burnr v0.1.0.9012
+# burnr v0.1.0.9013
 
 Changes in this minor release:
+
+* composite() now returns an fhx object.
+
+* Added function get_event_years() to find fire and fire injury years in fhx objects. This is especially helpful for composites.
 
 * `concatenate()` and `combine()` were reverted back to '+' at the request of beloved users. This means code like `lgr2 + pgm` will combine these objects together into a single fhx object!
 

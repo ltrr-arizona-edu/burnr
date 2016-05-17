@@ -13,16 +13,16 @@
 #'
 #' # You can create your own list of statistics to output. You can also create
 #' # your own functions:
-# ' flist <- list(n = s_count_year,
-# '               xbar_interval = function(x) s_mean_interval(x, injury_event = TRUE))
+# ' flist <- list(n = count_year_span,
+# '               xbar_interval = function(x) mean_interval(x, injury_event = TRUE))
 #' sstats <- series_stats(lgr2)
 #' head(sstats)
 #'
 #' @export
-series_stats <- function(x, func_list=list(first=s_first_year,last=s_last_year,
-  years=s_count_year,inner_type=s_inner_type,outer_type=s_outer_type,
-  number_fires=s_count_fire,number_injuries=s_count_injury,
-  recording_years=s_count_recording,mean_interval=s_mean_interval)) {
+series_stats <- function(x, func_list=list(first=first_year,last=last_year,
+  years=count_year_span,inner_type=inner_type,outer_type=outer_type,
+  number_fires=count_fire,number_injuries=count_injury,
+  recording_years=count_recording,mean_interval=mean_interval)) {
   stopifnot('fhx' %in% class(x))
   plyr::ddply(x, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
@@ -34,7 +34,7 @@ series_stats <- function(x, func_list=list(first=s_first_year,last=s_last_year,
 #' @return The minimum or first year of series in 'x'.
 #'
 #' @export
-s_first_year <- function(x) {
+first_year <- function(x) {
   min(x$year)
 }
 
@@ -45,7 +45,7 @@ s_first_year <- function(x) {
 #' @return The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x$year.
 #'
 #' @export
-s_last_year <- function(x) {
+last_year <- function(x) {
   max(x$year)
 }
 
@@ -56,7 +56,7 @@ s_last_year <- function(x) {
 #' @return The difference between the first and last observations in the series. 'NA' will be returned if 'NA' is in 'x$year'.
 #'
 #' @export
-s_count_year <- function(x) {
+count_year_span <- function(x) {
   max(x$year) - min(x$year) + 1
 }
 
@@ -67,7 +67,7 @@ s_count_year <- function(x) {
 #' @return The a factor giving the type of observation in the last observation of the series.
 #'
 #' @export
-s_outer_type <- function(x) {
+outer_type <- function(x) {
   x$rec_type[which.max(x$year)]
 }
 
@@ -78,7 +78,7 @@ s_outer_type <- function(x) {
 #' @return The a factor giving the type of observation in the first observation of the series.
 #'
 #' @export
-s_inner_type <- function(x) {
+inner_type <- function(x) {
   x$rec_type[which.min(x$year)]
 }
 
@@ -89,7 +89,7 @@ s_inner_type <- function(x) {
 #' @return The number of fire events observed in the series.
 #'
 #' @export
-s_count_fire <- function(x) {
+count_fire <- function(x) {
   length(grep('_fs', x$rec_type))
 }
 
@@ -100,7 +100,7 @@ s_count_fire <- function(x) {
 #' @return The number of injury events observed in the series.
 #'
 #' @export
-s_count_injury <- function(x) {
+count_injury <- function(x) {
   length(grep('_fi', x$rec_type))
 }
 
@@ -112,7 +112,7 @@ s_count_injury <- function(x) {
 #' @return The number of recording events observed in the series.
 #'
 #' @export
-s_count_recording <- function(x, injury_event=FALSE) {
+count_recording <- function(x, injury_event=FALSE) {
   nrow(find_recording(x, injury_event = injury_event))
 }
 
@@ -124,7 +124,7 @@ s_count_recording <- function(x, injury_event=FALSE) {
 #' @return The mean fire interval observed in the series.
 #'
 #' @export
-s_mean_interval <- function(x, injury_event=FALSE) {
+mean_interval <- function(x, injury_event=FALSE) {
   search_str <- '_fs'
   if (injury_event) {
     search_str <- paste0('_fi|', search_str)

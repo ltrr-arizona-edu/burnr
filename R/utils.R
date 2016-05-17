@@ -215,6 +215,7 @@ find_recording <- function(x, injury_event) {
   data.frame(recording = union(rec, active))
 }
 
+
 #' Count the number of recording series for each year in an fhx object.
 #'
 #' @param x An fhx object.
@@ -224,11 +225,10 @@ find_recording <- function(x, injury_event) {
 #'
 #' @examples
 #' data(lgr2)
-#' count_recording(lgr2)
+#' yearly_recording(lgr2)
 #'
 #' @export
-count_recording <- function(x, injury_event=FALSE) {
-  stopifnot('fhx' %in% class(x))
+yearly_recording <- function(x, injury_event=FALSE) {
   as.data.frame(table(year = plyr::ddply(x, 'series', 
                                          find_recording, 
                                          injury_event = injury_event)$recording))
@@ -277,7 +277,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
     event <- c(event, injury)
   }
   event_count <- as.data.frame(table(year = subset(x, x$rec_type %in% event)$year))
-  recording_count <- count_recording(x, injury_event = injury_event) 
+  recording_count <- yearly_recording(x, injury_event = injury_event) 
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count, 
                   by = 'year', suffixes = c('_event', '_recording'))

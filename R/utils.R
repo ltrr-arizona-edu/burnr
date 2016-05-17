@@ -14,7 +14,8 @@ fhx <- function(year,  series, rec_type, metalist=list()) {
   if (!is.factor(rec_type)) stop("rec_type must be factor")
   if (!is.list(metalist)) stop("metalist must be list")
   ringsdf = data.frame(year = year, series = series, rec_type = rec_type)
-  structure(list(meta = metalist, rings = ringsdf), class = "fhx")
+  class(ringsdf) <- c('fhx', 'data.frame')
+  ringsdf
 }
 
 #' Get years with events for an fhx object.
@@ -62,22 +63,7 @@ get_event_years <- function(x, scar_event=TRUE, injury_event=FALSE, custom_grep_
   } else {
     search_str <- custom_grep_str
   }
-  plyr::dlply(x$rings, c('series'), function(a) a$year[grepl(search_str, a$rec_type)])
-}
-
-#' Print an \code{fhx} object.
-#'
-#' @param x An \code{fhx} object.
-#' @param ... Further arguments to be passed to or from other methods.
-#'
-#' @examples
-#' data(lgr2)
-#' print(lgr2)
-#'
-#' @export
-print.fhx <- function(x, ...) {
-  stopifnot(class(x) == 'fhx')
-  print(x$rings)
+  plyr::dlply(x, c('series'), function(a) a$year[grepl(search_str, a$rec_type)])
 }
 
 #' Get \code{fhx} series names.
@@ -93,8 +79,8 @@ print.fhx <- function(x, ...) {
 #'
 #' @export
 series_names <- function(x) {
-  stopifnot(class(x) == 'fhx')
-  as.character(unique(x$rings$series))
+  stopifnot('fhx' %in% class(x))
+  as.character(unique(x$series))
 }
 
 #' Extract fhx observations for given years.
@@ -112,9 +98,9 @@ series_names <- function(x) {
 #'
 #' @export
 get_year <- function(x, yr) {
-  stopifnot(class(x) == 'fhx')
+  stopifnot('fhx' %in% class(x))
   stopifnot(is.numeric(yr))
-  subset(x$rings, year %in% yr)
+  subset(x, year %in% yr)
 }
 
 #' Extract fhx observations for given series.
@@ -132,9 +118,9 @@ get_year <- function(x, yr) {
 #'
 #' @export
 get_series <- function(x, s) {
-  stopifnot(class(x) == 'fhx')
+  stopifnot('fhx' %in% class(x))
   stopifnot(is.character(s))
-  subset(x$rings, series %in% s)
+  subset(x, series %in% s)
 }
 
 #' Remove series or years from an fhx object.
@@ -157,47 +143,17 @@ get_series <- function(x, s) {
 #' @export
 delete <- function(x, s, yr) {
   # Hint: It's just an inverse subset.
-  stopifnot(class(x) == 'fhx')
+  stopifnot('fhx' %in% class(x))
   out <- c()
   # I'm sure there is a more clever way to handle this.
   if (missing(s)) {
-    out <- subset(x$rings, !(year %in% yr))
+    out <- subset(x, !(year %in% yr))
   } else if (missing(yr)) {
-    out <- subset(x$rings, !(series %in% s))
+    out <- subset(x, !(series %in% s))
   } else if (!missing(yr) & !missing(s)) {
-    out <- subset(x$rings, !((series %in% s) & (year %in% yr)))
+    out <- subset(x, !((series %in% s) & (year %in% yr)))
   } else {
-    out <- x$rings
-  }
-  fhx(out$year, out$series, out$rec_type)
-}
-
-#' Subset fhx observations for given years or series.
-#'
-#' @param x An fhx object.
-#' @param subset Character vector of series, or integer vector of years to extract from x.
-#' @param ... Further arguments to be passed to or from other methods.
-#'
-#' @return An fhx object with extracted observations.
-#'
-#' @examples
-#' data(lgr2)
-#' plot(subset(lgr2, 'LGR46'))
-#'
-#' plot(subset(lgr2, c('LGR41', 'LGR46')))
-#'
-#' plot(subset(lgr2, 1550:2020))
-#'
-#' @export
-subset.fhx <- function(x, subset, ...) {
-  stopifnot(class(x) == 'fhx')
-  out <- c()
-  if (is.character(subset)) {
-    out <- get_series(x, subset)
-  } else if (is.numeric(subset)) {
-    out <- get_year(x, subset)
-  } else {
-    stop('`subset` was not numeric or character vector')
+    out <- x
   }
   fhx(out$year, out$series, out$rec_type)
 }
@@ -273,7 +229,7 @@ find_recording <- function(x, injury_event) {
 #' @export
 count_recording <- function(x, injury_event=FALSE) {
   stopifnot('fhx' %in% class(x))
-  as.data.frame(table(year = plyr::ddply(x$rings, 'series', 
+  as.data.frame(table(year = plyr::ddply(x, 'series', 
                                          find_recording, 
                                          injury_event = injury_event)$recording))
 }
@@ -299,7 +255,7 @@ count_recording <- function(x, injury_event=FALSE) {
 #'
 #' @export
 composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, comp_name='COMP') {
-  stopifnot(class(x) == "fhx")
+  stopifnot('fhx' %in% class(x))
   injury <- list("u" = "unknown_fi",
                  "d" = "dormant_fi",
                  "e" = "early_fi",
@@ -320,7 +276,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
   if (injury_event) {
     event <- c(event, injury)
   }
-  event_count <- as.data.frame(table(year = subset(x$rings, x$rings$rec_type %in% event)$year))
+  event_count <- as.data.frame(table(year = subset(x, x$rec_type %in% event)$year))
   recording_count <- count_recording(x, injury_event = injury_event) 
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count, 
@@ -333,13 +289,13 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
   out_year <- composite_event_years
   out_rec_type <- rep("unknown_fs", length(composite_event_years))
   # Make first year in x the inner year.
-  out_year <- c(out_year, min(x$rings$year))
+  out_year <- c(out_year, min(x$year))
   out_rec_type <- c(out_rec_type, "inner_year")
   # Make last year in x the outer year.
-  out_year <- c(out_year, max(x$rings$year))
+  out_year <- c(out_year, max(x$year))
   out_rec_type <- c(out_rec_type, "outer_year")
   # Make all years after the first event 'recording'.
-  new_recording <- setdiff(seq(min(composite_event_years), max(x$rings$year)),
+  new_recording <- setdiff(seq(min(composite_event_years), max(x$year)),
                            out_year)
   out_year <- c(out_year, new_recording)
   out_rec_type <- c(out_rec_type, rep("recorder_year", length(new_recording)))
@@ -369,13 +325,13 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
 #'
 #' @export
 sort.fhx <- function(x, decreasing=FALSE, ...) {
-  stopifnot(class(x) == "fhx")
-  if (length(unique(x$rings$series)) == 1) {
+  stopifnot('fhx' %in% class(x))
+  if (length(unique(x$series)) == 1) {
     return(x)
   }
-  series_minyears <- aggregate(year ~ series, x$rings, min)
+  series_minyears <- aggregate(year ~ series, x, min)
   i <- order(series_minyears$year, decreasing = decreasing)
-  x$rings$series <- factor(x$rings$series,
+  x$series <- factor(x$series,
                            levels = series_minyears$series[i],
                            ordered = TRUE)
   x
@@ -395,14 +351,9 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
 #'
 #' @export
 "+.fhx" <- function(a, b) {
-  stopifnot(class(a) == "fhx")
-  stopifnot(class(b) == "fhx")
-  f <- list(meta = list(),  # Odd list for collecting various bits of metadata.
-            rings = NA)  # Data frame that actually contains the ring data.
-  class(f) <- "fhx"
-  f$rings <- rbind(a$rings, b$rings)
-  if (length(a$meta) | length(b$meta) > 0)  # If meta data present...
-    f$meta <- c(a$meta, b$meta)
+  stopifnot('fhx' %in% class(a))
+  stopifnot('fhx' %in% class(b))
+  f <- rbind(a, b)
   check_duplicates(f)
 }
 
@@ -418,11 +369,11 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
 #' burnr:::check_duplicates(lgr2 + pgm)
 #'
 check_duplicates <- function(x) {
-  stopifnot(class(x) == "fhx")
-  if (!anyDuplicated(x$rings)) {
+  stopifnot('fhx' %in% class(x))
+  if (!anyDuplicated(x)) {
     return(x)
   } else {
-      duplicates <- x$rings[duplicated(x$rings), ]
+      duplicates <- x[duplicated(x), ]
       print(duplicates)
       stop(c(dim(duplicates)[1],
            " duplicate(s) found. Please resolve duplicate records."))

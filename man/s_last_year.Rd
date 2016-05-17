@@ -7,7 +7,7 @@
 s_last_year(x)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 }
 \value{
 The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x$year.

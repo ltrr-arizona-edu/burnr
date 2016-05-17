@@ -7,7 +7,7 @@
 s_count_recording(x, injury_event = FALSE)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 
 \item{injury_event}{Boolean indicating whether injuries should be considered event.}
 }

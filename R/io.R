@@ -112,9 +112,8 @@ read_fhx <- function(fname, encoding=getOption("encoding")) {
 #' @export
 write_fhx <- function(x, fname="") {
   if ( fname == "" ) {
-    print("Please specify a character string naming a file or connection open
-          for writing.")
-    stop()
+    stop('Please specify a character string naming a file or connection open
+          for writing.')
   }
   type_key <- list("null_year"    = ".", 
                    "recorder_year"= "|", 
@@ -134,7 +133,7 @@ write_fhx <- function(x, fname="") {
                    "bark_year"    = "]", 
                    "inner_year"   = "{", 
                    "outer_year"   = "}")
-  out <- x$rings
+  out <- x
   out$rec_type <- vapply(out$rec_type, function(x) type_key[[x]], "a") 
   year_range <- seq(min(out$year), max(out$year))
   filler <- data.frame(year = year_range,
@@ -146,11 +145,11 @@ write_fhx <- function(x, fname="") {
   # Weird thing to move year to the last column of the data.frame:
   out$yr <- out$year
   out$year <- NULL
-  series_names <- rev(as.character(unique(x$rings$series)))
+  series_names <- rev(as.character(unique(x$series)))
   no_series <- length(series_names)
   max_series_name_length <- max(sapply(series_names, nchar))
   head_line <- "FHX2 FORMAT"
-  subhead_line <- paste(min(x$rings$year), no_series, max_series_name_length)
+  subhead_line <- paste(min(x$year), no_series, max_series_name_length)
   # Vertical series name heading.
   series_heading <- matrix(" ", nrow = max_series_name_length, ncol = no_series)
   for ( i in seq(1, no_series) ) {

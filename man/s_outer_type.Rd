@@ -7,7 +7,7 @@
 s_outer_type(x)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 }
 \value{
 The a factor giving the type of observation in the last observation of the series.

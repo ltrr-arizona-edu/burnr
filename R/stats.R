@@ -23,13 +23,13 @@ series_stats <- function(x, func_list=list(first=s_first_year,last=s_last_year,
   years=s_count_year,inner_type=s_inner_type,outer_type=s_outer_type,
   number_fires=s_count_fire,number_injuries=s_count_injury,
   recording_years=s_count_recording,mean_interval=s_mean_interval)) {
-  stopifnot(class(x) == "fhx")
-  plyr::ddply(x$rings, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
+  stopifnot('fhx' %in% class(x))
+  plyr::ddply(x, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
 
 #' First (earliest) year of an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #'
 #' @return The minimum or first year of series in 'x'.
 #'
@@ -40,7 +40,7 @@ s_first_year <- function(x) {
 
 #' Last (most recent) year of an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #'
 #' @return The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x$year.
 #'
@@ -51,7 +51,7 @@ s_last_year <- function(x) {
 
 #' Number of years of an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #'
 #' @return The difference between the first and last observations in the series. 'NA' will be returned if 'NA' is in 'x$year'.
 #'
@@ -62,7 +62,7 @@ s_count_year <- function(x) {
 
 #' Type of observation in the last (most recent) year of an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #'
 #' @return The a factor giving the type of observation in the last observation of the series.
 #'
@@ -73,7 +73,7 @@ s_outer_type <- function(x) {
 
 #' Type of observation in the first (earliest) year of an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #'
 #' @return The a factor giving the type of observation in the first observation of the series.
 #'
@@ -84,7 +84,7 @@ s_inner_type <- function(x) {
 
 #' Number of fire events in an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #'
 #' @return The number of fire events observed in the series.
 #'
@@ -95,7 +95,7 @@ s_count_fire <- function(x) {
 
 #' Number of injury events in an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #'
 #' @return The number of injury events observed in the series.
 #'
@@ -106,7 +106,7 @@ s_count_injury <- function(x) {
 
 #' Number of recording years in an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #' @param injury_event Boolean indicating whether injuries should be considered event.
 #'
 #' @return The number of recording events observed in the series.
@@ -118,7 +118,7 @@ s_count_recording <- function(x, injury_event=FALSE) {
 
 #' Calculate mean fire interval of an fhx series.
 #'
-#' @param x An fhx object's 'rings' data.frame.
+#' @param x An fhx object.
 #' @param injury_event Boolean indicating whether injuries should be considered event.
 #'
 #' @return The mean fire interval observed in the series.
@@ -166,6 +166,8 @@ s_mean_interval <- function(x, injury_event=FALSE) {
 
 run_sea <- function(x, key, years_before=6, years_after=4,
                       time_span=c('key_period'), n_iter=1000) {
+
+  # This function is going to need a lot of cleanup.
 
   # set up
   period <- range(key)
@@ -274,14 +276,14 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 
 #' Calculate the sample depth of an fhx object
 #'
-#' @param x An fhx object.
+#' @param a An fhx object.
 #' @return A data.frame containing the years and number of trees
 #'
 #' @export
 #'
-samp_depth <- function(x){
-  stopifnot(class(x) == "fhx")
-  x <- tree_stats(x)
+sample_depth <- function(a){
+  stopifnot('fhx' %in% class(a))
+  x <- series_stats(a)
   n.trees <- nrow(x)
   aa <- data.frame(year = min(x$first):max(x$last))
   for(i in 1:n.trees){

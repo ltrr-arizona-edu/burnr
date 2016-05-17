@@ -7,7 +7,7 @@
 s_first_year(x)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 }
 \value{
 The minimum or first year of series in 'x'.

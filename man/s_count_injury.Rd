@@ -7,7 +7,7 @@
 s_count_injury(x)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 }
 \value{
 The number of injury events observed in the series.

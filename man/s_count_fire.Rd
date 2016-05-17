@@ -7,7 +7,7 @@
 s_count_fire(x)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 }
 \value{
 The number of fire events observed in the series.

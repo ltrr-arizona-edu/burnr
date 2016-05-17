@@ -7,7 +7,7 @@
 s_inner_type(x)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 }
 \value{
 The a factor giving the type of observation in the first observation of the series.

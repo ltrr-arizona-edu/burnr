@@ -62,7 +62,7 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
   }
   stopifnot(facet_type %in% c("grid", "wrap"))
   stopifnot(rugbuffer_size >= 2)
-  clean.nonrec <- subset(x$rings, x$rings$rec_type != "recorder_year")
+  clean.nonrec <- subset(x, x$rec_type != "recorder_year")
   scar.types <- c("unknown_fs", "dormant_fs", "early_fs",
                   "middle_fs", "late_fs", "latewd_fs")
   injury.types <- c("unknown_fi", "dormant_fi", "early_fi",
@@ -74,12 +74,12 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
   levels(events$rec_type)[levels(events$rec_type) %in% pithbark.types] <- "Pith/Bark"
   events$rec_type <- factor(events$rec_type, levels = c("Scar", "Injury", "Pith/Bark"))
   
-  live <- aggregate(x$rings$year, by = list(x$rings$series), FUN = range, na.rm = TRUE)
+  live <- aggregate(x$year, by = list(x$series), FUN = range, na.rm = TRUE)
   live <- data.frame(series = live$Group.1,
                      first = live$x[, 1],
                      last = live$x[, 2],
                      rec_type = rep("non-recording", dim(live)[1]))
-  recorder <- subset(x$rings, x$rings$rec_type == "recorder_year")
+  recorder <- subset(x, x$rec_type == "recorder_year")
   if ( dim(recorder)[1] > 0 ) {  # If there are recorder_years...
     # Get the min and max of the recorder_years.
     recorder <- aggregate(recorder$year,  # TODO: rename this var.
@@ -97,7 +97,7 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
   levels(segs$rec_type) <- c("Recording", "Non-recording")
   
   p <- NA
-  rings <- x$rings
+  rings <- x
   if (!missing(facet_group) & !missing(facet_id)) {
     rings <- merge(rings, data.frame(series = facet_id, facet_group = facet_group), by = "series")
     segs <- merge(segs, data.frame(series = facet_id, facet_group = facet_group), by = "series")

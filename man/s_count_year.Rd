@@ -7,7 +7,7 @@
 s_count_year(x)
 }
 \arguments{
-\item{x}{An fhx object's 'rings' data.frame.}
+\item{x}{An fhx object.}
 }
 \value{
 The difference between the first and last observations in the series. 'NA' will be returned if 'NA' is in 'x$year'.

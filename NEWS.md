@@ -1,6 +1,8 @@
-# burnr v0.1.0.9013
+# burnr v0.1.0.9014
 
 Changes in this minor release:
+
+* Changed design of fhx objects. They are now data.frame and not lists (nobody used the 'meta', list member anyways). This means that if x is your fhx object and you previously used x$rings, you can now just use x.
 
 * composite() now returns an fhx object.
 
@@ -10,9 +12,9 @@ Changes in this minor release:
 
 * Added examples to all function documentation.
 
-* `resolve_duplicates()` is now hidden (`burnr:::check_duplicates()`).
+* `resolve_duplicates()` is now hidden (i.e. `burnr:::check_duplicates()`).
 
-* Added function samp_depth() to get sample depth.
+* Added function sample_depth() to get sample depth.
 
 * Added run_sea function to begin to address issue #58. Has pretty table output.
 
@@ -31,10 +33,6 @@ Changes in this minor release:
 * Fixed poor sorting function for FHX objects.
 
 * Added several small utility functions: `get_year()`, `get_series()`, `series_names()`, `delete()`.
-
-* `subset()` for `fhx` objects.
-
-* Pretty printing for `fhx` objects.
 
 * Improved documentation!
 

@@ -8,6 +8,8 @@ Changes in this minor release:
 
 * Added function `is.fhx()`.
 
+* Updated `pgm` example data.
+
 * Added experimental `plot_season()`.
 
 * composite() now returns an fhx object.

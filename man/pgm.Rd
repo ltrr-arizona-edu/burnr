@@ -4,7 +4,7 @@
 \name{pgm}
 \alias{pgm}
 \title{Peggy Mesa fire-history data}
-\format{An fhx object with 37 series from 1555 to 2013 CE. Each series is a string with 5 characters.}
+\format{An fhx object with 41 series from 1555 to 2013 CE. Each series is a string with 5 characters.}
 \usage{
 pgm
 }

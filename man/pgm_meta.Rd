@@ -4,7 +4,7 @@
 \name{pgm_meta}
 \alias{pgm_meta}
 \title{Metadata for the Peggy Mesa fire-history dataset}
-\format{A data frame with 45 rows and 5 variables:
+\format{A data frame with 41 rows and 5 variables:
 \itemize{
   \item TreeID: name of tree series
   \item SpeciesID: abbreviated tree species

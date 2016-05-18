@@ -160,7 +160,7 @@ delete <- function(x, s, yr) {
 
 #' Subset `rings` data.frame to years that are considered recording.
 #'
-#' @param x A dataframe from an fhx object.
+#' @param x A an fhx object dataframe.
 #' @param injury_event Boolean indicating whether injuries should be considered event.
 #'
 #' @examples
@@ -170,7 +170,6 @@ delete <- function(x, s, yr) {
 #'
 #' @return A dataframe with a column of each year which is 'recording'.
 find_recording <- function(x, injury_event) {
-  # 'x' is the the 'rings' data.frame for a single series.
   # Use with: ddply(lgr2$rings, 'series', recorder_finder)
   x <- x[order(x$year), ]
   recorder <- list("|" = "recorder_year",
@@ -357,9 +356,24 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
   check_duplicates(f)
 }
 
+#' Check if object is fhx.
+#'
+#' @param x Any R object.
+#'
+#' @return Boolean indicating whether `x` is an fhx object.
+#'
+#' @examples
+#' data(lgr2)
+#' is.fhx(lgr2)
+#'
+#' @export
+is.fhx <- function(x) {
+  inherits(x, 'fhx')
+}
+
 #' Check for duplicate observations in an fhx object.
 #'
-#' @param x An fhx instance.
+#' @param x An fhx object.
 #'
 #' @return A \code{x} or stop() is thrown.
 #'

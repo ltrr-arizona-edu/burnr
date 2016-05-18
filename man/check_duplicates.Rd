@@ -7,7 +7,7 @@
 check_duplicates(x)
 }
 \arguments{
-\item{x}{An fhx instance.}
+\item{x}{An fhx object.}
 }
 \value{
 A \code{x} or stop() is thrown.

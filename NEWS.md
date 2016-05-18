@@ -1,6 +1,8 @@
-# burnr v0.1.0.9015
+# burnr v0.1.0.9016
 
 Changes in this minor release:
+
+* Added function `is.fhx()`.
 
 * Changed design of fhx objects. They are now data.frame and not lists (nobody used the 'meta', list member anyways). This means that if x is your fhx object and you previously used x$rings, you can now just use x.
 

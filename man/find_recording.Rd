@@ -7,7 +7,7 @@
 find_recording(x, injury_event)
 }
 \arguments{
-\item{x}{A dataframe from an fhx object.}
+\item{x}{A an fhx object dataframe.}
 
 \item{injury_event}{Boolean indicating whether injuries should be considered event.}
 }

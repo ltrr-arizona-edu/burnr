@@ -1,4 +1,4 @@
-#' Create an ggplot2 object for plotting.
+#' Create an ggplot2 object for plotting fhx demographics.
 #'
 #' @param x An \code{fhx} instance.
 #' @param color_group Option to plot series with colors. This is a character vector or factor which corresponds to the series names given in \code{color_id}. Both \code{color_group} and \code{color_id} need to be specified. Default plot gives no color.
@@ -39,7 +39,7 @@
 #'
 #' # Append annotation onto a ggplot object.
 #' require(ggplot2)
-#' p <- get_ggplot(lgr2,
+#' p <- plot_demograph(lgr2,
 #'                 color_group = lgr2_meta$SpeciesID,
 #'                 color_id = lgr2_meta$TreeID)
 #' # Add transparent box as annotation to plot.
@@ -48,7 +48,7 @@
 #'              ymin = 3.5, ymax = 13.5, alpha = 0.2)
 #'
 #' @export
-get_ggplot <- function(x, color_group, color_id, facet_group, facet_id, 
+plot_demograph <- function(x, color_group, color_id, facet_group, facet_id, 
                        facet_type="grid", ylabels=TRUE, yearlims=FALSE, 
                        composite_rug=FALSE, filter_prop=0.25, filter_min=2, 
                        injury_event= FALSE, plot_legend=FALSE, 
@@ -182,7 +182,7 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
 
 #' Plot an fhx object.
 #'
-#' @param ... Arguments passed on to \code{get_ggplot}.
+#' @param ... Arguments passed on to \code{plot_demograph}.
 #'
 #' @examples
 #' data(lgr2)
@@ -204,7 +204,7 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
 #'
 #' # Append annotation onto a ggplot object.
 #' require(ggplot2)
-#' p <- get_ggplot(lgr2,
+#' p <- plot_demograph(lgr2,
 #'                 color_group = lgr2_meta$SpeciesID,
 #'                 color_id = lgr2_meta$TreeID)
 #' # Add transparent box as annotation to plot.
@@ -214,5 +214,17 @@ get_ggplot <- function(x, color_group, color_id, facet_group, facet_id,
 #'
 #' @export
 plot.fhx <- function(...) {
-  print(get_ggplot(...))
+  print(plot_demograph(...))
+}
+
+#' Create a ggplot2 object for plotting.
+#'
+#' This function is depreciated. Please use `plot_demograph()`.
+#'
+#' @param ... Arguments passed on to \code{plot_demograph}.
+#'
+#' @export
+get_ggplot <- function(...) {
+  .Deprecated('plot_demograph')
+  plot_demograph(...)
 }

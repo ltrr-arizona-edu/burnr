@@ -163,11 +163,11 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
 #'
 #' @export
-
 run_sea <- function(x, key, years_before=6, years_after=4,
                       time_span=c('key_period'), n_iter=1000) {
 
   # This function is going to need a lot of cleanup.
+  message('run_sea(): This function is experimental and will likely change in the future.')
 
   # set up
   period <- range(key)

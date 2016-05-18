@@ -40,7 +40,7 @@ devtools::install_github("ltrr-arizona-edu/burnr")
 
 ## Support
 
-Documentation is included in the code. More information, including a [cookbook](https://github.com/ltrr-arizona-edu/burnr/wiki/burnr-Cookbook), can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
+Documentation is included in the code. More information can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
 
 ## Development
 

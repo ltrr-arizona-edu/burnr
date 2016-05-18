@@ -100,7 +100,7 @@ series_names <- function(x) {
 get_year <- function(x, yr) {
   stopifnot('fhx' %in% class(x))
   stopifnot(is.numeric(yr))
-  subset(x, year %in% yr)
+  subset(x, x$year %in% yr)
 }
 
 #' Extract fhx observations for given series.
@@ -120,7 +120,7 @@ get_year <- function(x, yr) {
 get_series <- function(x, s) {
   stopifnot('fhx' %in% class(x))
   stopifnot(is.character(s))
-  subset(x, series %in% s)
+  subset(x, x$series %in% s)
 }
 
 #' Remove series or years from an fhx object.
@@ -147,11 +147,11 @@ delete <- function(x, s, yr) {
   out <- c()
   # I'm sure there is a more clever way to handle this.
   if (missing(s)) {
-    out <- subset(x, !(year %in% yr))
+    out <- subset(x, !(x$year %in% yr))
   } else if (missing(yr)) {
-    out <- subset(x, !(series %in% s))
+    out <- subset(x, !(x$series %in% s))
   } else if (!missing(yr) & !missing(s)) {
-    out <- subset(x, !((series %in% s) & (year %in% yr)))
+    out <- subset(x, !((x$series %in% s) & (x$year %in% yr)))
   } else {
     out <- x
   }

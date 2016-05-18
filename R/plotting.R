@@ -196,8 +196,8 @@ plot_season <- function(x){
   stopifnot(is.fhx(x))
   message('plot_season(): This function is experimental and will likely change in the future.')
   x_events <- subset(x, grepl('_fs|_fi', rec_type))
-  p <- ggplot2::ggplot(x_events, aes(year, fill = rec_type))
-  p <- (p + geom_histogram(binwidth = 10) + theme_bw())
+  p <- ggplot2::ggplot(x_events, ggplot2::aes(x_events$year, fill = x_events$rec_type))
+  p <- (p + ggplot2::geom_histogram(binwidth = 10) + ggplot2::theme_bw())
   brks.major <- NA
   brks.minor <- NA
   yr_range <- diff(range(x_events$year))

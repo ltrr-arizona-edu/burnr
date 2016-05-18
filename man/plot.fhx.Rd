@@ -7,7 +7,7 @@
 \method{plot}{fhx}(...)
 }
 \arguments{
-\item{...}{Arguments passed on to \code{get_ggplot}.}
+\item{...}{Arguments passed on to \code{plot_demograph}.}
 }
 \description{
 Plot an fhx object.
@@ -32,7 +32,7 @@ plot(lgr2,
 
 # Append annotation onto a ggplot object.
 require(ggplot2)
-p <- get_ggplot(lgr2,
+p <- plot_demograph(lgr2,
                 color_group = lgr2_meta$SpeciesID,
                 color_id = lgr2_meta$TreeID)
 # Add transparent box as annotation to plot.

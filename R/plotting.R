@@ -57,6 +57,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
 # TODO: Merge ends and events into a single df. with a factor to handle the 
 #       different event types... this will allow us to put these "fire events" and
 #       "pith/bark" into a legend.
+  stopifnot(is.fhx(x))
   if (composite_rug & !missing('facet_group')) {
     stop("Cannot have composite rug and facet in same plot")
   }
@@ -177,6 +178,49 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
   if (!ylabels) {
    p <- p + ggplot2::theme(axis.ticks = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank())
   }
+  p
+}
+
+#' Create an ggplot2 object for plotting fhx event seasonality.
+#'
+#' @param x An fhx object.
+#'
+#' @return A ggplot object for plotting or manipulation.
+#'
+#' @examples
+#' data(lgr2)
+#' plot_season(lgr2)
+#'
+#' @export
+plot_season <- function(x){
+  stopifnot(is.fhx(x))
+  message('plot_season(): This function is experimental and will likely change in the future.')
+  x_events <- subset(x, grepl('_fs|_fi', rec_type))
+  p <- ggplot2::ggplot(x_events, aes(year, fill = rec_type))
+  p <- (p + geom_histogram(binwidth = 10) + theme_bw())
+  brks.major <- NA
+  brks.minor <- NA
+  yr_range <- diff(range(x_events$year))
+  if (yr_range < 100) {
+      brks.major = seq(round(min(x_events$year), -1),
+                       round(max(x_events$year), -1),
+                       10)
+      brks.minor = seq(round(min(x_events$year), -1),
+                       round(max(x_events$year), -1),
+                       5)
+  } else if (yr_range >= 100) {
+      brks.major = seq(round(min(x_events$year), -2),
+                       round(max(x_events$year), -2),
+                       100)
+      brks.minor = seq(round(min(x_events$year), -2),
+                       round(max(x_events$year), -2),
+                       50)
+  }
+  p <- (p + ggplot2::scale_x_continuous(breaks = brks.major, minor_breaks = brks.minor)
+          + ggplot2::theme_bw()
+          + ggplot2::theme(axis.title.x = ggplot2::element_blank(),
+                  legend.title = ggplot2::element_blank(),
+                  legend.position = "bottom"))
   p
 }
 

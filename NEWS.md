@@ -1,4 +1,4 @@
-# burnr v0.1.0.9017
+# burnr v0.1.0.9018
 
 Changes in this minor release:
 
@@ -7,6 +7,8 @@ Changes in this minor release:
 * Changed design of fhx objects. They are now data.frame and not lists (nobody used the 'meta', list member anyways). This means that if x is your fhx object and you previously used x$rings, you can now just use x.
 
 * Added function `is.fhx()`.
+
+* Added experimental `plot_season()`.
 
 * composite() now returns an fhx object.
 

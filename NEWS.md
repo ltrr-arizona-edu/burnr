@@ -10,8 +10,6 @@ Changes in this minor release:
 
 * Updated `pgm` example data.
 
-* Added experimental `plot_season()`.
-
 * composite() now returns an fhx object.
 
 * Added function get_event_years() to find fire and fire injury years in fhx objects. This is especially helpful for composites.

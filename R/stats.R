@@ -23,7 +23,7 @@ series_stats <- function(x, func_list=list(first=first_year,last=last_year,
   years=count_year_span,inner_type=inner_type,outer_type=outer_type,
   number_fires=count_fire,number_injuries=count_injury,
   recording_years=count_recording,mean_interval=mean_interval)) {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   plyr::ddply(x, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
 

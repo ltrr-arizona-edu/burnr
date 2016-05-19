@@ -41,7 +41,7 @@ fhx <- function(year,  series, rec_type, metalist=list()) {
 #'
 #' @export
 get_event_years <- function(x, scar_event=TRUE, injury_event=FALSE, custom_grep_str=NULL) {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   if (!is.null(custom_grep_str)) {
     message('burnr::get_events(): custom_search_str was defined, ignoring scar_event and injury_event arguments')
   }
@@ -79,7 +79,7 @@ get_event_years <- function(x, scar_event=TRUE, injury_event=FALSE, custom_grep_
 #'
 #' @export
 series_names <- function(x) {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   as.character(unique(x$series))
 }
 
@@ -98,7 +98,7 @@ series_names <- function(x) {
 #'
 #' @export
 get_year <- function(x, yr) {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   stopifnot(is.numeric(yr))
   subset(x, x$year %in% yr)
 }
@@ -118,7 +118,7 @@ get_year <- function(x, yr) {
 #'
 #' @export
 get_series <- function(x, s) {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   stopifnot(is.character(s))
   subset(x, x$series %in% s)
 }
@@ -143,7 +143,7 @@ get_series <- function(x, s) {
 #' @export
 delete <- function(x, s, yr) {
   # Hint: It's just an inverse subset.
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   out <- c()
   # I'm sure there is a more clever way to handle this.
   if (missing(s)) {
@@ -254,7 +254,7 @@ yearly_recording <- function(x, injury_event=FALSE) {
 #'
 #' @export
 composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, comp_name='COMP') {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   injury <- list("u" = "unknown_fi",
                  "d" = "dormant_fi",
                  "e" = "early_fi",
@@ -324,7 +324,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
 #'
 #' @export
 sort.fhx <- function(x, decreasing=FALSE, ...) {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   if (length(unique(x$series)) == 1) {
     return(x)
   }
@@ -383,7 +383,7 @@ is.fhx <- function(x) {
 #' burnr:::check_duplicates(lgr2 + pgm)
 #'
 check_duplicates <- function(x) {
-  stopifnot('fhx' %in% class(x))
+  stopifnot(is.fhx(x))
   if (!anyDuplicated(x)) {
     return(x)
   } else {

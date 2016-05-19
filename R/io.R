@@ -115,6 +115,7 @@ write_fhx <- function(x, fname="") {
     stop('Please specify a character string naming a file or connection open
           for writing.')
   }
+  stopifnot(is.fhx(x))
   type_key <- list("null_year"    = ".", 
                    "recorder_year"= "|", 
                    "unknown_fs"   = "U", 

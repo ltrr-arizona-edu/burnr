@@ -1,0 +1,206 @@
+---
+title: "Introduction to burnr"
+author: "S. Brewster Malevich"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction to burnr
+
+This is a brief tutorial to cover some general ideas and help you get started with some basic features in burnr. This is a simple tutorial so you won't need crazy coding skills. I am going to assume that you have a [recent version of R](http://www.r-project.org) installed and are familiar with the basics of R.
+
+If you are not familiar with R, hit Google with the search "R stat tutorial", or some variation there of. You will find a plethora of useful learning material and helpful people from a wide array of backgrounds.
+
+People pickup this coding stuff more quickly if they try the examples I give and play around with the interesting things they discover. I recommend you open a terminal with an R session and follow along as you read this. It's more fun that way.
+
+## What's burnr
+
+burnr is a package for forest fire history analysis in the R statistical environment. This package isn't designed to be a comprehensive suite for fire analysis. Rather the point is expose fire history data to the R ecosystem and give people a transparent, flexible, and powerful set of core tools. This is something that is very much born from my old school, Open Source hacker mentality. I think this is something that can help us create better science and I hope that this package can be a seed for more collaboration between fire-researchers, whether for a personal project, or for something at work. Go explore, create, and share.
+
+--------
+
+## Citing burnr in your research
+
+I'm never sure how to gracefully bring this up, but I need to mention this. I don't get paid to write and maintain burnr. I mostly do this because I think these are interesting problems to work with. That being said, knowing who uses burnr and how they use it helps me to justify putting more time and effort into this (and I like seeing what you are up to). If you use burnr in your research, please cite burnr appropriately in your work.
+
+Ideally, cite one of the peer-reviewed papers that describe burnr for a specific use. These papers are currently in preparation and I'll be sure to update this section with the citation information as soon as they're published.
+
+To cite the code repository directly use:
+
+*Malevich, S.B., Margolis, E.Q., Guiterman, C.H., 2015. burnr: Fire history analysis in R. \<https://github.com/ltrr-arizona-edu/burnr\>.*
+
+Alternatively, you can cite the package in R's CRAN repository. You can see this information by running `citation('burnr')` in an R session.
+
+--------
+
+## Install burnr
+
+You can install burnr from the CRAN repository with:
+
+```r
+install.packages('burnr')
+```
+
+Most burnr development is centered at https://github.com/ltrr-arizona-edu/burnr. If I get hit by a bus, the guys at the Laboratory of Tree-Ring Research will hopefully make sure that burnr doesn't disappear. You can download burnr directly from this github repository with the `devtools` package:
+
+```r
+devtools::install_github('ltrr-arizona-edu/burnr')
+```
+
+Note that this will give you the bleeding-edge, development version of the package. It changes often and it may be unstable. Beware.
+
+Once burnr has been installed, you can load it just as you'd load any other R package
+
+```{r}
+library('burnr')
+```
+
+and you're good to go.
+
+## Reading and writing fire history data
+
+Loading data from FHX files is fairly straightforward.
+
+```r
+d <- read_fhx('my_fhx_file.fhx')
+```
+
+This loads any given FHX file into an fhx object in R and assigns it to the `d` variable.
+
+We can also write simple FHX files from fhx objects in R:
+
+```r
+write_fhx(d, fname = 'notacreativeoutputfilename.fhx')
+```
+
+Fairly straightforward stuff.
+
+## Manipulating fhx objects
+
+The fhx objects are like very specialized data.frames. We can do some useful things with these fhx objects. Let's use some example fhx objects that we bundled with burnr (or you can read in your own FHX files).
+
+```{r}
+data(lgr2)  # fire data from Los Griegos Peak, New Mexico
+
+head(lgr2)
+```
+Peaking at the head of the `lgr2` data shows that we have information about the years of observations, the series (which can correspond to a tree, sample, plot, site, whatever you like), and the type of record for a given year. You'll notice that we don't keep track of "null" years. Removing null years lets us keep the code quick and nimble (usually).
+
+Looking at the structure of the `lgr2` object can give us some more technical details, if that's your thing:
+
+```{r}
+str(lgr2)
+```
+
+The important thing to keep in mind is you can parse these fhx objects all you like, but be careful modifying or changing an fhx object's data with your own functions. Nerdy aside: I don't stop you from doing this (because you might be trying some cool new thing), but this might have unintended consequences. This is business as usually for anyone who familiar with R's S3 classes, but it can be a bit unsettling if you come from another programming language, or if you're not familiar with S3 classes. My point is that reading data from fhx objects like they're a data.frame is fine, but manually modifying the data is something I recommended for advanced (or brave) users.
+
+Let's pull in another example dataset and combine it with `lgr2`.
+
+```{r}
+data(pgm)  # Peggy Mesa fire data.
+
+both <- lgr2 + pgm
+```
+
+As you might suspect, `both` is a concatenation, combing the fire information in `lgr2` and `pgm`. We can prove this by looking at the series names.
+
+```{r}
+series_names(lgr2)
+
+series_names(both)
+```
+
+We can also delete specific series or years from an fhx object.
+
+```r
+delete(lgr2, s = 'LGR46')             # Remove series.
+delete(lgr2, yr = 1752)               # Remove year from all series.
+delete(lgr2, s = 'LGR46', yr = 1752)  # Remove year from select series.
+```
+Note that our use of `delete()` is not modifying `lgr2` in place. `lgr2` is unchanged unless we assign the output of `delete()` back to the `lgr2` variable.
+
+Use `help()` to find more information on these functions. Be sure to check out `get_series()`, `get_year()`, and `sort.fhx()`.
+
+## Basic plotting
+
+Now that we have some fire data in R, let's put this into real use! The simplest way to plot an fhx object, is to use the `plot()` function.
+
+```{r}
+plot(lgr2)
+```
+
+This gives us a fire history demographic plot. Solid circles indicate "solid" starting and stopping dates (i.e. "pith-date", "bark-date"). Triangles indicate any kind of fire event. You will also notice that solid lines in a series are periods when the tree is sensitive to fire events ("recording"). The dotted-line indicates periods when the tree is not sensitive to fire events. Previously, inner and outer years had been plotted for each of the series. Here, we simply let the dotted and solid line segments end. It is evident enough that this is the first or last year of the series. This gives us a little more plotting space to work with. Back when I first started writing burnr in 2011 - 2012, one of the main goals of the package was to easily plot a *ridiculous* amount of fire-history data. The spartan plotting design is a consequence of this.
+
+We can clean things up by removing the labels on the y-axis.
+
+```{r}
+plot(lgr2, ylabels = FALSE)
+```
+
+We can also add color to our plots. This is one of the fancier features of burnr, that will hopefully become standard for fire-history analysis tools. First, we'll load in some metadata for the `lgr2` object.
+
+```{r}
+data(lgr2_meta)
+
+head(lgr2_meta)
+```
+
+`lgr2_meta` is just a data.frame that links series names with extra information like sample species. These can easily be made for your own data. The cool thing is how we use this information in our plots.
+
+```{r}
+plot(lgr2,
+     color_group = lgr2_meta$SpeciesID,
+     color_id = lgr2_meta$TreeID,
+     ylabels = FALSE,
+     plot_legend = TRUE)  # Include a legend!
+```
+
+Now that we add color, we can see our data suggests a change in species composition from PIPO (*Pinus ponderosa*) to PSME (*Pseudotsuga menziesii*) and POTR (*Populus tremuloides*). The help function, `help(lgr2)`, will give you more information on `lgr2` if you're curious.
+
+Alternatively, we can create a faceted plot using the same information.
+
+```{r}
+plot(lgr2,
+     facet_group = lgr2_meta$SpeciesID,
+     facet_id = lgr2_meta$TreeID,
+     ylabels = FALSE)
+```
+
+Generally, people use the color to represent species and then use facets for different sample locations (yes, you can use colors and facets together). I've seen facets from site data create plots large enough to plaster across an office wall. It looks cool. Some people find it helpful.
+
+## Advanced plotting
+
+Plotting in burnr does not use the base plotting system in R. Instead, our plotting is handled by the grid-based ggplot2 package. This give us a way to create sophisticated plots that are modular and user customizable. The drawback to this is that ggplot2 graphics have a steep learning curve and can seem obtuse to new (or advanced) users who are used to other plotting systems.
+
+Beneath it's simple exterior the `plot()` method passes its plotting to the humming `plot_demograph()`. The key here is that `plot_demograph()` returns ggplot objects which you can modify. So, lets load the ggplot2 package and create the same colored fire demographic plots that we created above. But this time, we'll capture the function's output.
+
+```{r}
+library(ggplot2)
+p <- plot_demograph(lgr2,
+             color_group = lgr2_meta$SpeciesID,
+             color_id = lgr2_meta$TreeID)
+print(p)
+```
+
+Same as before, but without the legend. Now, let's can use the output from `plot_demographic()` to add an annotation:
+
+```{r}
+# Add transparent box as annotation to plot.
+p + annotate('rect',
+          xmin = 1750, xmax = 1805,
+          ymin = 3.5, ymax = 13.5, alpha = 0.2)
+```
+
+We can annotate with text to point out something "important" (ha ha).
+
+```{r}
+p + annotate('text', x = 1650, y = 7.5, label = 'important!')
+```
+
+We can use the same approach to change plot colors, labels, etc. Try adding ggplot2's `theme_grey()` and see what happens! Using what you've learned, try to combine the `lgr2` and `pgm` objects and create a plot with facets for each of these locations. You can load burnr's `pgm_meta` if you need.
+
+Check out ggplot2 (http://docs.ggplot2.org/) to learn more.

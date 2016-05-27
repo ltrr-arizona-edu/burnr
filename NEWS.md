@@ -1,6 +1,8 @@
-# burnr v0.1.0.9018
+# burnr v0.1.0.9019
 
 Changes in this minor release:
+
+* Added vignettes!
 
 * `get_ggplot()` is being depreciated. Please use `plot_demograph()`.
 

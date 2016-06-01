@@ -19,7 +19,7 @@ People pickup this coding stuff more quickly if they try the examples I give and
 
 ## What's burnr
 
-burnr is a package for forest fire history analysis in the R statistical environment. This package isn't designed to be a comprehensive suite for fire analysis. Rather the point is expose fire history data to the R ecosystem and give people a transparent, flexible, and powerful set of core tools. This is something that is very much born from my old school, Open Source hacker mentality. I think this is something that can help us create better science and I hope that this package can be a seed for more collaboration between fire-researchers, whether for a personal project, or for something at work. Go explore, create, and share.
+burnr is a package for forest fire history analysis in the R statistical environment. This package isn't designed to be a comprehensive suite for fire analysis. Rather the idea is to 1) expose fire history data to the R ecosystem and 2) give people a transparent, flexible, and powerful set of core tools. I think this is something that can help us create better research and I hope that this package can be a seed for more collaboration between fire-researchers, whether for a personal project, or for something at work. Go explore, create, and share.
 
 --------
 

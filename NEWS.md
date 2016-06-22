@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Updated function run_sea to better replicate EVENT Fortran program. Addresses #58. Added detailed description and a repeatable pseudorandom number generation via set.seed. Also fixed issue with percentage CIs in the departure table.
+
 * Added vignettes!
 
 * `get_ggplot()` is being depreciated. Please use `plot_demograph()`.

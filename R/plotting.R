@@ -63,13 +63,13 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
   }
   stopifnot(facet_type %in% c("grid", "wrap"))
   stopifnot(rugbuffer_size >= 2)
-  clean.nonrec <- subset(x, x$rec_type != "recorder_year")
+  clean.nonrec <- x[x$rec_type != 'recorder_year', ]
   scar.types <- c("unknown_fs", "dormant_fs", "early_fs",
                   "middle_fs", "late_fs", "latewd_fs")
   injury.types <- c("unknown_fi", "dormant_fi", "early_fi",
                     "middle_fi", "late_fi", "latewd_fi")
   pithbark.types <- c("pith_year", "bark_year")
-  events <- subset(clean.nonrec, (rec_type %in% scar.types) | (rec_type %in% injury.types) | (rec_type %in% pithbark.types))
+  events <- clean.nonrec[clean.nonrec$rec_type %in% union(union(scar.types, injury.types), pithbark.types), ]
   levels(events$rec_type)[levels(events$rec_type) %in% scar.types] <- "Scar"
   levels(events$rec_type)[levels(events$rec_type) %in% injury.types] <- "Injury"
   levels(events$rec_type)[levels(events$rec_type) %in% pithbark.types] <- "Pith/Bark"
@@ -80,7 +80,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
                      first = live$x[, 1],
                      last = live$x[, 2],
                      rec_type = rep("non-recording", dim(live)[1]))
-  recorder <- subset(x, x$rec_type == "recorder_year")
+  recorder <- x[x$rec_type == 'recorder_year', ]
   if ( dim(recorder)[1] > 0 ) {  # If there are recorder_years...
     # Get the min and max of the recorder_years.
     recorder <- aggregate(recorder$year,  # TODO: rename this var.
@@ -106,19 +106,20 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
                     by = "series")
   }
   if (missing(color_group) | missing(color_id)) {
-    p <- ggplot2::ggplot(data = rings, ggplot2::aes(y = series, x = year))
+    p <- ggplot2::ggplot(data = rings, ggplot2::aes_string(y = 'series', x = 'year'))
   } else {
     rings <- merge(rings, data.frame(series = color_id, species = color_group), by = "series")
     segs <- merge(segs, data.frame(series = color_id, species = color_group), by = "series")
     events <- merge(events, data.frame(series = color_id, species = color_group),
                     by = "series")
-    p <- ggplot2::ggplot(rings, ggplot2::aes(y = series, x = year, color = species))
+    p <- ggplot2::ggplot(rings, ggplot2::aes_string(y = 'series', x = 'year', color = 'species'))
   }
-  p <- (p + ggplot2::geom_segment(ggplot2::aes(x = first, xend = last, y = series, yend = series, linetype = rec_type),
+  p <- (p + ggplot2::geom_segment(ggplot2::aes_string(x = 'first', xend = 'last', y = 'series', 
+                                                      yend = 'series', linetype = 'rec_type'),
                          data = segs)
           + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid")))
           #+ ggplot2::scale_size_manual(values = c(0.5, 0.5, 0.3)))
-  p <- (p + ggplot2::geom_point(data = events, ggplot2::aes(shape = rec_type, size = rec_type),
+  p <- (p + ggplot2::geom_point(data = events, ggplot2::aes_string(shape = 'rec_type', size = 'rec_type'),
                        #size = event_size, color = "black")
                        color = "black")
           + ggplot2::scale_size_manual(values = event_size)
@@ -126,11 +127,10 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
                                values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
   
   if (composite_rug) {
-    comp <-composite(x, filter_prop = filter_prop, 
+    comp <- composite(x, filter_prop = filter_prop, 
                         filter_min = filter_min, 
                         injury_event = injury_event)
-    p <- (p + ggplot2::geom_rug(data = subset(rings,
-                                     rings$year %in% get_event_years(comp, injury_event = injury_event)[['COMP']]),
+    p <- (p + ggplot2::geom_rug(data = rings[rings$year %in% get_event_years(comp, injury_event = injury_event)[['COMP']], ],
                        sides = "b", color = "black")
             + ggplot2::scale_y_discrete(limits = c(rep("", rugbuffer_size), levels(rings$series)))
             + ggplot2::geom_hline(yintercept = rugdivide_pos, color = "grey50"))

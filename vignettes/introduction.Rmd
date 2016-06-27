@@ -19,7 +19,7 @@ People pickup this coding stuff more quickly if they try the examples I give and
 
 ## What's burnr
 
-burnr is a package for forest fire history analysis in the R statistical environment. This package isn't designed to be a comprehensive suite for fire analysis. Rather the idea is to 1) expose fire history data to the R ecosystem and 2) give people a transparent, flexible, and powerful set of core tools. I think this is something that can help us create better research and I hope that this package can be a seed for more collaboration between fire-researchers, whether for a personal project, or for something at work. Go explore, create, and share.
+burnr is a package for forest fire history analysis in the R statistical environment. This package isn't designed to be a comprehensive suite for fire analysis. Rather the idea is to provide a transparent, flexible, and powerful set of core tools.
 
 --------
 
@@ -45,7 +45,7 @@ You can install burnr from the CRAN repository with:
 install.packages('burnr')
 ```
 
-Most burnr development is centered at https://github.com/ltrr-arizona-edu/burnr. If I get hit by a bus, the guys at the Laboratory of Tree-Ring Research will hopefully make sure that burnr doesn't disappear. You can download burnr directly from this github repository with the `devtools` package:
+Most burnr development is centered at https://github.com/ltrr-arizona-edu/burnr. If I get hit by a bus, the people at the Laboratory of Tree-Ring Research will hopefully make sure that burnr doesn't disappear. You can download burnr directly from this github repository with the `devtools` package:
 
 ```r
 devtools::install_github('ltrr-arizona-edu/burnr')
@@ -96,7 +96,7 @@ Looking at the structure of the `lgr2` object can give us some more technical de
 str(lgr2)
 ```
 
-The important thing to keep in mind is you can parse these fhx objects all you like, but be careful modifying or changing an fhx object's data with your own functions. Nerdy aside: I don't stop you from doing this (because you might be trying some cool new thing), but this might have unintended consequences. This is business as usually for anyone who familiar with R's S3 classes, but it can be a bit unsettling if you come from another programming language, or if you're not familiar with S3 classes. My point is that reading data from fhx objects like they're a data.frame is fine, but manually modifying the data is something I recommended for advanced (or brave) users.
+The important thing to keep in mind is you can parse these fhx objects all you like, but be careful modifying or changing an fhx object's data with your own functions as this might have unintended consequences. Manually modifying the data is something I recommend for advanced (or brave) users with a working knowledge of R's S3 classes and generic function.
 
 Let's pull in another example dataset and combine it with `lgr2`.
 
@@ -133,7 +133,7 @@ Now that we have some fire data in R, let's put this into real use! The simplest
 plot(lgr2)
 ```
 
-This gives us a fire history demographic plot. Solid circles indicate "solid" starting and stopping dates (i.e. "pith-date", "bark-date"). Triangles indicate any kind of fire event. You will also notice that solid lines in a series are periods when the tree is sensitive to fire events ("recording"). The dotted-line indicates periods when the tree is not sensitive to fire events. Previously, inner and outer years had been plotted for each of the series. Here, we simply let the dotted and solid line segments end. It is evident enough that this is the first or last year of the series. This gives us a little more plotting space to work with. Back when I first started writing burnr in 2011 - 2012, one of the main goals of the package was to easily plot a *ridiculous* amount of fire-history data. The spartan plotting design is a consequence of this.
+This gives us a fire history demographic plot. Solid circles indicate "solid" starting and stopping dates (i.e. "pith-date", "bark-date"). Triangles indicate any kind of fire event. You will also notice that solid lines in a series are periods when the tree is sensitive to fire events ("recording"). The dashed line indicates periods when the tree is not sensitive to fire events. Back when I first started writing burnr in 2011 - 2012, one of the main goals of the package was to easily plot a *ridiculous* amount of fire-history data. The package's spartan plotting design is a consequence of this.
 
 We can clean things up by removing the labels on the y-axis.
 
@@ -176,7 +176,7 @@ Generally, people use the color to represent species and then use facets for dif
 
 Plotting in burnr does not use the base plotting system in R. Instead, our plotting is handled by the grid-based ggplot2 package. This give us a way to create sophisticated plots that are modular and user customizable. The drawback to this is that ggplot2 graphics have a steep learning curve and can seem obtuse to new (or advanced) users who are used to other plotting systems.
 
-Beneath it's simple exterior the `plot()` method passes its plotting to the humming `plot_demograph()`. The key here is that `plot_demograph()` returns ggplot objects which you can modify. So, lets load the ggplot2 package and create the same colored fire demographic plots that we created above. But this time, we'll capture the function's output.
+Beneath its simple exterior the `plot()` method passes its plotting to `plot_demograph()`. The key here is that `plot_demograph()` returns ggplot objects which you can modify. So, lets load the ggplot2 package and create the same colored fire demographic plots that we created above. But this time, we'll capture the function's output.
 
 ```{r}
 library(ggplot2)

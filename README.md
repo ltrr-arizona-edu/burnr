@@ -32,7 +32,13 @@ See `help(plot_demograph)` for more plot options. You can read and write your ow
 
 ## Installation
 
-This package is not yet in CRAN. If you'd like to install it, first be sure you have the `devtools` package installed in R. Install `burnr` with:
+You can install a relatively stable version of this package from CRAN with:
+
+```R
+install.packages('burnr')
+```
+
+You can also install the development version of the package from Github. First, be sure you have the `devtools` package installed in R. Install `burnr` with:
 
 ```R
 devtools::install_github("ltrr-arizona-edu/burnr")

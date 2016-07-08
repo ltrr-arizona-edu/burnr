@@ -1,8 +1,8 @@
 #' Generate series-level descriptive statistics.
 #'
 #' @param x An fhx object.
-#' @param func_list A list of named functions that will be run on each series 
-#'   in the fhx object. The list name for each function is the corresponding 
+#' @param func_list A list of named functions that will be run on each series
+#'   in the fhx object. The list name for each function is the corresponding
 #'   column name in the output data.frame.
 #'
 #' @return A data.frame containing series-level statistics.
@@ -140,9 +140,6 @@ mean_interval <- function(x, injury_event=FALSE) {
 
 #' Perform superposed epoch analysis.
 #'
-#' A superposed epoch analysis function that attempts to directly replicate the analyses provided in the EVENT program of the dendro
-#' program library and FHX2. In effect, it uses the matrix calculations of the sea function in the dplR library
-#'  with additional output.
 #'
 #' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
 #' @param key A vector of event years for superposed epoch, such as fire years
@@ -152,22 +149,47 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' which constrains the time series to the time period of key events; "all" will use the entire
 #' time series
 #' @param n_iter The number of iterations for bootstrap resampling
+#' @param seed A large integer to initiate the psuedorandom number generator. A commonly used number is
+#' one's birthday (e.g., 03191982). The default is the number of days since 01 January 1935, as
+#' in EVENT. Setting a seed allows for repeatable results in separate runs by picking the same
+#' random event years.
 #'
-#' @details It's superposed epoch analysis, it's all been said before. Twice.
+#' @details Superposed epoch analysis (SEA) is a commonly used tool to evaluate fire-climate
+#' relationships in studies of tree-ring fire history. It works by compositing the values of
+#' a climate timeseries or reconstruction for the fire years provided (key) and both positive and
+#' negative lag years. Bootstrap resampling of the timeseries is performed to evaluate the statistical
+#' significance of each year's mean value. Users interpret the departure of the actual event year
+#' means from the simulated event year means.
 #'
-#' @return A list of three data frames, following the output of EVENT.
+#' The significance of lag-year departures from the average climate condition was first noted by
+#' Baisan and Swetnam (1990) and used in an organized SEA by Swetnam (1993). Since then, the procedure
+#' has been applied in hundreds of fire history studies and was built into the FHX2 software by
+#' Henri Grissino-Mayer. The stand-alone version is the FORTRAN program EVENT, built by Richard
+#' Holmes and Thomas Swetnam (Holmes and Swetnam 1994)
+#'
+#' run_sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
+#' SEA, although multiple versions of the analysis exist in the climate literature and for fire
+#' history (e.g., FHAES implements a diferent procedure). The outcome of EVENT and run_sea should
+#' only differ slightly in the values of the simulated events and the departures, because random
+#' draws are used. The event year and lag significance levels should match, at least in the general
+#' pattern.
+#'
+#' We note that our implementation of run_sea borrows from the dplR:::sea function in how it sets
+#' up the function needs for R and how it performs
+#' the bootstrap procedure, but differs in the kind of output provided for the user.
+#'
+#'#' @return A list of three data frames, following the output of EVENT.
 #' (1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
 #'
+#' @references Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest Research 20:1559-1569.
+#' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
 #' @references Holmes and Swetnam 1994, EVENT program desription
 #' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
-#' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
+#'
 #'
 #' @export
 run_sea <- function(x, key, years_before=6, years_after=4,
-                      time_span=c('key_period'), n_iter=1000) {
-
-  # This function is going to need a lot of cleanup.
-  message('run_sea(): This function is experimental and will likely change in the future.')
+                    time_span=c('key_period'), n_iter=1000, seed=NULL) {
 
   # set up
   period <- range(key)
@@ -216,15 +238,24 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   else {
     rand_yrs <- rnames
   }
+  # Set seed and make random number draws
+  if (is.null(seed)) {
+    use_seed <- as.numeric(Sys.Date() - as.Date("1jan1935", "%d%b%Y"))
+  }
+  else {use_seed <- seed}
 
-  for (k in seq_len(n_iter)) {
-    rand.key <- sample(rand_yrs, n, replace = TRUE)
-    for (i in seq.n) {
-      yrs <- as.character(rand.key[i] + yrs.base)
+  set.seed(use_seed)
+  rand_pick <- matrix(sample(rand_yrs, n * n_iter, replace=TRUE),
+                      ncol=n_iter, nrow=n, byrow=FALSE)
+
+  for (k in 1:ncol(rand_pick)) {
+    for(i in 1:nrow(rand_pick)) {
+      yrs <- as.character(rand_pick[i, k] + yrs.base)
       re.subtable[i, ] <- x[yrs, ]
     }
     re.table[k, ] <- colMeans(re.subtable, na.rm = TRUE)
   }
+
   rand_event_table <- out_table
   rand_event_table[, 2] <- colMeans(re.table, na.rm=TRUE)
   rand_event_table[, 3] <- apply(re.table, 2, function(x) sum(!is.na(x)))
@@ -253,10 +284,12 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   departure_table[, 6] <- apply(re.table, 2, function(x)      2.575*sd(x, na.rm=TRUE))
   departure_table[, 7] <- apply(re.table, 2, function(x) -1 * 3.294*sd(x, na.rm=TRUE))
   departure_table[, 8] <- apply(re.table, 2, function(x)      3.294*sd(x, na.rm=TRUE))
-  departure_table[, 9] <- apply(re.table, 2, function(x) quantile(x, .025, na.rm=TRUE) - median(x))
-  departure_table[, 10] <- apply(re.table, 2, function(x) quantile(x, .975, na.rm=TRUE) + median(x))
-  departure_table[, 11] <- apply(re.table, 2, function(x) quantile(x, .005, na.rm=TRUE) - median(x))
-  departure_table[, 12] <- apply(re.table, 2, function(x) quantile(x, .995, na.rm=TRUE) + median(x))
+  temp <- apply(re.table,2,function(x) median(x))  #Simulated medians
+  departure_table[, 9] <- rand_event_table[, 11] - temp
+  departure_table[, 10] <- rand_event_table[, 12] - temp
+  departure_table[, 11] <- rand_event_table[, 13] - temp
+  departure_table[, 12] <- rand_event_table[, 14] - temp
+  rm(temp)
   departure_table <- round(departure_table, 3)
 
   out_list <- list("Actual events" = key_event_table, "Simulated events" = rand_event_table,
@@ -267,7 +300,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
                          sig = paste(ifelse(departure_table$mean_value < departure_table$lower_95_perc |
                                               departure_table$mean_value > departure_table$upper_95_perc, '*', ''),
                                      ifelse(departure_table$mean_value < departure_table$lower_99_perc |
-                                              departure_table$mean_value > departure_table$upper_99_perc, '*', ''),
+                                              departure_table$mean_value > departure_table$upper_99_perc, '**', ''),
                                      sep=''))
   print(prnt.tbl)
 

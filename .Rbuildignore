@@ -5,3 +5,4 @@
 ^.*\.sublime-project$
 ^NEWS\.md$
 ^data-raw$
+^cran-comments\.md$

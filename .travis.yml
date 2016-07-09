@@ -1,16 +1,20 @@
 language: r
-r:
-  - oldrel
-  - release
-  - devel
-os:
-  - linux
-  - osx
+
+matrix:
+  include:
+    - os: linux
+      r: oldrel
+    - os: linux
+      r: release
+      env: R_CODECOV=true
+    - os: linux
+      r: devel
+    - os: osx
+      disable_homebrew: true
 
 sudo: false
 cache: packages
 cran: http://cran.rstudio.com
-disable_homebrew: true
 warnings_are_errors: true
 
 r_github_packages:

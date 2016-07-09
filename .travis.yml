@@ -1,11 +1,24 @@
+os:
+  - linux
+  - osx
+
 language: r
+
 r:
   - oldrel
   - release
   - devel
+
+env:
+  global:
+    - CRAN: http://cran.rstudio.com
+
 sudo: false
 cache: packages
 warnings_are_errors: true
+
+brew_packages: hunspell
+
 addons:
   apt:
     packages:
@@ -14,10 +27,6 @@ addons:
 r_github_packages:
     - hadley/testthat
     - jimhester/covr
-
-env:
- global:
-   - CRAN: http://cran.rstudio.com
 
 notifications:
   email:

@@ -31,7 +31,7 @@ Ideally, cite one of the peer-reviewed papers that describe burnr for a specific
 
 To cite the code repository directly use:
 
-*Malevich, S.B., Margolis, E.Q., Guiterman, C.H., 2015. burnr: Fire history analysis in R. \<https://github.com/ltrr-arizona-edu/burnr\>.*
+*Malevich, S.B., Margolis, E.Q., Guiterman, C.H., 2015. burnr: Fire history analysis in R. \<https://github.com/ltrr-arizona-edu/burnr \>.*
 
 Alternatively, you can cite the package in R's CRAN repository. You can see this information by running `citation('burnr')` in an R session.
 

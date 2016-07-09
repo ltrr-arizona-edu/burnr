@@ -6,15 +6,15 @@ matrix:
       r: oldrel
     - os: linux
       r: release
-      env: R_CODECOV=true
+      env: COVERALLS_TEST=true
     - os: linux
       r: devel
     - os: osx
+      r: release
       disable_homebrew: true
 
 sudo: false
 cache: packages
-cran: http://cran.rstudio.com
 warnings_are_errors: true
 
 r_github_packages:
@@ -27,4 +27,4 @@ notifications:
     on_failure: change
 
 after_success:
-  - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e 'covr::coveralls()'
+  - if [ "${COVERALLS_TEST}" ]; then Rscript -e 'covr::coveralls()'; fi

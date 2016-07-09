@@ -3,9 +3,13 @@ r:
   - oldrel
   - release
   - devel
-
+sudo: false
+cache: packages
 warnings_are_errors: true
-sudo: required
+addons:
+  apt:
+    packages:
+      -libhunspell-dev
 
 r_github_packages:
     - hadley/testthat
@@ -21,4 +25,4 @@ notifications:
     on_failure: change
 
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
+  - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e 'covr::codecov()'

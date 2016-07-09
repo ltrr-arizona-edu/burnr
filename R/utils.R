@@ -328,7 +328,7 @@ sort.fhx <- function(x, decreasing=FALSE, ...) {
   if (length(unique(x$series)) == 1) {
     return(x)
   }
-  series_minyears <- aggregate(year ~ series, x, min)
+  series_minyears <- stats::aggregate(year ~ series, x, min)
   i <- order(series_minyears$year, decreasing = decreasing)
   x$series <- factor(x$series,
                            levels = series_minyears$series[i],

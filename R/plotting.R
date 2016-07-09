@@ -75,7 +75,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
   levels(events$rec_type)[levels(events$rec_type) %in% pithbark.types] <- "Pith/Bark"
   events$rec_type <- factor(events$rec_type, levels = c("Scar", "Injury", "Pith/Bark"))
   
-  live <- aggregate(x$year, by = list(x$series), FUN = range, na.rm = TRUE)
+  live <- stats::aggregate(x$year, by = list(x$series), FUN = range, na.rm = TRUE)
   live <- data.frame(series = live$Group.1,
                      first = live$x[, 1],
                      last = live$x[, 2],
@@ -83,7 +83,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
   recorder <- x[x$rec_type == 'recorder_year', ]
   if ( dim(recorder)[1] > 0 ) {  # If there are recorder_years...
     # Get the min and max of the recorder_years.
-    recorder <- aggregate(recorder$year,  # TODO: rename this var.
+    recorder <- stats::aggregate(recorder$year,  # TODO: rename this var.
                            by = list(recorder$series, recorder$rec_type),
                            FUN = range,
                            na.rm = TRUE)

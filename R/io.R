@@ -162,14 +162,14 @@ write_fhx <- function(x, fname="") {
   fl <- file(fname, open = "wt")
   cat(paste(head_line, "\n", subhead_line, "\n", sep = ""),
       file = fl, sep = "")
-  write.table(series_heading, fl,
-              append = TRUE, quote = FALSE,
-              sep = "", na = "!",
-              row.names = FALSE, col.names = FALSE)
+  utils::write.table(series_heading, fl,
+                     append = TRUE, quote = FALSE,
+                     sep = "", na = "!",
+                     row.names = FALSE, col.names = FALSE)
   cat("\n", file = fl, sep = "", append = TRUE)
-  write.table(out, fl, 
-              append = TRUE, quote = FALSE,
-              sep = "", na = "!",
-              row.names = FALSE, col.names = FALSE)
+  utils::write.table(out, fl, 
+                     append = TRUE, quote = FALSE,
+                     sep = "", na = "!",
+                     row.names = FALSE, col.names = FALSE)
   close(fl)
 }

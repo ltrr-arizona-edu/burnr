@@ -1,6 +1,7 @@
 ## Test environments
-* local Ubuntu & OS X install, R 3.3.1
-* ubuntu 12.04 (on travis-ci), R 3.3.1
+* local Ubuntu & OS X install, R release
+* travis-ci: Ubuntu 12.04 (devel, release, and R 3.2.5) and OSX (R release)
+* win-builder (devel)
 
 ## R CMD check results
 There were no ERRORs, WARNINGs.

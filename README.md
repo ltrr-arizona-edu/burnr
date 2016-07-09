@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master)](https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master)
 
 
-A tool set to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
+Basic tools to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
 
 The project is under heavy development as I try to wrap things up into a CRAN package. Hic sunt dracones.
 

@@ -5,7 +5,7 @@ Authors@R: c(
   person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre")),
   person("Christopher", "Guiterm1an", role = c("ctb")),
   person("Ellis", "Margolis", role = c("ctb")))
-Description: A tool set to analyze forest fire history data (e.g. FHX2) in R.
+Description: Basic tools to analyze forest fire history data (e.g. FHX2) in R.
 Depends:
     R (>= 3.2)
 License: GPL (>= 3)

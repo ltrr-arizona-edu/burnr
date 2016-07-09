@@ -2,7 +2,7 @@
 
 Changes in this minor release:
 
-* Added vignettes!
+* Added a vignette!
 
 * `get_ggplot()` is being depreciated. Please use `plot_demograph()`.
 
@@ -24,7 +24,7 @@ Changes in this minor release:
 
 * Added function sample_depth() to get sample depth.
 
-* Added run_sea function to begin to address issue #58. Has pretty table output.
+* Added run_sea function to begin to address issue #58. Has pretty table output. This is still very experimental.
 
 * Bug fix in series_stats to maintain series IDs for those with no features
 

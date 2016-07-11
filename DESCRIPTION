@@ -1,6 +1,6 @@
 Package: burnr
 Title: Advanced Fire History Analysis in R
-Version: 0.1.0
+Version: 0.1.1.9000
 Authors@R: c(
   person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre")),
   person("Christopher", "Guiterm1an", role = c("ctb")),

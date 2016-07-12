@@ -3,7 +3,7 @@ Title: Advanced Fire History Analysis in R
 Version: 0.1.0.9019
 Authors@R: c(
   person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre")),
-  person("Christopher", "Guiterm1an", role = c("ctb")),
+  person("Christopher", "Guiterman", role = c("ctb")),
   person("Ellis", "Margolis", role = c("ctb")))
 Description: A tool set to analyze forest fire history data (e.g. FHX2) in R.
 Depends:

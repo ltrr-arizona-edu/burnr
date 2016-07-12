@@ -142,30 +142,27 @@ mean_interval <- function(x, injury_event=FALSE) {
 #'
 #'
 #' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
-#' @param key A vector of event years for superposed epoch, such as fire years
+#' @param key A vector of event years for superposed epoch, such as fire years, or an fhx object
+#' with a single \code{series} as produced by \code{composite}
 #' @param years_before  The number of lag years prior to the event year
 #' @param years_after The number of lag years following the event year
 #' @param time_span The length of the x time series to use. Defaults to "key_period"
 #' which constrains the time series to the time period of key events; "all" will use the entire
 #' time series
 #' @param n_iter The number of iterations for bootstrap resampling
-#' @param seed A large integer to initiate the psuedorandom number generator. A commonly used number is
-#' one's birthday (e.g., 03191982). The default is the number of days since 01 January 1935, as
-#' in EVENT. Setting a seed allows for repeatable results in separate runs by picking the same
-#' random event years.
 #'
-#' @details Superposed epoch analysis (SEA) is a commonly used tool to evaluate fire-climate
+#' @details Superposed epoch analysis (SEA) helps to evaluate fire-climate
 #' relationships in studies of tree-ring fire history. It works by compositing the values of
-#' a climate timeseries or reconstruction for the fire years provided (key) and both positive and
+#' an anual timeseries or climate reconstruction for the fire years provided (\code{key}) and both positive and
 #' negative lag years. Bootstrap resampling of the timeseries is performed to evaluate the statistical
 #' significance of each year's mean value. Users interpret the departure of the actual event year
 #' means from the simulated event year means.
 #'
 #' The significance of lag-year departures from the average climate condition was first noted by
 #' Baisan and Swetnam (1990) and used in an organized SEA by Swetnam (1993). Since then, the procedure
-#' has been applied in hundreds of fire history studies and was built into the FHX2 software by
-#' Henri Grissino-Mayer. The stand-alone version is the FORTRAN program EVENT, built by Richard
-#' Holmes and Thomas Swetnam (Holmes and Swetnam 1994)
+#' has been commonly applied in fire history studies. The FORTRAN program EVENT.exe was written by
+#' Richard Holmes and Thomas Swetnam (Holmes and Swetnam 1994) to perform SEA for fire history
+#' specifically. EVENT was incorporated in the FHX2 software by Henri Grissino-Mayer.
 #'
 #' run_sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
 #' SEA, although multiple versions of the analysis exist in the climate literature and for fire
@@ -174,11 +171,10 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' draws are used. The event year and lag significance levels should match, at least in the general
 #' pattern.
 #'
-#' We note that our implementation of run_sea borrows from the dplR:::sea function in how it sets
-#' up the function needs for R and how it performs
+#' We note that our implementation of run_sea borrows from the \code{dplR:::sea} function in how it performs
 #' the bootstrap procedure, but differs in the kind of output provided for the user.
 #'
-#'#' @return A list of three data frames, following the output of EVENT.
+#' @return A list of three data frames, following the output of EVENT.
 #' (1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
 #'
 #' @references Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest Research 20:1559-1569.
@@ -186,10 +182,50 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' @references Holmes and Swetnam 1994, EVENT program desription
 #' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
 #'
+#' @examples
+#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
+#' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
+#' pdsi <- read.table('http://iridl.ldeo.columbia.edu/SOURCES/.LDEO/.TRL/.NADA2004/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt',
+#'                    header = TRUE, row.names = 1)
+#' pdsi <- subset(pdsi, select = "RECON")
+#'
+#' # Run SEA on Peggy Mesa (pgm) data
+#' data(pgm)
+#' (pgm.comp <- composite(pgm))
+#'
+#' (pgm.sea <- run_sea(pdsi, pgm.comp))
+#'
+#' # Make a bargraph with confidence intervals
+#' par(mar=c(2, 3, 1, 1), oma=c(3, 3, 1, 1))
+#' bp <- barplot(pgm.sea[[3]]$mean_value,
+#'               col=c(rep("grey75", 3),"grey45", "grey30",
+#'                     "grey75", "grey30", rep("grey75", 4)),
+#'               ylab = '', las=1, cex.axis=1.3, cex=1.3, ylim=c(-2, 2))
+#' axis(1, at=bp, labels = -6:4, tick=FALSE, cex.axis=1.3)
+#' lines(bp, pgm.sea[[3]]$lower_95_perc, lwd=2, lty=2)
+#' lines(bp, pgm.sea[[3]]$upper_95_perc, lwd=2, lty=2)
+#' lines(bp, pgm.sea[[3]]$lower_99_perc, lwd=2, lty=3)
+#' lines(bp, pgm.sea[[3]]$upper_99_perc, lwd=2, lty=3)
+#' mtext(expression(bold('PDSI departure')), side=2, line=2.2, cex=1.5)
+#' mtext(expression(bold('Lag year')), side=1, line=3.3, cex=1.5)
+#'
+#' # For users who want to perform SEA very near to EVENT.exe and/or have reproducable draws from
+#' # the bootstrap procedure, consider including the \code{set.seed} function prior to \code{run_sea}.
+#' # Convention is to provide a long integer, such as a birthday (e.g. 3191982).
+#' # In the EVENT.exe program, Richard Holmes used the number of days since 1 January 1935.
+#' days <- as.numeric(Sys.Date() - as.Date("1jan1935", "%d%b%Y"))
+#' set.seed(days)
 #'
 #' @export
 run_sea <- function(x, key, years_before=6, years_after=4,
-                    time_span=c('key_period'), n_iter=1000, seed=NULL) {
+                    time_span=c('key_period'), n_iter=1000) {
+
+  message('run_sea(): This function is under development and will likely change in the future.')
+
+  if (is.fhx(key)){
+   if (length(unique(key$series)) > 1) stop("key must have a single series")
+    else key <- get_event_years(key)[[1]]
+  }
 
   # set up
   period <- range(key)
@@ -238,13 +274,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   else {
     rand_yrs <- rnames
   }
-  # Set seed and make random number draws
-  if (is.null(seed)) {
-    use_seed <- as.numeric(Sys.Date() - as.Date("1jan1935", "%d%b%Y"))
-  }
-  else {use_seed <- seed}
 
-  set.seed(use_seed)
   rand_pick <- matrix(sample(rand_yrs, n * n_iter, replace=TRUE),
                       ncol=n_iter, nrow=n, byrow=FALSE)
 
@@ -284,7 +314,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   departure_table[, 6] <- apply(re.table, 2, function(x)      2.575*sd(x, na.rm=TRUE))
   departure_table[, 7] <- apply(re.table, 2, function(x) -1 * 3.294*sd(x, na.rm=TRUE))
   departure_table[, 8] <- apply(re.table, 2, function(x)      3.294*sd(x, na.rm=TRUE))
-  temp <- apply(re.table,2,function(x) median(x))  #Simulated medians
+  temp <- apply(re.table, 2, function(x) median(x))  #Simulated medians
   departure_table[, 9] <- rand_event_table[, 11] - temp
   departure_table[, 10] <- rand_event_table[, 12] - temp
   departure_table[, 11] <- rand_event_table[, 13] - temp

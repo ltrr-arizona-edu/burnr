@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Added ability to sort series by their last (or most recent) year.
+
 * Updated function run_sea to better replicate EVENT Fortran program. Addresses #58. Added detailed description and an example page with graphics. Also fixed issue with percentage CIs in the departure table.
 
 * Added vignettes!

@@ -6,6 +6,8 @@ Authors@R: c(
   person("Christopher", "Guiterman", role = c("ctb")),
   person("Ellis", "Margolis", role = c("ctb")))
 Description: Basic tools to analyze forest fire history data (e.g. FHX2) in R.
+URL: https://github.com/ltrr-arizona-edu/burnr/
+BugReports: https://github.com/ltrr-arizona-edu/burnr/issues
 Depends:
     R (>= 3.2)
 License: GPL (>= 3)

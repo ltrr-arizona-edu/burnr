@@ -30,7 +30,7 @@ fhx <- function(year,  series, rec_type, metalist=list()) {
 #' @examples
 #' data(pgm)
 #' get_event_years(pgm, scar_event = TRUE, injury_event = TRUE)
-#' 
+#'
 #' # Passing a custom string to grep. This one identified recorder years:
 #' get_event_years(pgm, custom_grep_str = 'recorder_')
 #'
@@ -228,8 +228,8 @@ find_recording <- function(x, injury_event) {
 #'
 #' @export
 yearly_recording <- function(x, injury_event=FALSE) {
-  as.data.frame(table(year = plyr::ddply(x, 'series', 
-                                         find_recording, 
+  as.data.frame(table(year = plyr::ddply(x, 'series',
+                                         find_recording,
                                          injury_event = injury_event)$recording))
 }
 
@@ -276,9 +276,9 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
     event <- c(event, injury)
   }
   event_count <- as.data.frame(table(year = subset(x, x$rec_type %in% event)$year))
-  recording_count <- yearly_recording(x, injury_event = injury_event) 
+  recording_count <- yearly_recording(x, injury_event = injury_event)
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
-  counts <- merge(event_count, recording_count, 
+  counts <- merge(event_count, recording_count,
                   by = 'year', suffixes = c('_event', '_recording'))
   counts$prop <- counts$Freq_event / counts$Freq_recording
   filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min)
@@ -310,10 +310,11 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
   fhx(year = out_year, series = out_series, rec_type = out_rec_type)
 }
 
-#' Sort the series names of fhx object by earliest year.
+#' Sort the series names of fhx object by the earliest or latest year.
 #'
 #' @param x An fhx instance to be sorted.
 #' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
+#' @param sort_by Designate the inner or outer year for sorting. Defaults to "first_year"
 #' @param ... Additional arguments that fall off the face of the universe.
 #'
 #' @return A copy of \code{x} with reordered series.
@@ -321,18 +322,23 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
 #' @examples
 #' data(lgr2)
 #' plot(sort(lgr2, decreasing = TRUE))
+#' plot(sort(lgr2, sort_by = "last_year"))
 #'
 #' @export
-sort.fhx <- function(x, decreasing=FALSE, ...) {
+sort.fhx <- function(x, sort_by = c('first_year', 'last_year'), decreasing=FALSE, ...) {
   stopifnot(is.fhx(x))
+
+  if (is.null(sort_by)) sort.order <- min
+  if (sort_by == "first_year") sort.order <- min
+  if (sort_by == "last_year") sort.order <- max
   if (length(unique(x$series)) == 1) {
     return(x)
   }
-  series_minyears <- stats::aggregate(year ~ series, x, min)
+  series_minyears <- stats::aggregate(year ~ series, x, sort.order)
   i <- order(series_minyears$year, decreasing = decreasing)
   x$series <- factor(x$series,
-                           levels = series_minyears$series[i],
-                           ordered = TRUE)
+                     levels = series_minyears$series[i],
+                     ordered = TRUE)
   x
 }
 

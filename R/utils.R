@@ -313,8 +313,8 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
 #' Sort the series names of fhx object by the earliest or latest year.
 #'
 #' @param x An fhx instance to be sorted.
-#' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
 #' @param sort_by Designate the inner or outer year for sorting. Defaults to "first_year"
+#' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
 #' @param ... Additional arguments that fall off the face of the universe.
 #'
 #' @return A copy of \code{x} with reordered series.
@@ -325,7 +325,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
 #' plot(sort(lgr2, sort_by = "last_year"))
 #'
 #' @export
-sort.fhx <- function(x, sort_by = c('first_year', 'last_year'), decreasing=FALSE, ...) {
+sort.fhx <- function(x, decreasing=FALSE, sort_by = c('first_year', 'last_year'), ...) {
   stopifnot(is.fhx(x))
 
   if (is.null(sort_by)) sort.order <- min

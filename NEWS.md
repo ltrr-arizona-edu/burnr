@@ -1,4 +1,4 @@
-# burnr v0.1.1.9000
+# burnr v0.1.1
 
 Changes in this patch:
 

@@ -12,8 +12,8 @@ series_stats(x, func_list = list(first = first_year, last = last_year, years =
 \arguments{
 \item{x}{An fhx object.}
 
-\item{func_list}{A list of named functions that will be run on each series 
-in the fhx object. The list name for each function is the corresponding 
+\item{func_list}{A list of named functions that will be run on each series
+in the fhx object. The list name for each function is the corresponding
 column name in the output data.frame.}
 }
 \value{

@@ -230,7 +230,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   # set up
   period <- range(key)
   rnames <- as.numeric(rownames(x))
-  rnames.cut <- rnames[period[1] : period[2]]
+  rnames.cut <- period[1] : period[2]
   n <- length(key)
   seq.n <- seq_len(n)
   m <- years_before + years_after + 1
@@ -314,7 +314,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   departure_table[, 6] <- apply(re.table, 2, function(x)      2.575*sd(x, na.rm=TRUE))
   departure_table[, 7] <- apply(re.table, 2, function(x) -1 * 3.294*sd(x, na.rm=TRUE))
   departure_table[, 8] <- apply(re.table, 2, function(x)      3.294*sd(x, na.rm=TRUE))
-  temp <- apply(re.table, 2, function(x) median(x))  #Simulated medians
+  temp <- apply(re.table, 2, function(x) median(x))  # medians from simulated table
   departure_table[, 9] <- rand_event_table[, 11] - temp
   departure_table[, 10] <- rand_event_table[, 12] - temp
   departure_table[, 11] <- rand_event_table[, 13] - temp

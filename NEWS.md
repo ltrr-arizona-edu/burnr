@@ -1,3 +1,9 @@
+# burnr v0.2.9000
+
+Changes in this minor release:
+
+* Fixed write_fhx() reversing order of series names in output file.
+
 # burnr v0.1.1
 
 Changes in this patch:

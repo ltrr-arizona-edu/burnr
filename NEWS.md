@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Corrected error message for `series` arg in `fhx()`.
+
 * Fixed write_fhx() reversing order of series names in output file.
 
 # burnr v0.1.1

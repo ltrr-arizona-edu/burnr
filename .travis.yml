@@ -1,14 +1,25 @@
 language: r
+
+matrix:
+  include:
+    - os: linux
+      r: oldrel
+    - os: linux
+      r: release
+      env: COVERALLS_TEST=true
+    - os: linux
+      r: devel
+    - os: osx
+      r: release
+      disable_homebrew: true
+
+sudo: false
+cache: packages
 warnings_are_errors: true
-sudo: required
 
 r_github_packages:
     - hadley/testthat
     - jimhester/covr
-
-env:
- global:
-   - CRAN: http://cran.rstudio.com
 
 notifications:
   email:
@@ -16,4 +27,4 @@ notifications:
     on_failure: change
 
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
+  - if [ "${COVERALLS_TEST}" ]; then Rscript -e 'covr::coveralls()'; fi

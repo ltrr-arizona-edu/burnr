@@ -237,7 +237,8 @@ yearly_recording <- function(x, injury_event=FALSE) {
 #'
 #' @param x An fhx instance.
 #' @param filter_prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
-#' @param filter_min The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
+#' @param filter_min_rec The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
+#' @param filter_min_scarred The minimum number of fire scars needed to be considered a fire event. Default is 1. This includes injuries if injury_event=TRUE.
 #' @param injury_event Boolean indicating whether injuries should be considered events. Default is FALSE.
 #' @param comp_name Character vector of the series name for the returned fhx object composite series. Default is 'COMP'.
 #'
@@ -253,7 +254,7 @@ yearly_recording <- function(x, injury_event=FALSE) {
 #' print(event_yrs)
 #'
 #' @export
-composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, comp_name='COMP') {
+composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_scarred = 1, injury_event=FALSE, comp_name='COMP') {
   stopifnot(is.fhx(x))
   injury <- list("u" = "unknown_fi",
                  "d" = "dormant_fi",
@@ -281,7 +282,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
   counts <- merge(event_count, recording_count,
                   by = 'year', suffixes = c('_event', '_recording'))
   counts$prop <- counts$Freq_event / counts$Freq_recording
-  filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min)
+  filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min_rec) & (counts$Freq_event >= filter_min_scarred)
   out <- subset(counts, filter_mask)$year
   composite_event_years <- as.integer(levels(out)[out])
   # Make composite events unknown firescars.
@@ -313,8 +314,8 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
 #' Sort the series names of fhx object by the earliest or latest year.
 #'
 #' @param x An fhx instance to be sorted.
-#' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
 #' @param sort_by Designate the inner or outer year for sorting. Defaults to "first_year"
+#' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
 #' @param ... Additional arguments that fall off the face of the universe.
 #'
 #' @return A copy of \code{x} with reordered series.
@@ -325,7 +326,7 @@ composite <- function(x, filter_prop=0.25, filter_min=2, injury_event=FALSE, com
 #' plot(sort(lgr2, sort_by = "last_year"))
 #'
 #' @export
-sort.fhx <- function(x, sort_by = c('first_year', 'last_year'), decreasing=FALSE, ...) {
+sort.fhx <- function(x, decreasing=FALSE, sort_by = c('first_year', 'last_year'), ...) {
   stopifnot(is.fhx(x))
 
   if (is.null(sort_by)) sort.order <- min
@@ -334,7 +335,7 @@ sort.fhx <- function(x, sort_by = c('first_year', 'last_year'), decreasing=FALSE
   if (length(unique(x$series)) == 1) {
     return(x)
   }
-  series_minyears <- aggregate(year ~ series, x, sort.order)
+  series_minyears <- stats::aggregate(year ~ series, x, sort.order)
   i <- order(series_minyears$year, decreasing = decreasing)
   x$series <- factor(x$series,
                      levels = series_minyears$series[i],

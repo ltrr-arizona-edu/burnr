@@ -4,8 +4,8 @@
 \alias{run_sea}
 \title{Perform superposed epoch analysis.}
 \usage{
-run_sea(x, key, years_before = 6, years_after = 4,
-  time_span = c("key_period"), n_iter = 1000)
+run_sea(x, key, years_before = 6, years_after = 4, key_period = TRUE,
+  n_iter = 1000)
 }
 \arguments{
 \item{x}{A data.frame climate reconstruction or tree-ring series with row names as years.}
@@ -17,8 +17,8 @@ with a single \code{series} as produced by \code{composite}}
 
 \item{years_after}{The number of lag years following the event year}
 
-\item{time_span}{The length of the x time series to use. Defaults to "key_period"
-which constrains the time series to the time period of key events; "all" will use the entire
+\item{key_period}{Logical. Constrains the time series to the time period of key events within the range
+of the x climate series. False uses the entire climate series, ignoring the period of key events.
 time series}
 
 \item{n_iter}{The number of iterations for bootstrap resampling}
@@ -55,10 +55,13 @@ We note that our implementation of run_sea borrows from the \code{dplR:::sea} fu
 the bootstrap procedure, but differs in the kind of output provided for the user.
 }
 \examples{
+\dontrun{
 # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
 # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-pdsi <- read.table('http://iridl.ldeo.columbia.edu/SOURCES/.LDEO/.TRL/.NADA2004/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt',
-                   header = TRUE, row.names = 1)
+target_url <- paste0('http://iridl.ldeo.columbia.edu',
+                     '/SOURCES/.LDEO/.TRL/.NADA2004'
+                     '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
+pdsi <- read.table(target_url, header = TRUE, row.names = 1)
 pdsi <- subset(pdsi, select = "RECON")
 
 # Run SEA on Peggy Mesa (pgm) data
@@ -80,13 +83,15 @@ lines(bp, pgm.sea[[3]]$lower_99_perc, lwd=2, lty=3)
 lines(bp, pgm.sea[[3]]$upper_99_perc, lwd=2, lty=3)
 mtext(expression(bold('PDSI departure')), side=2, line=2.2, cex=1.5)
 mtext(expression(bold('Lag year')), side=1, line=3.3, cex=1.5)
-
+}
+\dontrun{
 # For users who want to perform SEA very near to EVENT.exe and/or have reproducable draws from
 # the bootstrap procedure, consider including the \\code{set.seed} function prior to \\code{run_sea}.
 # Convention is to provide a long integer, such as a birthday (e.g. 3191982).
 # In the EVENT.exe program, Richard Holmes used the number of days since 1 January 1935.
 days <- as.numeric(Sys.Date() - as.Date("1jan1935", "\%d\%b\%Y"))
 set.seed(days)
+}
 
 }
 \references{

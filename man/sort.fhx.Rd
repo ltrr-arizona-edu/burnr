@@ -4,15 +4,15 @@
 \alias{sort.fhx}
 \title{Sort the series names of fhx object by the earliest or latest year.}
 \usage{
-\method{sort}{fhx}(x, sort_by = c("first_year", "last_year"),
-  decreasing = FALSE, ...)
+\method{sort}{fhx}(x, decreasing = FALSE, sort_by = c("first_year",
+  "last_year"), ...)
 }
 \arguments{
 \item{x}{An fhx instance to be sorted.}
 
-\item{sort_by}{Designate the inner or outer year for sorting. Defaults to "first_year"}
-
 \item{decreasing}{Logical. Decreasing sorting? Defaults to FALSE.}
+
+\item{sort_by}{Designate the inner or outer year for sorting. Defaults to "first_year"}
 
 \item{...}{Additional arguments that fall off the face of the universe.}
 }

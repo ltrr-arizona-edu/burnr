@@ -1,12 +1,23 @@
-# burnr v0.1.0.9019
+
+* Updated composite to include a filter for number of trees scarred. This necesitates fixes in plot_demograph 
+
+* Updated run_sea with new enhanced speed and a changed parameter
+
+# burnr v0.1.1
+
+Changes in this patch:
+
+* Added option to sort series by their last (or most recent) year with `sort()`.
+
+* Updated `run_sea()` to better replicate EVENT Fortran program. Addresses #58. Added detailed description and an example page with graphics. Also fixed issue with percentage CIs in the departure table. Mind you, `run_sea()` is still super experimental.
+
+* Several minor changes to documentation and meta data.
+
+# burnr v0.1.0
 
 Changes in this minor release:
 
-* Added ability to sort series by their last (or most recent) year.
-
-* Updated function run_sea to better replicate EVENT Fortran program. Addresses #58. Added detailed description and an example page with graphics. Also fixed issue with percentage CIs in the departure table.
-
-* Added vignettes!
+* Added a vignette!
 
 * `get_ggplot()` is being depreciated. Please use `plot_demograph()`.
 
@@ -28,7 +39,7 @@ Changes in this minor release:
 
 * Added function sample_depth() to get sample depth.
 
-* Added run_sea function to begin to address issue #58. Has pretty table output.
+* Added run_sea function to begin to address issue #58. Has pretty table output. This is still very experimental.
 
 * Bug fix in series_stats to maintain series IDs for those with no features
 

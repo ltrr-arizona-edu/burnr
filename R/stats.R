@@ -146,8 +146,8 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' with a single \code{series} as produced by \code{composite}
 #' @param years_before  The number of lag years prior to the event year
 #' @param years_after The number of lag years following the event year
-#' @param time_span The length of the x time series to use. Defaults to "key_period"
-#' which constrains the time series to the time period of key events; "all" will use the entire
+#' @param key_period Logical. Constrains the time series to the time period of key events within the range
+#' of the x climate series. False uses the entire climate series, ignoring the period of key events.
 #' time series
 #' @param n_iter The number of iterations for bootstrap resampling
 #'
@@ -183,10 +183,13 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
 #'
 #' @examples
+#' \dontrun{
 #' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
 #' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-#' pdsi <- read.table('http://iridl.ldeo.columbia.edu/SOURCES/.LDEO/.TRL/.NADA2004/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt',
-#'                    header = TRUE, row.names = 1)
+#' target_url <- paste0('http://iridl.ldeo.columbia.edu',
+#'                      '/SOURCES/.LDEO/.TRL/.NADA2004'
+#'                      '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
+#' pdsi <- read.table(target_url, header = TRUE, row.names = 1)
 #' pdsi <- subset(pdsi, select = "RECON")
 #'
 #' # Run SEA on Peggy Mesa (pgm) data
@@ -208,17 +211,19 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' lines(bp, pgm.sea[[3]]$upper_99_perc, lwd=2, lty=3)
 #' mtext(expression(bold('PDSI departure')), side=2, line=2.2, cex=1.5)
 #' mtext(expression(bold('Lag year')), side=1, line=3.3, cex=1.5)
-#'
+#' }
+#' \dontrun{
 #' # For users who want to perform SEA very near to EVENT.exe and/or have reproducable draws from
 #' # the bootstrap procedure, consider including the \code{set.seed} function prior to \code{run_sea}.
 #' # Convention is to provide a long integer, such as a birthday (e.g. 3191982).
 #' # In the EVENT.exe program, Richard Holmes used the number of days since 1 January 1935.
 #' days <- as.numeric(Sys.Date() - as.Date("1jan1935", "%d%b%Y"))
 #' set.seed(days)
+#' }
 #'
 #' @export
 run_sea <- function(x, key, years_before=6, years_after=4,
-                    time_span=c('key_period'), n_iter=1000) {
+                    key_period = TRUE, n_iter=1000) {
 
   message('run_sea(): This function is under development and will likely change in the future.')
 
@@ -228,10 +233,15 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   }
 
   # set up
-  period <- range(key)
   rnames <- as.numeric(rownames(x))
+  key.cut <- rnames[rnames %in% key]
+  period <- range(key.cut)
   rnames.cut <- period[1] : period[2]
-  n <- length(key)
+  n <- length(key.cut)
+  if (length(key.cut) != length(key)) {
+    warning(paste('One or more key-event years is outside the range of the climate series. Using', n, 'event years:', period[1], 'to', period[2],'.'),
+            call.=FALSE)
+  }
   seq.n <- seq_len(n)
   m <- years_before + years_after + 1
   yrs.base <- -years_before:years_after
@@ -245,30 +255,25 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   out_table[, 1] <- yrs.base
 
   # key-event matrix
-  event.table <- matrix(NA_real_, ncol = m, nrow = n)
-  for (i in seq.n) {
-    yrs <- as.character(key[i] + yrs.base)
-    event.table[i, ] <- x[yrs, ]
-  }
+  event.table <- matrix(unlist(lapply(key.cut, function(bb) x[rnames %in% (bb + yrs.base), ])),
+                        nrow=n, ncol=m, byrow = TRUE)
 
   key_event_table <- out_table[, -c(11:14)]
   key_event_table[, 2] <- colMeans(event.table, na.rm=TRUE)
   key_event_table[, 3] <- apply(event.table, 2, function(x) sum(!is.na(x)))
-  key_event_table[, 4] <- apply(event.table, 2, sd, na.rm=TRUE)
-  key_event_table[, 5] <- apply(event.table, 2, function(x) mean(x) - 1.960*sd(x, na.rm=TRUE))
-  key_event_table[, 6] <- apply(event.table, 2, function(x) mean(x) + 1.960*sd(x, na.rm=TRUE))
-  key_event_table[, 7] <- apply(event.table, 2, function(x) mean(x) - 2.575*sd(x, na.rm=TRUE))
-  key_event_table[, 8] <- apply(event.table, 2, function(x) mean(x) + 2.575*sd(x, na.rm=TRUE))
-  key_event_table[, 9] <- apply(event.table, 2, function(x) mean(x) - 3.294*sd(x, na.rm=TRUE))
-  key_event_table[, 10] <- apply(event.table, 2, function(x) mean(x) + 3.294*sd(x, na.rm=TRUE))
+  key_event_table[, 4] <- apply(event.table, 2, stats::sd, na.rm=TRUE)
+  key_event_table[, 5] <- apply(event.table, 2, function(x) mean(x) - 1.960*stats::sd(x, na.rm=TRUE))
+  key_event_table[, 6] <- apply(event.table, 2, function(x) mean(x) + 1.960*stats::sd(x, na.rm=TRUE))
+  key_event_table[, 7] <- apply(event.table, 2, function(x) mean(x) - 2.575*stats::sd(x, na.rm=TRUE))
+  key_event_table[, 8] <- apply(event.table, 2, function(x) mean(x) + 2.575*stats::sd(x, na.rm=TRUE))
+  key_event_table[, 9] <- apply(event.table, 2, function(x) mean(x) - 3.294*stats::sd(x, na.rm=TRUE))
+  key_event_table[, 10] <- apply(event.table, 2, function(x) mean(x) + 3.294*stats::sd(x, na.rm=TRUE))
   key_event_table[, 11] <- apply(event.table, 2, min, na.rm=TRUE)
   key_event_table[, 12] <- apply(event.table, 2, max, na.rm=TRUE)
   key_event_table <- round(key_event_table, 3)
 
   # random event matrix
-  re.table <- matrix(NA_real_, ncol = m, nrow = n_iter)
-  re.subtable <- matrix(NA_real_, ncol = m, nrow = n)
-  if(time_span == "key_period"){
+  if(key_period ==  TRUE){
     rand_yrs <- rnames.cut
   }
   else {
@@ -278,28 +283,26 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   rand_pick <- matrix(sample(rand_yrs, n * n_iter, replace=TRUE),
                       ncol=n_iter, nrow=n, byrow=FALSE)
 
-  for (k in 1:ncol(rand_pick)) {
-    for(i in 1:nrow(rand_pick)) {
-      yrs <- as.character(rand_pick[i, k] + yrs.base)
-      re.subtable[i, ] <- x[yrs, ]
-    }
-    re.table[k, ] <- colMeans(re.subtable, na.rm = TRUE)
-  }
+  rand_list <- lapply(seq_len(ncol(rand_pick)), function(aa){
+    matrix(unlist(lapply(rand_pick[, aa], function(bb) x[rnames %in% (bb + yrs.base), ])),
+           nrow=n, ncol=m, byrow=TRUE)
+  })
 
+  re.table <- t(sapply(rand_list, function(x) colMeans(x)))
   rand_event_table <- out_table
   rand_event_table[, 2] <- colMeans(re.table, na.rm=TRUE)
   rand_event_table[, 3] <- apply(re.table, 2, function(x) sum(!is.na(x)))
-  rand_event_table[, 4] <- apply(re.table, 2, sd, na.rm=TRUE)
-  rand_event_table[, 5] <- apply(re.table, 2, function(x) mean(x) - 1.960*sd(x, na.rm=TRUE))
-  rand_event_table[, 6] <- apply(re.table, 2, function(x) mean(x) + 1.960*sd(x, na.rm=TRUE))
-  rand_event_table[, 7] <- apply(re.table, 2, function(x) mean(x) - 2.575*sd(x, na.rm=TRUE))
-  rand_event_table[, 8] <- apply(re.table, 2, function(x) mean(x) + 2.575*sd(x, na.rm=TRUE))
-  rand_event_table[, 9] <- apply(re.table, 2, function(x) mean(x) - 3.294*sd(x, na.rm=TRUE))
-  rand_event_table[, 10] <- apply(re.table, 2, function(x) mean(x) + 3.294*sd(x, na.rm=TRUE))
-  rand_event_table[, 11] <- apply(re.table, 2, function(x) quantile(x, .025, na.rm=TRUE))
-  rand_event_table[, 12] <- apply(re.table, 2, function(x) quantile(x, .975, na.rm=TRUE))
-  rand_event_table[, 13] <- apply(re.table, 2, function(x) quantile(x, .005, na.rm=TRUE))
-  rand_event_table[, 14] <- apply(re.table, 2, function(x) quantile(x, .995, na.rm=TRUE))
+  rand_event_table[, 4] <- apply(re.table, 2, function(x) stats::sd(x, na.rm=TRUE))
+  rand_event_table[, 5] <- apply(re.table, 2, function(x) mean(x) - 1.960*stats::sd(x, na.rm=TRUE))
+  rand_event_table[, 6] <- apply(re.table, 2, function(x) mean(x) + 1.960*stats::sd(x, na.rm=TRUE))
+  rand_event_table[, 7] <- apply(re.table, 2, function(x) mean(x) - 2.575*stats::sd(x, na.rm=TRUE))
+  rand_event_table[, 8] <- apply(re.table, 2, function(x) mean(x) + 2.575*stats::sd(x, na.rm=TRUE))
+  rand_event_table[, 9] <- apply(re.table, 2, function(x) mean(x) - 3.294*stats::sd(x, na.rm=TRUE))
+  rand_event_table[, 10] <- apply(re.table, 2, function(x) mean(x) + 3.294*stats::sd(x, na.rm=TRUE))
+  rand_event_table[, 11] <- apply(re.table, 2, function(x) stats::quantile(x, .025, na.rm=TRUE))
+  rand_event_table[, 12] <- apply(re.table, 2, function(x) stats::quantile(x, .975, na.rm=TRUE))
+  rand_event_table[, 13] <- apply(re.table, 2, function(x) stats::quantile(x, .005, na.rm=TRUE))
+  rand_event_table[, 14] <- apply(re.table, 2, function(x) stats::quantile(x, .995, na.rm=TRUE))
   rand_event_table[, 15] <- apply(re.table, 2, min, na.rm=TRUE)
   rand_event_table[, 16] <- apply(re.table, 2, max, na.rm=TRUE)
   rand_event_table <- round(rand_event_table, 3)
@@ -314,7 +317,14 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   departure_table[, 6] <- apply(re.table, 2, function(x)      2.575*sd(x, na.rm=TRUE))
   departure_table[, 7] <- apply(re.table, 2, function(x) -1 * 3.294*sd(x, na.rm=TRUE))
   departure_table[, 8] <- apply(re.table, 2, function(x)      3.294*sd(x, na.rm=TRUE))
-  temp <- apply(re.table, 2, function(x) median(x))  # medians from simulated table
+  temp <- apply(re.table, 2, function(x) stats::median(x))  # medians from simulated table
+  departure_table[, 3] <- apply(re.table, 2, function(x) -1 * 1.960 * stats::sd(x, na.rm = TRUE))
+  departure_table[, 4] <- apply(re.table, 2, function(x)      1.960 * stats::sd(x, na.rm = TRUE))
+  departure_table[, 5] <- apply(re.table, 2, function(x) -1 * 2.575 * stats::sd(x, na.rm = TRUE))
+  departure_table[, 6] <- apply(re.table, 2, function(x)      2.575 * stats::sd(x, na.rm = TRUE))
+  departure_table[, 7] <- apply(re.table, 2, function(x) -1 * 3.294 * stats::sd(x, na.rm = TRUE))
+  departure_table[, 8] <- apply(re.table, 2, function(x)      3.294 * stats::sd(x, na.rm = TRUE))
+  temp <- apply(re.table, 2, function(x) stats::median(x))  #Simulated medians
   departure_table[, 9] <- rand_event_table[, 11] - temp
   departure_table[, 10] <- rand_event_table[, 12] - temp
   departure_table[, 11] <- rand_event_table[, 13] - temp
@@ -359,3 +369,5 @@ sample_depth <- function(a){
   out <- subset(aa, select=c('year', 'samp_depth'))
   out
 }
+
+

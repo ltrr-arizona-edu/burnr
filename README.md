@@ -1,11 +1,12 @@
 # burnr
 
 [![Travis-CI Build Status](https://travis-ci.org/ltrr-arizona-edu/burnr.svg?branch=master)](https://travis-ci.org/ltrr-arizona-edu/burnr)
-[![Coverage Status](https://coveralls.io/repos/ltrr-arizona-edu/burnr/badge.svg)](https://coveralls.io/r/ltrr-arizona-edu/burnr)
+[![Coverage Status](https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master)](https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master)
 
-A tool set to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
 
-The project is under heavy development as I try to wrap things up into a CRAN package. Hic sunt dracones.
+Basic tools to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
+
+The project is under heavy development. Hic sunt dracones.
 
 ## A quick example
 
@@ -32,7 +33,13 @@ See `help(plot_demograph)` for more plot options. You can read and write your ow
 
 ## Installation
 
-This package is not yet in CRAN. If you'd like to install it, first be sure you have the `devtools` package installed in R. Install `burnr` with:
+You can install a relatively stable version of this package from CRAN with:
+
+```R
+install.packages('burnr')
+```
+
+You can also install the development version of the package from Github. First, be sure you have the `devtools` package installed in R. Install `burnr` with:
 
 ```R
 devtools::install_github("ltrr-arizona-edu/burnr")
@@ -40,7 +47,9 @@ devtools::install_github("ltrr-arizona-edu/burnr")
 
 ## Support
 
-Documentation is included in the code. More information can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
+Documentation is included in the code. If you're new to burnr, we have an [introduction](https://cran.r-project.org/web/packages/burnr/vignettes/introduction.html). And more information can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
+
+We also have a [Google Group](https://groups.google.com/forum/#!forum/burnr) for questions, announcements, and discussion.
 
 ## Development
 

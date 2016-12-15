@@ -3,5 +3,5 @@
 ^\.travis\.yml$
 ^.*\.sublime-workspace$
 ^.*\.sublime-project$
-^NEWS\.md$
 ^data-raw$
+^cran-comments\.md$

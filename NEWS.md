@@ -1,3 +1,4 @@
+* Added 'site_stats()' for site-level sumary statistics akin to FHX2 and FHAES
 
 * Updated composite to include a filter for number of trees scarred. This necesitates fixes in plot_demograph 
 

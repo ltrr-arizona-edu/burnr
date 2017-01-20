@@ -51,7 +51,7 @@ only differ slightly in the values of the simulated events and the departures, b
 draws are used. The event year and lag significance levels should match, at least in the general
 pattern.
 
-We note that our implementation of run_sea borrows from the \code{dplR:::sea} function in how it performs
+We note that our implementation of run_sea borrows from the \code{dplR::sea} function in how it performs
 the bootstrap procedure, but differs in the kind of output provided for the user.
 }
 \examples{

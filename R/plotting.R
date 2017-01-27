@@ -75,11 +75,6 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
   levels(events$rec_type)[levels(events$rec_type) %in% injury.types] <- "Injury"
   levels(events$rec_type)[levels(events$rec_type) %in% pithbark.types] <- "Pith/Bark"
   events$rec_type <- factor(events$rec_type, levels = c("Scar", "Injury", "Pith/Bark"))
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> upstream/master
   live <- stats::aggregate(x$year, by = list(x$series), FUN = range, na.rm = TRUE)
   live <- data.frame(series = live$Group.1,
                      first = live$x[, 1],
@@ -119,11 +114,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
                     by = "series")
     p <- ggplot2::ggplot(rings, ggplot2::aes_string(y = 'series', x = 'year', color = 'species'))
   }
-<<<<<<< HEAD
   p <- (p + ggplot2::geom_segment(ggplot2::aes_string(x = 'first', xend = 'last', y = 'series',
-=======
-  p <- (p + ggplot2::geom_segment(ggplot2::aes_string(x = 'first', xend = 'last', y = 'series', 
->>>>>>> upstream/master
                                                       yend = 'series', linetype = 'rec_type'),
                          data = segs)
           + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid")))
@@ -136,14 +127,9 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
                                values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
 
   if (composite_rug) {
-<<<<<<< HEAD
     comp <- composite(x, filter_prop = filter_prop,
                         filter_min_rec = filter_min_rec,
                         filter_min_scarred = filter_min_scarred,
-=======
-    comp <- composite(x, filter_prop = filter_prop, 
-                        filter_min = filter_min, 
->>>>>>> upstream/master
                         injury_event = injury_event)
     p <- (p + ggplot2::geom_rug(data = rings[rings$year %in% get_event_years(comp, injury_event = injury_event)[['COMP']], ],
                        sides = "b", color = "black")

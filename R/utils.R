@@ -10,7 +10,7 @@
 #' @export
 fhx <- function(year,  series, rec_type, metalist=list()) {
   if (!is.numeric(year)) stop("year must be numeric")
-  if (!is.factor(series)) stop("series must be character")
+  if (!is.factor(series)) stop("series must be factor")
   if (!is.factor(rec_type)) stop("rec_type must be factor")
   if (!is.list(metalist)) stop("metalist must be list")
   ringsdf = data.frame(year = year, series = series, rec_type = rec_type)

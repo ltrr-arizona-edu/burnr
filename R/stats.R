@@ -311,13 +311,6 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 
   departure_table <- out_table[, -c(3, 4, 15, 16)]
   departure_table[, 2] <- key_event_table[, 2] - rand_event_table[, 2]
-  departure_table[, 3] <- apply(re.table, 2, function(x) -1 * 1.960*stats::sd(x, na.rm=TRUE))
-  departure_table[, 4] <- apply(re.table, 2, function(x)      1.960*stats::sd(x, na.rm=TRUE))
-  departure_table[, 5] <- apply(re.table, 2, function(x) -1 * 2.575*stats::sd(x, na.rm=TRUE))
-  departure_table[, 6] <- apply(re.table, 2, function(x)      2.575*stats::sd(x, na.rm=TRUE))
-  departure_table[, 7] <- apply(re.table, 2, function(x) -1 * 3.294*stats::sd(x, na.rm=TRUE))
-  departure_table[, 8] <- apply(re.table, 2, function(x)      3.294*stats::sd(x, na.rm=TRUE))
-  temp <- apply(re.table, 2, function(x) stats::median(x))  # medians from simulated table
   departure_table[, 3] <- apply(re.table, 2, function(x) -1 * 1.960 * stats::sd(x, na.rm = TRUE))
   departure_table[, 4] <- apply(re.table, 2, function(x)      1.960 * stats::sd(x, na.rm = TRUE))
   departure_table[, 5] <- apply(re.table, 2, function(x) -1 * 2.575 * stats::sd(x, na.rm = TRUE))

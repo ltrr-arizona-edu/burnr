@@ -5,7 +5,7 @@
 \title{Composite fire events in fhx object returning composited object with prominent fires.}
 \usage{
 composite(x, filter_prop = 0.25, filter_min_rec = 2,
-  filter_min_scarred = 1, injury_event = FALSE, comp_name = "COMP")
+  filter_min_events = 1, injury_event = FALSE, comp_name = "COMP")
 }
 \arguments{
 \item{x}{An fhx instance.}
@@ -14,7 +14,7 @@ composite(x, filter_prop = 0.25, filter_min_rec = 2,
 
 \item{filter_min_rec}{The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.}
 
-\item{filter_min_scarred}{The minimum number of fire scars needed to be considered a fire event. Default is 1. This includes injuries if injury_event=TRUE.}
+\item{filter_min_events}{The minimum number of fire scars needed to be considered a fire event. Default is 1. This includes injuries if injury_event=TRUE.}
 
 \item{injury_event}{Boolean indicating whether injuries should be considered events. Default is FALSE.}
 

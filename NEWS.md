@@ -2,9 +2,9 @@
 
 * Added 'site_stats()' for site-level sumary statistics akin to FHX2 and FHAES
 
-* Updated composite to include a filter for number of trees scarred. This necesitates fixes in plot_demograph 
+* Updated composite to include a filter for number of events. This necesitates fixes in other functions (e.g. plot_demograph) 
 
-* Updated run_sea with new enhanced speed and a changed parameter
+* Updated run_sea with new enhanced speed, and changed the "time_span" parameter to "key_period" for a simpler input
 
 # burnr v0.1.2.9000
 

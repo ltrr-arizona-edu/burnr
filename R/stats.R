@@ -347,7 +347,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #'
 #' @export
 #'
-sample_depth <- function(a){
+sample_depth <- function(a) {
   stopifnot('fhx' %in% class(a))
   x <- series_stats(a)
   n.trees <- nrow(x)
@@ -370,7 +370,7 @@ sample_depth <- function(a){
 #' @param year_range Delimits the analysis period. For example, \code{c(1600, 1900)}.
 #' @param filter_prop An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param filter_min_rec An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
-#' @param filter_min_scarred An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param filter_min_events An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param injury_event Boolean indicating whether injuries should be considered recorders. This is passed to \code{composite}. See this function for details.
 #'
 #' @details This function prodiuces a summary table for any fhx object. The statistics it includes are shared by other popular fire history software such as FHX2 and FHAES.
@@ -378,23 +378,23 @@ sample_depth <- function(a){
 #' @export
 
 site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.25, filter_min_rec = 2,
-                        filter_min_scarred = 1, injury_event = FALSE)
-{
+                        filter_min_events = 1, injury_event = FALSE) {
 
   stopifnot(is.fhx(x))
-  sumNames <- c('number_trees', 'first_year', 'last_year', 'first_event', 'last_event',
+  sumNames <- c('number_series', 'first_year', 'last_year', 'first_event', 'last_event',
                 'number_intervals', 'mean_interval', 'median_interval',
                 'standard_dev', 'coef_var', 'min_interval', 'max_interval',
                 'weibull_shape', 'weibull_scale', 'weibull_mean',
                 'weibull_median', 'weibull_mode', 'KS_d', 'pval', 'lower_exceedance',
                 'upper_exceedance')
-  site.stats <- matrix(nrow=21, ncol=1, dimnames = list(sumNames, site_name))
+  site.stats <- data.frame(variable = sumNames, site = NA)
+  names(site.stats)[2] <- site_name
   # Perform site composite for interval stats
   if (!is.null(year_range)) {
     x <- x[x$year >= min(year_range) & x$year <= max(year_range), ]
   }
   x.comp <- composite(x, filter_prop = filter_prop, filter_min_rec = filter_min_rec,
-                          filter_min_scarred = filter_min_scarred, injury_event = injury_event)
+                          filter_min_events = filter_min_events, injury_event = injury_event)
   intervals <- diff(get_event_years(x.comp)[[1]])
   if(length(intervals) < 2)
     stop("Too few fire intervals to compute a summary")
@@ -403,7 +403,8 @@ site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.
   shape <- as.numeric(ft.r$estimate[1])
   scale <- as.numeric(ft.r$estimate[2])
   weib.quants <- stats::qweibull(c(.125, .5, .875), shape=shape, scale=scale)
-  gf <- suppressWarnings( stats::ks.test(intervals, y=stats::pweibull, shape=shape, scale=scale, alternative='less'))
+  # gf <- suppressWarnings( stats::ks.test(intervals, y=stats::pweibull, shape=shape, scale=scale, alternative='less'))
+  gf <- stats::ks.test(intervals, y=stats::pweibull, shape=shape, scale=scale, alternative='less')
   # Fill out summary table
   site.stats['number_trees', ] <- length(levels(x$series))
   site.stats['first_year', ] <- first_year(x)

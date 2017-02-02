@@ -5,7 +5,7 @@
 \title{Generate site-level summary statistics}
 \usage{
 site_stats(x, site_name = "XXX", year_range = NULL, filter_prop = 0.25,
-  filter_min_rec = 2, filter_min_scarred = 1, injury_event = FALSE)
+  filter_min_rec = 2, filter_min_events = 1, injury_event = FALSE)
 }
 \arguments{
 \item{x}{An fhx object}
@@ -18,7 +18,7 @@ site_stats(x, site_name = "XXX", year_range = NULL, filter_prop = 0.25,
 
 \item{filter_min_rec}{An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.}
 
-\item{filter_min_scarred}{An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.}
+\item{filter_min_events}{An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.}
 
 \item{injury_event}{Boolean indicating whether injuries should be considered recorders. This is passed to \code{composite}. See this function for details.}
 }

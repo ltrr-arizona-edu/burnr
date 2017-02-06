@@ -146,8 +146,8 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' with a single \code{series} as produced by \code{composite}
 #' @param years_before  The number of lag years prior to the event year
 #' @param years_after The number of lag years following the event year
-#' @param time_span The length of the x time series to use. Defaults to "key_period"
-#' which constrains the time series to the time period of key events; "all" will use the entire
+#' @param key_period Logical. Constrains the time series to the time period of key events within the range
+#' of the x climate series. False uses the entire climate series, ignoring the period of key events.
 #' time series
 #' @param n_iter The number of iterations for bootstrap resampling
 #'
@@ -171,7 +171,7 @@ mean_interval <- function(x, injury_event=FALSE) {
 #' draws are used. The event year and lag significance levels should match, at least in the general
 #' pattern.
 #'
-#' We note that our implementation of run_sea borrows from the \code{dplR:::sea} function in how it performs
+#' We note that our implementation of run_sea borrows from the \code{dplR::sea} function in how it performs
 #' the bootstrap procedure, but differs in the kind of output provided for the user.
 #'
 #' @return A list of three data frames, following the output of EVENT.
@@ -223,7 +223,7 @@ mean_interval <- function(x, injury_event=FALSE) {
 #'
 #' @export
 run_sea <- function(x, key, years_before=6, years_after=4,
-                    time_span=c('key_period'), n_iter=1000) {
+                    key_period = TRUE, n_iter=1000) {
 
   message('run_sea(): This function is under development and will likely change in the future.')
 
@@ -233,10 +233,15 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   }
 
   # set up
-  period <- range(key)
   rnames <- as.numeric(rownames(x))
-  rnames.cut <- rnames[period[1] : period[2]]
-  n <- length(key)
+  key.cut <- rnames[rnames %in% key]
+  period <- range(key.cut)
+  rnames.cut <- period[1] : period[2]
+  n <- length(key.cut)
+  if (length(key.cut) != length(key)) {
+    warning(paste('One or more key-event years is outside the range of the climate series. Using', n, 'event years:', period[1], 'to', period[2],'.'),
+            call.=FALSE)
+  }
   seq.n <- seq_len(n)
   m <- years_before + years_after + 1
   yrs.base <- -years_before:years_after
@@ -250,11 +255,8 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   out_table[, 1] <- yrs.base
 
   # key-event matrix
-  event.table <- matrix(NA_real_, ncol = m, nrow = n)
-  for (i in seq.n) {
-    yrs <- as.character(key[i] + yrs.base)
-    event.table[i, ] <- x[yrs, ]
-  }
+  event.table <- matrix(unlist(lapply(key.cut, function(bb) x[rnames %in% (bb + yrs.base), ])),
+                        nrow=n, ncol=m, byrow = TRUE)
 
   key_event_table <- out_table[, -c(11:14)]
   key_event_table[, 2] <- colMeans(event.table, na.rm=TRUE)
@@ -271,9 +273,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   key_event_table <- round(key_event_table, 3)
 
   # random event matrix
-  re.table <- matrix(NA_real_, ncol = m, nrow = n_iter)
-  re.subtable <- matrix(NA_real_, ncol = m, nrow = n)
-  if(time_span == "key_period"){
+  if(key_period ==  TRUE){
     rand_yrs <- rnames.cut
   }
   else {
@@ -283,18 +283,16 @@ run_sea <- function(x, key, years_before=6, years_after=4,
   rand_pick <- matrix(sample(rand_yrs, n * n_iter, replace=TRUE),
                       ncol=n_iter, nrow=n, byrow=FALSE)
 
-  for (k in 1:ncol(rand_pick)) {
-    for(i in 1:nrow(rand_pick)) {
-      yrs <- as.character(rand_pick[i, k] + yrs.base)
-      re.subtable[i, ] <- x[yrs, ]
-    }
-    re.table[k, ] <- colMeans(re.subtable, na.rm = TRUE)
-  }
+  rand_list <- lapply(seq_len(ncol(rand_pick)), function(aa){
+    matrix(unlist(lapply(rand_pick[, aa], function(bb) x[rnames %in% (bb + yrs.base), ])),
+           nrow=n, ncol=m, byrow=TRUE)
+  })
 
+  re.table <- t(sapply(rand_list, function(x) colMeans(x)))
   rand_event_table <- out_table
   rand_event_table[, 2] <- colMeans(re.table, na.rm=TRUE)
   rand_event_table[, 3] <- apply(re.table, 2, function(x) sum(!is.na(x)))
-  rand_event_table[, 4] <- apply(re.table, 2, stats::sd, na.rm=TRUE)
+  rand_event_table[, 4] <- apply(re.table, 2, function(x) stats::sd(x, na.rm=TRUE))
   rand_event_table[, 5] <- apply(re.table, 2, function(x) mean(x) - 1.960*stats::sd(x, na.rm=TRUE))
   rand_event_table[, 6] <- apply(re.table, 2, function(x) mean(x) + 1.960*stats::sd(x, na.rm=TRUE))
   rand_event_table[, 7] <- apply(re.table, 2, function(x) mean(x) - 2.575*stats::sd(x, na.rm=TRUE))
@@ -349,7 +347,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #'
 #' @export
 #'
-sample_depth <- function(a){
+sample_depth <- function(a) {
   stopifnot('fhx' %in% class(a))
   x <- series_stats(a)
   n.trees <- nrow(x)
@@ -364,3 +362,79 @@ sample_depth <- function(a){
   out <- subset(aa, select=c('year', 'samp_depth'))
   out
 }
+
+#' Generate site-level summary statistics
+#'
+#' @param x An fhx object
+#' @param site_name Three character site code, defaults to "XXX"
+#' @param year_range Delimits the analysis period. For example, \code{c(1600, 1900)}.
+#' @param filter_prop An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param filter_min_rec An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param filter_min_events An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param injury_event Boolean indicating whether injuries should be considered recorders. This is passed to \code{composite}. See this function for details.
+#'
+#' @details This function prodiuces a summary table for any fhx object. The statistics it includes are shared by other popular fire history software such as FHX2 and FHAES.
+#' @return A data.frame of summary statistics
+#' @export
+
+site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.25, filter_min_rec = 2,
+                        filter_min_events = 1, injury_event = FALSE) {
+
+  stopifnot(is.fhx(x))
+  sumNames <- c('number_series', 'first_year', 'last_year', 'first_event', 'last_event',
+                'number_intervals', 'mean_interval', 'median_interval',
+                'standard_dev', 'coef_var', 'min_interval', 'max_interval',
+                'weibull_shape', 'weibull_scale', 'weibull_mean',
+                'weibull_median', 'weibull_mode', 'KS_d', 'pval', 'lower_exceedance',
+                'upper_exceedance')
+  site.stats <- data.frame(variable = sumNames, site = NA)
+  names(site.stats)[2] <- site_name
+  # Perform site composite for interval stats
+  if (!is.null(year_range)) {
+    x <- x[x$year >= min(year_range) & x$year <= max(year_range), ]
+  }
+  x.comp <- composite(x, filter_prop = filter_prop, filter_min_rec = filter_min_rec,
+                          filter_min_events = filter_min_events, injury_event = injury_event)
+  intervals <- diff(get_event_years(x.comp)[[1]])
+  if(length(intervals) < 2)
+    stop("Too few fire intervals to compute a summary")
+  # Weibull fit
+  ft.r <- MASS::fitdistr(intervals, "weibull")
+  shape <- as.numeric(ft.r$estimate[1])
+  scale <- as.numeric(ft.r$estimate[2])
+  weib.quants <- stats::qweibull(c(.125, .5, .875), shape=shape, scale=scale)
+  # gf <- suppressWarnings( stats::ks.test(intervals, y=stats::pweibull, shape=shape, scale=scale, alternative='less'))
+  gf <- stats::ks.test(intervals, y=stats::pweibull, shape=shape, scale=scale, alternative='less')
+  # Fill out summary table
+  site.stats['number_trees', ] <- length(levels(x$series))
+  site.stats['first_year', ] <- first_year(x)
+  site.stats['last_year', ] <- last_year(x)
+  if (injury_event == FALSE) {
+    site.stats['first_event', ] <- min(x[grep('fs', x$rec_type), ]$year)
+    site.stats['last_event', ] <- max(x[grep('fs', x$rec_type), ]$year)
+  }
+  else {
+    site.stats['first_event', ] <- min(min(x[grep('fs', x$rec_type), ]$year),
+                                       min(x[grep('fi', x$rec_type), ]$year))
+    site.stats['last_event', ] <- max(max(x[grep('fs', x$rec_type), ]$year),
+                                      max(x[grep('fi', x$rec_type), ]$year))
+  }
+  site.stats['number_intervals', ] <- length(intervals)
+  site.stats['mean_interval', ] <- round(mean(intervals), 1)
+  site.stats['median_interval', ] <- round(stats::median(intervals), 1)
+  site.stats['standard_dev', ] <- round(stats::sd(intervals), 2)
+  site.stats['coef_var', ] <- round(stats::sd(intervals)/mean(intervals), 2)
+  site.stats['min_interval', ] <- min(intervals)
+  site.stats['max_interval', ] <- max(intervals)
+  site.stats['weibull_shape', ] <- round(shape, 2)
+  site.stats['weibull_scale', ] <- round(scale, 2)
+  site.stats['weibull_mean', ] <- round(scale * gamma(1 + 1/shape), 2)
+  site.stats['weibull_median', ] <- round(weib.quants[2], 2)
+  site.stats['weibull_mode', ] <- round(scale * ((shape-1)/shape)^(1/shape), 2)
+  site.stats['KS_d', ] <- round(gf$statistic, 2)
+  site.stats['pval', ] <- round(gf$p.value, 2)
+  site.stats['lower_exceedance', ] <- round(weib.quants[1], 2)
+  site.stats['upper_exceedance', ] <- round(weib.quants[3], 2)
+  return(site.stats)
+}
+

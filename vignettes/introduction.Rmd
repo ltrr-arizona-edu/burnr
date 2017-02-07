@@ -11,7 +11,7 @@ vignette: >
 
 # Introduction to burnr
 
-This is a brief tutorial to cover some general ideas and help you get started with some basic features in burnr. This is a simple tutorial so you won't need crazy coding skills. I am going to assume that you have a [recent version of R](http://www.r-project.org) installed and are familiar with the basics of R.
+This is a brief tutorial to cover some general ideas and help you get started with some basic features in burnr. This is a simple tutorial so you won't need crazy coding skills. I am going to assume that you have a [recent version of R](https://www.r-project.org) installed and are familiar with the basics of R.
 
 If you are not familiar with R, hit Google with the search "R stat tutorial", or some variation there of. You will find a plethora of useful learning material and helpful people from a wide array of backgrounds.
 

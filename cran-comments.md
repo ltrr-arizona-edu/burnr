@@ -4,7 +4,7 @@
 * win-builder (devel)
 
 ## R CMD check results
-There were no ERRORs, WARNINGs. There is one NOTE on "checking CRAN incoming feasibility".
+There were no ERRORs, WARNINGs. There is one NOTE on "checking CRAN incoming feasibility". "FHX" is the correct spelling.
 
 ## Downstream dependencies
 This package has no downstream dependencies.

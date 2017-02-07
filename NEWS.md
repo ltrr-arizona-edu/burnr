@@ -1,6 +1,6 @@
-# burnr v0.1.2.9000
+# burnr v0.1.2
 
-Changes in this minor release:
+Changes in this patch:
 
 * Fixed additional bug in `read_fhx()` caused by "FHX2 format" in FHX file header.
 

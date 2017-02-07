@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Added `text` option to `read_fhx()`.
+
 * Corrected error message for `series` arg in `fhx()`. Fixes #73.
 
 * Fixed write_fhx() reversing order of series names in output file.

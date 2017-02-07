@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Fixed additional bug in `read_fhx()` caused by "FHX2 format" in FHX file header.
+
 * Fixed bug #71, causing `read_fhx()` to fail when FHX has empty lastline.
 
 * Added `text` option to `read_fhx()`.

@@ -28,9 +28,9 @@ read_fhx <- function(fname, encoding, text) {
   if (length(readLines(con, n = 1)) == 0)
     stop("file appears to be empty")
   fl <- readLines(con, warn = FALSE)
-  if (!any(suppressWarnings(grepl("FHX2 FORMAT|FIRE2 FORMAT", fl, ignore.case = TRUE))))
+  if (!any(suppressWarnings(grepl("^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE))))
     stop("Cannot find line 'FHX2 FORMAT' or 'FIRE2 FORMAT'.")
-  first <- suppressWarnings(grep("FHX2 FORMAT|FIRE2 FORMAT", fl, ignore.case = TRUE))
+  first <- suppressWarnings(grep("^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE))
   describe <- as.numeric(strsplit(fl[[first + 1]], " ")[[1]])
   if (length(describe) != 3) {  # First year; no. sites; length of site id.
     stop(paste("Three-digit descriptive information that should be on line ",

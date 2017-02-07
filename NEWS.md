@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Fixed bug #71, causing `read_fhx()` to fail when FHX has empty lastline.
+
 * Added `text` option to `read_fhx()`.
 
 * Corrected error message for `series` arg in `fhx()`. Fixes #73.

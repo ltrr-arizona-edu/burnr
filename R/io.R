@@ -92,7 +92,7 @@ read_fhx <- function(fname, encoding, text) {
   names(fl_body) <- series_names
   fl_body$year <- seq(first_year, first_year + dim(fl_body)[1] - 1)
   fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "rec_type",
-                       variable.name = "series")
+                       variable.name = "series", na.rm = TRUE)
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != '.', ]
   fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) type_key[[x]], "a") 
   fl_body_melt$rec_type <- factor(fl_body_melt$rec_type,

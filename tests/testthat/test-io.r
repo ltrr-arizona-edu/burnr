@@ -691,6 +691,7 @@ TEST_LGR2 <- c(
 "............||||||||||||.| 2010",        
 "............|]]]]]]|]]]].] 2011",        
 "............]......]...... 2012")
+
 TEST_FHX <- read_fhx(text = TEST_LGR2)
 
 test_that("LGR2 spotcheck series length", {

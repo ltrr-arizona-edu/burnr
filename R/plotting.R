@@ -10,7 +10,8 @@
 #' @param yearlims Option to limit the plot to a range of years. This is a vector with two integers. The first integer gives the lower year for the range while the second integer gives the upper year. The default is to plot the full range of data given by \code{x}.
 #' @param composite_rug A boolean option to plot a rug on the bottom of the plot. Default is FALSE. Note that composite_rug and facet_group, facet_id cannot be used in the same plot. You must choose facets or a composite rug.
 #' @param filter_prop An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
-#' @param filter_min An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param filter_min_rec An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
+#' @param filter_min_events An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param injury_event Boolean indicating whether injuries should be considered recorders. This is passed to \code{composite}. See this function for details.
 #' @param plot_legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
 #' @param event_size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
@@ -48,13 +49,13 @@
 #'              ymin = 3.5, ymax = 13.5, alpha = 0.2)
 #'
 #' @export
-plot_demograph <- function(x, color_group, color_id, facet_group, facet_id, 
-                       facet_type="grid", ylabels=TRUE, yearlims=FALSE, 
-                       composite_rug=FALSE, filter_prop=0.25, filter_min=2, 
-                       injury_event= FALSE, plot_legend=FALSE, 
-                       event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5), 
+plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
+                       facet_type="grid", ylabels=TRUE, yearlims=FALSE,
+                       composite_rug=FALSE, filter_prop=0.25, filter_min_rec=2,
+                       filter_min_events=1, injury_event= FALSE, plot_legend=FALSE,
+                       event_size=c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5),
                        rugbuffer_size=2, rugdivide_pos=2) {
-# TODO: Merge ends and events into a single df. with a factor to handle the 
+# TODO: Merge ends and events into a single df. with a factor to handle the
 #       different event types... this will allow us to put these "fire events" and
 #       "pith/bark" into a legend.
   stopifnot(is.fhx(x))
@@ -74,7 +75,6 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
   levels(events$rec_type)[levels(events$rec_type) %in% injury.types] <- "Injury"
   levels(events$rec_type)[levels(events$rec_type) %in% pithbark.types] <- "Pith/Bark"
   events$rec_type <- factor(events$rec_type, levels = c("Scar", "Injury", "Pith/Bark"))
-  
   live <- stats::aggregate(x$year, by = list(x$series), FUN = range, na.rm = TRUE)
   live <- data.frame(series = live$Group.1,
                      first = live$x[, 1],
@@ -96,7 +96,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
     segs <- live
   }
   levels(segs$rec_type) <- c("Recording", "Non-recording")
-  
+
   p <- NA
   rings <- x
   if (!missing(facet_group) & !missing(facet_id)) {
@@ -114,7 +114,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
                     by = "series")
     p <- ggplot2::ggplot(rings, ggplot2::aes_string(y = 'series', x = 'year', color = 'species'))
   }
-  p <- (p + ggplot2::geom_segment(ggplot2::aes_string(x = 'first', xend = 'last', y = 'series', 
+  p <- (p + ggplot2::geom_segment(ggplot2::aes_string(x = 'first', xend = 'last', y = 'series',
                                                       yend = 'series', linetype = 'rec_type'),
                          data = segs)
           + ggplot2::scale_linetype_manual(values = c("solid", "dashed", "solid")))
@@ -125,10 +125,11 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
           + ggplot2::scale_size_manual(values = event_size)
           + ggplot2::scale_shape_manual(guide = "legend",
                                values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20))) # `shape` 25 is empty triangles
-  
+
   if (composite_rug) {
-    comp <- composite(x, filter_prop = filter_prop, 
-                        filter_min = filter_min, 
+    comp <- composite(x, filter_prop = filter_prop,
+                        filter_min_rec = filter_min_rec,
+                        filter_min_events = filter_min_events,
                         injury_event = injury_event)
     p <- (p + ggplot2::geom_rug(data = rings[rings$year %in% get_event_years(comp, injury_event = injury_event)[['COMP']], ],
                        sides = "b", color = "black")

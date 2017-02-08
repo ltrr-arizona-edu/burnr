@@ -1,3 +1,13 @@
+# burnr v0.2.0.9000
+
+Changes in this minor release:
+
+* Added `site_stats()` for site-level sumary statistics akin to FHX2 and FHAES.
+
+* Updated `composite()` to include a filter for number of events. This necesitates fixes in other functions (e.g. `plot_demograph()`).
+
+* Updated `run_sea()` with enhanced speed, and changed the `time_span` parameter to `key_period` for a simple input.
+
 # burnr v0.1.2
 
 Changes in this patch:

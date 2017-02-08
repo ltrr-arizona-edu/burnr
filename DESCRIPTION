@@ -1,6 +1,6 @@
 Package: burnr
 Title: Advanced Fire History Analysis in R
-Version: 0.1.2
+Version: 0.2.0.9000
 Authors@R: c(
   person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre")),
   person("Christopher", "Guiterman", role = c("ctb")),
@@ -15,7 +15,9 @@ LazyData: true
 Suggests:
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    MASS,
+    stats
 Imports:
     ggplot2,
     reshape2,

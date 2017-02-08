@@ -4,8 +4,8 @@
 \alias{run_sea}
 \title{Perform superposed epoch analysis.}
 \usage{
-run_sea(x, key, years_before = 6, years_after = 4,
-  time_span = c("key_period"), n_iter = 1000)
+run_sea(x, key, years_before = 6, years_after = 4, key_period = TRUE,
+  n_iter = 1000)
 }
 \arguments{
 \item{x}{A data.frame climate reconstruction or tree-ring series with row names as years.}
@@ -17,8 +17,8 @@ with a single \code{series} as produced by \code{composite}}
 
 \item{years_after}{The number of lag years following the event year}
 
-\item{time_span}{The length of the x time series to use. Defaults to "key_period"
-which constrains the time series to the time period of key events; "all" will use the entire
+\item{key_period}{Logical. Constrains the time series to the time period of key events within the range
+of the x climate series. False uses the entire climate series, ignoring the period of key events.
 time series}
 
 \item{n_iter}{The number of iterations for bootstrap resampling}
@@ -51,7 +51,7 @@ only differ slightly in the values of the simulated events and the departures, b
 draws are used. The event year and lag significance levels should match, at least in the general
 pattern.
 
-We note that our implementation of run_sea borrows from the \code{dplR:::sea} function in how it performs
+We note that our implementation of run_sea borrows from the \code{dplR::sea} function in how it performs
 the bootstrap procedure, but differs in the kind of output provided for the user.
 }
 \examples{

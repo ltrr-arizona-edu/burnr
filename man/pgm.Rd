@@ -12,4 +12,3 @@ pgm
 An fhx object with fire-history data from Peggy Mesa. See dataset `pgm_meta` for metadata. Data from Guiterman, Christopher H., Ellis Q. Margolis, and Thomas W. Swetnam. 2015. "Dendroecological Methods For Reconstructing High-Severity Fire In Pine-Oak Forests." Tree-Ring Research 71 (2): 67-77. doi:10.3959/1536-1098-71.2.67.
 }
 \keyword{datasets}
-

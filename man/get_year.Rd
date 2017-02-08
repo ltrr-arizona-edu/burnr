@@ -24,4 +24,3 @@ get_year(lgr2, 1806)
 get_year(lgr2, 1805:1807)
 
 }
-

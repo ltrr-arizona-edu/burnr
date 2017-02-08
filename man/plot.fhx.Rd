@@ -41,4 +41,3 @@ p + annotate('rect',
              ymin = 3.5, ymax = 13.5, alpha = 0.2)
 
 }
-

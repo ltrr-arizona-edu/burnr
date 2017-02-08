@@ -32,4 +32,3 @@ sstats <- series_stats(lgr2)
 head(sstats)
 
 }
-

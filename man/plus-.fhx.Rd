@@ -23,4 +23,3 @@ data(pgm)
 plot(lgr2 + pgm)
 
 }
-

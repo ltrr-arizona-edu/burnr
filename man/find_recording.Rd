@@ -23,4 +23,3 @@ data(lgr2)
 ddply(lgr2$rings, 'series', burnr:::find_recording, injury_event = TRUE)
 
 }
-

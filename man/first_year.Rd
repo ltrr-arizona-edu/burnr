@@ -15,4 +15,3 @@ The minimum or first year of series in 'x'.
 \description{
 First (earliest) year of an fhx series.
 }
-

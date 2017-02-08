@@ -19,4 +19,3 @@ pgm_meta
 A dataset with species and location information for the Peggy Mesa fire-history dataset (`pgm`). Data from Guiterman, Christopher H., Ellis Q. Margolis, and Thomas W. Swetnam. 2015. "Dendroecological Methods For Reconstructing High-Severity Fire In Pine-Oak Forests." Tree-Ring Research 71 (2): 67-77. doi:10.3959/1536-1098-71.2.67.
 }
 \keyword{datasets}
-

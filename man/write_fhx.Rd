@@ -21,4 +21,3 @@ write_fhx(lgr2, 'afile.fhx')
 }
 
 }
-

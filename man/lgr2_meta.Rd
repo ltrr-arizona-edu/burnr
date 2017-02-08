@@ -16,4 +16,3 @@ lgr2_meta
 A dataset with species information for the Los Griegos Peak plot2 fire-history dataset (`lgr2`).
 }
 \keyword{datasets}
-

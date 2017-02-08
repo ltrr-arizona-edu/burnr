@@ -12,4 +12,3 @@ get_ggplot(...)
 \description{
 This function is depreciated. Please use `plot_demograph()`.
 }
-

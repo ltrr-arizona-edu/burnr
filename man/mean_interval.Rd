@@ -17,4 +17,3 @@ The mean fire interval observed in the series.
 \description{
 Calculate mean fire interval of an fhx series.
 }
-

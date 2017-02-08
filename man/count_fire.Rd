@@ -15,4 +15,3 @@ The number of fire events observed in the series.
 \description{
 Number of fire events in an fhx series.
 }
-

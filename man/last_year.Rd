@@ -15,4 +15,3 @@ The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x
 \description{
 Last (most recent) year of an fhx series.
 }
-

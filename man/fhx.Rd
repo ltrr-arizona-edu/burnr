@@ -21,4 +21,3 @@ An fhx instance.
 \description{
 Constructor for S3 fhx class.
 }
-

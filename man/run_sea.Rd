@@ -103,4 +103,3 @@ Holmes and Swetnam 1994, EVENT program desription
 
 Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
 }
-

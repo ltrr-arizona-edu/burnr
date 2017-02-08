@@ -17,4 +17,3 @@ The number of recording events observed in the series.
 \description{
 Number of recording years in an fhx series.
 }
-

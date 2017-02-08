@@ -15,4 +15,3 @@ The a factor giving the type of observation in the last observation of the serie
 \description{
 Type of observation in the last (most recent) year of an fhx series.
 }
-

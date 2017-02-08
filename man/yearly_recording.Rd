@@ -22,4 +22,3 @@ data(lgr2)
 yearly_recording(lgr2)
 
 }
-

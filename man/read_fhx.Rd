@@ -26,4 +26,3 @@ d <- read_fhx('afile.fhx')
 }
 
 }
-

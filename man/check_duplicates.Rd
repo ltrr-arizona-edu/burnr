@@ -21,4 +21,3 @@ data(pgm)
 burnr:::check_duplicates(lgr2 + pgm)
 
 }
-

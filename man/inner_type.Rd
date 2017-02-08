@@ -15,4 +15,3 @@ The a factor giving the type of observation in the first observation of the seri
 \description{
 Type of observation in the first (earliest) year of an fhx series.
 }
-

@@ -15,4 +15,3 @@ The difference between the first and last observations in the series. 'NA' will 
 \description{
 Number of years of an fhx series.
 }
-

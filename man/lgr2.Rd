@@ -12,4 +12,3 @@ lgr2
 An fhx object with fire-history data from Los Griegos Peak, New Mexico.
 }
 \keyword{datasets}
-

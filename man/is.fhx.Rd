@@ -20,4 +20,3 @@ data(lgr2)
 is.fhx(lgr2)
 
 }
-

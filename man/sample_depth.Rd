@@ -15,4 +15,3 @@ A data.frame containing the years and number of trees
 \description{
 Calculate the sample depth of an fhx object
 }
-

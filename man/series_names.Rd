@@ -20,4 +20,3 @@ data(lgr2)
 series_names(lgr2)
 
 }
-

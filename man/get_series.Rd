@@ -24,4 +24,3 @@ get_series(lgr2, 'LGR46')
 get_series(lgr2, c('LGR41', 'LGR46'))
 
 }
-

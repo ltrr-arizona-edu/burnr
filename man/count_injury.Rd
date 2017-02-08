@@ -15,4 +15,3 @@ The number of injury events observed in the series.
 \description{
 Number of injury events in an fhx series.
 }
-

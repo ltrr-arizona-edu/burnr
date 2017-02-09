@@ -30,19 +30,19 @@ test_that("count_year_span on multi-series fhx object", {
 })
 
 test_that("outer_type on single series", {
-  expect_equal(as.character(outer_type(REF_SINGLE)), "outer_year")
+  expect_match(as.character(outer_type(REF_SINGLE)), "outer_year")
 })
 
 test_that("outer_type on multi-series fhx object", {
-  expect_equal(as.character(outer_type(REF_MULTI)), "bark_year")
+  expect_match(as.character(outer_type(REF_MULTI)), "bark_year")
 })
 
 test_that("inner_type on single series", {
-  expect_equal(as.character(inner_type(REF_SINGLE)), "pith_year")
+  expect_match(as.character(inner_type(REF_SINGLE)), "pith_year")
 })
 
 test_that("inner_type on multi-series fhx object", {
-  expect_equal(as.character(inner_type(REF_MULTI)), "inner_year")
+  expect_match(as.character(inner_type(REF_MULTI)), "inner_year")
 })
 
 test_that("count_fire on single series", {

@@ -18,6 +18,7 @@ fhx <- function(year,  series, rec_type, metalist=list()) {
   ringsdf
 }
 
+
 #' Get years with events for an fhx object.
 #'
 #' @param x An \code{fhx} object.

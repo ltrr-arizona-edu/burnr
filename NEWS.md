@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Added `intervals()` to handle interval analysis.
+
 * Added `site_stats()` for site-level sumary statistics akin to FHX2 and FHAES.
 
 * Updated `composite()` to include a filter for number of events. This necesitates fixes in other functions (e.g. `plot_demograph()`).

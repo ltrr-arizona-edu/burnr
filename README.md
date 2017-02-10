@@ -35,7 +35,7 @@ See `help(plot_demograph)` for more plot options. You can read and write your ow
 
 ## Installation
 
-You can install a relatively stable version of this package from CRAN with:
+You can install a relatively stable version of this package from CRAN by opening an R session and running:
 
 ```R
 install.packages('burnr')

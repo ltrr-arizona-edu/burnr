@@ -67,6 +67,23 @@ get_event_years <- function(x, scar_event=TRUE, injury_event=FALSE, custom_grep_
   plyr::dlply(x, c('series'), function(a) a$year[grepl(search_str, a$rec_type)])
 }
 
+#' Range of years for \code{fhx} object.
+#'
+#' @param x An fhx object.
+#'
+#' @return An integer vector or \code{NULL}.
+#'
+#'
+#' @examples
+#' data(lgr2)
+#' year_range(lgr2)
+#'
+#' @export
+year_range <- function(x) {
+  stopifnot(is.fhx(x))
+  range(x$year)
+}
+
 #' Get \code{fhx} series names.
 #'
 #' @param x An fhx object.

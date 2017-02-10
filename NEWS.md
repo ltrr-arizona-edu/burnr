@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Added `year_range()` to give (min, max) years for an `fhx` object.
+
 * Added `intervals()` to handle interval analysis.
 
 * Added `site_stats()` for site-level sumary statistics akin to FHX2 and FHAES.

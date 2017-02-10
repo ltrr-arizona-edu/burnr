@@ -3,25 +3,26 @@ context('Interval statistics')
 
 data(pgm)
 REF <- composite(pgm)
+TEST_INTER <- intervals(REF)
 
 test_that("Check observed interval mean", {
-  expect_equal(mean(intervals(REF)), 11.75)
+  expect_equal(mean(TEST_INTER), 11.75)
 })
 
 test_that("Check observed interval median", {
-  expect_equal(median(intervals(REF)), 10)
+  expect_equal(median(TEST_INTER), 10)
 })
 
 test_that("Check observed interval standard dev", {
-  expect_equal(round(sd(intervals(REF)), 3), 7.738)
+  expect_equal(round(sd(TEST_INTER), 3), 7.738)
 })
 
 test_that("Check minimum interval", {
-  expect_equal(min(intervals(REF)), 2)
+  expect_equal(min(TEST_INTER), 2)
 })
 
 test_that("Check maximum interval", {
-  expect_equal(max(intervals(REF)), 30)
+  expect_equal(max(TEST_INTER), 30)
 })
 
 

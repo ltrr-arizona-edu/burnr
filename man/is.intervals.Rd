@@ -10,7 +10,7 @@ is.intervals(x)
 \item{x}{An R object.}
 }
 \value{
-A boolean indicating whether `x` is an intervals object.
+Boolean indicating whether `x` is an intervals object.
 }
 \description{
 Check if object is intervals.

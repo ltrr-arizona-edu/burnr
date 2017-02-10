@@ -1,3 +1,18 @@
+#' Generic function to compute median.
+#'
+#' @param x An R object.
+#'
+#' @export
+median <- function(x) UseMethod("median")
+
+#' Generic function to compute standard deviation.
+#'
+#' @param x An R object.
+#'
+#' @export
+sd <- function(x) UseMethod("sd")
+
+
 #' Generate series-level descriptive statistics.
 #'
 #' @param x An fhx object.
@@ -26,6 +41,7 @@ series_stats <- function(x, func_list=list(first=first_year,last=last_year,
   stopifnot(is.fhx(x))
   plyr::ddply(x, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
+
 
 #' First (earliest) year of an fhx series.
 #'

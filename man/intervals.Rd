@@ -4,18 +4,33 @@
 \alias{intervals}
 \title{Constructor for S3 intervals class.}
 \usage{
-intervals(comp, densfun = "weibull", ...)
+intervals(comp, densfun = "weibull")
 }
 \arguments{
 \item{comp}{A composite fhx instance.}
 
-\item{densfun}{String giving desired distribution to fit. Can be "weibull" or "lognormal". Default is "weibull".}
-
-\item{...}{Arguments passed to \code{fit_distr}.}
+\item{densfun}{String giving desired distribution to fit. Suggest "weibull" or "lognormal". Default is "weibull".}
 }
 \value{
 An intervals instance.
 }
 \description{
 Constructor for S3 intervals class.
+}
+\examples{
+data(pgm)
+interv <- intervals(composite(pgm))
+print(interv)
+
+mean(interv)  # Mean interval
+sd(interv)  # Interval standard dev
+
+# Now fit log-normal distribution instead of Weibull.
+intervals(composite(pgm), densfun = "lognormal")
+
+\dontrun{
+# Boxplot of fire interval distribution.
+boxplot(intervals(composite(pgm))$intervals)
+}
+
 }

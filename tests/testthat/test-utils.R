@@ -54,4 +54,23 @@ test_that("year_range on multi-series FHX object", {
   expect_true(all(test_subj == c(1366, 2012)))
 })
 
+test_that("count_event_position on FHX object without injuries as events", {
+  test_subj <- count_event_position(REF_MULTI)
+  expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
+  expect_equal(subset(test_subj, event == "early_fs")$count, 4)
+})
+
+test_that("count_event_position on FHX object with injuries as events", {
+  test_subj <- count_event_position(REF_MULTI, injury_event = TRUE)
+  expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
+  expect_equal(subset(test_subj, event == "unknown_fi")$count, 6)
+})
+
+test_that("count_event_position on FHX object with multiple select positions", {
+  test_subj <- count_event_position(REF_MULTI, position = c("unknown", "dormant"))
+  expect_equal(subset(test_subj, event == "dormant_fs")$count, 3)
+  expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
+  expect_false("early_fs" %in% as.character(test_subj$event))
+})
+
 

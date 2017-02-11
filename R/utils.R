@@ -232,6 +232,56 @@ find_recording <- function(x, injury_event) {
   data.frame(recording = union(rec, active))
 }
 
+#' Count and frequency of different events
+#'
+#' @param x An fhx object.
+#' @param injury_event Optional boolean indicating whether injuries should be considered event. Default is FALSE.
+#' @param position Optional character vector giving the types of event positions to include in the count. Can any combination of the following: "unknown", "dormant", "early", "middle", "late", "latewd". The default counts all event positions.
+#' @param groupby Optional named list containing character vectors that are used to group positions. The names given to each character vector give the group's name in the output data.frame. 
+#'
+#' @return A data.frame with a columns giving the event and corresponding number of events for each event type.
+#'
+#' @examples
+#' data(pgm)
+#' count_event_position(pgm)
+#'
+#' # As above, but considering injuries to be a type of event.
+#' count_event_position(pgm, injury_event = TRUE)
+#'
+#' # Count only events of a certain position, in this case, "unknown", "early", and "middle".
+#' count_event_position(pgm, injury_event = TRUE, position = c("unknown", "early", "middle"))
+#'
+#' @export
+count_event_position <- function(x, injury_event=FALSE, position, groupby) {
+  stopifnot(is.fhx(x))
+
+  if (!missing(groupby))
+    # TODO DEBUG
+    warning("The `groupby` feature is not yet implimented. Ignoring this argument.")
+
+  possible_position = c("unknown", "dormant", "early", "middle", "late", "latewd")
+  if (missing(position))
+    position <- possible_position
+  stopifnot(all(position %in% possible_position))
+
+  target_events <- paste0(position, "_fs")
+  all_events <- paste0(possible_position, "_fs")
+  if (injury_event == TRUE)
+    target_events <- c(target_events, paste0(position, "_fi"))
+
+  msk <- x$rec_type %in% target_events
+
+  #if (!missing(groupby)) {
+    #all_events <- paste0(possible_position, "_fs")
+    #if (injury_event == TRUE)
+      #all_events <- c(all_events, paste0(possible_position, "_fi"))
+    #group_msk <- x$rec_type %in% all_events
+    #group_out <- plyr::count(x$rec_type[msk])
+  #}
+  out <- plyr::count(x$rec_type[msk])
+  names(out) <- c("event", "count")
+  out
+}
 
 #' Count the number of recording series for each year in an fhx object.
 #'

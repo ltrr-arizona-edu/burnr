@@ -2,9 +2,11 @@
 
 Changes in this minor release:
 
+* Added `event_count_position()`, which gives the number of events found in different positions or seasons.
+
 * Added `year_range()` to give (min, max) years for an `fhx` object.
 
-* Added `intervals()` to handle interval analysis.
+* Added `intervals()` to handle interval analysis. These are a whole new object.
 
 * Added `site_stats()` for site-level sumary statistics akin to FHX2 and FHAES.
 

@@ -6,7 +6,7 @@
 \usage{
 series_stats(x, func_list = list(first = first_year, last = last_year, years =
   count_year_span, inner_type = inner_type, outer_type = outer_type,
-  number_fires = count_fire, number_injuries = count_injury, recording_years =
+  number_scars = count_scar, number_injuries = count_injury, recording_years =
   count_recording, mean_interval = mean_interval))
 }
 \arguments{
@@ -28,6 +28,8 @@ series_stats(lgr2)
 
 # You can create your own list of statistics to output. You can also create
 # your own functions:
+flist <- list(n = count_year_span,
+              xbar_interval = function(x) mean_interval(x, injury_event = TRUE))
 sstats <- series_stats(lgr2)
 head(sstats)
 

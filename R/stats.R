@@ -12,7 +12,6 @@ median <- function(x) UseMethod("median")
 #' @export
 sd <- function(x) UseMethod("sd")
 
-
 #' Generate series-level descriptive statistics.
 #'
 #' @param x An fhx object.
@@ -28,20 +27,19 @@ sd <- function(x) UseMethod("sd")
 #'
 #' # You can create your own list of statistics to output. You can also create
 #' # your own functions:
-# ' flist <- list(n = count_year_span,
-# '               xbar_interval = function(x) mean_interval(x, injury_event = TRUE))
+#' flist <- list(n = count_year_span,
+#'               xbar_interval = function(x) mean_interval(x, injury_event = TRUE))
 #' sstats <- series_stats(lgr2)
 #' head(sstats)
 #'
 #' @export
 series_stats <- function(x, func_list=list(first=first_year,last=last_year,
   years=count_year_span,inner_type=inner_type,outer_type=outer_type,
-  number_fires=count_fire,number_injuries=count_injury,
+  number_scars=count_scar,number_injuries=count_injury,
   recording_years=count_recording,mean_interval=mean_interval)) {
   stopifnot(is.fhx(x))
   plyr::ddply(x, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
-
 
 #' First (earliest) year of an fhx series.
 #'
@@ -98,14 +96,14 @@ inner_type <- function(x) {
   x$rec_type[which.min(x$year)]
 }
 
-#' Number of fire events in an fhx series.
+#' Number of scar events in an fhx series.
 #'
 #' @param x An fhx object.
 #'
 #' @return The number of fire events observed in the series.
 #'
 #' @export
-count_fire <- function(x) {
+count_scar <- function(x) {
   length(grep('_fs', x$rec_type))
 }
 
@@ -376,6 +374,24 @@ sample_depth <- function(a) {
   }
   aa$samp_depth <- rowSums(aa[, 2:n.trees + 1], na.rm=TRUE)
   out <- subset(aa, select=c('year', 'samp_depth'))
+  out
+}
+
+#' Summary of `fhx` object
+#'
+#' @param object An fhx object.
+#' @param ... Additional arguments.
+#'
+#' @return A summary.fhx object.
+#'
+#' @export
+summary.fhx <- function(object, ...) {
+  out <-list(number_series = length(series_names(object)),
+             first_year = first_year(object),
+             last_year = last_year(object),
+             number_scars = count_scar(object),
+             number_injuries = count_injury(object))
+  class(out) <- 'summary.fhx'
   out
 }
 

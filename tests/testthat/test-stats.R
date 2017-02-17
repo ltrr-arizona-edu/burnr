@@ -45,12 +45,12 @@ test_that("inner_type on multi-series fhx object", {
   expect_match(as.character(inner_type(REF_MULTI)), "inner_year")
 })
 
-test_that("count_fire on single series", {
-  expect_equal(count_fire(REF_SINGLE), 1)
+test_that("count_scar on single series", {
+  expect_equal(count_scar(REF_SINGLE), 1)
 })
 
-test_that("count_fire on multi-series fhx object", {
-  expect_equal(count_fire(REF_MULTI), 9)
+test_that("count_scar on multi-series fhx object", {
+  expect_equal(count_scar(REF_MULTI), 9)
 })
 
 test_that("count_injury on single series", {

@@ -8,11 +8,14 @@ Changes in this minor release:
 
 * Added `intervals()` to handle interval analysis. These are a whole new object.
 
-* Added `site_stats()` for site-level sumary statistics akin to FHX2 and FHAES.
-
 * Updated `composite()` to include a filter for number of events. This necesitates fixes in other functions (e.g. `plot_demograph()`).
 
 * Updated `run_sea()` with enhanced speed, and changed the `time_span` parameter to `key_period` for a simple input.
+
+* Added `summary()` function for fhx and intervals objects.
+
+* `count_fire()` renamed `count_scar()`
+
 
 # burnr v0.1.2
 

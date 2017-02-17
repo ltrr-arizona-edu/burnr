@@ -15,10 +15,10 @@ LazyData: true
 Suggests:
     testthat,
     knitr,
-    rmarkdown,
-    MASS,
-    stats
+    rmarkdown
 Imports:
+    MASS,
+    stats,
     ggplot2,
     reshape2,
     plyr

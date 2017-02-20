@@ -2,6 +2,8 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/ltrr-arizona-edu/burnr.svg?branch=master)](https://travis-ci.org/ltrr-arizona-edu/burnr)
 [![Coverage Status](https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master)](https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master)
+[![Research software impact](http://depsy.org/api/package/cran/burnr/badge.svg)](http://depsy.org/package/r/burnr)
+
 
 
 Basic tools to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
@@ -33,7 +35,7 @@ See `help(plot_demograph)` for more plot options. You can read and write your ow
 
 ## Installation
 
-You can install a relatively stable version of this package from CRAN with:
+You can install a relatively stable version of this package from CRAN by opening an R session and running:
 
 ```R
 install.packages('burnr')

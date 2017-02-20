@@ -155,7 +155,7 @@ write_fhx <- function(x, fname="") {
   # Weird thing to move year to the last column of the data.frame:
   out$yr <- out$year
   out$year <- NULL
-  series_names <- rev(as.character(unique(x$series)))
+  series_names <- as.character(unique(x$series))
   no_series <- length(series_names)
   max_series_name_length <- max(sapply(series_names, nchar))
   head_line <- "FHX2 FORMAT"

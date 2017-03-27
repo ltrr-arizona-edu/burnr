@@ -2,6 +2,8 @@
 
 Changes in this minor release:
 
+* Added `make_rec_type()`. I hope this will make it easier to create `rec_type` factors used by `fhx()`.
+
 * Added `event_count_position()`, which gives the number of events found in different positions or seasons.
 
 * Added `year_range()` to give (min, max) years for an `fhx` object.

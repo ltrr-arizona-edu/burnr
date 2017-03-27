@@ -11,13 +11,36 @@
 fhx <- function(year,  series, rec_type, metalist=list()) {
   if (!is.numeric(year)) stop("year must be numeric")
   if (!is.factor(series)) stop("series must be factor")
-  if (!is.factor(rec_type)) stop("rec_type must be factor")
   if (!is.list(metalist)) stop("metalist must be list")
+  rec_type <- make_rec_type(rec_type)
   ringsdf = data.frame(year = year, series = series, rec_type = rec_type)
   class(ringsdf) <- c('fhx', 'data.frame')
   ringsdf
 }
 
+#' Turn character vector into factor with proper fhx levels.
+#'
+#' @param x A character vector containing one or more rec_type-like strings.
+#'
+#' @return A factor with appropriate fhx levels.
+#'
+#' @examples
+#' make_rec_type('null_year')
+#'
+#' make_rec_type(c('null_year', 'late_fs'))
+#'
+#' @export
+make_rec_type <- function(x) {
+  possible_levels = c("null_year", "recorder_year", "unknown_fs",
+           "unknown_fi", "dormant_fs", "dormant_fi",
+           "early_fs", "early_fi", "middle_fs",
+           "middle_fi", "late_fs", "late_fi",
+           "latewd_fs", "latewd_fi", "pith_year",
+           "bark_year", "inner_year", "outer_year",
+           "estimate")
+  stopifnot(x %in% possible_levels)  # TODO(brews): This could be make into a more clear error.
+  factor(x, levels = possible_levels)
+}
 
 #' Get years with events for an fhx object.
 #'

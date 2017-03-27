@@ -11,6 +11,24 @@ test_that("spotcheck get_series", {
   expect_true(all(test_subj$series == TARGET_SERIES))
 })
 
+test_that("make_rec_type handles single character vector", {
+  test_subj <- make_rec_type("late_fs")
+  expect_true(is.factor(test_subj))
+  expect_equal(length(levels(test_subj)), 19)
+})
+
+test_that("make_rec_type handles multiple character vector", {
+  test_subj <- make_rec_type(c("null_year", "late_fs"))
+  expect_equal(length(test_subj), 2)
+  expect_true(is.factor(test_subj))
+  expect_equal(length(levels(test_subj)), 19)
+})
+
+test_that("make_rec_type throws error on bad levels", {
+  expect_error(make_rec_type("BACON!"), "not TRUE")
+  expect_error(make_rec_type(c("null_year", "BACON!")), "not all TRUE")
+})
+
 test_that("series_names on single series", {
   expect_match(series_names(REF_SINGLE), TARGET_SERIES)
 })

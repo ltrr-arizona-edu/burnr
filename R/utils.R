@@ -486,8 +486,7 @@ check_duplicates <- function(x) {
     return(x)
   } else {
       duplicates <- x[duplicated(x), ]
-      print(duplicates)
-      stop(c(dim(duplicates)[1],
+      stop(duplicates, "\n", c(dim(duplicates)[1],
            " duplicate(s) found. Please resolve duplicate records."))
   }
 }

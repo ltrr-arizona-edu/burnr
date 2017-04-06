@@ -122,4 +122,42 @@ test_that("sort.fhx on FHX object by last_year", {
   expect_equal(goal, levels(sorted$series))
 })
 
+test_that("+.fhx on FHX objects", {
+  year1 <- c(1850, 2010)
+  series1 <- c("a", "a")
+  rt1 <- c("pith_year", "bark_year")
+  year2 <- c(1900, 2000)
+  series2 <- c("b", "b")
+  rt2 <- c("pith_year", "bark_year")
+  test_fhx1 <- fhx(year = year1,
+                  series = factor(series1),
+                  rec_type = rt1) 
+  test_fhx2 <- fhx(year = year2,
+                  series = factor(series2),
+                  rec_type = rt2)
+  test_fhx3 <- test_fhx1 + test_fhx2
+  expect_equal(test_fhx3$year, c(year1, year2))
+  expect_equal(test_fhx3$series, factor(c(series1, series2)))
+  expect_equal(test_fhx3$rec_type, make_rec_type(c(rt1, rt2)))
+})
+
+test_that("check_duplicates returns with OK fhx obj", {
+  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
+                  series = factor(c("a", "a", "b", "b")),
+                  rec_type = c("pith_year", "bark_year", 
+                               "pith_year", "bark_year"))
+  checked <- burnr:::check_duplicates(test_fhx) 
+  expect_equal(test_fhx, checked)
+})
+
+test_that("check_duplicates throws error when fhx obj has duplicates", {
+  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
+                  series = factor(c("a", "a", "b", "b")),
+                  rec_type = c("pith_year", "bark_year", 
+                               "pith_year", "bark_year"))
+  test_fhx <- rbind(test_fhx, test_fhx)
+  expect_error(burnr:::check_duplicates(test_fhx), 
+               "*Please resolve duplicate records*")
+})
+
 

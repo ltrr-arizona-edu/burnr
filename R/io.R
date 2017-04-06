@@ -107,23 +107,16 @@ read_fhx <- function(fname, encoding, text) {
            rec_type = fl_body_melt$rec_type)
 }
 
-#' Write an fhx object to a new FHX2 file.
+#' List of character strings to write to FHX file.
 #'
 #' @param x An fhx object.
-#' @param fname Output filename.
 #'
-#' @examples
-#' \dontrun{
-#' data(lgr2)
-#' write_fhx(lgr2, 'afile.fhx')
-#' }
+#' @return A list with four members containing vectors: "head_line", 
+#'     "subhead_line", "series_heading", and "body". Each refering 
+#'     to a portion of an FHX file that the strings are dumped into.
 #'
-#' @export
-write_fhx <- function(x, fname="") {
-  if ( fname == "" ) {
-    stop('Please specify a character string naming a file or connection open
-          for writing.')
-  }
+#' @seealso write_fhx
+list_filestrings <- function(x) {
   stopifnot(is.fhx(x))
   type_key <- list("null_year"    = ".",
                    "recorder_year"= "|",
@@ -167,16 +160,39 @@ write_fhx <- function(x, fname="") {
     n <- length(ingoing)
     series_heading[1:n, i] <- ingoing
   }
-  # Now we quickly open and write to the file.
+  list('head_line' = head_line,
+       'subhead_line' = subhead_line,
+       'series_heading' = series_heading,
+       'body' = out)
+}
+
+#' Write an fhx object to a new FHX2 file.
+#'
+#' @param x An fhx object.
+#' @param fname Output filename.
+#'
+#' @examples
+#' \dontrun{
+#' data(lgr2)
+#' write_fhx(lgr2, 'afile.fhx')
+#' }
+#'
+#' @export
+write_fhx <- function(x, fname="") {
+  if ( fname == "" ) {
+    stop('Please specify a character string naming a file or connection open
+          for writing.')
+  }
+  d <- list_filestrings(x)
   fl <- file(fname, open = "wt")
-  cat(paste(head_line, "\n", subhead_line, "\n", sep = ""),
+  cat(paste(d[['head_line']], "\n", d[['subhead_line']], "\n", sep = ""),
       file = fl, sep = "")
-  utils::write.table(series_heading, fl,
+  utils::write.table(d[['series_heading']], fl,
                      append = TRUE, quote = FALSE,
                      sep = "", na = "!",
                      row.names = FALSE, col.names = FALSE)
   cat("\n", file = fl, sep = "", append = TRUE)
-  utils::write.table(out, fl,
+  utils::write.table(d[['body']], fl,
                      append = TRUE, quote = FALSE,
                      sep = "", na = "!",
                      row.names = FALSE, col.names = FALSE)

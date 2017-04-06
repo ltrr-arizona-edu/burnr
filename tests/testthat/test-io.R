@@ -694,12 +694,28 @@ TEST_LGR2 <- c(
 
 TEST_FHX <- read_fhx(text = TEST_LGR2)
 
-test_that("LGR2 spotcheck series length", {
+test_that("read_fhx() LGR2 spotcheck series length", {
   expect_equal(length(unique(TEST_FHX$series)), 26)
 })
 
-test_that("LGR2 spotcheck minmax years", {
+test_that("read_fhx() LGR2 spotcheck minmax years", {
   test_fhx <- read_fhx(text = TEST_LGR2)
   expect_equal(min(TEST_FHX$year), 1366)
   expect_equal(max(TEST_FHX$year), 2012)
 })
+
+test_that("list_filestrings() on basic FHX obj", {
+  test_fhx <- fhx(year = c(1999, 2001, 1998, 2000),
+                  series = factor(c("a1", "a1", "b1", "b1")),
+                  rec_type = c("pith_year", "bark_year", 
+                               "pith_year", "bark_year"))
+  target <- burnr:::list_filestrings(test_fhx)
+  expect_equal(names(target), c("head_line", "subhead_line", "series_heading", "body"))
+  expect_equal(target[["head_line"]], "FHX2 FORMAT")
+  expect_equal(target[["subhead_line"]], "1998 2 2")
+  expect_equal(target[["series_heading"]], matrix(c(c('a', '1'), c('b', '1')), c(2, 2)))
+  expect_equal(target[["body"]]$a1, c(".", "[", ".", "]"))
+  expect_equal(target[["body"]]$b1, c("[", ".", "]", "."))
+  expect_equal(target[["body"]]$yr, seq(1998, 2001))
+})
+

@@ -8,7 +8,7 @@
 #' @return An fhx instance.
 #'
 #' @export
-fhx <- function(year,  series, rec_type, metalist=list()) {
+fhx <- function(year, series, rec_type, metalist=list()) {
   if (!is.numeric(year)) stop("year must be numeric")
   if (!is.factor(series)) stop("series must be factor")
   if (!is.list(metalist)) stop("metalist must be list")
@@ -405,7 +405,7 @@ composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events =
 #' Sort the series names of fhx object by the earliest or latest year.
 #'
 #' @param x An fhx instance to be sorted.
-#' @param sort_by Designate the inner or outer year for sorting. Defaults to "first_year"
+#' @param sort_by Either 'first_year' or 'last_year'. Designates the inner or outer year for sorting. Defaults to 'first_year'
 #' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
 #' @param ... Additional arguments that fall off the face of the universe.
 #'
@@ -417,9 +417,9 @@ composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events =
 #' plot(sort(lgr2, sort_by = "last_year"))
 #'
 #' @export
-sort.fhx <- function(x, decreasing=FALSE, sort_by = c('first_year', 'last_year'), ...) {
+sort.fhx <- function(x, decreasing=FALSE, sort_by = 'first_year', ...) {
   stopifnot(is.fhx(x))
-
+  stopifnot(sort_by %in% c("first_year", "last_year"))
   if (is.null(sort_by)) sort.order <- min
   if (sort_by == "first_year") sort.order <- min
   if (sort_by == "last_year") sort.order <- max

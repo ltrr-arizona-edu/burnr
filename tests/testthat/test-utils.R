@@ -91,4 +91,35 @@ test_that("count_event_position on FHX object with multiple select positions", {
   expect_false("early_fs" %in% as.character(test_subj$event))
 })
 
+test_that("sort.fhx on FHX object by first_year", {
+  goal <- c("a", "b")
+  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
+                  series = factor(c("a", "a", "b", "b")),
+                  rec_type = c("pith_year", "bark_year", 
+                               "pith_year", "bark_year"))
+  sorted <- sort(test_fhx)
+  expect_equal(goal, levels(sorted$series))
+})
+
+test_that("sort.fhx on FHX object by first_year with decreasing=TRUE", {
+  goal <- c("b", "a")
+  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
+                  series = factor(c("a", "a", "b", "b")),
+                  rec_type = c("pith_year", "bark_year", 
+                               "pith_year", "bark_year"))
+  sorted <- sort(test_fhx, sort_by = "first_year", decreasing = TRUE)
+  expect_equal(goal, levels(sorted$series))
+})
+
+
+test_that("sort.fhx on FHX object by last_year", {
+  goal <- c("b", "a")
+  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
+                  series = factor(c("a", "a", "b", "b")),
+                  rec_type = c("pith_year", "bark_year", 
+                               "pith_year", "bark_year"))
+  sorted <- sort(test_fhx, sort_by = 'last_year')
+  expect_equal(goal, levels(sorted$series))
+})
+
 

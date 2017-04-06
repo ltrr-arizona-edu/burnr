@@ -12,6 +12,14 @@ median <- function(x) UseMethod("median")
 #' @export
 sd <- function(x) UseMethod("sd")
 
+#' Sample Quantiles.
+#'
+#' @param x An R object.
+#' @param ... Additional arguments passed to or from other methods.
+#'
+#' @export
+quantile <- function(x, ...) UseMethod("quantile")
+
 #' Generate series-level descriptive statistics.
 #'
 #' @param x An fhx object.

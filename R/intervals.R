@@ -109,6 +109,30 @@ max.intervals <- function(x, ...) {
   max(x$intervals)
 }
 
+#' Fit distribution quantiles.
+#'
+#' @param x An intervals object.
+#' @param q Vector giving the desired quantiles.
+#' @param ... Additional arguments passed to the quantile function of the fit distribution.
+#'
+#' @examples
+#' data(pgm)
+#' intervs <- intervals(composite(pgm))
+#' quantile(intervs)
+#'
+#' # Or you can pass in your own quantiles:
+#' quantile(intervs, q = c(0.25, 0.5, 0.75))
+#'
+#' @export
+quantile.intervals <- function(x, q=c(0.125, 0.5, 0.875), ...) {
+  dens2cum <- list(weibull = stats::qweibull, lognormal = stats::qlnorm)
+  q_densfun <- dens2cum[[x$densfun]]
+  quant_args <-c(list(q, ...), 
+                  x$fitdistr$estimate)
+  quants <- do.call(q_densfun, quant_args)
+  quants
+}
+
 #' Print an intervals objects.
 #'
 #' @param x An intervals object.
@@ -118,12 +142,7 @@ max.intervals <- function(x, ...) {
 print.intervals <- function(x, ...) {
   #ans_sum <- format(rbind(mean(x), median(x), sd(x)), digits = 2, justify = 'right')
   #dimnames(ans_sum) <- list(c('mean', 'median', 'sd'), "")
-  dens2cum <- list(weibull = stats::qweibull, lognormal = stats::qlnorm)
-  q_densfun <- dens2cum[[x$densfun]]
-  quant_args <-c(list(p = c(0.125, 0.5, 0.875)), 
-                  x$fitdistr$estimate)
-  quants <- do.call(q_densfun, quant_args)
-  #quants <- stats::qlnorm(, sdlog = out[["distr_scale"]], meanlog = out[["distr_mean"]])
+  quants <- quantile(x, p = c(0.125, 0.5, 0.847))
   cat(strwrap("Summary", prefix = "\t"), sep = "\n")
   cat("\n")
   cat(paste0("mean = ", round(mean(x), 1), ", "))
@@ -145,7 +164,7 @@ print.intervals <- function(x, ...) {
   
   cat("\n\n")
   
-  cat(strwrap("Quantiles", prefix = "\t"), sep = "\n")
+  cat(strwrap("Percentiles", prefix = "\t"), sep = "\n")
   cat(paste0('12.5%: ', round(quants[1], 2), ' | '))
   cat(paste0('50.0%: ', round(quants[2], 2), ' | '))
   cat(paste0('87.5%: ', round(quants[3], 2), '\n'))

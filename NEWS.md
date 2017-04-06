@@ -18,6 +18,8 @@ Changes in this minor release:
 
 * `count_fire()` renamed `count_scar()`
 
+* Added `quantile()` function for intervals.
+
 
 # burnr v0.1.2
 

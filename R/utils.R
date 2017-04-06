@@ -483,7 +483,7 @@ is.fhx <- function(x) {
 check_duplicates <- function(x) {
   stopifnot(is.fhx(x))
   if (!anyDuplicated(x)) {
-    return(x)
+    return(invisible(x))
   } else {
       duplicates <- x[duplicated(x), ]
       stop(duplicates, "\n", c(dim(duplicates)[1],

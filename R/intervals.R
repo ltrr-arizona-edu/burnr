@@ -1,6 +1,6 @@
 #' Constructor for S3 intervals class.
 #'
-#' @param comp A composite fhx instance.
+#' @param comp A composite fhx instance. Should have only one series in it.
 #' @param densfun String giving desired distribution to fit. Suggest "weibull" or "lognormal". Default is "weibull".
 #'
 #' @return An intervals instance.
@@ -25,6 +25,8 @@
 intervals <- function(comp, densfun="weibull") {
   stopifnot(is.fhx(comp))
   stopifnot(densfun %in% c("weibull", "lognormal"))
+  if (length(series_names(comp)) > 1)
+    stop("Found multiple series in `comp`. There can only be one.")
   dens2cum <- list(weibull = stats::pweibull, lognormal = stats::plnorm)
   x <- list()
   x[["intervals"]]<- diff(get_event_years(comp)[[1]])  # TODO: Check that we need [[1]]

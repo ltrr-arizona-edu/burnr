@@ -255,7 +255,7 @@ find_recording <- function(x, injury_event) {
   data.frame(recording = union(rec, active))
 }
 
-#' Count and frequency of different events
+#' Count of different events
 #'
 #' @param x An fhx object.
 #' @param injury_event Optional boolean indicating whether injuries should be considered event. Default is FALSE.

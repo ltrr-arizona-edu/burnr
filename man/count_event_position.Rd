@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{count_event_position}
 \alias{count_event_position}
-\title{Count and frequency of different events}
+\title{Count of different events}
 \usage{
 count_event_position(x, injury_event = FALSE, position, groupby)
 }
@@ -19,7 +19,7 @@ count_event_position(x, injury_event = FALSE, position, groupby)
 A data.frame with a columns giving the event and corresponding number of events for each event type.
 }
 \description{
-Count and frequency of different events
+Count of different events
 }
 \examples{
 data(pgm)

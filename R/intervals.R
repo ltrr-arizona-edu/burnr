@@ -39,6 +39,9 @@ intervals <- function(comp, densfun="weibull") {
   kstest_args <-c(list(x = x$intervals, y = p_densfun, alternative = "less"), 
                   x$fitdistr$estimate) 
   x$kstest <- do.call(stats::ks.test, kstest_args)
+  x$shapirotest <- stats::shapiro.test(x$intervals)
+  x$comp_name <- series_names(comp)
+  x$year_range <- year_range(comp)
   x
 }
 
@@ -145,31 +148,50 @@ print.intervals <- function(x, ...) {
   #ans_sum <- format(rbind(mean(x), median(x), sd(x)), digits = 2, justify = 'right')
   #dimnames(ans_sum) <- list(c('mean', 'median', 'sd'), "")
   quants <- quantile(x, p = c(0.125, 0.5, 0.847))
-  cat(strwrap("Summary", prefix = "\t"), sep = "\n")
+  cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")
+  cat(strwrap("=================", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat(paste0("mean = ", round(mean(x), 1), ", "))
-  cat(paste0("median = ", round(median(x), 1), ", "))
-  cat(paste0("sd = ", round(sd(x), 1), ", "))
-  cat(paste0("min = ", min(x), ", "))
-  cat(paste0("max = ", max(x), "\n"))
+  cat(paste0("Composite name: ", x$comp_name, "\n"))
+  cat(paste0("Composite observed period: ", x$year_range[1], " to ", x$year_range[2], "\n"))
+  cat("\n")
+  cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
+  cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
+  cat(paste0("\tMedian interval: ", round(median(x), 1), "\n"))
+  cat(paste0("\tStandard deviation: ", round(sd(x), 1), "\n"))
+  cat(paste0("\tMinimum interval: ", min(x), "\n"))
+  cat(paste0("\tMaximum interval: ", max(x), "\n"))
 
   cat("\n\n")
   
-  cat(strwrap("Distribution", prefix = "\t"), sep = "\n")
+  cat(strwrap(x$shapirotest$method, prefix = "\t"), sep = "\n")
   cat("\n")
-  cat(paste0("type: ", x$densfun, "\n\n"))
-  print(x$fitdistr)
-
-  cat("\n")
+  cat(paste0("W = ", round(x$shapirotest$statistic, 5), ", p = ", round(x$shapirotest$p.value, 5), "\n"))
+  cat(strwrap("Null hypothesis: The intervals were sampled from a normally distributed population.", exdent = 4), sep = "\n")
+  cat(strwrap("Alt. hypothesis: The intervals were not sampled from a normally distributed population.", exdent = 4), sep = "\n")
   
-  print(x$kstest)
+  cat("\n\n")
+  
+  cat(strwrap("Theoretical distribution", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat(paste0("Fit distribution: ", x$densfun, "\n\n"))
+  print(x$fitdistr)
   
   cat("\n\n")
   
   cat(strwrap("Percentiles", prefix = "\t"), sep = "\n")
-  cat(paste0('12.5%: ', round(quants[1], 2), ' | '))
-  cat(paste0('50.0%: ', round(quants[2], 2), ' | '))
-  cat(paste0('87.5%: ', round(quants[3], 2), '\n'))
+  cat("\n")
+  cat(paste0('12.5%: ', round(quants[1], 1), ' | '))
+  cat(paste0('50.0%: ', round(quants[2], 1), ' | '))
+  cat(paste0('87.5%: ', round(quants[3], 1), '\n'))
+  
+  cat("\n\n")
+ 
+  cat(strwrap(x$kstest$method, prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat(paste0("D^- = ", round(x$kstest$statistic, 5), ", p = ", round(x$kstest$p.value, 5), "\n"))
+  cat(strwrap("Null hypothesis: The intervals were sampled from the fit theoretical distribution.", exdent = 4), sep = "\n")
+  cat(strwrap("Alt. hypothesis: The intervals distribution lies below the fit theoretical distribution..", exdent = 4), sep = "\n")
+  cat("\n\n")
   
   invisible(x)
 }

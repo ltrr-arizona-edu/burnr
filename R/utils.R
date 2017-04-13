@@ -260,7 +260,7 @@ find_recording <- function(x, injury_event) {
 #' @param x An fhx object.
 #' @param injury_event Optional boolean indicating whether injuries should be considered event. Default is FALSE.
 #' @param position Optional character vector giving the types of event positions to include in the count. Can any combination of the following: "unknown", "dormant", "early", "middle", "late", "latewd". The default counts all event positions.
-#' @param groupby Optional named list containing character vectors that are used to group positions. The names given to each character vector give the group's name in the output data.frame. 
+#' @param groupby Optional named list containing character vectors that are used to count the total number of different event types. The names given to each character vector give the group's name in the output data.frame.
 #'
 #' @return A data.frame with a columns giving the event and corresponding number of events for each event type.
 #'
@@ -274,13 +274,13 @@ find_recording <- function(x, injury_event) {
 #' # Count only events of a certain position, in this case, "unknown", "early", and "middle".
 #' count_event_position(pgm, injury_event = TRUE, position = c("unknown", "early", "middle"))
 #'
+#' # Using custom `groupby` args.
+#' grplist <- list(foo = c("dormant_fs", "early_fs"), bar = c("middle_fs", "late_fs"))
+#' count_event_position(pgm, groupby = grplist)
+#'
 #' @export
 count_event_position <- function(x, injury_event=FALSE, position, groupby) {
   stopifnot(is.fhx(x))
-
-  if (!missing(groupby))
-    # TODO DEBUG
-    warning("The `groupby` feature is not yet implimented. Ignoring this argument.")
 
   possible_position = c("unknown", "dormant", "early", "middle", "late", "latewd")
   if (missing(position))
@@ -294,15 +294,13 @@ count_event_position <- function(x, injury_event=FALSE, position, groupby) {
 
   msk <- x$rec_type %in% target_events
 
-  #if (!missing(groupby)) {
-    #all_events <- paste0(possible_position, "_fs")
-    #if (injury_event == TRUE)
-      #all_events <- c(all_events, paste0(possible_position, "_fi"))
-    #group_msk <- x$rec_type %in% all_events
-    #group_out <- plyr::count(x$rec_type[msk])
-  #}
   out <- plyr::count(x$rec_type[msk])
   names(out) <- c("event", "count")
+  if (!missing(groupby)) {
+    outgroup <- plyr::ldply(groupby, function(g) sum(subset(out, out$event %in% g)$count))
+    names(outgroup) <- c("event", "count")
+    out <- rbind(out, outgroup)
+  }
   out
 }
 

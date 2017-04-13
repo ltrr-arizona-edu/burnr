@@ -91,6 +91,16 @@ test_that("count_event_position on FHX object with multiple select positions", {
   expect_false("early_fs" %in% as.character(test_subj$event))
 })
 
+test_that("count_event_position on FHX object groupby list", {
+  grplist <- list(foo = c("unknown_fs", "early_fs"), bar = c("dormant_fs", "unknown_fi"))
+  test_subj <- count_event_position(REF_MULTI, groupby = grplist)
+  expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
+  expect_equal(subset(test_subj, event == "early_fs")$count, 4)
+  expect_equal(subset(test_subj, event == "foo")$count, 6)
+  expect_equal(subset(test_subj, event == "bar")$count, 3)
+})
+
+
 test_that("sort.fhx on FHX object by first_year", {
   goal <- c("a", "b")
   test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),

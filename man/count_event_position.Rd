@@ -13,7 +13,7 @@ count_event_position(x, injury_event = FALSE, position, groupby)
 
 \item{position}{Optional character vector giving the types of event positions to include in the count. Can any combination of the following: "unknown", "dormant", "early", "middle", "late", "latewd". The default counts all event positions.}
 
-\item{groupby}{Optional named list containing character vectors that are used to group positions. The names given to each character vector give the group's name in the output data.frame.}
+\item{groupby}{Optional named list containing character vectors that are used to count the total number of different event types. The names given to each character vector give the group's name in the output data.frame.}
 }
 \value{
 A data.frame with a columns giving the event and corresponding number of events for each event type.
@@ -30,5 +30,9 @@ count_event_position(pgm, injury_event = TRUE)
 
 # Count only events of a certain position, in this case, "unknown", "early", and "middle".
 count_event_position(pgm, injury_event = TRUE, position = c("unknown", "early", "middle"))
+
+# Using custom `groupby` args.
+grplist <- list(foo = c("dormant_fs", "early_fs"), bar = c("middle_fs", "late_fs"))
+count_event_position(pgm, groupby = grplist)
 
 }

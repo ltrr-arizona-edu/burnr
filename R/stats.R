@@ -44,7 +44,7 @@ quantile <- function(x, ...) UseMethod("quantile")
 series_stats <- function(x, func_list=list(first=first_year,last=last_year,
   years=count_year_span,inner_type=inner_type,outer_type=outer_type,
   number_scars=count_scar,number_injuries=count_injury,
-  recording_years=count_recording,mean_interval=mean_interval)) {
+  recording_years=count_recording,mean_interval=series_mean_interval)) {
   stopifnot(is.fhx(x))
   plyr::ddply(x, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
@@ -138,15 +138,16 @@ count_recording <- function(x, injury_event=FALSE) {
   nrow(find_recording(x, injury_event = injury_event))
 }
 
-#' Calculate mean fire interval of an fhx series.
+#' Calculate mean fire interval of a single fhx series.
 #'
-#' @param x An fhx object.
+#' @param x An fhx object with a single series. For proper fire intervals see `intervals()`.
 #' @param injury_event Boolean indicating whether injuries should be considered event.
 #'
 #' @return The mean fire interval observed in the series.
+#' @seealso intervals()
 #'
 #' @export
-mean_interval <- function(x, injury_event=FALSE) {
+series_mean_interval <- function(x, injury_event=FALSE) {
   search_str <- '_fs'
   if (injury_event) {
     search_str <- paste0('_fi|', search_str)

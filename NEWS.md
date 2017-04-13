@@ -8,7 +8,7 @@ Changes in this minor release:
 
 * Added `year_range()` to give (min, max) years for an `fhx` object.
 
-* Added `intervals()` to handle interval analysis. These are a whole new object.
+* Added `intervals()` to handle interval analysis. These are a whole new object. `mean_interval()` has been renamed `series_mean_interval()` to avoid confusion.
 
 * Updated `composite()` to include a filter for number of events. This necesitates fixes in other functions (e.g. `plot_demograph()`).
 

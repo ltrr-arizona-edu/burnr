@@ -147,12 +147,12 @@ quantile.intervals <- function(x, q=c(0.125, 0.5, 0.875), ...) {
 print.intervals <- function(x, ...) {
   #ans_sum <- format(rbind(mean(x), median(x), sd(x)), digits = 2, justify = 'right')
   #dimnames(ans_sum) <- list(c('mean', 'median', 'sd'), "")
-  quants <- quantile(x, p = c(0.125, 0.5, 0.847))
+  quants <- quantile(x, q = c(0.847, 0.5, 0.125))
   cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")
   cat(strwrap("=================", prefix = "\t"), sep = "\n")
   cat("\n")
   cat(paste0("Composite name: ", x$comp_name, "\n"))
-  cat(paste0("Composite observed period: ", x$year_range[1], " to ", x$year_range[2], "\n"))
+  cat(paste0("Analysis period: ", x$year_range[1], " to ", x$year_range[2], "\n"))
   cat("\n")
   cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
@@ -180,9 +180,9 @@ print.intervals <- function(x, ...) {
   
   cat(strwrap("Percentiles", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat(paste0('12.5%: ', round(quants[1], 1), ' | '))
-  cat(paste0('50.0%: ', round(quants[2], 1), ' | '))
-  cat(paste0('87.5%: ', round(quants[3], 1), '\n'))
+  cat(paste0('Lower exceedance (12.5%): ', round(quants[1], 1), ' | '))
+  cat(paste0(x$densfun, ' median (50.0%): ', round(quants[2], 1), ' | '))
+  cat(paste0('Upper exceedance (87.5%): ', round(quants[3], 1), '\n'))
   
   cat("\n\n")
  

@@ -38,3 +38,12 @@
 #' }
 "pgm_meta"
 
+#' Reconstructed PDSI time series for the Peggy Mesa fire-history dataset
+#'
+#' A tree-ring reconstructed Palmer Drought-Severity Index time series corresponding to the Peggy Mesa fire-history dataset (`pgm`) -- specifically, the Jemez Mountains area (gridpoint 133). The reconstruction is from The North American Drought Atlas (Cook and Krusic 2004).
+#'
+#' @format A data frame with 2004 rows and 1 variables. Row names give the year for the reconstructed value:
+#' \itemize{
+#'   \item RECON: The reconstructed PDSI series.
+#' }
+"pgm_pdsi"

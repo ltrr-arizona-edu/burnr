@@ -2,6 +2,10 @@
 
 Changes in this minor release:
 
+* Renamed `run_sea()` to `sea()` and enhanced speed, and changed the `time_span` parameter to `key_period` for a simple input. The function now returns a proper sea object with special `plot()` and `print()` methods. The `plot()` generic method uses the new `plot_sealags()`.
+
+* Added `pgm_pdsi` data to run with sea. Load it with `data("pgm_pdsi")`.
+
 * Added `make_rec_type()`. I hope this will make it easier to create `rec_type` factors used by `fhx()`.
 
 * Added `event_count_position()`, which gives the number of events found in different positions or seasons.
@@ -11,8 +15,6 @@ Changes in this minor release:
 * Added `intervals()` to handle interval analysis. These are a whole new object. `mean_interval()` has been renamed `series_mean_interval()` to avoid confusion.
 
 * Updated `composite()` to include a filter for number of events. This necesitates fixes in other functions (e.g. `plot_demograph()`).
-
-* Updated `run_sea()` with enhanced speed, and changed the `time_span` parameter to `key_period` for a simple input.
 
 * Added `summary()` function for fhx and intervals objects.
 

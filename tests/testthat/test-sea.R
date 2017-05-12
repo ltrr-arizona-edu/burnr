@@ -1,0 +1,22 @@
+library(burnr)
+context("SEA")
+
+data(pgm)
+data(pgm_pdsi)
+COMP_TEST <- composite(pgm)
+set.seed(123)
+SEA_TEST <- sea(pgm_pdsi, COMP_TEST)
+
+test_that("Check sea departure data.frame", {
+  goal_mean <- c(-0.283, 0.608, -0.148, 0.997, 1.234,  0.204, -2.156, -0.090, -0.505, 0.299, 0.283)
+  goal_lower95 <- c(-1.006, -1.014, -1.054, -1.049, -1.061, -1.040, -0.957, -0.995, -1.025, -1.020, -1.045)
+  goal_upper95 <- c(1.032, 1.014, 0.966, 0.996, 0.972, 0.977, 0.965, 1.015, 1.015, 0.932, 1.013)
+  goal_lower99 <- c(-1.267, -1.333, -1.337, -1.407, -1.311, -1.329, -1.333, -1.332, -1.310, -1.342, -1.364)
+  goal_upper99 <- c(1.333, 1.415, 1.179, 1.331, 1.174, 1.169, 1.341, 1.427, 1.508, 1.232, 1.386)
+  expect_equal(SEA_TEST$departure$lag, seq(-6, 4))
+  expect_equal(SEA_TEST$departure$mean, goal_mean)
+  expect_equal(SEA_TEST$departure$upper_95_perc, goal_upper95)
+  expect_equal(SEA_TEST$departure$lower_95_perc, goal_lower95)
+  expect_equal(SEA_TEST$departure$upper_99_perc, goal_upper99)
+  expect_equal(SEA_TEST$departure$lower_99_perc, goal_lower99)
+})

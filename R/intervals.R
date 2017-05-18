@@ -41,7 +41,7 @@ intervals <- function(comp, densfun="weibull") {
   x$kstest <- do.call(stats::ks.test, kstest_args)
   x$shapirotest <- stats::shapiro.test(x$intervals)
   x$comp_name <- series_names(comp)
-  x$year_range <- year_range(comp)
+  x$event_range <- range(unlist(get_event_years(comp)))
   x
 }
 
@@ -152,7 +152,7 @@ print.intervals <- function(x, ...) {
   cat(strwrap("=================", prefix = "\t"), sep = "\n")
   cat("\n")
   cat(paste0("Composite name: ", x$comp_name, "\n"))
-  cat(paste0("Analysis period: ", x$year_range[1], " to ", x$year_range[2], "\n"))
+  cat(paste0("Analysis events range: ", x$event_range[1], " to ", x$event_range[2], "\n"))
   cat("\n")
   cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))

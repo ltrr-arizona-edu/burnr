@@ -16,17 +16,14 @@ Plot a sea object.
 \dontrun{
 # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
 # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-target_url <- paste0('http://iridl.ldeo.columbia.edu',
-                     '/SOURCES/.LDEO/.TRL/.NADA2004',
-                     '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
-pdsi <- read.table(target_url, header = TRUE, row.names = 1)
-pdsi <- subset(pdsi, select = "RECON")
+
+data(pgm_pdsi)
 
 # Run SEA on Peggy Mesa (pgm) data
 data(pgm)
 pgm_comp <- composite(pgm)
 
-pgm_sea <- sea(pdsi, pgm_comp)
+pgm_sea <- sea(pgm_pdsi, pgm_comp)
 
 plot(pgm_sea)
 }

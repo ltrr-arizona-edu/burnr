@@ -261,20 +261,12 @@ sea <- function(x, key, years_before=6, years_after=4,
   rm(temp)
   departure_table <- round(departure_table, 3)
 
-  out <- list("actual" = key_event_table, "random" = rand_event_table,
-                   "departure" = departure_table)
+  out <- list("actual" = key_event_table,
+              "random" = rand_event_table,
+              "departure" = departure_table)
   out$simulated <- re.table  # DEBUG
   out$observed <- event.table  # DEBUG
   class(out) <- c("sea")
-
-  # prnt.tbl <- data.frame(lag = departure_table$lag_year,
-  #                        departure = departure_table$mean_value,
-  #                        sig = paste(ifelse(departure_table$mean_value < departure_table$lower_95_perc |
-  #                                             departure_table$mean_value > departure_table$upper_95_perc, '*', ''),
-  #                                    ifelse(departure_table$mean_value < departure_table$lower_99_perc |
-  #                                             departure_table$mean_value > departure_table$upper_99_perc, '**', ''),
-  #                                    sep=''))
-  # print(prnt.tbl)
 
   out
 }
@@ -308,55 +300,6 @@ print.sea <- function(x, ...) {
   cat(strwrap("=========================", prefix = "\t"), sep = "\n")
   print(prnt_tbl, row.names = FALSE)
   cat(paste0("Significance: * (p < 0.95), ** (p < 0.99)\n"))
-
-  #ans_sum <- format(rbind(mean(x), median(x), sd(x)), digits = 2, justify = 'right')
-  #dimnames(ans_sum) <- list(c('mean', 'median', 'sd'), "")
-  # quants <- quantile(x, p = c(0.125, 0.5, 0.847))
-  # cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")
-  # cat(strwrap("=================", prefix = "\t"), sep = "\n")
-  # cat("\n")
-  # cat(paste0("Composite name: ", x$comp_name, "\n"))
-  # cat(paste0("Composite observed period: ", x$year_range[1], " to ", x$year_range[2], "\n"))
-  # cat("\n")
-  # cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
-  # cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
-  # cat(paste0("\tMedian interval: ", round(median(x), 1), "\n"))
-  # cat(paste0("\tStandard deviation: ", round(sd(x), 1), "\n"))
-  # cat(paste0("\tMinimum interval: ", min(x), "\n"))
-  # cat(paste0("\tMaximum interval: ", max(x), "\n"))
-
-  # cat("\n\n")
-  
-  # cat(strwrap(x$shapirotest$method, prefix = "\t"), sep = "\n")
-  # cat("\n")
-  # cat(paste0("W = ", round(x$shapirotest$statistic, 5), ", p = ", round(x$shapirotest$p.value, 5), "\n"))
-  # cat(strwrap("Null hypothesis: The intervals were sampled from a normally distributed population.", exdent = 4), sep = "\n")
-  # cat(strwrap("Alt. hypothesis: The intervals were not sampled from a normally distributed population.", exdent = 4), sep = "\n")
-  
-  # cat("\n\n")
-  
-  # cat(strwrap("Theoretical distribution", prefix = "\t"), sep = "\n")
-  # cat("\n")
-  # cat(paste0("Fit distribution: ", x$densfun, "\n\n"))
-  # print(x$fitdistr)
-  
-  # cat("\n\n")
-  
-  # cat(strwrap("Percentiles", prefix = "\t"), sep = "\n")
-  # cat("\n")
-  # cat(paste0('12.5%: ', round(quants[1], 1), ' | '))
-  # cat(paste0('50.0%: ', round(quants[2], 1), ' | '))
-  # cat(paste0('87.5%: ', round(quants[3], 1), '\n'))
-  
-  # cat("\n\n")
- 
-  # cat(strwrap(x$kstest$method, prefix = "\t"), sep = "\n")
-  # cat("\n")
-  # cat(paste0("D^- = ", round(x$kstest$statistic, 5), ", p = ", round(x$kstest$p.value, 5), "\n"))
-  # cat(strwrap("Null hypothesis: The intervals were sampled from the fit theoretical distribution.", exdent = 4), sep = "\n")
-  # cat(strwrap("Alt. hypothesis: The intervals distribution lies below the fit theoretical distribution..", exdent = 4), sep = "\n")
-  # cat("\n\n")
-  
   invisible(x)
 }
 
@@ -368,17 +311,14 @@ print.sea <- function(x, ...) {
 #' \dontrun{
 #' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
 #' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-#' target_url <- paste0('http://iridl.ldeo.columbia.edu',
-#'                      '/SOURCES/.LDEO/.TRL/.NADA2004',
-#'                      '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
-#' pdsi <- read.table(target_url, header = TRUE, row.names = 1)
-#' pdsi <- subset(pdsi, select = "RECON")
+#' 
+#' data(pgm_pdsi)
 #'
 #' # Run SEA on Peggy Mesa (pgm) data
 #' data(pgm)
 #' pgm_comp <- composite(pgm)
 #'
-#' pgm_sea <- sea(pdsi, pgm_comp)
+#' pgm_sea <- sea(pgm_pdsi, pgm_comp)
 #' 
 #' plot(pgm_sea)
 #' }

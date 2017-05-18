@@ -306,7 +306,8 @@ print.sea <- function(x, ...) {
                                      sep=''))
   cat(strwrap("Superposed Epoch Analysis", prefix = "\t"), sep = "\n")
   cat(strwrap("=========================", prefix = "\t"), sep = "\n")
-  print(prnt_tbl)
+  print(prnt_tbl, row.names = FALSE)
+  cat(paste0("Significance: * (p < 0.95), ** (p < 0.99)\n"))
 
   #ans_sum <- format(rbind(mean(x), median(x), sd(x)), digits = 2, justify = 'right')
   #dimnames(ans_sum) <- list(c('mean', 'median', 'sd'), "")
@@ -401,7 +402,7 @@ plot_sealags <- function(x) {
           + ggplot2::geom_line(ggplot2::aes_string(y = "lower_99_perc"))
           + ggplot2::geom_line(ggplot2::aes_string(y = "lower_95_perc"))
           + ggplot2::geom_line(ggplot2::aes_string(y = "upper_95_perc"))
-          + ggplot2::ylab("Normalized mean")
+          + ggplot2::ylab("Mean departure")
           + ggplot2::xlab("Lag")
           + ggplot2::theme_bw())
   p

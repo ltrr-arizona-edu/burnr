@@ -84,18 +84,18 @@
 run_sea <- function(x, key, years_before=6, years_after=4,
                     key_period = TRUE, n_iter=1000) {
   .Deprecated('sea')
-  sea(x, key, years_before=6, years_after=4,
-                    key_period = TRUE, n_iter=1000)
+  sea(x, key, nbefore=years_before, nafter=years_after,
+                    event_period = key_period, n_iter=n_iter)
 }
 
 
 #' Perform superposed epoch analysis.
 #'
 #' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
-#' @param key A vector of event years for superposed epoch, such as fire years, or an fhx object
+#' @param event A vector of event years for superposed epoch, such as fire years, or an fhx object
 #' with a single \code{series} as produced by \code{composite}
-#' @param years_before  The number of lag years prior to the event year
-#' @param years_after The number of lag years following the event year
+#' @param nbefore  The number of lag years prior to the event year
+#' @param nafter The number of lag years following the event year
 #' @param key_period Logical. Constrains the time series to the time period of key events within the range
 #' of the x climate series. False uses the entire climate series, ignoring the period of key events.
 #' time series
@@ -160,26 +160,26 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #' }
 #'
 #' @export
-sea <- function(x, key, years_before=6, years_after=4,
-                    key_period = TRUE, n_iter=1000) {
-  if (is.fhx(key)){
-   if (length(unique(key$series)) > 1) stop("key must have a single series")
-    else key <- get_event_years(key)[[1]]
+sea <- function(x, event, nbefore=6, nafter=4,
+                    event_period = TRUE, n_iter=1000) {
+  if (is.fhx(event)){
+   if (length(unique(event$series)) > 1) stop("event must have a single series")
+    else event <- get_event_years(event)[[1]]
   }
 
   # set up
   rnames <- as.numeric(rownames(x))
-  key.cut <- rnames[rnames %in% key]
-  period <- range(key.cut)
-  rnames.cut <- period[1] : period[2]
-  n <- length(key.cut)
-  if (length(key.cut) != length(key)) {
-    warning(paste('One or more key-event years is outside the range of the climate series. Using', n, 'event years:', period[1], 'to', period[2],'.'),
+  event.cut <- rnames[rnames %in% event]
+  period <- range(event.cut)
+  rnames.cut <- seq(period[1], period[2])
+  n <- length(event.cut)
+  if (length(event.cut) != length(event)) {
+    warning(paste('One or more event-event years is outside the range of the climate series. Using', n, 'event years:', period[1], 'to', period[2],'.'),
             call.=FALSE)
   }
   seq.n <- seq_len(n)
-  m <- years_before + years_after + 1
-  yrs.base <- -years_before:years_after
+  m <- nbefore + nafter + 1
+  yrs.base <- -nbefore:nafter
   out_table <- data.frame(matrix(NA_real_, nrow=m, ncol=16,
                                  dimnames=list(1:m, c('lag', 'mean',
                                                       'n', 'St_dev', 'lower_95',
@@ -190,26 +190,26 @@ sea <- function(x, key, years_before=6, years_after=4,
                                                       'min', 'max'))))
   out_table[, 1] <- yrs.base
 
-  # key-event matrix
-  event.table <- matrix(unlist(lapply(key.cut, function(bb) x[rnames %in% (bb + yrs.base), ])),
+  # event-event matrix
+  event.table <- matrix(unlist(lapply(event.cut, function(bb) x[rnames %in% (bb + yrs.base), ])),
                         nrow=n, ncol=m, byrow = TRUE)
 
-  key_event_table <- out_table[, -c(11:14)]
-  key_event_table[, 2] <- colMeans(event.table, na.rm=TRUE)
-  key_event_table[, 3] <- apply(event.table, 2, function(x) sum(!is.na(x)))
-  key_event_table[, 4] <- apply(event.table, 2, stats::sd, na.rm=TRUE)
-  key_event_table[, 5] <- apply(event.table, 2, function(x) mean(x) - 1.960*stats::sd(x, na.rm=TRUE))
-  key_event_table[, 6] <- apply(event.table, 2, function(x) mean(x) + 1.960*stats::sd(x, na.rm=TRUE))
-  key_event_table[, 7] <- apply(event.table, 2, function(x) mean(x) - 2.575*stats::sd(x, na.rm=TRUE))
-  key_event_table[, 8] <- apply(event.table, 2, function(x) mean(x) + 2.575*stats::sd(x, na.rm=TRUE))
-  key_event_table[, 9] <- apply(event.table, 2, function(x) mean(x) - 3.294*stats::sd(x, na.rm=TRUE))
-  key_event_table[, 10] <- apply(event.table, 2, function(x) mean(x) + 3.294*stats::sd(x, na.rm=TRUE))
-  key_event_table[, 11] <- apply(event.table, 2, min, na.rm=TRUE)
-  key_event_table[, 12] <- apply(event.table, 2, max, na.rm=TRUE)
-  key_event_table <- round(key_event_table, 3)
+  actual_event_table <- out_table[, -c(11:14)]
+  actual_event_table[, 2] <- colMeans(event.table, na.rm=TRUE)
+  actual_event_table[, 3] <- apply(event.table, 2, function(x) sum(!is.na(x)))
+  actual_event_table[, 4] <- apply(event.table, 2, stats::sd, na.rm=TRUE)
+  actual_event_table[, 5] <- apply(event.table, 2, function(x) mean(x) - 1.960*stats::sd(x, na.rm=TRUE))
+  actual_event_table[, 6] <- apply(event.table, 2, function(x) mean(x) + 1.960*stats::sd(x, na.rm=TRUE))
+  actual_event_table[, 7] <- apply(event.table, 2, function(x) mean(x) - 2.575*stats::sd(x, na.rm=TRUE))
+  actual_event_table[, 8] <- apply(event.table, 2, function(x) mean(x) + 2.575*stats::sd(x, na.rm=TRUE))
+  actual_event_table[, 9] <- apply(event.table, 2, function(x) mean(x) - 3.294*stats::sd(x, na.rm=TRUE))
+  actual_event_table[, 10] <- apply(event.table, 2, function(x) mean(x) + 3.294*stats::sd(x, na.rm=TRUE))
+  actual_event_table[, 11] <- apply(event.table, 2, min, na.rm=TRUE)
+  actual_event_table[, 12] <- apply(event.table, 2, max, na.rm=TRUE)
+  actual_event_table <- round(actual_event_table, 3)
 
   # random event matrix
-  if(key_period ==  TRUE){
+  if(event_period ==  TRUE){
     rand_yrs <- rnames.cut
   }
   else {
@@ -246,7 +246,7 @@ sea <- function(x, key, years_before=6, years_after=4,
   # Departure table
 
   departure_table <- out_table[, -c(3, 4, 15, 16)]
-  departure_table[, 2] <- key_event_table[, 2] - rand_event_table[, 2]
+  departure_table[, 2] <- actual_event_table[, 2] - rand_event_table[, 2]
   departure_table[, 3] <- apply(re.table, 2, function(x) -1 * 1.960 * stats::sd(x, na.rm = TRUE))
   departure_table[, 4] <- apply(re.table, 2, function(x)      1.960 * stats::sd(x, na.rm = TRUE))
   departure_table[, 5] <- apply(re.table, 2, function(x) -1 * 2.575 * stats::sd(x, na.rm = TRUE))
@@ -261,7 +261,7 @@ sea <- function(x, key, years_before=6, years_after=4,
   rm(temp)
   departure_table <- round(departure_table, 3)
 
-  out <- list("actual" = key_event_table,
+  out <- list("actual" = actual_event_table,
               "random" = rand_event_table,
               "departure" = departure_table)
   out$simulated <- re.table  # DEBUG

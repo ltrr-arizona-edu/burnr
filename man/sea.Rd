@@ -4,7 +4,7 @@
 \alias{sea}
 \title{Perform superposed epoch analysis.}
 \usage{
-sea(x, event, nbefore = 6, nafter = 4, event_period = TRUE,
+sea(x, event, nbefore = 6, nafter = 4, event_range = TRUE,
   n_iter = 1000)
 }
 \arguments{
@@ -17,11 +17,11 @@ with a single \code{series} as produced by \code{composite}}
 
 \item{nafter}{The number of lag years following the event year}
 
-\item{n_iter}{The number of iterations for bootstrap resampling}
-
-\item{key_period}{Logical. Constrains the time series to the time period of key events within the range
+\item{event_range}{Logical. Constrains the time series to the time period of key events within the range
 of the x climate series. False uses the entire climate series, ignoring the period of key events.
 time series}
+
+\item{n_iter}{The number of iterations for bootstrap resampling}
 }
 \value{
 A list of three data frames, following the output of EVENT.

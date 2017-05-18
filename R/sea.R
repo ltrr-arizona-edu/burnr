@@ -85,7 +85,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
                     key_period = TRUE, n_iter=1000) {
   .Deprecated('sea')
   sea(x, key, nbefore=years_before, nafter=years_after,
-                    event_period = key_period, n_iter=n_iter)
+                    event_range=key_period, n_iter=n_iter)
 }
 
 
@@ -96,7 +96,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #' with a single \code{series} as produced by \code{composite}
 #' @param nbefore  The number of lag years prior to the event year
 #' @param nafter The number of lag years following the event year
-#' @param key_period Logical. Constrains the time series to the time period of key events within the range
+#' @param event_range Logical. Constrains the time series to the time period of key events within the range
 #' of the x climate series. False uses the entire climate series, ignoring the period of key events.
 #' time series
 #' @param n_iter The number of iterations for bootstrap resampling
@@ -148,6 +148,10 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 # '
 # ' pgm_sea <- sea(pdsi, pgm_comp)
 # ' 
+# ' # See basic results:
+# ' print(pgm_sea)
+# '
+# ' # Basic plot: 
 # ' plot(pgm_sea)
 #' }
 #' \dontrun{
@@ -160,8 +164,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #' }
 #'
 #' @export
-sea <- function(x, event, nbefore=6, nafter=4,
-                    event_period = TRUE, n_iter=1000) {
+sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   if (is.fhx(event)){
    if (length(unique(event$series)) > 1) stop("event must have a single series")
     else event <- get_event_years(event)[[1]]
@@ -209,7 +212,7 @@ sea <- function(x, event, nbefore=6, nafter=4,
   actual_event_table <- round(actual_event_table, 3)
 
   # random event matrix
-  if(event_period ==  TRUE){
+  if(event_range ==  TRUE){
     rand_yrs <- rnames.cut
   }
   else {

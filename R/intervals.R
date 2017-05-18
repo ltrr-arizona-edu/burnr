@@ -152,7 +152,7 @@ print.intervals <- function(x, ...) {
   cat(strwrap("=================", prefix = "\t"), sep = "\n")
   cat("\n")
   cat(paste0("Composite name: ", x$comp_name, "\n"))
-  cat(paste0("Analysis events range: ", x$event_range[1], " to ", x$event_range[2], "\n"))
+  cat(paste0("Events range: ", x$event_range[1], " to ", x$event_range[2], "\n"))
   cat("\n")
   cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
@@ -161,36 +161,42 @@ print.intervals <- function(x, ...) {
   cat(paste0("\tMinimum interval: ", min(x), "\n"))
   cat(paste0("\tMaximum interval: ", max(x), "\n"))
 
+  # cat("\n\n")
+  
+  # cat(strwrap(x$shapirotest$method, prefix = "\t"), sep = "\n")
+  # cat("\n")
+  # cat(paste0("W = ", round(x$shapirotest$statistic, 5), ", p = ", round(x$shapirotest$p.value, 5), "\n"))
+  # cat(strwrap("Null hypothesis: The intervals were sampled from a normally distributed population.", exdent = 4), sep = "\n")
+  # cat(strwrap("Alt. hypothesis: The intervals were not sampled from a normally distributed population.", exdent = 4), sep = "\n")
+  
   cat("\n\n")
   
-  cat(strwrap(x$shapirotest$method, prefix = "\t"), sep = "\n")
-  cat("\n")
-  cat(paste0("W = ", round(x$shapirotest$statistic, 5), ", p = ", round(x$shapirotest$p.value, 5), "\n"))
-  cat(strwrap("Null hypothesis: The intervals were sampled from a normally distributed population.", exdent = 4), sep = "\n")
-  cat(strwrap("Alt. hypothesis: The intervals were not sampled from a normally distributed population.", exdent = 4), sep = "\n")
-  
-  cat("\n\n")
-  
-  cat(strwrap("Theoretical distribution", prefix = "\t"), sep = "\n")
+  cat(strwrap("Theoretical distribution"), sep = "\n")
+  cat(strwrap("------------------------"), sep = "\n")
   cat("\n")
   cat(paste0("Fit distribution: ", x$densfun, "\n\n"))
   print(x$fitdistr)
   
   cat("\n\n")
   
-  cat(strwrap("Percentiles", prefix = "\t"), sep = "\n")
+  cat(strwrap("Percentiles"), sep = "\n")
+  cat(strwrap("-----------"), sep = "\n")
   cat("\n")
-  cat(paste0('Lower exceedance (12.5%): ', round(quants[1], 1), ' | '))
-  cat(paste0(x$densfun, ' median (50.0%): ', round(quants[2], 1), ' | '))
-  cat(paste0('Upper exceedance (87.5%): ', round(quants[3], 1), '\n'))
+
+  cat(strwrap(paste0('lower (12.5%): ', round(quants[1], 1), ' | ', x$densfun, ' median (50.0%): ', round(quants[2], 1), ' | ', 'upper (87.5%): ', round(quants[3], 1), '\n')))
+
+  # cat(paste0('Lower (12.5%): ', round(quants[1], 1), ' | '))
+  # cat(paste0(x$densfun, ' median (50.0%): ', round(quants[2], 1), ' | '))
+  # cat(paste0('Upper (87.5%): ', round(quants[3], 1), '\n'))
   
   cat("\n\n")
  
-  cat(strwrap(x$kstest$method, prefix = "\t"), sep = "\n")
+  cat(strwrap(x$kstest$method), sep = "\n")
+  cat(strwrap(strrep("-", nchar(x$kstest$method))), sep = "\n")
   cat("\n")
   cat(paste0("D^- = ", round(x$kstest$statistic, 5), ", p = ", round(x$kstest$p.value, 5), "\n"))
   cat(strwrap("Null hypothesis: The intervals were sampled from the fit theoretical distribution.", exdent = 4), sep = "\n")
-  cat(strwrap("Alt. hypothesis: The intervals distribution lies below the fit theoretical distribution..", exdent = 4), sep = "\n")
+  cat(strwrap("Alt. hypothesis: The intervals distribution lies below the fit theoretical distribution.", exdent = 4), sep = "\n")
   cat("\n\n")
   
   invisible(x)

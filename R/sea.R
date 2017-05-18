@@ -282,27 +282,6 @@ sea <- function(x, key, years_before=6, years_after=4,
 is.sea <- function(x) inherits(x, "sea")
 
 
-#' Print an sea objects.
-#'
-#' @param x An intervals object.
-#' @param ...  Additional arguments that are tossed.
-#'
-#' @export
-print.sea <- function(x, ...) {
-  prnt_tbl <- data.frame(lag = x$departure$lag,
-                         departure = x$departure$mean,
-                         sig = paste(ifelse(x$departure$mean < x$departure$lower_95_perc |
-                                              x$departure$mean > x$departure$upper_95_perc, '*', ''),
-                                     ifelse(x$departure$mean < x$departure$lower_99_perc |
-                                            x$departure$mean > x$departure$upper_99_perc, '*', ''),
-                                     sep=''))
-  cat(strwrap("Superposed Epoch Analysis", prefix = "\t"), sep = "\n")
-  cat(strwrap("=========================", prefix = "\t"), sep = "\n")
-  print(prnt_tbl, row.names = FALSE)
-  cat(paste0("Significance: * (p < 0.95), ** (p < 0.99)\n"))
-  invisible(x)
-}
-
 #' Plot a sea object.
 #'
 #' @param ... Arguments passed on to \code{plot_sealags}.
@@ -346,4 +325,35 @@ plot_sealags <- function(x) {
           + ggplot2::xlab("Lag")
           + ggplot2::theme_bw())
   p
+}
+
+
+#' Print an sea objects.
+#'
+#' @param x An intervals object.
+#' @param ...  Additional arguments that are tossed.
+#'
+#' @export
+print.sea <- function(x, ...) {
+  prnt_tbl <- data.frame(lag = x$departure$lag,
+                         upper95 = x$departure$upper_95_perc,
+                         lower95 = x$departure$lower_95_perc,
+                         upper99 = x$departure$upper_95_perc,
+                         lower99 = x$departure$lower_95_perc,
+                         departure = x$departure$mean)
+  # prnt_tbl$sig <- ifelse(x$departure$mean < x$departure$lower_95_perc | x$departure$mean > x$departure$upper_95_perc, ".", " ")
+  prnt_tbl$sig <- " "
+  prnt_tbl$sig[x$departure$mean < x$departure$lower_95_perc | x$departure$mean > x$departure$upper_95_perc] <- "."
+  prnt_tbl$sig[x$departure$mean < x$departure$lower_99_perc | x$departure$mean > x$departure$upper_99_perc] <- "*"
+                         # sig = paste(ifelse(x$departure$mean < x$departure$lower_95_perc |
+                         #                      x$departure$mean > x$departure$upper_95_perc, '*', ''),
+                         #             ifelse(x$departure$mean < x$departure$lower_99_perc |
+                         #                    x$departure$mean > x$departure$upper_99_perc, '*', ''),
+                         #             sep=''))
+  cat(strwrap("Superposed Epoch Analysis", prefix = "\t"), sep = "\n")
+  cat(strwrap("=========================", prefix = "\t"), sep = "\n")
+  print(prnt_tbl, row.names = FALSE)
+  cat(strwrap("---"), sep = "\n")
+  cat(paste0("Signif. codes: 0.01 '*' 0.05 '.'\n"))
+  invisible(x)
 }

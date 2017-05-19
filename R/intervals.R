@@ -29,7 +29,7 @@ intervals <- function(comp, densfun="weibull") {
     stop("Found multiple series in `comp`. There can only be one.")
   dens2cum <- list(weibull = stats::pweibull, lognormal = stats::plnorm)
   x <- list()
-  x[["intervals"]]<- diff(get_event_years(comp)[[1]])  # TODO: Check that we need [[1]]
+  x$intervals <- diff(get_event_years(comp)[[1]])  # TODO: Check that we need [[1]]
   if (length(x$intervals) < 2)
     stop("Too few fire events to compute intervals")
   class(x) <- c("intervals")
@@ -137,6 +137,45 @@ quantile.intervals <- function(x, q=c(0.125, 0.5, 0.875), ...) {
   quants <- do.call(q_densfun, quant_args)
   quants
 }
+
+
+
+#' Plot an intervals object.
+#'
+#' @param ... Arguments passed on to \code{plot_intervals_dist}.
+#'
+#' @examples
+#' data(pgm)
+#' interv <- intervals(composite(pgm))
+#' 
+#' plot(interv, binwidth = 5)
+#' @export
+plot.intervals <- function(...) {
+  print(plot_intervals_dist(...))
+}
+
+
+#' Basic intervals distribution plot.
+#'
+#' @param x An intervals object.
+#' @param binwidth A sea object.
+#'
+#'
+#' @return A ggplot object.
+#'
+#' @export
+plot_intervals_dist <- function(x, binwidth=NULL) {
+  p <- ggplot2::ggplot(data.frame("intervals" = x[["intervals"]]),
+                       ggplot2::aes_string(x = "intervals"))
+  if (is.null(binwidth)) {
+  p <- (p + ggplot2::geom_histogram())
+  } else {
+  p <- (p + ggplot2::geom_histogram(binwidth = binwidth))
+  }
+  p <- (p + ggplot2::geom_rug() + ggplot2::theme_bw())
+  p
+}
+
 
 #' Print an intervals objects.
 #'

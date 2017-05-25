@@ -23,7 +23,6 @@ interv <- intervals(composite(pgm))
 print(interv)
 
 mean(interv)  # Mean interval
-sd(interv)  # Interval standard dev
 
 # Now fit log-normal distribution instead of Weibull.
 intervals(composite(pgm), densfun = "lognormal")

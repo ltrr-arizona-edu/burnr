@@ -13,10 +13,6 @@ test_that("Check observed interval median", {
   expect_equal(median(TEST_INTER), 10)
 })
 
-test_that("Check observed interval standard dev", {
-  expect_equal(round(sd(TEST_INTER), 3), 7.738)
-})
-
 test_that("Check minimum interval", {
   expect_equal(min(TEST_INTER), 2)
 })

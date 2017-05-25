@@ -11,7 +11,6 @@
 #' print(interv)
 #'
 #' mean(interv)  # Mean interval
-#' sd(interv)  # Interval standard dev
 #' 
 #' # Now fit log-normal distribution instead of Weibull.
 #' intervals(composite(pgm), densfun = "lognormal")
@@ -73,22 +72,12 @@ mean.intervals <- function(x, ...) {
 #'
 #' @return Numeric or NA.
 #'
+#' @importFrom stats median
 #' @export
 median.intervals <- function(x, ...) {
-  stats::median(x$intervals, ...)
+  median(x$intervals, ...)
 }
 
-#' Interval standard deviation.
-#'
-#' @param x An intervals object.
-#' @param ... Additional arguments passed to \code{sd}.
-#'
-#' @return Numeric or NA.
-#'
-#' @export
-sd.intervals <- function(x, ...) {
-  stats::sd(x$intervals)
-}
 
 #' Minimum interval.
 #'
@@ -128,6 +117,7 @@ max.intervals <- function(x, ...) {
 #' # Or you can pass in your own quantiles:
 #' quantile(intervs, q = c(0.25, 0.5, 0.75))
 #'
+#' @importFrom stats quantile
 #' @export
 quantile.intervals <- function(x, q=c(0.125, 0.5, 0.875), ...) {
   dens2cum <- list(weibull = stats::qweibull, lognormal = stats::qlnorm)
@@ -196,7 +186,7 @@ print.intervals <- function(x, ...) {
   cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
   cat(paste0("\tMedian interval: ", round(median(x), 1), "\n"))
-  cat(paste0("\tStandard deviation: ", round(sd(x), 1), "\n"))
+  cat(paste0("\tStandard deviation: ", round(stats::sd(x$intervals), 1), "\n"))
   cat(paste0("\tMinimum interval: ", min(x), "\n"))
   cat(paste0("\tMaximum interval: ", max(x), "\n"))
 

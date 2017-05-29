@@ -15,7 +15,7 @@
 #' @param injury_event Boolean indicating whether injuries should be considered recorders. This is passed to \code{composite}. See this function for details.
 #' @param plot_legend A boolean option allowing the user to choose whether a legend is included in the plot or not. Default is FALSE.
 #' @param event_size An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.
-#' @param rugbuffer_size An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
+#' @param rugbuffer_size An optional integer. If the user plots a rug, this controls the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.
 #' @param rugdivide_pos Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.
 #'
 #' @return A ggplot object for plotting or manipulation.

@@ -29,5 +29,5 @@ A data.frame of summary statistics
 Generate site-level summary statistics
 }
 \details{
-This function prodiuces a summary table for any fhx object. The statistics it includes are shared by other popular fire history software such as FHX2 and FHAES.
+This function produces a summary table for any fhx object. The statistics it includes are shared by other popular fire history software such as FHX2 and FHAES.
 }

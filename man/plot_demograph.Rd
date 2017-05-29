@@ -42,7 +42,7 @@ plot_demograph(x, color_group, color_id, facet_group, facet_id,
 
 \item{event_size}{An optional numeric vector that adjusts the size of fire event symbols on the plot. Default is \code{c("Scar" = 4, "Injury" = 2, "Pith/Bark" = 1.5)}.}
 
-\item{rugbuffer_size}{An optional integer. If the user plots a rug, thiscontrols the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.}
+\item{rugbuffer_size}{An optional integer. If the user plots a rug, this controls the amount of buffer whitespace along the y-axis between the rug and the main plot. Must be >= 2.}
 
 \item{rugdivide_pos}{Optional integer if plotting a rug. Adjust the placement of the rug divider along the y-axis. Default is 2.}
 }

@@ -190,7 +190,7 @@ summary.fhx <- function(object, ...) {
 #' @param filter_min_events An optional argument if the user chooses to include a composite rug in their plot. This is passed to \code{composite}. See this function for details.
 #' @param injury_event Boolean indicating whether injuries should be considered recorders. This is passed to \code{composite}. See this function for details.
 #'
-#' @details This function prodiuces a summary table for any fhx object. The statistics it includes are shared by other popular fire history software such as FHX2 and FHAES.
+#' @details This function produces a summary table for any fhx object. The statistics it includes are shared by other popular fire history software such as FHX2 and FHAES.
 #' @return A data.frame of summary statistics
 #' @export
 

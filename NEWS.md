@@ -2,7 +2,7 @@
 
 Changes in this minor release:
 
-* Renamed `run_sea()` to `sea()` and enhanced speed, and changed the `time_span` parameter to `event_range', `key` argument is now `event`, and `years_before` and `years_after` are now `nbefore` and `nafter`, respectively. The function now returns a proper sea object with special `plot()` and `print()` methods. The `plot()` generic method uses the new `plot_sealags()`. You can still use the old `run_sea()`, but it is deprecated and will be removed in future releases. We're happy with the general interfaces to `sea()` but it's guts and internal structure may change over the next few minor releases, so beware.
+* Renamed `run_sea()` to `sea()` and enhanced speed, and changed the `time_span` parameter to `event_range`, `key` argument is now `event`, and `years_before` and `years_after` are now `nbefore` and `nafter`, respectively. The function now returns a proper sea object with special `plot()` and `print()` methods. The `plot()` generic method uses the new `plot_sealags()`. You can still use the old `run_sea()`, but it is deprecated and will be removed in future releases. We're happy with the general interfaces to `sea()` but its internal structure may change over the next few minor releases, so beware.
 
 * Added `intervals()` to handle interval analysis. These are a whole new object. `mean_interval()` has been renamed `series_mean_interval()` to avoid confusion. We also have a generic `plot()` function that uses `plot_intervals_dist()`. It plots a little histogram with a rug along the x-axis.
 

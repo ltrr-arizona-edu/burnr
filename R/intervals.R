@@ -35,8 +35,8 @@ intervals <- function(comp, densfun="weibull") {
   x$fitdistr <- MASS::fitdistr(x$intervals, densfun)
   x$densfun <- densfun
   p_densfun <- dens2cum[[densfun]]
-  kstest_args <-c(list(x = x$intervals, y = p_densfun, alternative = "less"), 
-                  x$fitdistr$estimate) 
+  kstest_args <-c(list(x = x$intervals, y = p_densfun), 
+                  x$fitdistr$estimate)
   x$kstest <- do.call(stats::ks.test, kstest_args)
   x$shapirotest <- stats::shapiro.test(x$intervals)
   x$comp_name <- series_names(comp)
@@ -225,7 +225,7 @@ print.intervals <- function(x, ...) {
   cat("\n")
   cat(paste0("D^- = ", round(x$kstest$statistic, 5), ", p = ", round(x$kstest$p.value, 5), "\n"))
   cat(strwrap("Null hypothesis: The intervals were sampled from the fit theoretical distribution.", exdent = 4), sep = "\n")
-  cat(strwrap("Alt. hypothesis: The intervals distribution lies below the fit theoretical distribution.", exdent = 4), sep = "\n")
+  cat(strwrap("Alt. hypothesis: The intervals distribution was not sampled from the fit theoretical distribution.", exdent = 4), sep = "\n")
   cat("\n\n")
   
   invisible(x)

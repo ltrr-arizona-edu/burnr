@@ -1,3 +1,9 @@
+# burnr v0.2.1
+
+Changes in this patch:
+
+* `intervals` objects' KS test for distribution test is now two sided (Issue #108).
+
 # burnr v0.2.0
 
 Changes in this minor release:

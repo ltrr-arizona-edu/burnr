@@ -190,8 +190,8 @@ print.intervals <- function(x, ...) {
   cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
   cat(paste0("\tMedian interval: ", round(median(x), 1), "\n"))
-  cat(paste0("\tStandard deviation: ", round(stats::sd(x$intervals), 1), "\n"))
   cat(paste0("\tWeibull median: ", round(weibull_median, 1), "\n"))
+  cat(paste0("\tStandard deviation: ", round(stats::sd(x$intervals), 1), "\n"))
   cat(paste0("\tMinimum interval: ", min(x), "\n"))
   cat(paste0("\tMaximum interval: ", max(x), "\n"))
 

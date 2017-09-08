@@ -4,6 +4,9 @@ Changes in this patch:
 
 * `intervals` objects' KS test for distribution test is now two sided (Issue #108).
 
+* Printed `intervals` objects now report the Weibull median, regardless of fit chosen (Issue #109).
+
+
 # burnr v0.2.0
 
 Changes in this minor release:

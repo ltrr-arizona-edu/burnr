@@ -176,6 +176,10 @@ plot_intervals_dist <- function(x, binwidth=NULL) {
 print.intervals <- function(x, ...) {
   #ans_sum <- format(rbind(mean(x), median(x), sd(x)), digits = 2, justify = 'right')
   #dimnames(ans_sum) <- list(c('mean', 'median', 'sd'), "")
+
+  wfit <- MASS::fitdistr(x$intervals, "weibull")
+  weibull_median <- wfit$estimate['scale'] * log(2) ^(1 / wfit$estimate['shape'])
+
   quants <- quantile(x, q = c(0.847, 0.5, 0.125))
   cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")
   cat(strwrap("=================", prefix = "\t"), sep = "\n")
@@ -187,6 +191,7 @@ print.intervals <- function(x, ...) {
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
   cat(paste0("\tMedian interval: ", round(median(x), 1), "\n"))
   cat(paste0("\tStandard deviation: ", round(stats::sd(x$intervals), 1), "\n"))
+  cat(paste0("\tWeibull median: ", round(weibull_median, 1), "\n"))
   cat(paste0("\tMinimum interval: ", min(x), "\n"))
   cat(paste0("\tMaximum interval: ", max(x), "\n"))
 

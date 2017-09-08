@@ -229,8 +229,8 @@ print.intervals <- function(x, ...) {
   cat(strwrap(strrep("-", nchar(x$kstest$method))), sep = "\n")
   cat("\n")
   cat(paste0("D^- = ", round(x$kstest$statistic, 5), ", p = ", round(x$kstest$p.value, 5), "\n"))
-  cat(strwrap("Null hypothesis: The intervals were sampled from the fit theoretical distribution.", exdent = 4), sep = "\n")
-  cat(strwrap("Alt. hypothesis: The intervals distribution was not sampled from the fit theoretical distribution.", exdent = 4), sep = "\n")
+  cat(strwrap("Null hypothesis: The intervals were sampled from the theoretical distribution.", exdent = 4), sep = "\n")
+  cat(strwrap("Alt. hypothesis: The intervals were not sampled from the theoretical distribution.", exdent = 4), sep = "\n")
   cat("\n\n")
   
   invisible(x)

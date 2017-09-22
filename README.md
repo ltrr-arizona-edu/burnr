@@ -6,7 +6,7 @@
 
 
 
-Basic tools to analyze forest fire history data (e.g. FHX2) in R. This is designed for power users and projects with special needs.
+Basic tools to analyze forest fire history data (e.g. FHX) in R. This is designed for power users and projects with special needs.
 
 The project is under heavy development. Hic sunt dracones.
 

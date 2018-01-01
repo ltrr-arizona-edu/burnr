@@ -343,8 +343,8 @@ print.sea <- function(x, ...) {
   prnt_tbl <- data.frame(lag = x$departure$lag,
                          upper95 = x$departure$upper_95_perc,
                          lower95 = x$departure$lower_95_perc,
-                         upper99 = x$departure$upper_95_perc,
-                         lower99 = x$departure$lower_95_perc,
+                         upper99 = x$departure$upper_99_perc,
+                         lower99 = x$departure$lower_99_perc,
                          departure = x$departure$mean)
   # prnt_tbl$sig <- ifelse(x$departure$mean < x$departure$lower_95_perc | x$departure$mean > x$departure$upper_95_perc, ".", " ")
   prnt_tbl$sig <- " "

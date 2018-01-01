@@ -2,6 +2,8 @@
 
 Changes in this patch:
 
+* Fixed bad numbers in `print()` for SEAs objects (#111).
+
 * Fixed typos in warning messages (#114).
 
 

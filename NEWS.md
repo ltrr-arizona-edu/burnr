@@ -2,6 +2,8 @@
 
 Changes in this patch:
 
+* Fixed typos in warning messages (#114).
+
 
 # burnr v0.2.1
 

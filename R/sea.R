@@ -177,8 +177,10 @@ sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   rnames.cut <- seq(period[1], period[2])
   n <- length(event.cut)
   if (length(event.cut) != length(event)) {
-    warning(paste('One or more event-event years is outside the range of the climate series. Using', n, 'event years:', period[1], 'to', period[2],'.'),
-            call.=FALSE)
+    warning(paste('One or more event years is outside the range of the climate series. Using ',
+                  n, ' event years: ', period[1], ' to ', period[2], '.', 
+                  sep = ''),
+            call. = FALSE)
   }
   seq.n <- seq_len(n)
   m <- nbefore + nafter + 1

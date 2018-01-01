@@ -85,7 +85,6 @@ test_that("series_mean_interval on single series", {
   expect_equal(series_mean_interval(get_series(REF_MULTI, 'LGR46')), 16.5)
 })
 
-
 test_that("series_mean_interval on multi-series object", {
   expect_warning((series_mean_interval(REF_MULTI)))
 })

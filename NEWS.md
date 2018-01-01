@@ -2,6 +2,8 @@
 
 Changes in this patch:
 
+* Added warnings and errors to catch bad input on `seas()` (#112).
+
 * Added warning if using `series_mean_interval()` on fhx object with multiple series (#113).
 
 * Fixed bad numbers in `print()` for SEAs objects (#111).

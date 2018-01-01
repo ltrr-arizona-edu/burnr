@@ -7,6 +7,14 @@ COMP_TEST <- composite(pgm)
 set.seed(123)
 SEA_TEST <- sea(pgm_pdsi, COMP_TEST)
 
+test_that("Check sea warning on bad rownames", {
+  expect_warning(sea(data.frame(1:2000), COMP_TEST), regexpr = "rownames")
+})
+
+test_that("Check sea stop on no matching years", {
+  expect_error(sea(data.frame(1:20), COMP_TEST), regexpr = "shared")
+})
+
 test_that("Check sea departure data.frame", {
   goal_mean <- c(-0.283, 0.608, -0.148, 0.997, 1.234,  0.204, -2.156, -0.090, -0.505, 0.299, 0.283)
   goal_lower95 <- c(-1.006, -1.014, -1.054, -1.049, -1.061, -1.040, -0.957, -0.995, -1.025, -1.020, -1.045)

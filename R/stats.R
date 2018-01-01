@@ -126,6 +126,9 @@ count_recording <- function(x, injury_event=FALSE) {
 #'
 #' @export
 series_mean_interval <- function(x, injury_event=FALSE) {
+  if (length(unique(x$series)) > 1){
+    warning('`series_mean_interval()` run on object with multiple series - results may not be correct')
+  }
   search_str <- '_fs'
   if (injury_event) {
     search_str <- paste0('_fi|', search_str)

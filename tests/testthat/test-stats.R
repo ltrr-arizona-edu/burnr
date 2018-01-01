@@ -77,8 +77,17 @@ test_that("count_recording on multi-series fhx object with injury as events", {
   expect_equal(count_recording(REF_MULTI, injury_event = TRUE), 514)
 })
 
-test_that("series_mean_interval on single series", {
+test_that("series_mean_interval on single series without enough events", {
   expect_equal(series_mean_interval(REF_SINGLE), NA)
+})
+
+test_that("series_mean_interval on single series", {
+  expect_equal(series_mean_interval(get_series(REF_MULTI, 'LGR46')), 16.5)
+})
+
+
+test_that("series_mean_interval on multi-series object", {
+  expect_warning((series_mean_interval(REF_MULTI)))
 })
 
 test_that("series_mean_interval on multi-series fhx object", {

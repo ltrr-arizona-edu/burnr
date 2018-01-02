@@ -12,7 +12,7 @@
 #'
 #' @details Superposed epoch analysis (SEA) helps to evaluate fire-climate
 #' relationships in studies of tree-ring fire history. It works by compositing the values of
-#' an anual time series or climate reconstruction for the fire years provided (\code{key}) and both positive and
+#' an annual time series or climate reconstruction for the fire years provided (\code{key}) and both positive and
 #' negative lag years. Bootstrap resampling of the timeseries is performed to evaluate the statistical
 #' significance of each year's mean value. Users interpret the departure of the actual event year
 #' means from the simulated event year means.
@@ -103,7 +103,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #'
 #' @details Superposed epoch analysis (SEA) helps to evaluate fire-climate
 #' relationships in studies of tree-ring fire history. It works by compositing the values of
-#' an anual timeseries or climate reconstruction for the fire years provided (\code{key}) and both positive and
+#' an annual timeseries or climate reconstruction for the fire years provided (\code{key}) and both positive and
 #' negative lag years. Bootstrap resampling of the timeseries is performed to evaluate the statistical
 #' significance of each year's mean value. Users interpret the departure of the actual event year
 #' means from the simulated event year means.

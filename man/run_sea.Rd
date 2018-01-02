@@ -46,7 +46,7 @@ specifically. EVENT was incorporated in the FHX2 software by Henri Grissino-Maye
 
 run_sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
 SEA, although multiple versions of the analysis exist in the climate literature and for fire
-history (e.g., FHAES implements a diferent procedure). The outcome of EVENT and run_sea should
+history (e.g., FHAES implements a different procedure). The outcome of EVENT and run_sea should
 only differ slightly in the values of the simulated events and the departures, because random
 draws are used. The event year and lag significance levels should match, at least in the general
 pattern.
@@ -99,7 +99,7 @@ Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain 
 
 Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
 
-Holmes and Swetnam 1994, EVENT program desription
+Holmes and Swetnam 1994, EVENT program description
 
 Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
 }

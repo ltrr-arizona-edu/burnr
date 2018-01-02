@@ -25,7 +25,7 @@
 #'
 #' run_sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
 #' SEA, although multiple versions of the analysis exist in the climate literature and for fire
-#' history (e.g., FHAES implements a diferent procedure). The outcome of EVENT and run_sea should
+#' history (e.g., FHAES implements a different procedure). The outcome of EVENT and run_sea should
 #' only differ slightly in the values of the simulated events and the departures, because random
 #' draws are used. The event year and lag significance levels should match, at least in the general
 #' pattern.
@@ -38,7 +38,7 @@
 #'
 #' @references Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest Research 20:1559-1569.
 #' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
-#' @references Holmes and Swetnam 1994, EVENT program desription
+#' @references Holmes and Swetnam 1994, EVENT program description
 #' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
 #'
 #' @examples
@@ -116,7 +116,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #'
 #' sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
 #' SEA, although multiple versions of the analysis exist in the climate literature and for fire
-#' history (e.g., FHAES implements a diferent procedure). The outcome of EVENT and sea should
+#' history (e.g., FHAES implements a different procedure). The outcome of EVENT and sea should
 #' only differ slightly in the values of the simulated events and the departures, because random
 #' draws are used. The event year and lag significance levels should match, at least in the general
 #' pattern.
@@ -129,7 +129,7 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #'
 #' @references Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest Research 20:1559-1569.
 #' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
-#' @references Holmes and Swetnam 1994, EVENT program desription
+#' @references Holmes and Swetnam 1994, EVENT program description
 #' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
 #'
 #' @examples

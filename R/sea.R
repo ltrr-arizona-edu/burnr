@@ -173,7 +173,7 @@ sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   # set up
   rnames <- as.numeric(rownames(x))
   if (all(as.character(seq(length(rnames))) == rnames)) {
-    warning("`x` arg for `sea()` may not have rownames - be sure that timeseries years are rownames")
+    warning("`x` arg for `sea()` could be missing rownames - be sure that timeseries years are rownames")
   }
   event.cut <- rnames[rnames %in% event]
   if (length(event.cut) <= 0) {

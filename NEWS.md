@@ -1,3 +1,10 @@
+# burnr v0.3.0.9000
+
+Changes in this minor release:
+
+* 
+
+
 # burnr v0.2.2
 
 Changes in this patch:

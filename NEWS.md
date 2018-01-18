@@ -2,7 +2,7 @@
 
 Changes in this minor release:
 
-* 
+* Update to sea object output to add event years.
 
 
 # burnr v0.2.2

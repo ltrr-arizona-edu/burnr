@@ -7,7 +7,7 @@
 sample_depth(x)
 }
 \arguments{
-\item{a}{An fhx object.}
+\item{x}{An fhx object.}
 }
 \value{
 A data.frame containing the years and number of trees

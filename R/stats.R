@@ -144,7 +144,7 @@ series_mean_interval <- function(x, injury_event=FALSE) {
 
 #' Calculate the sample depth of an fhx object
 #'
-#' @param a An fhx object.
+#' @param x An fhx object.
 #' @return A data.frame containing the years and number of trees
 #'
 #' @export
@@ -276,12 +276,12 @@ site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.
 #' @export
 percent_scarred <- function(x, injury_event=FALSE){
   series_rec <- plyr::ddply(x, "series", find_recording, injury_event=TRUE)
-  rec_count <- plyr::ddply(series_rec, "recording", count)
+  rec_count <- plyr::count(series_rec, "recording")
   series_fs <- x[grepl('_fs', x$rec_type), ]
-  fs_count <- plyr::ddply(series_fs, "year", count)
+  fs_count <- plyr::count(series_fs, "year")
   if(injury_event) {
     series_fs <- x[grepl('_fs', x$rec_type) | grepl('_fi', x$rec_type), ]
-    fs_count <- plyr::ddply(series_fs, "year", count)
+    fs_count <- plyr::count(series_fs, "year")
   }
   out <- merge(rec_count, fs_count, by.x = 'recording', by.y = 'year', all=TRUE)
   names(out) <- c('year', 'num_rec', 'num_scars')

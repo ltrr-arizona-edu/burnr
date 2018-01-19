@@ -12,7 +12,7 @@ get_event_years(x, scar_event = TRUE, injury_event = FALSE,
 
 \item{scar_event}{Boolean indicating whether years with scar events should be returned. Default is TRUE.}
 
-\item{injury_event}{Boolean indicating weather years with injury events should be returned. Default is FALSE.}
+\item{injury_event}{Boolean indicating whether years with injury events should be returned. Default is FALSE.}
 
 \item{custom_grep_str}{Character string to pass a custom grep search pattern to search rec_type column for. Undefined by default.}
 }

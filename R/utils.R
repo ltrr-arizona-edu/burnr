@@ -46,7 +46,7 @@ make_rec_type <- function(x) {
 #'
 #' @param x An \code{fhx} object.
 #' @param scar_event Boolean indicating whether years with scar events should be returned. Default is TRUE.
-#' @param injury_event Boolean indicating weather years with injury events should be returned. Default is FALSE.
+#' @param injury_event Boolean indicating whether years with injury events should be returned. Default is FALSE.
 #' @param custom_grep_str Character string to pass a custom grep search pattern to search rec_type column for. Undefined by default.
 #'
 #' @return A list. Elements of the list are integer vectors giving the years with events for each fhx series. Each element's name reflects the series name.

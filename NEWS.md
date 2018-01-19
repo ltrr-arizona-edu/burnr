@@ -3,6 +3,7 @@
 Changes in this minor release:
 
 * Update to sea object output to add event years.
+* Added function percent_scarred for calculating timeseries of number trees recording, scarred, and the percentage
 
 
 # burnr v0.2.2

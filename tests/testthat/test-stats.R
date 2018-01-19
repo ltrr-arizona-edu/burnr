@@ -95,8 +95,14 @@ test_that("series_mean_interval on multi-series fhx object", {
 
 test_that("sample_depth on multi-series fhx object", {
   sdepth <- subset(sample_depth(REF_MULTI),
-                   year %in% c(1366, 1436, 2011,2012))[['samp_depth']]
-  expect_equal(sdepth, c(0, 1, 13, 2))
+                   year %in% c(1366, 1436, 2011, 2012))[['samp_depth']]
+  expect_equal(sdepth, c(1, 2, 13, 2))
+})
+
+test_that("sample_depth on single-series fhx object", {
+  sdepth <- subset(sample_depth(REF_SINGLE),
+                   year %in% 1800)[['samp_depth']]
+  expect_equal(sdepth, 1)
 })
 
 test_that("percent scarred works without injury", {

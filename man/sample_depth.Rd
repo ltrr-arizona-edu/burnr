@@ -4,7 +4,7 @@
 \alias{sample_depth}
 \title{Calculate the sample depth of an fhx object}
 \usage{
-sample_depth(a)
+sample_depth(x)
 }
 \arguments{
 \item{a}{An fhx object.}

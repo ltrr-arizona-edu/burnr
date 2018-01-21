@@ -144,25 +144,28 @@ series_mean_interval <- function(x, injury_event=FALSE) {
 
 #' Calculate the sample depth of an fhx object
 #'
-#' @param a An fhx object.
+#' @param x An fhx object.
 #' @return A data.frame containing the years and number of trees
 #'
 #' @export
 #'
-sample_depth <- function(a) {
-  stopifnot('fhx' %in% class(a))
-  x <- series_stats(a)
-  n.trees <- nrow(x)
-  aa <- data.frame(year = min(x$first):max(x$last))
-  for(i in 1:n.trees){
-    yrs <- x[i, ]$first : x[i, ]$last
-    bb <- data.frame(year = yrs, z = 1)
-    names(bb)[2] <- x$series[i]
-    aa <- merge(aa, bb, by=c('year'), all=TRUE)
+sample_depth <- function(x) {
+  if(!is.fhx(x)) stop("x must be an fhx object")
+  x_stats <- series_stats(x)
+  n_trees <- nrow(x_stats)
+  out <- data.frame(year = min(x_stats$first):max(x_stats$last))
+  for(i in 1:n_trees){
+    yrs <- x_stats[i, ]$first : x_stats[i, ]$last
+    treespan <- data.frame(year = yrs, z = 1)
+    names(treespan)[2] <- paste(x_stats$series[i])
+    out <- merge(out, treespan, by=c('year'), all=TRUE)
   }
-  aa$samp_depth <- rowSums(aa[, 2:n.trees + 1], na.rm=TRUE)
-  out <- subset(aa, select=c('year', 'samp_depth'))
-  out
+  if(n_trees > 1){
+    out$samp_depth <- rowSums(out[, -1], na.rm=TRUE)
+  }
+  else out$samp_depth <- out[, -1]
+  out <- subset(out, select=c('year', 'samp_depth'))
+  return(out)
 }
 
 #' Summary of `fhx` object
@@ -258,3 +261,31 @@ site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.
   return(site.stats)
 }
 
+#' Percent scarred time series
+#'
+#' @param x An fhx object.
+#' @param injury_event Boolean indicating whether years with injury events should be considered as scars. Defaults to FALSE.
+#'
+#' @return A data.frame with four columns: \code{Year}, \code{NumRec} with the number of recording trees,
+#' \code{NumScars} with the number of fire scars and/or events, and \code{PercScarred} with the proportion of scars/events.
+#'
+#' @examples
+#' data("pgm")
+#' percent_scarred(pgm)
+#'
+#' @export
+percent_scarred <- function(x, injury_event=FALSE){
+  series_rec <- plyr::ddply(x, "series", find_recording, injury_event=TRUE)
+  rec_count <- plyr::count(series_rec, "recording")
+  series_fs <- x[grepl('_fs', x$rec_type), ]
+  fs_count <- plyr::count(series_fs, "year")
+  if(injury_event) {
+    series_fs <- x[grepl('_fs', x$rec_type) | grepl('_fi', x$rec_type), ]
+    fs_count <- plyr::count(series_fs, "year")
+  }
+  out <- merge(rec_count, fs_count, by.x = 'recording', by.y = 'year', all=TRUE)
+  names(out) <- c('year', 'num_rec', 'num_scars')
+  out[is.na(out$num_scars), 'num_scars'] <- 0
+  out$percent_scarred <- round(out$num_scars / out$num_rec * 100, 0)
+  return(out)
+}

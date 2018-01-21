@@ -124,8 +124,9 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #' We note that our implementation of run_sea borrows from the \code{dplR::sea} function in how it performs
 #' the bootstrap procedure, but differs in the kind of output provided for the user.
 #'
-#' @return A list of three data frames, following the output of EVENT.
-#' (1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
+#' @return A sea object containing, (1) a vector of event years, (2) a data.frame summary of the actual events composite,
+#' (3) a data.frame summary of the simulated events composite, (4) a data.frame summary of the departures of actual from simulated events,
+#' (5) a matrix of the actual events composite, and (6) a matrix of simulated events composite.
 #'
 #' @references Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest Research 20:1559-1569.
 #' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
@@ -147,11 +148,11 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 # ' pgm_comp <- composite(pgm)
 # '
 # ' pgm_sea <- sea(pdsi, pgm_comp)
-# ' 
+# '
 # ' # See basic results:
 # ' print(pgm_sea)
 # '
-# ' # Basic plot: 
+# ' # Basic plot:
 # ' plot(pgm_sea)
 #' }
 #' \dontrun{
@@ -184,7 +185,7 @@ sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   n <- length(event.cut)
   if (length(event.cut) != length(event)) {
     warning(paste('One or more event years is outside the range of the climate series. Using ',
-                  n, ' event years: ', period[1], ' to ', period[2], '.', 
+                  n, ' event years: ', period[1], ' to ', period[2], '.',
                   sep = ''),
             call. = FALSE)
   }
@@ -195,7 +196,7 @@ sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
                                  dimnames=list(1:m, c('lag', 'mean',
                                                       'n', 'St_dev', 'lower_95',
                                                       'upper_95', 'lower_99', 'upper_99',
-                                                      'lower_99.9', 'upper_99.9', 
+                                                      'lower_99.9', 'upper_99.9',
                                                       'lower_95_perc',
                                                       'upper_95_perc', 'lower_99_perc', 'upper_99_perc',
                                                       'min', 'max'))))
@@ -272,7 +273,8 @@ sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   rm(temp)
   departure_table <- round(departure_table, 3)
 
-  out <- list("actual" = actual_event_table,
+  out <- list("event_years" = event,
+              "actual" = actual_event_table,
               "random" = rand_event_table,
               "departure" = departure_table)
   out$simulated <- re.table  # DEBUG
@@ -301,7 +303,7 @@ is.sea <- function(x) inherits(x, "sea")
 #' \dontrun{
 #' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
 #' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-#' 
+#'
 #' data(pgm_pdsi)
 #'
 #' # Run SEA on Peggy Mesa (pgm) data
@@ -309,7 +311,7 @@ is.sea <- function(x) inherits(x, "sea")
 #' pgm_comp <- composite(pgm)
 #'
 #' pgm_sea <- sea(pgm_pdsi, pgm_comp)
-#' 
+#'
 #' plot(pgm_sea)
 #' }
 #' @export

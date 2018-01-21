@@ -24,8 +24,9 @@ time series}
 \item{n_iter}{The number of iterations for bootstrap resampling}
 }
 \value{
-A list of three data frames, following the output of EVENT.
-(1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
+A sea object containing, (1) a vector of event years, (2) a data.frame summary of the actual events composite,
+(3) a data.frame summary of the simulated events composite, (4) a data.frame summary of the departures of actual from simulated events,
+(5) a matrix of the actual events composite, and (6) a matrix of simulated events composite.
 }
 \description{
 Perform superposed epoch analysis.

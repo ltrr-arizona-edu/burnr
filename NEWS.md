@@ -8,6 +8,8 @@ Changes in this minor release:
 
 * Update to `sample_depth()` to account for single-series fhx objects
 
+* Several updates to documentation, including citation.
+
 # burnr v0.2.2
 
 Changes in this patch:

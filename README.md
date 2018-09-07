@@ -8,8 +8,6 @@
 
 Basic tools to analyze forest fire history data (e.g. FHX) in R. This is designed for power users and projects with special needs.
 
-The project is under heavy development. Hic sunt dracones.
-
 ## A quick example
 
 ```R
@@ -49,9 +47,21 @@ devtools::install_github("ltrr-arizona-edu/burnr")
 
 ## Support
 
-Documentation is included in the code. If you're new to burnr, we have an [introduction](https://cran.r-project.org/package=burnr/vignettes/introduction.html). And more information can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
+Documentation is included in the code. If you're new to `burnr`, we have an [introduction](https://cran.r-project.org/package=burnr/vignettes/introduction.html). And more information can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
 
 We also have a [Google Group](https://groups.google.com/forum/#!forum/burnr) for questions, announcements, and discussion.
+
+## Citation
+
+Please cite the original `burnr` paper if you use it in your research: 
+
+    Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis. 2018. 
+    “Burnr: Fire History Analysis and Graphics in R.” Dendrochronologia 49 
+    (June): 9–15. https://doi.org/10.1016/j.dendro.2018.02.005.
+
+
+Citations help us to identify user needs and justify additional time developing and maintaining `burnr`.
+
 
 ## Development
 

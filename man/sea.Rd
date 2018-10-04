@@ -37,22 +37,23 @@ relationships in studies of tree-ring fire history. It works by compositing the 
 an annual timeseries or climate reconstruction for the fire years provided (\code{key}) and both positive and
 negative lag years. Bootstrap resampling of the timeseries is performed to evaluate the statistical
 significance of each year's mean value. Users interpret the departure of the actual event year
-means from the simulated event year means.
+means from the simulated event year means. Note that there is no rescaling of the climate time series 'x'.
 
 The significance of lag-year departures from the average climate condition was first noted by
 Baisan and Swetnam (1990) and used in an organized SEA by Swetnam (1993). Since then, the procedure
 has been commonly applied in fire history studies. The FORTRAN program EVENT.exe was written by
 Richard Holmes and Thomas Swetnam (Holmes and Swetnam 1994) to perform SEA for fire history
 specifically. EVENT was incorporated in the FHX2 software by Henri Grissino-Mayer.
+Further information about SEA can be found in the FHAES user's manual, http://help.fhaes.org/
 
 sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
 SEA, although multiple versions of the analysis exist in the climate literature and for fire
-history (e.g., FHAES implements a different procedure). The outcome of EVENT and sea should
+history. The outcome of EVENT and sea should
 only differ slightly in the values of the simulated events and the departures, because random
 draws are used. The event year and lag significance levels should match, at least in the general
 pattern.
 
-We note that our implementation of run_sea borrows from the \code{dplR::sea} function in how it performs
+We note that our implementation of \code{sea} borrows from the \code{dplR::sea} function in how it performs
 the bootstrap procedure, but differs in the kind of output provided for the user.
 }
 \examples{

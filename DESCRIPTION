@@ -22,5 +22,5 @@ Imports:
     ggplot2,
     reshape2,
     plyr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 VignetteBuilder: knitr

@@ -1,85 +1,6 @@
 #' Perform superposed epoch analysis.
 #'
-#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
-#' @param key A vector of event years for superposed epoch, such as fire years, or an fhx object
-#' with a single \code{series} as produced by \code{composite}
-#' @param years_before  The number of lag years prior to the event year
-#' @param years_after The number of lag years following the event year
-#' @param key_period Logical. Constrains the time series to the time period of key events within the range
-#' of the x climate series. False uses the entire climate series, ignoring the period of key events.
-#' time series
-#' @param n_iter The number of iterations for bootstrap resampling
-#'
-#' @details Superposed epoch analysis (SEA) helps to evaluate fire-climate
-#' relationships in studies of tree-ring fire history. It works by compositing the values of
-#' an annual time series or climate reconstruction for the fire years provided (\code{key}) and both positive and
-#' negative lag years. Bootstrap resampling of the timeseries is performed to evaluate the statistical
-#' significance of each year's mean value. Users interpret the departure of the actual event year
-#' means from the simulated event year means.
-#'
-#' The significance of lag-year departures from the average climate condition was first noted by
-#' Baisan and Swetnam (1990) and used in an organized SEA by Swetnam (1993). Since then, the procedure
-#' has been commonly applied in fire history studies. The FORTRAN program EVENT.exe was written by
-#' Richard Holmes and Thomas Swetnam (Holmes and Swetnam 1994) to perform SEA for fire history
-#' specifically. EVENT was incorporated in the FHX2 software by Henri Grissino-Mayer.
-#'
-#' run_sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
-#' SEA, although multiple versions of the analysis exist in the climate literature and for fire
-#' history (e.g., FHAES implements a different procedure). The outcome of EVENT and run_sea should
-#' only differ slightly in the values of the simulated events and the departures, because random
-#' draws are used. The event year and lag significance levels should match, at least in the general
-#' pattern.
-#'
-#' We note that our implementation of run_sea borrows from the \code{dplR::sea} function in how it performs
-#' the bootstrap procedure, but differs in the kind of output provided for the user.
-#'
-#' @return A list of three data frames, following the output of EVENT.
-#' (1) the actual events table, (2) the simulated events table, and (3) departures of actual from simulated
-#'
-#' @references Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest Research 20:1559-1569.
-#' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
-#' @references Holmes and Swetnam 1994, EVENT program description
-#' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
-#'
-#' @examples
-#' \dontrun{
-#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
-#' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-#' target_url <- paste0('http://iridl.ldeo.columbia.edu',
-#'                      '/SOURCES/.LDEO/.TRL/.NADA2004'
-#'                      '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
-#' pdsi <- read.table(target_url, header = TRUE, row.names = 1)
-#' pdsi <- subset(pdsi, select = "RECON")
-#'
-#' # Run SEA on Peggy Mesa (pgm) data
-#' data(pgm)
-#' (pgm.comp <- composite(pgm))
-#'
-#' (pgm.sea <- run_sea(pdsi, pgm.comp))
-#'
-#' # Make a bargraph with confidence intervals
-#' par(mar=c(2, 3, 1, 1), oma=c(3, 3, 1, 1))
-#' bp <- barplot(pgm.sea[[3]]$mean_value,
-#'               col=c(rep("grey75", 3),"grey45", "grey30",
-#'                     "grey75", "grey30", rep("grey75", 4)),
-#'               ylab = '', las=1, cex.axis=1.3, cex=1.3, ylim=c(-2, 2))
-#' axis(1, at=bp, labels = -6:4, tick=FALSE, cex.axis=1.3)
-#' lines(bp, pgm.sea[[3]]$lower_95_perc, lwd=2, lty=2)
-#' lines(bp, pgm.sea[[3]]$upper_95_perc, lwd=2, lty=2)
-#' lines(bp, pgm.sea[[3]]$lower_99_perc, lwd=2, lty=3)
-#' lines(bp, pgm.sea[[3]]$upper_99_perc, lwd=2, lty=3)
-#' mtext(expression(bold('PDSI departure')), side=2, line=2.2, cex=1.5)
-#' mtext(expression(bold('Lag year')), side=1, line=3.3, cex=1.5)
-#' }
-#' \dontrun{
-#' # For users who want to perform SEA very near to EVENT.exe and/or have reproducable draws from
-#' # the bootstrap procedure, consider including the \code{set.seed} function prior to \code{run_sea}.
-#' # Convention is to provide a long integer, such as a birthday (e.g. 3191982).
-#' # In the EVENT.exe program, Richard Holmes used the number of days since 1 January 1935.
-#' days <- as.numeric(Sys.Date() - as.Date("1jan1935", "%d%b%Y"))
-#' set.seed(days)
-#' }
-#'
+#'@details This function, 'run_sea', is a development version of burnr::sea and has benn depreciated. Please use \code{sea}.
 #' @export
 run_sea <- function(x, key, years_before=6, years_after=4,
                     key_period = TRUE, n_iter=1000) {
@@ -106,22 +27,23 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #' an annual timeseries or climate reconstruction for the fire years provided (\code{key}) and both positive and
 #' negative lag years. Bootstrap resampling of the timeseries is performed to evaluate the statistical
 #' significance of each year's mean value. Users interpret the departure of the actual event year
-#' means from the simulated event year means.
+#' means from the simulated event year means. Note that there is no rescaling of the climate time series 'x'.
 #'
 #' The significance of lag-year departures from the average climate condition was first noted by
 #' Baisan and Swetnam (1990) and used in an organized SEA by Swetnam (1993). Since then, the procedure
 #' has been commonly applied in fire history studies. The FORTRAN program EVENT.exe was written by
 #' Richard Holmes and Thomas Swetnam (Holmes and Swetnam 1994) to perform SEA for fire history
 #' specifically. EVENT was incorporated in the FHX2 software by Henri Grissino-Mayer.
+#' Further information about SEA can be found in the FHAES user's manual, http://help.fhaes.org/
 #'
 #' sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
 #' SEA, although multiple versions of the analysis exist in the climate literature and for fire
-#' history (e.g., FHAES implements a different procedure). The outcome of EVENT and sea should
+#' history. The outcome of EVENT and sea should
 #' only differ slightly in the values of the simulated events and the departures, because random
 #' draws are used. The event year and lag significance levels should match, at least in the general
 #' pattern.
 #'
-#' We note that our implementation of run_sea borrows from the \code{dplR::sea} function in how it performs
+#' We note that our implementation of \code{sea} borrows from the \code{dplR::sea} function in how it performs
 #' the bootstrap procedure, but differs in the kind of output provided for the user.
 #'
 #' @return A sea object containing, (1) a vector of event years, (2) a data.frame summary of the actual events composite,

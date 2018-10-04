@@ -7,9 +7,23 @@
 run_sea(x, key, years_before = 6, years_after = 4, key_period = TRUE,
   n_iter = 1000)
 }
+\arguments{
+\item{n_iter}{The number of iterations for bootstrap resampling}
+
+\item{event}{A vector of event years for superposed epoch, such as fire years, or an fhx object
+with a single \code{series} as produced by \code{composite}}
+
+\item{nbefore}{The number of lag years prior to the event year}
+
+\item{nafter}{The number of lag years following the event year}
+
+\item{event_range}{Logical. Constrains the time series to the time period of key events within the range
+of the x climate series. False uses the entire climate series, ignoring the period of key events.
+time series}
+}
 \description{
-Perform superposed epoch analysis.
+#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
 }
 \details{
-This function, 'run_sea', is a development version of burnr::sea and has benn depreciated. Please use \code{sea}.
+This function, 'run_sea', is a development version of burnr::sea and has been depreciated. Please use \code{sea}.
 }

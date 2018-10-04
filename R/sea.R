@@ -1,6 +1,16 @@
 #' Perform superposed epoch analysis.
 #'
-#'@details This function, 'run_sea', is a development version of burnr::sea and has benn depreciated. Please use \code{sea}.
+#'#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
+#' @param event A vector of event years for superposed epoch, such as fire years, or an fhx object
+#' with a single \code{series} as produced by \code{composite}
+#' @param nbefore  The number of lag years prior to the event year
+#' @param nafter The number of lag years following the event year
+#' @param event_range Logical. Constrains the time series to the time period of key events within the range
+#' of the x climate series. False uses the entire climate series, ignoring the period of key events.
+#' time series
+#' @param n_iter The number of iterations for bootstrap resampling
+#'
+#' @details This function, 'run_sea', is a development version of burnr::sea and has been depreciated. Please use \code{sea}.
 #' @export
 run_sea <- function(x, key, years_before=6, years_after=4,
                     key_period = TRUE, n_iter=1000) {

@@ -1,6 +1,6 @@
 #' Perform superposed epoch analysis.
 #'
-#'#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
+#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
 #' @param key A vector of event years for superposed epoch, such as fire years, or an fhx object
 #' with a single \code{series} as produced by \code{composite}
 #' @param years_before  The number of lag years prior to the event year

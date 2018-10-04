@@ -8,6 +8,8 @@ run_sea(x, key, years_before = 6, years_after = 4, key_period = TRUE,
   n_iter = 1000)
 }
 \arguments{
+\item{x}{A data.frame climate reconstruction or tree-ring series with row names as years.}
+
 \item{key}{A vector of event years for superposed epoch, such as fire years, or an fhx object
 with a single \code{series} as produced by \code{composite}}
 
@@ -22,7 +24,7 @@ time series}
 \item{n_iter}{The number of iterations for bootstrap resampling}
 }
 \description{
-#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
+Perform superposed epoch analysis.
 }
 \details{
 This function, 'run_sea', is a development version of burnr::sea and has been depreciated. Please use \code{sea}.

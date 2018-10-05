@@ -4,10 +4,10 @@
 \alias{series_stats}
 \title{Generate series-level descriptive statistics.}
 \usage{
-series_stats(x, func_list = list(first = first_year, last = last_year, years =
-  count_year_span, inner_type = inner_type, outer_type = outer_type,
-  number_scars = count_scar, number_injuries = count_injury, recording_years =
-  count_recording, mean_interval = series_mean_interval))
+series_stats(x, func_list = list(first = first_year, last = last_year,
+  years = count_year_span, inner_type = inner_type, outer_type =
+  outer_type, number_scars = count_scar, number_injuries = count_injury,
+  recording_years = count_recording, mean_interval = series_mean_interval))
 }
 \arguments{
 \item{x}{An fhx object.}

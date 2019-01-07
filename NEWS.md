@@ -1,4 +1,4 @@
-# burnr v0.3.0.9000
+# burnr v0.3.0
 
 Changes in this minor release:
 
@@ -9,6 +9,7 @@ Changes in this minor release:
 * Update to `sample_depth()` to account for single-series fhx objects
 
 * Several updates to documentation, including citation.
+
 
 # burnr v0.2.2
 

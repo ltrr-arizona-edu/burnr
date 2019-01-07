@@ -1,5 +1,5 @@
 ---
-title: "Introduction to burnr"
+title: "Introduction"
 author: "S. Brewster Malevich"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-# Introduction to burnr
+# Introduction
 
 This is a brief tutorial to cover some general ideas and help you get started with some basic features in burnr. This is a simple tutorial so you won't need crazy coding skills. I am going to assume that you have a [recent version of R](https://www.r-project.org) installed and are familiar with the basics of R.
 
@@ -25,15 +25,11 @@ burnr is a package for forest fire history analysis in the R statistical environ
 
 ## Citing burnr in your research
 
-I'm never sure how to gracefully bring this up, but I need to mention this. I don't get paid to write and maintain burnr. I mostly do this because I think these are interesting problems to work with. That being said, knowing who uses burnr and how they use it helps me to justify putting more time and effort into this (and I like seeing what you are up to). If you use burnr in your research, please cite burnr appropriately in your work.
+Please cite our peer-reviewed paper introducing burnr. The preferred citation is:
 
-Ideally, cite one of the peer-reviewed papers that describe burnr for a specific use. These papers are currently in preparation and I'll be sure to update this section with the citation information as soon as they're published.
+> Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis. 2018. “Burnr: Fire History Analysis and Graphics in R.” Dendrochronologia 49 (June): 9–15. https://doi.org/10.1016/j.dendro.2018.02.005.
 
-To cite the code repository directly use:
-
-*Malevich, S.B., Margolis, E.Q., Guiterman, C.H., 2015. burnr: Fire history analysis in R. \<https://github.com/ltrr-arizona-edu/burnr \>.*
-
-Alternatively, you can cite the package in R's CRAN repository. You can see this information by running `citation('burnr')` in an R session.
+If you also need to cite a specific version of the package in R's CRAN repository. You can see this information by running `citation('burnr')` in an R session.
 
 --------
 

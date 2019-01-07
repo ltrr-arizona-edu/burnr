@@ -49,7 +49,6 @@ devtools::install_github("ltrr-arizona-edu/burnr")
 
 Documentation is included in the code. If you're new to `burnr`, we have an [introduction](https://cran.r-project.org/package=burnr/vignettes/introduction.html). And more information can be found on the [project's wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is still under construction.
 
-We also have a [Google Group](https://groups.google.com/forum/#!forum/burnr) for questions, announcements, and discussion.
 
 ## Citation
 

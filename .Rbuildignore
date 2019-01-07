@@ -3,5 +3,7 @@
 ^\.travis\.yml$
 ^.*\.sublime-workspace$
 ^.*\.sublime-project$
+^\.vscode
+^.*\.code-workspace$
 ^data-raw$
 ^cran-comments\.md$

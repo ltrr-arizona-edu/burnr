@@ -2,7 +2,6 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/ltrr-arizona-edu/burnr.svg?branch=master)](https://travis-ci.org/ltrr-arizona-edu/burnr)
 [![Coverage Status](https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master)](https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master)
-[![Research software impact](http://depsy.org/api/package/cran/burnr/badge.svg)](http://depsy.org/package/r/burnr)
 
 
 Basic tools to analyze forest fire history data (e.g. FHX) in R. This is designed for power users and projects with special needs.

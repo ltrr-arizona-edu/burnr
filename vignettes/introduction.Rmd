@@ -9,15 +9,13 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-# Introduction
-
-This is a brief tutorial to cover some general ideas and help you get started with some basic features in burnr. This is a simple tutorial so you won't need crazy coding skills. I am going to assume that you have a [recent version of R](https://www.r-project.org) installed and are familiar with the basics of R.
+This is a brief tutorial to cover some general ideas and basic features in burnr. This is a simple tutorial so you won't need crazy coding skills. I am going to assume that you have a [recent version of R](https://www.r-project.org) installed and are familiar with the basics of R.
 
 If you are not familiar with R, hit Google with the search "R stat tutorial", or some variation there of. You will find a plethora of useful learning material and helpful people from a wide array of backgrounds.
 
 People pickup this coding stuff more quickly if they try the examples I give and play around with the interesting things they discover. I recommend you open a terminal with an R session and follow along as you read this. It's more fun that way.
 
-## What's burnr
+## What's burnr?
 
 burnr is a package for forest fire history analysis in the R statistical environment. This package isn't designed to be a comprehensive suite for fire analysis. Rather the idea is to provide a transparent, flexible, and powerful set of core tools.
 

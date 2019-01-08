@@ -1,5 +1,9 @@
 # burnr v0.3.1.9000
 
+Changes in this patch release:
+
+* Updates to documentation and README.
+
 
 # burnr v0.3.0
 

@@ -4,6 +4,8 @@ Changes in this patch release:
 
 * Updates to documentation and README.
 
+* Quick fixes to SEA unit tests, forcing them to use R 3.5.0 RNG as a temporary fix to issue #124.
+
 
 # burnr v0.3.0
 

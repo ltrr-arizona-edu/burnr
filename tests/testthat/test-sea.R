@@ -4,6 +4,7 @@ context("SEA")
 data(pgm)
 data(pgm_pdsi)
 COMP_TEST <- composite(pgm)
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(123)
 SEA_TEST <- sea(pgm_pdsi, COMP_TEST)
 

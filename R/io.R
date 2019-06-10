@@ -2,7 +2,7 @@
 #'
 #' @param fname Name of target FHX file. Needs to be in format version 2.
 #' @param encoding Encoding to use when reading the FHX file. The default is to use the system.
-#' @param text Character string. If \code{fname} is not provided and 
+#' @param text Character string. If \code{fname} is not provided and
 #'   \code{text} is, then data is read from \code{text} using a text connection.
 #'
 #' @return An \code{fhx} object.
@@ -31,7 +31,7 @@ read_fhx <- function(fname, encoding, text) {
   if (!any(suppressWarnings(grepl("^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE))))
     stop("Cannot find line 'FHX2 FORMAT' or 'FIRE2 FORMAT'.")
   first <- suppressWarnings(grep("^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE))
-  describe <- as.numeric(strsplit(fl[[first + 1]], " ")[[1]])
+  describe <- as.numeric(strsplit(fl[[first + 1]], "[ ]+")[[1]])
   if (length(describe) != 3) {  # First year; no. sites; length of site id.
     stop(paste("Three-digit descriptive information that should be on line ",
                first + 1,
@@ -39,7 +39,6 @@ read_fhx <- function(fname, encoding, text) {
   }
   # TODO: Need error check that row length = describe[2] + year.
   # TODO: Need error check that first year in body is first year in meta.
-
   type_key <- list("?" = "estimate",  # My own creation for estimated years to pith.
                    "." = "null_year",
                    "|" = "recorder_year",
@@ -60,10 +59,16 @@ read_fhx <- function(fname, encoding, text) {
                    "{" = "inner_year",
                    "}" = "outer_year")
   # Parse series names.
-  uncleaned <- as.matrix(unlist(strsplit(fl[(first + 2):(first + 1 + describe[3])], "")))
+  ## use lapply function to eliminate extra speces at end of id blocks
+  id_block <- fl[(first + 2):(first + 1 + describe[3])]
+  uncleaned <- as.matrix(unlist(lapply(seq_along(id_block), function(x) {
+    splt <- unlist(strsplit(id_block[x], ""))
+    splt <- splt[1:describe[2]]
+    return(splt)
+  })))
   if ((describe[2] * describe[3]) != dim(uncleaned)[1])
-      stop("The file's three-digit descriptive information on line ", first + 1,
-           " does not match the series titles in the file. Please correct this discrepancy.")
+    stop("The file's three-digit descriptive information on line ", first + 1,
+         " does not match the series titles in the file. Please correct this discrepancy.")
   dim(uncleaned) <- c(describe[2], describe[3])
   series_names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
   # series_names <- apply(uncleaned, 1, paste, collapse = "")
@@ -75,8 +80,8 @@ read_fhx <- function(fname, encoding, text) {
       break
     }
   }
-  if (fl[first + databuff - 1 + describe[3]] != "")
-      stop("The line before the annual FHX data should be blank.")
+  if (! any(fl[first + databuff - 1 + describe[3]] == c("", " ", strrep(" ", describe[2]))))
+    stop("The line before the annual FHX data should be blank.")
   # Filling with info from the fhx file body.
   fl_body <- strsplit(fl[(first + databuff + describe[3]) : length(fl)], split = "")
   first_year <- describe[1]
@@ -92,27 +97,26 @@ read_fhx <- function(fname, encoding, text) {
   names(fl_body) <- series_names
   fl_body$year <- seq(first_year, first_year + dim(fl_body)[1] - 1)
   fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "rec_type",
-                       variable.name = "series", na.rm = TRUE)
+                                 variable.name = "series", na.rm = TRUE)
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != '.', ]
   fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) type_key[[x]], "a")
   fl_body_melt$rec_type <- factor(fl_body_melt$rec_type,
-                              levels = c("null_year", "recorder_year", "unknown_fs",
-                                         "unknown_fi", "dormant_fs", "dormant_fi",
-                                         "early_fs", "early_fi", "middle_fs",
-                                         "middle_fi", "late_fs", "late_fi",
-                                         "latewd_fs", "latewd_fi", "pith_year",
-                                         "bark_year", "inner_year", "outer_year",
-                                         "estimate"))
+                                  levels = c("null_year", "recorder_year", "unknown_fs",
+                                             "unknown_fi", "dormant_fs", "dormant_fi",
+                                             "early_fs", "early_fi", "middle_fs",
+                                             "middle_fi", "late_fs", "late_fi",
+                                             "latewd_fs", "latewd_fi",
+                                             "pith_year", "bark_year", "inner_year", "outer_year",
+                                             "estimate"))
   f <- fhx(year = fl_body_melt$year, series = fl_body_melt$series,
            rec_type = fl_body_melt$rec_type)
 }
-
 #' List of character strings to write to FHX file.
 #'
 #' @param x An fhx object.
 #'
-#' @return A list with four members containing vectors: "head_line", 
-#'     "subhead_line", "series_heading", and "body". Each referring 
+#' @return A list with four members containing vectors: "head_line",
+#'     "subhead_line", "series_heading", and "body". Each referring
 #'     to a portion of an FHX file that the strings are dumped into.
 #'
 #' @seealso write_fhx

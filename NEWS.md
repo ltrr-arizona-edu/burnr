@@ -4,6 +4,8 @@ Changes in this release:
 
 * `read_fhx()` is more tolerant of extra whitespace in series names. Thanks to Chris Guiterman for adding this.
 
+* Fixed documentation examples not rendering for `sea()` (Issue #125).
+
 * Minor argument clarification in `composite()` documentation (Issue #127).
 
 

@@ -10,8 +10,8 @@ list_filestrings(x)
 \item{x}{An fhx object.}
 }
 \value{
-A list with four members containing vectors: "head_line", 
-    "subhead_line", "series_heading", and "body". Each referring 
+A list with four members containing vectors: "head_line",
+    "subhead_line", "series_heading", and "body". Each referring
     to a portion of an FHX file that the strings are dumped into.
 }
 \description{

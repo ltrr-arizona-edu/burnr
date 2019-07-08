@@ -2,7 +2,10 @@
 
 Changes in this release:
 
-* `read_fhx()` is more tolerant of extra whitespace in series names.
+* `read_fhx()` is more tolerant of extra whitespace in series names. Thanks to Chris Guiterman for adding this.
+
+* Minor argument clarification in `composite()` documentation (Issue #127).
+
 
 # burnr v0.3.1
 

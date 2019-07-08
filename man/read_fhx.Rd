@@ -11,7 +11,7 @@ read_fhx(fname, encoding, text)
 
 \item{encoding}{Encoding to use when reading the FHX file. The default is to use the system.}
 
-\item{text}{Character string. If \code{fname} is not provided and 
+\item{text}{Character string. If \code{fname} is not provided and
 \code{text} is, then data is read from \code{text} using a text connection.}
 }
 \value{

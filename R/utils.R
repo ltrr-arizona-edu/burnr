@@ -325,7 +325,7 @@ yearly_recording <- function(x, injury_event=FALSE) {
 #' Composite fire events in fhx object returning composited object with prominent fires.
 #'
 #' @param x An fhx instance.
-#' @param filter_prop The proportion of fire events to recording series needed in order to be considered. Default is 0.25.
+#' @param filter_prop The minimum proportion of fire events to recording series needed in order to be considered. Default is 0.25.
 #' @param filter_min_rec The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
 #' @param filter_min_events The minimum number of fire scars needed to be considered a fire event. Default is 1. This includes injuries if injury_event=TRUE.
 #' @param injury_event Boolean indicating whether injuries should be considered events. Default is FALSE.

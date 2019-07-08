@@ -69,33 +69,24 @@ run_sea <- function(x, key, years_before=6, years_after=4,
 #' \dontrun{
 #' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
 #' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-# ' target_url <- paste0('http://iridl.ldeo.columbia.edu',
-# '                      '/SOURCES/.LDEO/.TRL/.NADA2004',
-# '                      '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
-# ' pdsi <- read.table(target_url, header = TRUE, row.names = 1)
-# ' pdsi <- subset(pdsi, select = "RECON")
-# '
-# ' # Run SEA on Peggy Mesa (pgm) data
-# ' data(pgm)
-# ' pgm_comp <- composite(pgm)
-# '
-# ' pgm_sea <- sea(pdsi, pgm_comp)
-# '
-# ' # See basic results:
-# ' print(pgm_sea)
-# '
-# ' # Basic plot:
-# ' plot(pgm_sea)
-#' }
-#' \dontrun{
-#' # For users who want to perform SEA very near to EVENT.exe and/or have reproducable draws from
-#' # the bootstrap procedure, consider including the \code{set.seed} function prior to \code{run_sea}.
-#' # Convention is to provide a long integer, such as a birthday (e.g. 3191982).
-#' # In the EVENT.exe program, Richard Holmes used the number of days since 1 January 1935.
-#' days <- as.numeric(Sys.Date() - as.Date("1jan1935", "%d%b%Y"))
-#' set.seed(days)
-#' }
+#' target_url <- paste0('http://iridl.ldeo.columbia.edu',
+#'                      '/SOURCES/.LDEO/.TRL/.NADA2004',
+#'                      '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
+#' pdsi <- read.table(target_url, header = TRUE, row.names = 1)
+#' pdsi <- subset(pdsi, select = "RECON")
 #'
+#' # Run SEA on Peggy Mesa (pgm) data
+#' data(pgm)
+#' pgm_comp <- composite(pgm)
+#'
+#' pgm_sea <- sea(pdsi, pgm_comp)
+#'
+#' # See basic results:
+#' print(pgm_sea)
+#'
+#' # Basic plot:
+#' plot(pgm_sea)
+#' }
 #' @export
 sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   if (is.fhx(event)){

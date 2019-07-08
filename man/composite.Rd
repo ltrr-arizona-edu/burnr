@@ -10,7 +10,7 @@ composite(x, filter_prop = 0.25, filter_min_rec = 2,
 \arguments{
 \item{x}{An fhx instance.}
 
-\item{filter_prop}{The proportion of fire events to recording series needed in order to be considered. Default is 0.25.}
+\item{filter_prop}{The minimum proportion of fire events to recording series needed in order to be considered. Default is 0.25.}
 
 \item{filter_min_rec}{The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.}
 

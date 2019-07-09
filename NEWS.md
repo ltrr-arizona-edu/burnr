@@ -1,6 +1,6 @@
-# burnr v0.3.1.9000
+# burnr v0.4.0
 
-Changes in this release:
+Changes in this minor release:
 
 * `read_fhx()` is more tolerant of extra whitespace in series names. Thanks to Chris Guiterman for adding this.
 

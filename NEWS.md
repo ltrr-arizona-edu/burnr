@@ -2,7 +2,7 @@
 
 Changes in this release:
 
-* 
+* Removed deprecated `run_sea()`. Be sure to use `sea()` now.
 
 
 # burnr v0.4.0

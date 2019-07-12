@@ -8,7 +8,7 @@ Changes in this release:
 
 * `composite()` now returns an empty fhx object if no composite-worthy events are found (Issue #131). Much better than throwing an obtuse error.
 
-* Very minor code cleanup (Issue #130).
+* Minor internal code cleanup (Issue #130, Issue #88).
 
 
 # burnr v0.4.0

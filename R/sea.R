@@ -157,7 +157,6 @@ sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   rand_event_table <- round(rand_event_table, 3)
 
   # Departure table
-
   departure_table <- out_table[, -c(3, 4, 15, 16)]
   departure_table[, 2] <- actual_event_table[, 2] - rand_event_table[, 2]
   departure_table[, 3] <- apply(re.table, 2, function(x) -1 * 1.960 * stats::sd(x, na.rm = TRUE))
@@ -177,9 +176,9 @@ sea <- function(x, event, nbefore=6, nafter=4, event_range=TRUE, n_iter=1000) {
   out <- list("event_years" = event,
               "actual" = actual_event_table,
               "random" = rand_event_table,
-              "departure" = departure_table)
-  out$simulated <- re.table  # DEBUG
-  out$observed <- event.table  # DEBUG
+              "departure" = departure_table,
+              "simulated" = re.table,
+              "observed" = event.table)
   class(out) <- c("sea")
 
   out

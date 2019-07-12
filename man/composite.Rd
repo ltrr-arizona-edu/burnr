@@ -21,7 +21,7 @@ composite(x, filter_prop = 0.25, filter_min_rec = 2,
 \item{comp_name}{Character vector of the series name for the returned fhx object composite series. Default is 'COMP'.}
 }
 \value{
-An fhx object representing the composited series.
+An fhx object representing the composited series. The object will be empty if there are nocomposite-worthy events.
 }
 \description{
 Composite fire events in fhx object returning composited object with prominent fires.

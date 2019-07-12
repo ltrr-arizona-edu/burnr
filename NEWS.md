@@ -4,6 +4,7 @@ Changes in this release:
 
 * Removed deprecated `run_sea()`. Be sure to use `sea()` now.
 
+* `composite()` now returns an empty fhx object if no composite-worthy events are found (Issue #131). Much better than throwing an obtuse error.
 
 # burnr v0.4.0
 

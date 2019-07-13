@@ -331,7 +331,7 @@ yearly_recording <- function(x, injury_event=FALSE) {
 #' @param injury_event Boolean indicating whether injuries should be considered events. Default is FALSE.
 #' @param comp_name Character vector of the series name for the returned fhx object composite series. Default is 'COMP'.
 #'
-#' @return An fhx object representing the composited series.
+#' @return An fhx object representing the composited series. The object will be empty if there are nocomposite-worthy events.
 #'
 #' @examples
 #' data(lgr2)
@@ -374,6 +374,11 @@ composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events =
   filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min_rec) & (counts$Freq_event >= filter_min_events)
   out <- subset(counts, filter_mask)$year
   composite_event_years <- as.integer(levels(out)[out])
+
+  if (length(composite_event_years) == 0) {
+    return(fhx(as.numeric(c()), as.factor(c()), make_rec_type(c())))
+  }
+
   # Make composite events unknown firescars.
   out_year <- composite_event_years
   out_rec_type <- rep("unknown_fs", length(composite_event_years))
@@ -389,14 +394,7 @@ composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events =
   out_year <- c(out_year, new_recording)
   out_rec_type <- c(out_rec_type, rep("recorder_year", length(new_recording)))
   out_series <- factor(rep(comp_name, length(out_year)))
-  out_rec_type <- factor(out_rec_type,
-                        levels = c("null_year", "recorder_year", "unknown_fs",
-                                   "unknown_fi", "dormant_fs", "dormant_fi",
-                                   "early_fs", "early_fi", "middle_fs",
-                                   "middle_fi", "late_fs", "late_fi",
-                                   "latewd_fs", "latewd_fi", "pith_year",
-                                   "bark_year", "inner_year", "outer_year",
-                                   "estimate"))
+  out_rec_type <- make_rec_type(out_rec_type)
   fhx(year = out_year, series = out_series, rec_type = out_rec_type)
 }
 

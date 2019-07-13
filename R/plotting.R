@@ -219,14 +219,3 @@ plot.fhx <- function(...) {
   print(plot_demograph(...))
 }
 
-#' Create a ggplot2 object for plotting.
-#'
-#' This function is depreciated. Please use `plot_demograph()`.
-#'
-#' @param ... Arguments passed on to \code{plot_demograph}.
-#'
-#' @export
-get_ggplot <- function(...) {
-  .Deprecated('plot_demograph')
-  plot_demograph(...)
-}

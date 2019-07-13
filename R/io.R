@@ -100,14 +100,7 @@ read_fhx <- function(fname, encoding, text) {
                                  variable.name = "series", na.rm = TRUE)
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != '.', ]
   fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) type_key[[x]], "a")
-  fl_body_melt$rec_type <- factor(fl_body_melt$rec_type,
-                                  levels = c("null_year", "recorder_year", "unknown_fs",
-                                             "unknown_fi", "dormant_fs", "dormant_fi",
-                                             "early_fs", "early_fi", "middle_fs",
-                                             "middle_fi", "late_fs", "late_fi",
-                                             "latewd_fs", "latewd_fi",
-                                             "pith_year", "bark_year", "inner_year", "outer_year",
-                                             "estimate"))
+  fl_body_melt$rec_type <- make_rec_type(fl_body_melt$rec_type)
   f <- fhx(year = fl_body_melt$year, series = fl_body_melt$series,
            rec_type = fl_body_melt$rec_type)
 }

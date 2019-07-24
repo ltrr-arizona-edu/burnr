@@ -469,7 +469,7 @@ is.fhx <- function(x) {
 #'
 #' @param x A data frame or list-like object. Must have named elements or columns for "year", "series", and "rec_type".
 #'
-#' @return Boolean indicating whether `x` is an fhx object.
+#' @return `x` cast to an fhx object.
 #'
 #' @details
 #' The "year", "series", and "rec_type" in \code{x} will be pass through \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before being passed to \code{burnr::fhx}.

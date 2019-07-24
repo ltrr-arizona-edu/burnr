@@ -415,8 +415,8 @@ sort.fhx <- function(x, decreasing=FALSE, sort_by = 'first_year', ...) {
 #'
 #' @export
 "+.fhx" <- function(a, b) {
-  stopifnot('fhx' %in% class(a))
-  stopifnot('fhx' %in% class(b))
+  stopifnot(is.fhx(a))
+  stopifnot(is.fhx(b))
   f <- rbind(a, b)
   check_duplicates(f)
 }

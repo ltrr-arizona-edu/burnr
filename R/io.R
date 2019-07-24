@@ -80,7 +80,7 @@ read_fhx <- function(fname, encoding, text) {
   fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "rec_type",
                                  variable.name = "series", na.rm = TRUE)
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != '.', ]
-  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) abvr2rec_type(x), "a")
+  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) abrv2rec_type(x), "a")
   fl_body_melt$rec_type <- make_rec_type(fl_body_melt$rec_type)
   f <- fhx(year = fl_body_melt$year, series = fl_body_melt$series,
            rec_type = fl_body_melt$rec_type)
@@ -98,7 +98,7 @@ read_fhx <- function(fname, encoding, text) {
 list_filestrings <- function(x) {
   stopifnot(is.fhx(x))
   out <- x
-  out$rec_type <- vapply(out$rec_type, function(x) rec_type2abvr(x), "a")
+  out$rec_type <- vapply(out$rec_type, function(x) rec_type2abrv(x), "a")
   year_range <- seq(min(out$year), max(out$year))
   filler <- data.frame(year = year_range,
                        series = rep("hackishSolution", length(year_range)),
@@ -133,7 +133,7 @@ list_filestrings <- function(x) {
 #'
 #' @return A character string.
 #'
-abvr2rec_type <- function(x) {
+abrv2rec_type <- function(x) {
   type_key <- list("?" = "estimate",  # My own creation for estimated years to pith.
                   "." = "null_year",
                   "|" = "recorder_year",
@@ -162,7 +162,7 @@ abvr2rec_type <- function(x) {
 #'
 #' @return A character string.
 #'
-rec_type2abvr <- function(x) {
+rec_type2abrv <- function(x) {
   type_key <- list("null_year"    = ".",
                    "recorder_year"= "|",
                    "unknown_fs"   = "U",

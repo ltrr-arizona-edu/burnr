@@ -31,13 +31,7 @@ fhx <- function(year, series, rec_type, metalist=list()) {
 #'
 #' @export
 make_rec_type <- function(x) {
-  possible_levels = c("null_year", "recorder_year", "unknown_fs",
-           "unknown_fi", "dormant_fs", "dormant_fi",
-           "early_fs", "early_fi", "middle_fs",
-           "middle_fi", "late_fs", "late_fi",
-           "latewd_fs", "latewd_fi", "pith_year",
-           "bark_year", "inner_year", "outer_year",
-           "estimate")
+  possible_levels = rec_type_all
   stopifnot(x %in% possible_levels)  # TODO(brews): This could be make into a more clear error.
   factor(x, levels = possible_levels)
 }
@@ -213,38 +207,27 @@ delete <- function(x, s, yr) {
 find_recording <- function(x, injury_event) {
   # Use with: ddply(lgr2$rings, 'series', recorder_finder)
   x <- x[order(x$year), ]
-  recorder <- list("|" = "recorder_year",
-                    "U" = "unknown_fs",
-                    "D" = "dormant_fs",
-                    "E" = "early_fs",
-                    "M" = "middle_fs",
-                    "L" = "late_fs",
-                    "A" = "latewd_fs")
-  injury <- list("u" = "unknown_fi",
-                   "d" = "dormant_fi",
-                   "e" = "early_fi",
-                   "m" = "middle_fi",
-                   "l" = "late_fi",
-                   "a" = "latewd_fi")
-  scar <- list("U" = "unknown_fs",
-                   "D" = "dormant_fs",
-                   "E" = "early_fs",
-                   "M" = "middle_fs",
-                   "L" = "late_fs",
-                   "A" = "latewd_fs")
-  ends <- list("[" = "pith_year",
-               "]" = "bark_year",
-               "{" = "inner_year",
-               "}" = "outer_year")
+
+  recorder <- rec_type_recorder
+  injury <- rec_type_injury
+  scar <- rec_type_scar
+  ends <- rec_type_ends
+
   if (injury_event) {
     recorder <- c(recorder, injury)
   }
+
   rec <- subset(x, x$rec_type %in% recorder)$year
   inj <- subset(x, x$rec_type %in% injury)$year
   end <- subset(x, x$rec_type %in% ends)$year
+
   inj_dif <- diff(inj)
+
+  # "ends" and "injuries" only record when there is recording event in adjacent year
   active <- c(rec, intersect(rec - 1, end), intersect(rec + 1, end))
   active <- c(active, intersect(active - 1, inj), intersect(active + 1, inj)) # Really only need when injury_event = FALSE.
+
+  # recording-ness is communicated through injury events
   if (any(inj_dif == 1) & !injury_event) {
     for (i in which(inj_dif == 1)) {
       if (inj_dif[i] %in% active) {
@@ -252,6 +235,7 @@ find_recording <- function(x, injury_event) {
       }
     }
   }
+
   data.frame(recording = union(rec, active))
 }
 
@@ -282,7 +266,7 @@ find_recording <- function(x, injury_event) {
 count_event_position <- function(x, injury_event=FALSE, position, groupby) {
   stopifnot(is.fhx(x))
 
-  possible_position = c("unknown", "dormant", "early", "middle", "late", "latewd")
+  possible_position <- c("unknown", "dormant", "early", "middle", "late", "latewd")
   if (missing(position))
     position <- possible_position
   stopifnot(all(position %in% possible_position))
@@ -345,22 +329,11 @@ yearly_recording <- function(x, injury_event=FALSE) {
 #' @export
 composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events = 1, injury_event=FALSE, comp_name='COMP') {
   stopifnot(is.fhx(x))
-  injury <- list("u" = "unknown_fi",
-                 "d" = "dormant_fi",
-                 "e" = "early_fi",
-                 "m" = "middle_fi",
-                 "l" = "late_fi",
-                 "a" = "latewd_fi")
-  scar <- list("U" = "unknown_fs",
-               "D" = "dormant_fs",
-               "E" = "early_fs",
-               "M" = "middle_fs",
-               "L" = "late_fs",
-               "A" = "latewd_fs")
-  ends <- list("[" = "pith_year",
-               "]" = "bark_year",
-               "{" = "inner_year",
-               "}" = "outer_year")
+
+  injury <- rec_type_injury
+  scar <- rec_type_scar
+  ends <- rec_type_ends
+
   event <- scar
   if (injury_event) {
     event <- c(event, injury)

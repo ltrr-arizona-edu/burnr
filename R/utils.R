@@ -481,6 +481,10 @@ is.fhx <- function(x) {
 #'
 #' @export
 as.fhx <- function(x) {
+  if (!all(c("year", "series", "rec_type") %in% names(x))) {
+    stop("`x` must have members 'year', 'series', and 'rec_type'")
+  }
+  
   yr <- as.numeric(x$year)
   series <- as.factor(x$series)
   record <- make_rec_type(x$rec_type)

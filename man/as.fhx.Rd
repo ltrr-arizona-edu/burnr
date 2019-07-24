@@ -10,7 +10,7 @@ as.fhx(x)
 \item{x}{A data frame or list-like object. Must have named elements or columns for "year", "series", and "rec_type".}
 }
 \value{
-Boolean indicating whether `x` is an fhx object.
+`x` cast to an fhx object.
 }
 \description{
 Convert to fhx object.

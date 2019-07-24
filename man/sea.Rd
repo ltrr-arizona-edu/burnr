@@ -17,9 +17,8 @@ with a single \code{series} as produced by \code{composite}}
 
 \item{nafter}{The number of lag years following the event year}
 
-\item{event_range}{Logical. Constrains the time series to the time period of key events within the range
-of the x climate series. False uses the entire climate series, ignoring the period of key events.
-time series}
+\item{event_range}{Logical. Constrain the time series to the time period of key events within the range
+of the \code{x} series. FALSE uses the entire series, ignoring the period of key events.}
 
 \item{n_iter}{The number of iterations for bootstrap resampling}
 }

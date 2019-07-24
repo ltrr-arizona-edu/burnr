@@ -5,9 +5,8 @@
 #' with a single \code{series} as produced by \code{composite}
 #' @param nbefore  The number of lag years prior to the event year
 #' @param nafter The number of lag years following the event year
-#' @param event_range Logical. Constrains the time series to the time period of key events within the range
-#' of the x climate series. False uses the entire climate series, ignoring the period of key events.
-#' time series
+#' @param event_range Logical. Constrain the time series to the time period of key events within the range
+#' of the \code{x} series. FALSE uses the entire series, ignoring the period of key events.
 #' @param n_iter The number of iterations for bootstrap resampling
 #'
 #' @details Superposed epoch analysis (SEA) helps to evaluate fire-climate

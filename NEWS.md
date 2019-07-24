@@ -2,6 +2,8 @@
 
 Changes in this release:
 
+* Added `as.fhx()`. This takes data frames, tibbles, and lists as input. It assumes they have "year", "series", and "rec_type" elements/columns and returns an fhx object. (Issue #120).
+
 * Removed deprecated `run_sea()`. Be sure to use `sea()` now.
 
 * Removed deprecated `get_ggplot()`, please use `plot_demograph()` now.

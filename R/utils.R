@@ -465,6 +465,33 @@ is.fhx <- function(x) {
   inherits(x, 'fhx')
 }
 
+#' Convert to fhx object.
+#'
+#' @param x A data frame or list-like object. Must have named elements or columns for "year", "series", and "rec_type".
+#'
+#' @return Boolean indicating whether `x` is an fhx object.
+#'
+#' @details
+#' The "year", "series", and "rec_type" in \code{x} will be pass through \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before being passed to \code{burnr::fhx}.
+#'
+#' @examples
+#' data(lgr2)
+#' example_dataframe <- as.data.frame(lgr2)
+#' back_to_fhx <- as.fhx(example_dataframe)
+#'
+#' @export
+as.fhx <- function(x) {
+  if (!all(c("year", "series", "rec_type") %in% names(x))) {
+    stop("`x` must have members 'year', 'series', and 'rec_type'")
+  }
+  
+  yr <- as.numeric(x$year)
+  series <- as.factor(x$series)
+  record <- make_rec_type(x$rec_type)
+
+  fhx(yr, series, record)
+}
+
 #' Check for duplicate observations in an fhx object.
 #'
 #' @param x An fhx object.

@@ -170,4 +170,46 @@ test_that("check_duplicates throws error when fhx obj has duplicates", {
                "*Please resolve duplicate records*")
 })
 
+test_that("as.fhx works on data.frame input", {
+  yrs <- c(1850, 2010)
+  series_chr <- c("a", "a")
+  events_chr <- c("pith_year", "bark_year")
+
+  test_df <- data.frame(year = yrs,
+                        series = series_chr,
+                        rec_type = events_chr)
+
+  new_fhx <- burnr::as.fhx(test_df)
+  expect_equal(new_fhx$year, yrs)
+  expect_equal(new_fhx$series, factor(series_chr))
+  expect_equal(new_fhx$rec_type, burnr::make_rec_type(events_chr))
+})
+
+test_that("as.fhx works on list input", {
+  yrs <- c(1850, 2010)
+  series_chr <- c("a", "a")
+  events_chr <- c("pith_year", "bark_year")
+
+  test_df <- list(year = yrs,
+                  series = series_chr,
+                  rec_type = events_chr)
+
+  new_fhx <- burnr::as.fhx(test_df)
+  expect_equal(new_fhx$year, yrs)
+  expect_equal(new_fhx$series, factor(series_chr))
+  expect_equal(new_fhx$rec_type, burnr::make_rec_type(events_chr))
+})
+
+test_that("as.fhx throws error when input missing key element", {
+  yrs <- c(1850, 2010)
+  series_chr <- c("a", "a")
+  events_chr <- c("pith_year", "bark_year")
+
+  test_df <- list(year = yrs,
+                  serie = series_chr,  # bad spelling
+                  rec_type = events_chr)
+
+  expect_error(burnr:::as.fhx(test_df), 
+               "`x` must have members 'year', 'series', and 'rec_type'")
+})
 

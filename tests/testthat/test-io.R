@@ -718,4 +718,3 @@ test_that("list_filestrings() on basic FHX obj", {
   expect_equal(target[["body"]]$b1, c("[", ".", "]", "."))
   expect_equal(target[["body"]]$yr, seq(1998, 2001))
 })
-

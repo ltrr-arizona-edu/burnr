@@ -80,7 +80,7 @@ read_fhx <- function(fname, encoding, text) {
   fl_body_melt <- reshape2::melt(fl_body, id.vars = "year", value.name = "rec_type",
                                  variable.name = "series", na.rm = TRUE)
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != '.', ]
-  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, function(x) abrv2rec_type(x), "a")
+  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, abrv2rec_type, "")
   fl_body_melt$rec_type <- make_rec_type(fl_body_melt$rec_type)
   f <- fhx(year = fl_body_melt$year, series = fl_body_melt$series,
            rec_type = fl_body_melt$rec_type)
@@ -98,7 +98,7 @@ read_fhx <- function(fname, encoding, text) {
 list_filestrings <- function(x) {
   stopifnot(is.fhx(x))
   out <- x
-  out$rec_type <- vapply(out$rec_type, function(x) rec_type2abrv(x), "a")
+  out$rec_type <- vapply(out$rec_type, rec_type2abrv, "")
   year_range <- seq(min(out$year), max(out$year))
   filler <- data.frame(year = year_range,
                        series = rep("hackishSolution", length(year_range)),
@@ -125,63 +125,6 @@ list_filestrings <- function(x) {
        'subhead_line' = subhead_line,
        'series_heading' = series_heading,
        'body' = out)
-}
-
-#' Convert abreviated fhx file event char to rec_type char.
-#'
-#' @param x A character string.
-#'
-#' @return A character string.
-#'
-abrv2rec_type <- function(x) {
-  type_key <- list("?" = "estimate",  # My own creation for estimated years to pith.
-                  "." = "null_year",
-                  "|" = "recorder_year",
-                  "U" = "unknown_fs",
-                  "u" = "unknown_fi",
-                  "D" = "dormant_fs",
-                  "d" = "dormant_fi",
-                  "E" = "early_fs",
-                  "e" = "early_fi",
-                  "M" = "middle_fs",
-                  "m" = "middle_fi",
-                  "L" = "late_fs",
-                  "l" = "late_fi",
-                  "A" = "latewd_fs",
-                  "a" = "latewd_fi",
-                  "[" = "pith_year",
-                  "]" = "bark_year",
-                  "{" = "inner_year",
-                  "}" = "outer_year")
-  type_key[[x]]
-}
-
-#' Convert rec_type char to abreviated fhx file event char.
-#'
-#' @param x A character string.
-#'
-#' @return A character string.
-#'
-rec_type2abrv <- function(x) {
-  type_key <- list("null_year"    = ".",
-                   "recorder_year"= "|",
-                   "unknown_fs"   = "U",
-                   "unknown_fi"   = "u",
-                   "dormant_fs"   = "D",
-                   "dormant_fi"   = "d",
-                   "early_fs"     = "E",
-                   "early_fi"     = "e",
-                   "middle_fs"    = "M",
-                   "middle_fi"    = "m",
-                   "late_fs"      = "L",
-                   "late_fi"      = "l",
-                   "latewd_fs"    = "A",
-                   "latewd_fi"    = "a",
-                   "pith_year"    = "[",
-                   "bark_year"    = "]",
-                   "inner_year"   = "{",
-                   "outer_year"   = "}")
-  type_key[[x]]
 }
 
 #' Write an fhx object to a new FHX2 file.
@@ -215,4 +158,24 @@ write_fhx <- function(x, fname="") {
                      sep = "", na = "!",
                      row.names = FALSE, col.names = FALSE)
   close(fl)
+}
+
+#' Convert abreviated fhx file event char to rec_type char.
+#'
+#' @param x A character string.
+#'
+#' @return A character string.
+#'
+abrv2rec_type <- function(x) {
+  rec_type_all[[as.character(x)]]
+}
+
+#' Convert rec_type char to abreviated fhx file event char.
+#'
+#' @param x A character string.
+#'
+#' @return A character string.
+#'
+rec_type2abrv <- function(x) {
+  rec_type_abrv[[as.character(x)]]
 }

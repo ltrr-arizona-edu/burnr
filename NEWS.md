@@ -6,7 +6,9 @@ Changes in this release:
 
 * Removed deprecated `run_sea()`. Be sure to use `sea()` now.
 
-* Removed deprecated `get_ggplot()`, please use `plot_demograph()` now.
+* Removed deprecated `get_ggplot()`. Please use `plot_demograph()` now.
+
+* Removed broken `site_stats()` function (Issue #138). Please use `intervals()` and `print()` to get the same statistics. 
 
 * `composite()` now returns an empty fhx object if no composite-worthy events are found (Issue #131). Much better than throwing an obtuse error.
 

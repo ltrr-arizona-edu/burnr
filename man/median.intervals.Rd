@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{An intervals object.}
 
-\item{...}{Additional arguments passed to \code{median}.}
+\item{...}{Additional arguments passed to \code{stats::median}.}
 }
 \value{
 Numeric or NA.

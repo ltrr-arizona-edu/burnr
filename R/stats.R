@@ -199,11 +199,10 @@ summary.fhx <- function(object, ...) {
 #' @details This function produces a summary table for any fhx object. The statistics it includes are shared by other popular fire history software such as FHX2 and FHAES.
 #' @return A data.frame of summary statistics
 #' @export
-
 site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.25, filter_min_rec = 2,
                         filter_min_events = 1, injury_event = FALSE) {
-
   stopifnot(is.fhx(x))
+
   sumNames <- c('number_series', 'first_year', 'last_year', 'first_event', 'last_event',
                 'number_intervals', 'mean_interval', 'median_interval',
                 'standard_dev', 'coef_var', 'min_interval', 'max_interval',
@@ -212,6 +211,7 @@ site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.
                 'upper_exceedance')
   site.stats <- data.frame(variable = sumNames, site = NA)
   names(site.stats)[2] <- site_name
+
   # Perform site composite for interval stats
   if (!is.null(year_range)) {
     x <- x[x$year >= min(year_range) & x$year <= max(year_range), ]
@@ -219,8 +219,10 @@ site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.
   x.comp <- composite(x, filter_prop = filter_prop, filter_min_rec = filter_min_rec,
                           filter_min_events = filter_min_events, injury_event = injury_event)
   intervals <- diff(get_event_years(x.comp)[[1]])
+
   if(length(intervals) < 2)
     stop("Too few fire intervals to compute a summary")
+
   # Weibull fit
   ft.r <- MASS::fitdistr(intervals, "weibull")
   shape <- as.numeric(ft.r$estimate[1])
@@ -228,6 +230,7 @@ site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.
   weib.quants <- stats::qweibull(c(.125, .5, .875), shape=shape, scale=scale)
   # gf <- suppressWarnings( stats::ks.test(intervals, y=stats::pweibull, shape=shape, scale=scale, alternative='less'))
   gf <- stats::ks.test(intervals, y=stats::pweibull, shape=shape, scale=scale, alternative='less')
+
   # Fill out summary table
   site.stats['number_trees', ] <- length(levels(x$series))
   site.stats['first_year', ] <- first_year(x)
@@ -258,6 +261,7 @@ site_stats <- function(x, site_name = 'XXX', year_range = NULL, filter_prop = 0.
   site.stats['pval', ] <- round(gf$p.value, 2)
   site.stats['lower_exceedance', ] <- round(weib.quants[1], 2)
   site.stats['upper_exceedance', ] <- round(weib.quants[3], 2)
+  
   return(site.stats)
 }
 

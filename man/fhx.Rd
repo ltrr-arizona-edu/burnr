@@ -4,7 +4,7 @@
 \alias{fhx}
 \title{Constructor for S3 fhx class.}
 \usage{
-fhx(year, series, rec_type, metalist = list())
+fhx(year, series, rec_type)
 }
 \arguments{
 \item{year}{A numeric vector of observation years for each \code{series} and \code{rec_type} argument.}
@@ -12,8 +12,6 @@ fhx(year, series, rec_type, metalist = list())
 \item{series}{A factor of series names for each \code{year} and \code{rec_type} argument.}
 
 \item{rec_type}{A factor of ring types for each element in \code{year} and \code{series}.}
-
-\item{metalist}{An option list of arbitrary metadata to be included in the fhx instance.}
 }
 \value{
 An fhx instance.

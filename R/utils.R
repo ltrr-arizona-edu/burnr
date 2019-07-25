@@ -3,18 +3,16 @@
 #' @param year A numeric vector of observation years for each \code{series} and \code{rec_type} argument.
 #' @param series A factor of series names for each \code{year} and \code{rec_type} argument.
 #' @param rec_type A factor of ring types for each element in \code{year} and \code{series}.
-#' @param metalist An option list of arbitrary metadata to be included in the fhx instance.
 #'
 #' @return An fhx instance.
 #'
 #' @export
-fhx <- function(year, series, rec_type, metalist=list()) {
+fhx <- function(year, series, rec_type) {
   if (!is.numeric(year)) stop("year must be numeric")
   if (!is.factor(series)) stop("series must be factor")
-  if (!is.list(metalist)) stop("metalist must be list")
   rec_type <- make_rec_type(rec_type)
-  ringsdf = data.frame(year = year, series = series, rec_type = rec_type)
-  class(ringsdf) <- c('fhx', 'data.frame')
+  ringsdf <- data.frame(year = year, series = series, rec_type = rec_type)
+  class(ringsdf) <- c("fhx", "data.frame")
   ringsdf
 }
 
@@ -417,8 +415,8 @@ sort.fhx <- function(x, decreasing=FALSE, sort_by = 'first_year', ...) {
 #'
 #' @export
 "+.fhx" <- function(a, b) {
-  stopifnot('fhx' %in% class(a))
-  stopifnot('fhx' %in% class(b))
+  stopifnot(is.fhx(a))
+  stopifnot(is.fhx(b))
   f <- rbind(a, b)
   check_duplicates(f)
 }

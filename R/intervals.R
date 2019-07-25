@@ -68,7 +68,7 @@ mean.intervals <- function(x, ...) {
 #' Interval median.
 #'
 #' @param x An intervals object.
-#' @param ... Additional arguments passed to \code{median}.
+#' @param ... Additional arguments passed to \code{stats::median}.
 #'
 #' @return Numeric or NA.
 #'
@@ -77,7 +77,6 @@ mean.intervals <- function(x, ...) {
 median.intervals <- function(x, ...) {
   median(x$intervals, ...)
 }
-
 
 #' Minimum interval.
 #'

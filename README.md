@@ -64,7 +64,7 @@ Citations help us to identify user needs and justify additional time developing 
 
 ## Development
 
-Want to contribute? Great! We're following [Hadley's packaging workflow](http://r-pkgs.had.co.nz/) and [code style](http://adv-r.had.co.nz/Style.html). Fork away.
+Want to contribute? Great! We're following [Hadley's packaging workflow](https://r-pkgs.had.co.nz/) and [code style](https://style.tidyverse.org). Fork away.
 
 Please file bugs in the [bug tracker](https://github.com/ltrr-arizona-edu/burnr/issues).
 

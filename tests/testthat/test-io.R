@@ -715,10 +715,16 @@ test_that("list_filestrings() on basic FHX obj", {
     )
   )
   target <- burnr:::list_filestrings(test_fhx)
-  expect_equal(names(target), c("head_line", "subhead_line", "series_heading", "body"))
+  expect_equal(
+    names(target),
+    c("head_line", "subhead_line", "series_heading", "body")
+  )
   expect_equal(target[["head_line"]], "FHX2 FORMAT")
   expect_equal(target[["subhead_line"]], "1998 2 2")
-  expect_equal(target[["series_heading"]], matrix(c(c("a", "1"), c("b", "1")), c(2, 2)))
+  expect_equal(
+    target[["series_heading"]],
+    matrix(c(c("a", "1"), c("b", "1")), c(2, 2))
+  )
   expect_equal(target[["body"]]$a1, c(".", "[", ".", "]"))
   expect_equal(target[["body"]]$b1, c("[", ".", "]", "."))
   expect_equal(target[["body"]]$yr, seq(1998, 2001))

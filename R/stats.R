@@ -22,12 +22,17 @@
 #' @export
 series_stats <- function(x, func_list = list(
                            first = first_year, last = last_year,
-                           years = count_year_span, inner_type = inner_type, outer_type = outer_type,
-                           number_scars = count_scar, number_injuries = count_injury,
-                           recording_years = count_recording, mean_interval = series_mean_interval
+                           years = count_year_span,
+                           inner_type = inner_type, outer_type = outer_type,
+                           number_scars = count_scar,
+                           number_injuries = count_injury,
+                           recording_years = count_recording,
+                           mean_interval = series_mean_interval
                          )) {
   stopifnot(is.fhx(x))
-  plyr::ddply(x, c("series"), function(df) data.frame(lapply(func_list, function(f) f(df))))
+  plyr::ddply(x, c("series"),
+    function(df) data.frame(lapply(func_list, function(f) f(df)))
+  )
 }
 
 #' First (earliest) year of an fhx series.
@@ -130,7 +135,10 @@ count_recording <- function(x, injury_event = FALSE) {
 #' @export
 series_mean_interval <- function(x, injury_event = FALSE) {
   if (length(unique(x$series)) > 1) {
-    warning("`series_mean_interval()` run on object with multiple series - results may not be correct")
+    warning(
+      "`series_mean_interval()` run on object with multiple series - ",
+      "results may not be correct"
+    )
   }
   search_str <- "_fs"
   if (injury_event) {
@@ -214,7 +222,9 @@ percent_scarred <- function(x, injury_event = FALSE) {
     series_fs <- x[grepl("_fs", x$rec_type) | grepl("_fi", x$rec_type), ]
     fs_count <- plyr::count(series_fs, "year")
   }
-  out <- merge(rec_count, fs_count, by.x = "recording", by.y = "year", all = TRUE)
+  out <- merge(rec_count, fs_count,
+    by.x = "recording", by.y = "year", all = TRUE
+  )
   names(out) <- c("year", "num_rec", "num_scars")
   out[is.na(out$num_scars), "num_scars"] <- 0
   out$percent_scarred <- round(out$num_scars / out$num_rec * 100, 0)

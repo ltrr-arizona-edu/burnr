@@ -32,7 +32,8 @@ read_fhx <- function(fname, encoding, text) {
   fl <- readLines(con, warn = FALSE)
 
   no_head_line <- !any(suppressWarnings(grepl(
-    "^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE
+    "^FHX2 FORMAT|^FIRE2 FORMAT", fl,
+    ignore.case = TRUE
   )))
 
   if (no_head_line) {
@@ -40,7 +41,8 @@ read_fhx <- function(fname, encoding, text) {
   }
 
   first <- suppressWarnings(grep(
-    "^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE
+    "^FHX2 FORMAT|^FIRE2 FORMAT", fl,
+    ignore.case = TRUE
   ))
 
   describe <- as.numeric(strsplit(fl[[first + 1]], "[ ]+")[[1]])
@@ -63,7 +65,7 @@ read_fhx <- function(fname, encoding, text) {
     return(splt)
   })))
 
-  if ( (describe[2] * describe[3]) != dim(uncleaned)[1] ) {
+  if ((describe[2] * describe[3]) != dim(uncleaned)[1]) {
     stop(
       "The file's three-digit descriptive information on line ", first + 1,
       " does not match the series titles in the file. Please correct this ",
@@ -87,7 +89,7 @@ read_fhx <- function(fname, encoding, text) {
 
   no_blank_line <- !any(
     fl[first + databuff - 1 + describe[3]] ==
-    c("", " ", strrep(" ", describe[2]))
+      c("", " ", strrep(" ", describe[2]))
   )
   if (no_blank_line) {
     stop("The line before the annual FHX data should be blank.")
@@ -95,7 +97,8 @@ read_fhx <- function(fname, encoding, text) {
 
   # Filling with info from the fhx file body.
   fl_body <- strsplit(
-    fl[(first + databuff + describe[3]):length(fl)], split = ""
+    fl[(first + databuff + describe[3]):length(fl)],
+    split = ""
   )
   first_year <- describe[1]
   if (length(series_names) == 1) {
@@ -115,7 +118,7 @@ read_fhx <- function(fname, encoding, text) {
     variable.name = "series", na.rm = TRUE
   )
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != ".", ]
-  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, abrv2rec_type, "")  #nolint
+  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, abrv2rec_type, "") # nolint
   fl_body_melt$rec_type <- make_rec_type(fl_body_melt$rec_type)
   f <- fhx(
     year = fl_body_melt$year, series = fl_body_melt$series,
@@ -135,7 +138,7 @@ read_fhx <- function(fname, encoding, text) {
 list_filestrings <- function(x) {
   stopifnot(is.fhx(x))
   out <- x
-  out$rec_type <- vapply(out$rec_type, rec_type2abrv, "")  #nolint
+  out$rec_type <- vapply(out$rec_type, rec_type2abrv, "") # nolint
   year_range <- seq(min(out$year), max(out$year))
   filler <- data.frame(
     year = year_range,
@@ -211,7 +214,7 @@ write_fhx <- function(x, fname = "") {
 #' @return A character string.
 #'
 abrv2rec_type <- function(x) {
-  rec_type_all[[as.character(x)]]  #nolint
+  rec_type_all[[as.character(x)]] # nolint
 }
 
 #' Convert rec_type char to abreviated fhx file event char.
@@ -221,5 +224,5 @@ abrv2rec_type <- function(x) {
 #' @return A character string.
 #'
 rec_type2abrv <- function(x) {
-  rec_type_abrv[[as.character(x)]]  #nolint
+  rec_type_abrv[[as.character(x)]] # nolint
 }

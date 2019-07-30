@@ -180,8 +180,9 @@ plot_intervals_dist <- function(x, binwidth = NULL) {
 #' @export
 print.intervals <- function(x, ...) {
   wfit <- MASS::fitdistr(x$intervals, "weibull")
-  weibull_median <- (wfit$estimate["scale"]
-                     * log(2) ^ (1 / wfit$estimate["shape"]))
+
+  weib_invshape <- 1 / wfit$estimate["shape"]
+  weibull_median <- wfit$estimate["scale"] * log(2) ^ weib_invshape
 
   quants <- quantile(x, q = c(0.847, 0.5, 0.125))
   cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")
@@ -228,16 +229,18 @@ print.intervals <- function(x, ...) {
     "D^- = ", round(x$kstest$statistic, 5),
     ", p = ", round(x$kstest$p.value, 5), "\n"
   ))
-  cat(strwrap(paste0(
+
+  null_msg <- paste0(
     "Null hypothesis: ",
     "The intervals were sampled from the theoretical distribution."
-    ), exdent = 4), sep = "\n"
   )
-  cat(strwrap(paste0(
+  cat(strwrap(null_msg, exdent = 4), sep = "\n")
+
+  alt_msg <- paste0(
     "Alt. hypothesis: ",
     "The intervals were not sampled from the theoretical distribution."
-    ), exdent = 4), sep = "\n"
   )
+  cat(strwrap(alt_msg, exdent = 4), sep = "\n")
   cat("\n\n")
 
   invisible(x)

@@ -65,7 +65,10 @@ test_that("delete year on multi-series FHX object", {
 test_that("delete series and year on multi-series FHX object", {
   target_year <- 1825
   test_subj <- delete(REF_MULTI, s = TARGET_SERIES, yr = target_year)
-  expect_false(as.character(TARGET_SERIES) %in% as.character(series_names(get_year(test_subj, target_year))))
+  expect_false(
+    as.character(TARGET_SERIES)
+    %in% as.character(series_names(get_year(test_subj, target_year)))
+  )
   expect_false(target_year %in% get_series(test_subj, TARGET_SERIES)$year)
 })
 
@@ -87,14 +90,20 @@ test_that("count_event_position on FHX object with injuries as events", {
 })
 
 test_that("count_event_position on FHX object with multiple select positions", {
-  test_subj <- count_event_position(REF_MULTI, position = c("unknown", "dormant"))
+  test_subj <- count_event_position(
+    REF_MULTI,
+    position = c("unknown", "dormant")
+  )
   expect_equal(subset(test_subj, event == "dormant_fs")$count, 3)
   expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
   expect_false("early_fs" %in% as.character(test_subj$event))
 })
 
 test_that("count_event_position on FHX object groupby list", {
-  grplist <- list(foo = c("unknown_fs", "early_fs"), bar = c("dormant_fs", "unknown_fi"))
+  grplist <- list(
+    foo = c("unknown_fs", "early_fs"),
+    bar = c("dormant_fs", "unknown_fi")
+  )
   test_subj <- count_event_position(REF_MULTI, groupby = grplist)
   expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
   expect_equal(subset(test_subj, event == "early_fs")$count, 4)

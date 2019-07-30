@@ -86,7 +86,7 @@ test_that("series_mean_interval on single series", {
 })
 
 test_that("series_mean_interval on multi-series object", {
-  expect_warning((series_mean_interval(REF_MULTI)))
+  expect_warning(series_mean_interval(REF_MULTI))
 })
 
 test_that("series_mean_interval on multi-series fhx object", {

@@ -189,8 +189,10 @@ print.intervals <- function(x, ...) {
   cat(strwrap("=================", prefix = "\t"), sep = "\n")
   cat("\n")
   cat(paste0("Composite name: ", x$comp_name, "\n"))
-  cat(paste0("Events range: ", x$event_range[1],
-             " to ", x$event_range[2], "\n"))
+  cat(paste0(
+    "Events range: ", x$event_range[1],
+    " to ", x$event_range[2], "\n"
+  ))
   cat("\n")
   cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))

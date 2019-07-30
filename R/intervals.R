@@ -28,7 +28,7 @@ intervals <- function(comp, densfun = "weibull") {
   }
   dens2cum <- list(weibull = stats::pweibull, lognormal = stats::plnorm)
   x <- list()
-  x$intervals <- diff(get_event_years(comp)[[1]]) # TODO: Check that we need [[1]]
+  x$intervals <- diff(get_event_years(comp)[[1]])
   if (length(x$intervals) < 2) {
     stop("Too few fire events to compute intervals")
   }
@@ -179,18 +179,17 @@ plot_intervals_dist <- function(x, binwidth = NULL) {
 #'
 #' @export
 print.intervals <- function(x, ...) {
-  # ans_sum <- format(rbind(mean(x), median(x), sd(x)), digits = 2, justify = 'right')
-  # dimnames(ans_sum) <- list(c('mean', 'median', 'sd'), "")
-
   wfit <- MASS::fitdistr(x$intervals, "weibull")
-  weibull_median <- wfit$estimate["scale"] * log(2)^(1 / wfit$estimate["shape"])
+  weibull_median <- (wfit$estimate["scale"]
+                     * log(2) ^ (1 / wfit$estimate["shape"]))
 
   quants <- quantile(x, q = c(0.847, 0.5, 0.125))
   cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")
   cat(strwrap("=================", prefix = "\t"), sep = "\n")
   cat("\n")
   cat(paste0("Composite name: ", x$comp_name, "\n"))
-  cat(paste0("Events range: ", x$event_range[1], " to ", x$event_range[2], "\n"))
+  cat(paste0("Events range: ", x$event_range[1],
+             " to ", x$event_range[2], "\n"))
   cat("\n")
   cat(paste0("\tTotal intervals: ", length(x$intervals), "\n"))
   cat(paste0("\tMean interval: ", round(mean(x), 1), "\n"))
@@ -199,14 +198,6 @@ print.intervals <- function(x, ...) {
   cat(paste0("\tStandard deviation: ", round(stats::sd(x$intervals), 1), "\n"))
   cat(paste0("\tMinimum interval: ", min(x), "\n"))
   cat(paste0("\tMaximum interval: ", max(x), "\n"))
-
-  # cat("\n\n")
-
-  # cat(strwrap(x$shapirotest$method, prefix = "\t"), sep = "\n")
-  # cat("\n")
-  # cat(paste0("W = ", round(x$shapirotest$statistic, 5), ", p = ", round(x$shapirotest$p.value, 5), "\n"))
-  # cat(strwrap("Null hypothesis: The intervals were sampled from a normally distributed population.", exdent = 4), sep = "\n")
-  # cat(strwrap("Alt. hypothesis: The intervals were not sampled from a normally distributed population.", exdent = 4), sep = "\n")
 
   cat("\n\n")
 
@@ -222,21 +213,31 @@ print.intervals <- function(x, ...) {
   cat(strwrap("-----------"), sep = "\n")
   cat("\n")
 
-  cat(strwrap(paste0("lower (12.5%): ", round(quants[1], 1), " | ", x$densfun, " median (50.0%): ", round(quants[2], 1), " | ", "upper (87.5%): ", round(quants[3], 1), "
-")))
-
-  # cat(paste0('Lower (12.5%): ', round(quants[1], 1), ' | '))
-  # cat(paste0(x$densfun, ' median (50.0%): ', round(quants[2], 1), ' | '))
-  # cat(paste0('Upper (87.5%): ', round(quants[3], 1), '\n'))
+  cat(strwrap(paste0(
+    "lower (12.5%): ", round(quants[1], 1), " | ", x$densfun, " ",
+    "median (50.0%): ", round(quants[2], 1), " | ",
+    "upper (87.5%): ", round(quants[3], 1), "\n"
+  )))
 
   cat("\n\n")
 
   cat(strwrap(x$kstest$method), sep = "\n")
   cat(strwrap(strrep("-", nchar(x$kstest$method))), sep = "\n")
   cat("\n")
-  cat(paste0("D^- = ", round(x$kstest$statistic, 5), ", p = ", round(x$kstest$p.value, 5), "\n"))
-  cat(strwrap("Null hypothesis: The intervals were sampled from the theoretical distribution.", exdent = 4), sep = "\n")
-  cat(strwrap("Alt. hypothesis: The intervals were not sampled from the theoretical distribution.", exdent = 4), sep = "\n")
+  cat(paste0(
+    "D^- = ", round(x$kstest$statistic, 5),
+    ", p = ", round(x$kstest$p.value, 5), "\n"
+  ))
+  cat(strwrap(paste0(
+    "Null hypothesis: ",
+    "The intervals were sampled from the theoretical distribution."
+    ), exdent = 4), sep = "\n"
+  )
+  cat(strwrap(paste0(
+    "Alt. hypothesis: ",
+    "The intervals were not sampled from the theoretical distribution."
+    ), exdent = 4), sep = "\n"
+  )
   cat("\n\n")
 
   invisible(x)

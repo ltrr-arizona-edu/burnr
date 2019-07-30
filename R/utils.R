@@ -28,8 +28,9 @@ fhx <- function(year, series, rec_type) {
 #' make_rec_type(c("null_year", "late_fs"))
 #' @export
 make_rec_type <- function(x) {
-  possible_levels <- rec_type_all
-  stopifnot(x %in% possible_levels) # TODO(brews): This could be make into a more clear error.
+  possible_levels <- rec_type_all  # nolint
+   # TODO(brews): This v could be make into a more clear error.
+  stopifnot(x %in% possible_levels)
   factor(x, levels = possible_levels)
 }
 
@@ -54,10 +55,13 @@ make_rec_type <- function(x) {
 #' event_yrs <- get_event_years(comp)[["pgm"]]
 #' print(event_yrs)
 #' @export
-get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE, custom_grep_str = NULL) {
+get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE,
+                            custom_grep_str = NULL) {
   stopifnot(is.fhx(x))
   if (!is.null(custom_grep_str)) {
-    message("burnr::get_events(): custom_search_str was defined, ignoring scar_event and injury_event arguments")
+    message(
+      "burnr::get_events(): custom_search_str was defined, ",
+      "ignoring scar_event and injury_event arguments")
   }
   # Build our search string.
   search_str <- NA
@@ -177,7 +181,7 @@ delete <- function(x, s, yr) {
   } else if (missing(yr)) {
     out <- subset(x, !(x$series %in% s))
   } else if (!missing(yr) & !missing(s)) {
-    out <- subset(x, !((x$series %in% s) & (x$year %in% yr)))
+    out <- subset(x, !( (x$series %in% s) & (x$year %in% yr) ))
   } else {
     out <- x
   }
@@ -198,10 +202,10 @@ find_recording <- function(x, injury_event) {
   # Use with: ddply(lgr2$rings, 'series', recorder_finder)
   x <- x[order(x$year), ]
 
-  recorder <- rec_type_recorder
-  injury <- rec_type_injury
-  scar <- rec_type_scar
-  ends <- rec_type_ends
+  recorder <- rec_type_recorder  # nolint
+  injury <- rec_type_injury  # nolint
+  scar <- rec_type_scar  # nolint
+  ends <- rec_type_ends  # nolint
 
   if (injury_event) {
     recorder <- c(recorder, injury)
@@ -213,9 +217,10 @@ find_recording <- function(x, injury_event) {
 
   inj_dif <- diff(inj)
 
-  # "ends" and "injuries" only record when there is recording event in adjacent year
+  # "ends" and "injuries" only record when there is recording event in adj year
   active <- c(rec, intersect(rec - 1, end), intersect(rec + 1, end))
-  active <- c(active, intersect(active - 1, inj), intersect(active + 1, inj)) # Really only need when injury_event = FALSE.
+  # Really only need below when injury_event = FALSE.
+  active <- c(active, intersect(active - 1, inj), intersect(active + 1, inj))
 
   # recording-ness is communicated through injury events
   if (any(inj_dif == 1) & !injury_event) {
@@ -255,14 +260,15 @@ find_recording <- function(x, injury_event) {
 count_event_position <- function(x, injury_event = FALSE, position, groupby) {
   stopifnot(is.fhx(x))
 
-  possible_position <- c("unknown", "dormant", "early", "middle", "late", "latewd")
+  possible_position <- c(
+    "unknown", "dormant", "early", "middle", "late", "latewd"
+  )
   if (missing(position)) {
     position <- possible_position
   }
   stopifnot(all(position %in% possible_position))
 
   target_events <- paste0(position, "_fs")
-  all_events <- paste0(possible_position, "_fs")
   if (injury_event == TRUE) {
     target_events <- c(target_events, paste0(position, "_fi"))
   }
@@ -271,11 +277,18 @@ count_event_position <- function(x, injury_event = FALSE, position, groupby) {
 
   out <- plyr::count(x$rec_type[msk])
   names(out) <- c("event", "count")
+
   if (!missing(groupby)) {
-    outgroup <- plyr::ldply(groupby, function(g) sum(subset(out, out$event %in% g)$count))
+
+    outgroup <- plyr::ldply(groupby,
+      function(g) sum(subset(out, out$event %in% g)$count)
+    )
+
     names(outgroup) <- c("event", "count")
     out <- rbind(out, outgroup)
+
   }
+
   out
 }
 
@@ -317,25 +330,35 @@ yearly_recording <- function(x, injury_event = FALSE) {
 #' event_yrs <- get_event_years(comp)[["pgm"]]
 #' print(event_yrs)
 #' @export
-composite <- function(x, filter_prop = 0.25, filter_min_rec = 2, filter_min_events = 1, injury_event = FALSE, comp_name = "COMP") {
+composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
+                      filter_min_events = 1, injury_event = FALSE,
+                      comp_name = "COMP") {
   stopifnot(is.fhx(x))
 
-  injury <- rec_type_injury
-  scar <- rec_type_scar
-  ends <- rec_type_ends
+  injury <- rec_type_injury  # nolint
+  scar <- rec_type_scar  # nolint
+  ends <- rec_type_ends  # nolint
 
   event <- scar
   if (injury_event) {
     event <- c(event, injury)
   }
-  event_count <- as.data.frame(table(year = subset(x, x$rec_type %in% event)$year))
+  event_count <- as.data.frame(
+    table(year = subset(x, x$rec_type %in% event)$year)
+  )
   recording_count <- yearly_recording(x, injury_event = injury_event)
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count,
     by = "year", suffixes = c("_event", "_recording")
   )
   counts$prop <- counts$Freq_event / counts$Freq_recording
-  filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min_rec) & (counts$Freq_event >= filter_min_events)
+
+  filter_mask <- (
+    (counts$prop >= filter_prop)
+    & (counts$Freq_recording >= filter_min_rec)
+    & (counts$Freq_event >= filter_min_events)
+  )
+
   out <- subset(counts, filter_mask)$year
   composite_event_years <- as.integer(levels(out)[out])
 

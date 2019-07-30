@@ -30,12 +30,22 @@ read_fhx <- function(fname, encoding, text) {
     stop("file appears to be empty")
   }
   fl <- readLines(con, warn = FALSE)
-  if (!any(suppressWarnings(grepl("^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE)))) {
+
+  no_head_line <- !any(suppressWarnings(grepl(
+    "^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE
+  )))
+
+  if (no_head_line) {
     stop("Cannot find line 'FHX2 FORMAT' or 'FIRE2 FORMAT'.")
   }
-  first <- suppressWarnings(grep("^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE))
+
+  first <- suppressWarnings(grep(
+    "^FHX2 FORMAT|^FIRE2 FORMAT", fl, ignore.case = TRUE
+  ))
+
   describe <- as.numeric(strsplit(fl[[first + 1]], "[ ]+")[[1]])
-  if (length(describe) != 3) { # First year; no. sites; length of site id.
+  # First year; no. sites; length of site id.
+  if (length(describe) != 3) {
     stop(paste(
       "Three-digit descriptive information that should be on line ",
       first + 1,
@@ -52,15 +62,20 @@ read_fhx <- function(fname, encoding, text) {
     splt <- splt[1:describe[2]]
     return(splt)
   })))
-  if ((describe[2] * describe[3]) != dim(uncleaned)[1]) {
+
+  if ( (describe[2] * describe[3]) != dim(uncleaned)[1] ) {
     stop(
       "The file's three-digit descriptive information on line ", first + 1,
-      " does not match the series titles in the file. Please correct this discrepancy."
+      " does not match the series titles in the file. Please correct this ",
+      "discrepancy."
     )
   }
   dim(uncleaned) <- c(describe[2], describe[3])
-  series_names <- apply(uncleaned, 1, function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = "")))
-  # series_names <- apply(uncleaned, 1, paste, collapse = "")
+  series_names <- apply(
+    uncleaned, 1,
+    function(x) gsub("^\\s+|\\s+$", "", paste(x, collapse = ""))
+  )
+
   databuff <- 2
   while (TRUE) {
     if (gsub("^\\s+|\\s+$", "", fl[first + databuff + describe[3]]) == "") {
@@ -69,11 +84,19 @@ read_fhx <- function(fname, encoding, text) {
       break
     }
   }
-  if (!any(fl[first + databuff - 1 + describe[3]] == c("", " ", strrep(" ", describe[2])))) {
+
+  no_blank_line <- !any(
+    fl[first + databuff - 1 + describe[3]] ==
+    c("", " ", strrep(" ", describe[2]))
+  )
+  if (no_blank_line) {
     stop("The line before the annual FHX data should be blank.")
   }
+
   # Filling with info from the fhx file body.
-  fl_body <- strsplit(fl[(first + databuff + describe[3]):length(fl)], split = "")
+  fl_body <- strsplit(
+    fl[(first + databuff + describe[3]):length(fl)], split = ""
+  )
   first_year <- describe[1]
   if (length(series_names) == 1) {
     # For whatever reason R wants to flip our dims when we have a single series.
@@ -85,7 +108,6 @@ read_fhx <- function(fname, encoding, text) {
       stringsAsFactors = FALSE
     )
   }
-  # DEBUG: Should try doing the lines below as part of the above function and see the time dif. Might be a boost.
   names(fl_body) <- series_names
   fl_body$year <- seq(first_year, first_year + dim(fl_body)[1] - 1)
   fl_body_melt <- reshape2::melt(fl_body,
@@ -93,7 +115,7 @@ read_fhx <- function(fname, encoding, text) {
     variable.name = "series", na.rm = TRUE
   )
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != ".", ]
-  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, abrv2rec_type, "")
+  fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, abrv2rec_type, "")  #nolint
   fl_body_melt$rec_type <- make_rec_type(fl_body_melt$rec_type)
   f <- fhx(
     year = fl_body_melt$year, series = fl_body_melt$series,
@@ -113,16 +135,16 @@ read_fhx <- function(fname, encoding, text) {
 list_filestrings <- function(x) {
   stopifnot(is.fhx(x))
   out <- x
-  out$rec_type <- vapply(out$rec_type, rec_type2abrv, "")
+  out$rec_type <- vapply(out$rec_type, rec_type2abrv, "")  #nolint
   year_range <- seq(min(out$year), max(out$year))
   filler <- data.frame(
     year = year_range,
-    series = rep("hackishSolution", length(year_range)),
+    series = rep("hackishsolution", length(year_range)),
     rec_type = rep(".", length(year_range))
   )
   out <- rbind(out, filler)
   out <- reshape2::dcast(out, year ~ series, value.var = "rec_type", fill = ".")
-  out$hackishSolution <- NULL
+  out$hackishsolution <- NULL
   # Weird thing to move year to the last column of the data.frame:
   out$yr <- out$year
   out$year <- NULL
@@ -189,7 +211,7 @@ write_fhx <- function(x, fname = "") {
 #' @return A character string.
 #'
 abrv2rec_type <- function(x) {
-  rec_type_all[[as.character(x)]]
+  rec_type_all[[as.character(x)]]  #nolint
 }
 
 #' Convert rec_type char to abreviated fhx file event char.
@@ -199,5 +221,5 @@ abrv2rec_type <- function(x) {
 #' @return A character string.
 #'
 rec_type2abrv <- function(x) {
-  rec_type_abrv[[as.character(x)]]
+  rec_type_abrv[[as.character(x)]]  #nolint
 }

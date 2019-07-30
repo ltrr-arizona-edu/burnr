@@ -1,5 +1,5 @@
 library(burnr)
-context('Utils')
+context("Utils")
 
 data(lgr2)
 TARGET_SERIES <- "LGR53"
@@ -7,7 +7,7 @@ REF_MULTI <- lgr2
 REF_SINGLE <- get_series(REF_MULTI, TARGET_SERIES)
 
 test_that("spotcheck get_series", {
-  test_subj <- get_series(REF_MULTI, TARGET_SERIES) 
+  test_subj <- get_series(REF_MULTI, TARGET_SERIES)
   expect_true(all(test_subj$series == TARGET_SERIES))
 })
 
@@ -34,10 +34,12 @@ test_that("series_names on single series", {
 })
 
 test_that("series_names on multi-series FHX object", {
-  a <-  c("LGR54", "LGR44", "LGR47", "LGR48", "LGR46", "LGR41", "LGR52", 
-          "LGR51", "LGR45", "LGR49", "LGR53", "LGR43", "LGR55", "LGR56", 
-          "LGR36", "LGR33", "LGR31", "LGR32", "LGR27", "LGR29", "LGR25", 
-          "LGR35", "LGR30", "LGR26", "LGR42", "LGR34")
+  a <- c(
+    "LGR54", "LGR44", "LGR47", "LGR48", "LGR46", "LGR41", "LGR52",
+    "LGR51", "LGR45", "LGR49", "LGR53", "LGR43", "LGR55", "LGR56",
+    "LGR36", "LGR33", "LGR31", "LGR32", "LGR27", "LGR29", "LGR25",
+    "LGR35", "LGR30", "LGR26", "LGR42", "LGR34"
+  )
   test_subj <- series_names(REF_MULTI)
   expect_true(length(union(a, test_subj)) == length(a))
 })
@@ -103,20 +105,28 @@ test_that("count_event_position on FHX object groupby list", {
 
 test_that("sort.fhx on FHX object by first_year", {
   goal <- c("a", "b")
-  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
-                  series = factor(c("a", "a", "b", "b")),
-                  rec_type = c("pith_year", "bark_year", 
-                               "pith_year", "bark_year"))
+  test_fhx <- fhx(
+    year = c(1850, 2010, 1900, 2000),
+    series = factor(c("a", "a", "b", "b")),
+    rec_type = c(
+      "pith_year", "bark_year",
+      "pith_year", "bark_year"
+    )
+  )
   sorted <- sort(test_fhx)
   expect_equal(goal, levels(sorted$series))
 })
 
 test_that("sort.fhx on FHX object by first_year with decreasing=TRUE", {
   goal <- c("b", "a")
-  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
-                  series = factor(c("a", "a", "b", "b")),
-                  rec_type = c("pith_year", "bark_year", 
-                               "pith_year", "bark_year"))
+  test_fhx <- fhx(
+    year = c(1850, 2010, 1900, 2000),
+    series = factor(c("a", "a", "b", "b")),
+    rec_type = c(
+      "pith_year", "bark_year",
+      "pith_year", "bark_year"
+    )
+  )
   sorted <- sort(test_fhx, sort_by = "first_year", decreasing = TRUE)
   expect_equal(goal, levels(sorted$series))
 })
@@ -124,11 +134,15 @@ test_that("sort.fhx on FHX object by first_year with decreasing=TRUE", {
 
 test_that("sort.fhx on FHX object by last_year", {
   goal <- c("b", "a")
-  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
-                  series = factor(c("a", "a", "b", "b")),
-                  rec_type = c("pith_year", "bark_year", 
-                               "pith_year", "bark_year"))
-  sorted <- sort(test_fhx, sort_by = 'last_year')
+  test_fhx <- fhx(
+    year = c(1850, 2010, 1900, 2000),
+    series = factor(c("a", "a", "b", "b")),
+    rec_type = c(
+      "pith_year", "bark_year",
+      "pith_year", "bark_year"
+    )
+  )
+  sorted <- sort(test_fhx, sort_by = "last_year")
   expect_equal(goal, levels(sorted$series))
 })
 
@@ -139,12 +153,16 @@ test_that("+.fhx on FHX objects", {
   year2 <- c(1900, 2000)
   series2 <- c("b", "b")
   rt2 <- c("pith_year", "bark_year")
-  test_fhx1 <- fhx(year = year1,
-                  series = factor(series1),
-                  rec_type = rt1) 
-  test_fhx2 <- fhx(year = year2,
-                  series = factor(series2),
-                  rec_type = rt2)
+  test_fhx1 <- fhx(
+    year = year1,
+    series = factor(series1),
+    rec_type = rt1
+  )
+  test_fhx2 <- fhx(
+    year = year2,
+    series = factor(series2),
+    rec_type = rt2
+  )
   test_fhx3 <- test_fhx1 + test_fhx2
   expect_equal(test_fhx3$year, c(year1, year2))
   expect_equal(test_fhx3$series, factor(c(series1, series2)))
@@ -152,22 +170,32 @@ test_that("+.fhx on FHX objects", {
 })
 
 test_that("check_duplicates returns with OK fhx obj", {
-  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
-                  series = factor(c("a", "a", "b", "b")),
-                  rec_type = c("pith_year", "bark_year", 
-                               "pith_year", "bark_year"))
-  checked <- burnr:::check_duplicates(test_fhx) 
+  test_fhx <- fhx(
+    year = c(1850, 2010, 1900, 2000),
+    series = factor(c("a", "a", "b", "b")),
+    rec_type = c(
+      "pith_year", "bark_year",
+      "pith_year", "bark_year"
+    )
+  )
+  checked <- burnr:::check_duplicates(test_fhx)
   expect_equal(test_fhx, checked)
 })
 
 test_that("check_duplicates throws error when fhx obj has duplicates", {
-  test_fhx <- fhx(year = c(1850, 2010, 1900, 2000),
-                  series = factor(c("a", "a", "b", "b")),
-                  rec_type = c("pith_year", "bark_year", 
-                               "pith_year", "bark_year"))
+  test_fhx <- fhx(
+    year = c(1850, 2010, 1900, 2000),
+    series = factor(c("a", "a", "b", "b")),
+    rec_type = c(
+      "pith_year", "bark_year",
+      "pith_year", "bark_year"
+    )
+  )
   test_fhx <- rbind(test_fhx, test_fhx)
-  expect_error(burnr:::check_duplicates(test_fhx), 
-               "*Please resolve duplicate records*")
+  expect_error(
+    burnr:::check_duplicates(test_fhx),
+    "*Please resolve duplicate records*"
+  )
 })
 
 test_that("as.fhx works on data.frame input", {
@@ -175,9 +203,11 @@ test_that("as.fhx works on data.frame input", {
   series_chr <- c("a", "a")
   events_chr <- c("pith_year", "bark_year")
 
-  test_df <- data.frame(year = yrs,
-                        series = series_chr,
-                        rec_type = events_chr)
+  test_df <- data.frame(
+    year = yrs,
+    series = series_chr,
+    rec_type = events_chr
+  )
 
   new_fhx <- burnr::as.fhx(test_df)
   expect_equal(new_fhx$year, yrs)
@@ -190,9 +220,11 @@ test_that("as.fhx works on list input", {
   series_chr <- c("a", "a")
   events_chr <- c("pith_year", "bark_year")
 
-  test_df <- list(year = yrs,
-                  series = series_chr,
-                  rec_type = events_chr)
+  test_df <- list(
+    year = yrs,
+    series = series_chr,
+    rec_type = events_chr
+  )
 
   new_fhx <- burnr::as.fhx(test_df)
   expect_equal(new_fhx$year, yrs)
@@ -205,11 +237,14 @@ test_that("as.fhx throws error when input missing key element", {
   series_chr <- c("a", "a")
   events_chr <- c("pith_year", "bark_year")
 
-  test_df <- list(year = yrs,
-                  serie = series_chr,  # bad spelling
-                  rec_type = events_chr)
+  test_df <- list(
+    year = yrs,
+    serie = series_chr, # bad spelling
+    rec_type = events_chr
+  )
 
-  expect_error(burnr:::as.fhx(test_df), 
-               "`x` must have members 'year', 'series', and 'rec_type'")
+  expect_error(
+    burnr:::as.fhx(test_df),
+    "`x` must have members 'year', 'series', and 'rec_type'"
+  )
 })
-

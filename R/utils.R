@@ -23,14 +23,13 @@ fhx <- function(year, series, rec_type) {
 #' @return A factor with appropriate fhx levels.
 #'
 #' @examples
-#' make_rec_type('null_year')
+#' make_rec_type("null_year")
 #'
-#' make_rec_type(c('null_year', 'late_fs'))
-#'
+#' make_rec_type(c("null_year", "late_fs"))
 #' @export
 make_rec_type <- function(x) {
-  possible_levels = rec_type_all
-  stopifnot(x %in% possible_levels)  # TODO(brews): This could be make into a more clear error.
+  possible_levels <- rec_type_all
+  stopifnot(x %in% possible_levels) # TODO(brews): This could be make into a more clear error.
   factor(x, levels = possible_levels)
 }
 
@@ -48,38 +47,37 @@ make_rec_type <- function(x) {
 #' get_event_years(pgm, scar_event = TRUE, injury_event = TRUE)
 #'
 #' # Passing a custom string to grep. This one identified recorder years:
-#' get_event_years(pgm, custom_grep_str = 'recorder_')
+#' get_event_years(pgm, custom_grep_str = "recorder_")
 #'
 #' # Use with composite to get composite years:
-#' comp <- composite(pgm, comp_name = 'pgm')
-#' event_yrs <- get_event_years(comp)[['pgm']]
+#' comp <- composite(pgm, comp_name = "pgm")
+#' event_yrs <- get_event_years(comp)[["pgm"]]
 #' print(event_yrs)
-#'
 #' @export
-get_event_years <- function(x, scar_event=TRUE, injury_event=FALSE, custom_grep_str=NULL) {
+get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE, custom_grep_str = NULL) {
   stopifnot(is.fhx(x))
   if (!is.null(custom_grep_str)) {
-    message('burnr::get_events(): custom_search_str was defined, ignoring scar_event and injury_event arguments')
+    message("burnr::get_events(): custom_search_str was defined, ignoring scar_event and injury_event arguments")
   }
   # Build our search string.
   search_str <- NA
   if (is.null(custom_grep_str)) {
     search_parts <- c()
     if (scar_event) {
-      search_parts <- c(search_parts, '_fs')
+      search_parts <- c(search_parts, "_fs")
     }
     if (injury_event) {
-      search_parts <- c(search_parts, '_fi')
+      search_parts <- c(search_parts, "_fi")
     }
-    if (length(search_parts) > 1){
-      search_str <- paste(search_parts, collapse = '|')
+    if (length(search_parts) > 1) {
+      search_str <- paste(search_parts, collapse = "|")
     } else {
       search_str <- search_parts
     }
   } else {
     search_str <- custom_grep_str
   }
-  plyr::dlply(x, c('series'), function(a) a$year[grepl(search_str, a$rec_type)])
+  plyr::dlply(x, c("series"), function(a) a$year[grepl(search_str, a$rec_type)])
 }
 
 #' Range of years for \code{fhx} object.
@@ -92,7 +90,6 @@ get_event_years <- function(x, scar_event=TRUE, injury_event=FALSE, custom_grep_
 #' @examples
 #' data(lgr2)
 #' year_range(lgr2)
-#'
 #' @export
 year_range <- function(x) {
   stopifnot(is.fhx(x))
@@ -109,7 +106,6 @@ year_range <- function(x) {
 #' @examples
 #' data(lgr2)
 #' series_names(lgr2)
-#'
 #' @export
 series_names <- function(x) {
   stopifnot(is.fhx(x))
@@ -128,7 +124,6 @@ series_names <- function(x) {
 #' get_year(lgr2, 1806)
 #'
 #' get_year(lgr2, 1805:1807)
-#'
 #' @export
 get_year <- function(x, yr) {
   stopifnot(is.fhx(x))
@@ -145,10 +140,9 @@ get_year <- function(x, yr) {
 #'
 #' @examples
 #' data(lgr2)
-#' get_series(lgr2, 'LGR46')
+#' get_series(lgr2, "LGR46")
 #'
-#' get_series(lgr2, c('LGR41', 'LGR46'))
-#'
+#' get_series(lgr2, c("LGR41", "LGR46"))
 #' @export
 get_series <- function(x, s) {
   stopifnot(is.fhx(x))
@@ -169,10 +163,9 @@ get_series <- function(x, s) {
 #'
 #' @examples
 #' data(lgr2)
-#' plot(delete(lgr2, s = 'LGR46'))
+#' plot(delete(lgr2, s = "LGR46"))
 #'
 #' plot(delete(lgr2, yr = 1300:1550))
-#'
 #' @export
 delete <- function(x, s, yr) {
   # Hint: It's just an inverse subset.
@@ -199,8 +192,7 @@ delete <- function(x, s, yr) {
 #' @examples
 #' require(plyr)
 #' data(lgr2)
-#' ddply(lgr2$rings, 'series', burnr:::find_recording, injury_event = TRUE)
-#'
+#' ddply(lgr2$rings, "series", burnr:::find_recording, injury_event = TRUE)
 #' @return A dataframe with a column of each year which is 'recording'.
 find_recording <- function(x, injury_event) {
   # Use with: ddply(lgr2$rings, 'series', recorder_finder)
@@ -259,20 +251,21 @@ find_recording <- function(x, injury_event) {
 #' # Using custom `groupby` args.
 #' grplist <- list(foo = c("dormant_fs", "early_fs"), bar = c("middle_fs", "late_fs"))
 #' count_event_position(pgm, groupby = grplist)
-#'
 #' @export
-count_event_position <- function(x, injury_event=FALSE, position, groupby) {
+count_event_position <- function(x, injury_event = FALSE, position, groupby) {
   stopifnot(is.fhx(x))
 
   possible_position <- c("unknown", "dormant", "early", "middle", "late", "latewd")
-  if (missing(position))
+  if (missing(position)) {
     position <- possible_position
+  }
   stopifnot(all(position %in% possible_position))
 
   target_events <- paste0(position, "_fs")
   all_events <- paste0(possible_position, "_fs")
-  if (injury_event == TRUE)
+  if (injury_event == TRUE) {
     target_events <- c(target_events, paste0(position, "_fi"))
+  }
 
   msk <- x$rec_type %in% target_events
 
@@ -296,12 +289,12 @@ count_event_position <- function(x, injury_event=FALSE, position, groupby) {
 #' @examples
 #' data(lgr2)
 #' yearly_recording(lgr2)
-#'
 #' @export
-yearly_recording <- function(x, injury_event=FALSE) {
-  as.data.frame(table(year = plyr::ddply(x, 'series',
-                                         find_recording,
-                                         injury_event = injury_event)$recording))
+yearly_recording <- function(x, injury_event = FALSE) {
+  as.data.frame(table(year = plyr::ddply(x, "series",
+    find_recording,
+    injury_event = injury_event
+  )$recording))
 }
 
 #' Composite fire events in fhx object returning composited object with prominent fires.
@@ -320,12 +313,11 @@ yearly_recording <- function(x, injury_event=FALSE) {
 #' composite(lgr2)
 #'
 #' # Use with composite to get composite years:
-#' comp <- composite(pgm, comp_name = 'pgm')
-#' event_yrs <- get_event_years(comp)[['pgm']]
+#' comp <- composite(pgm, comp_name = "pgm")
+#' event_yrs <- get_event_years(comp)[["pgm"]]
 #' print(event_yrs)
-#'
 #' @export
-composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events = 1, injury_event=FALSE, comp_name='COMP') {
+composite <- function(x, filter_prop = 0.25, filter_min_rec = 2, filter_min_events = 1, injury_event = FALSE, comp_name = "COMP") {
   stopifnot(is.fhx(x))
 
   injury <- rec_type_injury
@@ -340,7 +332,8 @@ composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events =
   recording_count <- yearly_recording(x, injury_event = injury_event)
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count,
-                  by = 'year', suffixes = c('_event', '_recording'))
+    by = "year", suffixes = c("_event", "_recording")
+  )
   counts$prop <- counts$Freq_event / counts$Freq_recording
   filter_mask <- (counts$prop >= filter_prop) & (counts$Freq_recording >= filter_min_rec) & (counts$Freq_event >= filter_min_events)
   out <- subset(counts, filter_mask)$year
@@ -360,8 +353,10 @@ composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events =
   out_year <- c(out_year, max(x$year))
   out_rec_type <- c(out_rec_type, "outer_year")
   # Make all years after the first event 'recording'.
-  new_recording <- setdiff(seq(min(composite_event_years), max(x$year)),
-                           out_year)
+  new_recording <- setdiff(
+    seq(min(composite_event_years), max(x$year)),
+    out_year
+  )
   out_year <- c(out_year, new_recording)
   out_rec_type <- c(out_rec_type, rep("recorder_year", length(new_recording)))
   out_series <- factor(rep(comp_name, length(out_year)))
@@ -382,9 +377,8 @@ composite <- function(x, filter_prop=0.25, filter_min_rec=2, filter_min_events =
 #' data(lgr2)
 #' plot(sort(lgr2, decreasing = TRUE))
 #' plot(sort(lgr2, sort_by = "last_year"))
-#'
 #' @export
-sort.fhx <- function(x, decreasing=FALSE, sort_by = 'first_year', ...) {
+sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
   stopifnot(is.fhx(x))
   stopifnot(sort_by %in% c("first_year", "last_year"))
   if (is.null(sort_by)) sort.order <- min
@@ -396,8 +390,9 @@ sort.fhx <- function(x, decreasing=FALSE, sort_by = 'first_year', ...) {
   series_minyears <- stats::aggregate(year ~ series, x, sort.order)
   i <- order(series_minyears$year, decreasing = decreasing)
   x$series <- factor(x$series,
-                     levels = series_minyears$series[i],
-                     ordered = TRUE)
+    levels = series_minyears$series[i],
+    ordered = TRUE
+  )
   x
 }
 
@@ -412,7 +407,6 @@ sort.fhx <- function(x, decreasing=FALSE, sort_by = 'first_year', ...) {
 #' data(lgr2)
 #' data(pgm)
 #' plot(lgr2 + pgm)
-#'
 #' @export
 "+.fhx" <- function(a, b) {
   stopifnot(is.fhx(a))
@@ -430,10 +424,9 @@ sort.fhx <- function(x, decreasing=FALSE, sort_by = 'first_year', ...) {
 #' @examples
 #' data(lgr2)
 #' is.fhx(lgr2)
-#'
 #' @export
 is.fhx <- function(x) {
-  inherits(x, 'fhx')
+  inherits(x, "fhx")
 }
 
 #' Convert to fhx object.
@@ -449,13 +442,12 @@ is.fhx <- function(x) {
 #' data(lgr2)
 #' example_dataframe <- as.data.frame(lgr2)
 #' back_to_fhx <- as.fhx(example_dataframe)
-#'
 #' @export
 as.fhx <- function(x) {
   if (!all(c("year", "series", "rec_type") %in% names(x))) {
     stop("`x` must have members 'year', 'series', and 'rec_type'")
   }
-  
+
   yr <- as.numeric(x$year)
   series <- as.factor(x$series)
   record <- make_rec_type(x$rec_type)
@@ -473,14 +465,15 @@ as.fhx <- function(x) {
 #' data(lgr2)
 #' data(pgm)
 #' burnr:::check_duplicates(lgr2 + pgm)
-#'
 check_duplicates <- function(x) {
   stopifnot(is.fhx(x))
   if (!anyDuplicated(x)) {
     return(invisible(x))
   } else {
-      duplicates <- x[duplicated(x), ]
-      stop(duplicates, "\n", c(dim(duplicates)[1],
-           " duplicate(s) found. Please resolve duplicate records."))
+    duplicates <- x[duplicated(x), ]
+    stop(duplicates, "\n", c(
+      dim(duplicates)[1],
+      " duplicate(s) found. Please resolve duplicate records."
+    ))
   }
 }

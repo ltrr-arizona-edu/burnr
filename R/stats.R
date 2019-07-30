@@ -13,18 +13,21 @@
 #'
 #' # You can create your own list of statistics to output. You can also create
 #' # your own functions:
-#' flist <- list(n = count_year_span,
-#'               xbar_interval = function(x) mean_interval(x, injury_event = TRUE))
+#' flist <- list(
+#'   n = count_year_span,
+#'   xbar_interval = function(x) mean_interval(x, injury_event = TRUE)
+#' )
 #' sstats <- series_stats(lgr2)
 #' head(sstats)
-#'
 #' @export
-series_stats <- function(x, func_list=list(first=first_year,last=last_year,
-  years=count_year_span,inner_type=inner_type,outer_type=outer_type,
-  number_scars=count_scar,number_injuries=count_injury,
-  recording_years=count_recording,mean_interval=series_mean_interval)) {
+series_stats <- function(x, func_list = list(
+                           first = first_year, last = last_year,
+                           years = count_year_span, inner_type = inner_type, outer_type = outer_type,
+                           number_scars = count_scar, number_injuries = count_injury,
+                           recording_years = count_recording, mean_interval = series_mean_interval
+                         )) {
   stopifnot(is.fhx(x))
-  plyr::ddply(x, c('series'), function(df) data.frame(lapply(func_list, function(f) f(df))))
+  plyr::ddply(x, c("series"), function(df) data.frame(lapply(func_list, function(f) f(df))))
 }
 
 #' First (earliest) year of an fhx series.
@@ -90,7 +93,7 @@ inner_type <- function(x) {
 #'
 #' @export
 count_scar <- function(x) {
-  length(grep('_fs', x$rec_type))
+  length(grep("_fs", x$rec_type))
 }
 
 #' Number of injury events in an fhx series.
@@ -101,7 +104,7 @@ count_scar <- function(x) {
 #'
 #' @export
 count_injury <- function(x) {
-  length(grep('_fi', x$rec_type))
+  length(grep("_fi", x$rec_type))
 }
 
 #' Number of recording years in an fhx series.
@@ -112,7 +115,7 @@ count_injury <- function(x) {
 #' @return The number of recording events observed in the series.
 #'
 #' @export
-count_recording <- function(x, injury_event=FALSE) {
+count_recording <- function(x, injury_event = FALSE) {
   nrow(find_recording(x, injury_event = injury_event))
 }
 
@@ -125,13 +128,13 @@ count_recording <- function(x, injury_event=FALSE) {
 #' @seealso intervals()
 #'
 #' @export
-series_mean_interval <- function(x, injury_event=FALSE) {
-  if (length(unique(x$series)) > 1){
-    warning('`series_mean_interval()` run on object with multiple series - results may not be correct')
+series_mean_interval <- function(x, injury_event = FALSE) {
+  if (length(unique(x$series)) > 1) {
+    warning("`series_mean_interval()` run on object with multiple series - results may not be correct")
   }
-  search_str <- '_fs'
+  search_str <- "_fs"
   if (injury_event) {
-    search_str <- paste0('_fi|', search_str)
+    search_str <- paste0("_fi|", search_str)
   }
   event_years <- sort(x$year[grepl(search_str, x$rec_type)])
   out <- NA
@@ -150,21 +153,23 @@ series_mean_interval <- function(x, injury_event=FALSE) {
 #' @export
 #'
 sample_depth <- function(x) {
-  if(!is.fhx(x)) stop("x must be an fhx object")
+  if (!is.fhx(x)) stop("x must be an fhx object")
   x_stats <- series_stats(x)
   n_trees <- nrow(x_stats)
   out <- data.frame(year = min(x_stats$first):max(x_stats$last))
-  for(i in 1:n_trees){
-    yrs <- x_stats[i, ]$first : x_stats[i, ]$last
+  for (i in 1:n_trees) {
+    yrs <- x_stats[i, ]$first:x_stats[i, ]$last
     treespan <- data.frame(year = yrs, z = 1)
     names(treespan)[2] <- paste(x_stats$series[i])
-    out <- merge(out, treespan, by=c('year'), all=TRUE)
+    out <- merge(out, treespan, by = c("year"), all = TRUE)
   }
-  if(n_trees > 1){
-    out$samp_depth <- rowSums(out[, -1], na.rm=TRUE)
+  if (n_trees > 1) {
+    out$samp_depth <- rowSums(out[, -1], na.rm = TRUE)
   }
-  else out$samp_depth <- out[, -1]
-  out <- subset(out, select=c('year', 'samp_depth'))
+  else {
+    out$samp_depth <- out[, -1]
+  }
+  out <- subset(out, select = c("year", "samp_depth"))
   return(out)
 }
 
@@ -177,12 +182,14 @@ sample_depth <- function(x) {
 #'
 #' @export
 summary.fhx <- function(object, ...) {
-  out <-list(number_series = length(series_names(object)),
-             first_year = first_year(object),
-             last_year = last_year(object),
-             number_scars = count_scar(object),
-             number_injuries = count_injury(object))
-  class(out) <- 'summary.fhx'
+  out <- list(
+    number_series = length(series_names(object)),
+    first_year = first_year(object),
+    last_year = last_year(object),
+    number_scars = count_scar(object),
+    number_injuries = count_injury(object)
+  )
+  class(out) <- "summary.fhx"
   out
 }
 
@@ -197,20 +204,19 @@ summary.fhx <- function(object, ...) {
 #' @examples
 #' data("pgm")
 #' percent_scarred(pgm)
-#'
 #' @export
-percent_scarred <- function(x, injury_event=FALSE){
-  series_rec <- plyr::ddply(x, "series", find_recording, injury_event=TRUE)
+percent_scarred <- function(x, injury_event = FALSE) {
+  series_rec <- plyr::ddply(x, "series", find_recording, injury_event = TRUE)
   rec_count <- plyr::count(series_rec, "recording")
-  series_fs <- x[grepl('_fs', x$rec_type), ]
+  series_fs <- x[grepl("_fs", x$rec_type), ]
   fs_count <- plyr::count(series_fs, "year")
-  if(injury_event) {
-    series_fs <- x[grepl('_fs', x$rec_type) | grepl('_fi', x$rec_type), ]
+  if (injury_event) {
+    series_fs <- x[grepl("_fs", x$rec_type) | grepl("_fi", x$rec_type), ]
     fs_count <- plyr::count(series_fs, "year")
   }
-  out <- merge(rec_count, fs_count, by.x = 'recording', by.y = 'year', all=TRUE)
-  names(out) <- c('year', 'num_rec', 'num_scars')
-  out[is.na(out$num_scars), 'num_scars'] <- 0
+  out <- merge(rec_count, fs_count, by.x = "recording", by.y = "year", all = TRUE)
+  names(out) <- c("year", "num_rec", "num_scars")
+  out[is.na(out$num_scars), "num_scars"] <- 0
   out$percent_scarred <- round(out$num_scars / out$num_rec * 100, 0)
   return(out)
 }

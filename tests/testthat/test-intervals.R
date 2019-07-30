@@ -1,5 +1,5 @@
 library(burnr)
-context('Interval statistics')
+context("Interval statistics")
 
 data(pgm)
 REF <- composite(pgm)
@@ -22,10 +22,12 @@ test_that("Check maximum interval", {
 })
 
 test_that("quantile.intervals() basic cases", {
-  expect_equal(quantile(TEST_INTER), 
-               c(3.918526, 10.590013, 20.555245), 
-               tolerance=1e-3)
-  expect_equal(quantile(TEST_INTER, q = c(0.25)), 
-               c(6.227954), tolerance=1e-3)
+  expect_equal(quantile(TEST_INTER),
+    c(3.918526, 10.590013, 20.555245),
+    tolerance = 1e-3
+  )
+  expect_equal(quantile(TEST_INTER, q = c(0.25)),
+    c(6.227954),
+    tolerance = 1e-3
+  )
 })
-

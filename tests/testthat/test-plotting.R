@@ -23,16 +23,16 @@ test_that("plot_demograph() gets ggplot with composite_rug", {
 
 test_that("plot_demograph() gets ggplot with facet", {
   p <- plot_demograph(TEST_FHX,
-    facet_group = TEST_META$SpeciesID,
-    facet_id = TEST_META$TreeID
+    facet_group = TEST_META$SpeciesID,  # nolint
+    facet_id = TEST_META$TreeID  # nolint
   )
   expect_is(p, "ggplot")
 })
 
 test_that("plot_demograph() gets ggplot with grid facet", {
   p <- plot_demograph(TEST_FHX,
-    facet_group = TEST_META$SpeciesID,
-    facet_id = TEST_META$TreeID,
+    facet_group = TEST_META$SpeciesID,  # nolint
+    facet_id = TEST_META$TreeID,  # nolint
     facet_type = "grid"
   )
   expect_is(p, "ggplot")
@@ -40,8 +40,8 @@ test_that("plot_demograph() gets ggplot with grid facet", {
 
 test_that("plot_demograph() gets ggplot with wrap facet", {
   p <- plot_demograph(TEST_FHX,
-    facet_group = TEST_META$SpeciesID,
-    facet_id = TEST_META$TreeID,
+    facet_group = TEST_META$SpeciesID,  # nolint
+    facet_id = TEST_META$TreeID,  # nolint
     facet_type = "wrap"
   )
   expect_is(p, "ggplot")
@@ -49,8 +49,8 @@ test_that("plot_demograph() gets ggplot with wrap facet", {
 
 test_that("plot_demograph() gets ggplot with color", {
   p <- plot_demograph(TEST_FHX,
-    color_group = TEST_META$SpeciesID,
-    color_id = TEST_META$TreeID
+    color_group = TEST_META$SpeciesID,  # nolint
+    color_id = TEST_META$TreeID  # nolint
   )
   expect_is(p, "ggplot")
 })

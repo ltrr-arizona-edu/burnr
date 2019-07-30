@@ -65,7 +65,7 @@ read_fhx <- function(fname, encoding, text) {
     return(splt)
   })))
 
-  if ((describe[2] * describe[3]) != dim(uncleaned)[1]) {
+  if ( (describe[2] * describe[3]) != dim(uncleaned)[1] ) {
     stop(
       "The file's three-digit descriptive information on line ", first + 1,
       " does not match the series titles in the file. Please correct this ",

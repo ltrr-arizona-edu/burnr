@@ -182,7 +182,7 @@ print.intervals <- function(x, ...) {
   wfit <- MASS::fitdistr(x$intervals, "weibull")
 
   weib_invshape <- 1 / wfit$estimate["shape"]
-  weibull_median <- wfit$estimate["scale"] * log(2) ^ weib_invshape
+  weibull_median <- wfit$estimate["scale"] * log(2)^weib_invshape  # nolint
 
   quants <- quantile(x, q = c(0.847, 0.5, 0.125))
   cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")

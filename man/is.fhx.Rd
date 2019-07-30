@@ -18,5 +18,4 @@ Check if object is fhx.
 \examples{
 data(lgr2)
 is.fhx(lgr2)
-
 }

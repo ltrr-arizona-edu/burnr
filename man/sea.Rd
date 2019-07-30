@@ -59,9 +59,11 @@ the bootstrap procedure, but differs in the kind of output provided for the user
 \dontrun{
 # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
 # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
-target_url <- paste0('http://iridl.ldeo.columbia.edu',
-                     '/SOURCES/.LDEO/.TRL/.NADA2004',
-                     '/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt')
+target_url <- paste0(
+  "http://iridl.ldeo.columbia.edu",
+  "/SOURCES/.LDEO/.TRL/.NADA2004",
+  "/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt"
+)
 pdsi <- read.table(target_url, header = TRUE, row.names = 1)
 pdsi <- subset(pdsi, select = "RECON")
 

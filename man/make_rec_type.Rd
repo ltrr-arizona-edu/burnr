@@ -16,8 +16,7 @@ A factor with appropriate fhx levels.
 Turn character vector into factor with proper fhx levels.
 }
 \examples{
-make_rec_type('null_year')
+make_rec_type("null_year")
 
-make_rec_type(c('null_year', 'late_fs'))
-
+make_rec_type(c("null_year", "late_fs"))
 }

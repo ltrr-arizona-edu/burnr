@@ -18,5 +18,4 @@ Range of years for \code{fhx} object.
 \examples{
 data(lgr2)
 year_range(lgr2)
-
 }

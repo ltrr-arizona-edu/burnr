@@ -24,8 +24,7 @@ You can combine s and yr to specify years within select series to remove.
 }
 \examples{
 data(lgr2)
-plot(delete(lgr2, s = 'LGR46'))
+plot(delete(lgr2, s = "LGR46"))
 
 plot(delete(lgr2, yr = 1300:1550))
-
 }

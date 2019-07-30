@@ -17,7 +17,7 @@ Write an fhx object to a new FHX2 file.
 \examples{
 \dontrun{
 data(lgr2)
-write_fhx(lgr2, 'afile.fhx')
+write_fhx(lgr2, "afile.fhx")
 }
 
 }

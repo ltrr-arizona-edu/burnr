@@ -20,6 +20,5 @@ Subset `rings` data.frame to years that are considered recording.
 \examples{
 require(plyr)
 data(lgr2)
-ddply(lgr2$rings, 'series', burnr:::find_recording, injury_event = TRUE)
-
+ddply(lgr2$rings, "series", burnr:::find_recording, injury_event = TRUE)
 }

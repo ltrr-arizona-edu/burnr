@@ -21,5 +21,4 @@ Percent scarred time series
 \examples{
 data("pgm")
 percent_scarred(pgm)
-
 }

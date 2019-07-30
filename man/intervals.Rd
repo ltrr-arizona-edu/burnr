@@ -22,11 +22,10 @@ data(pgm)
 interv <- intervals(composite(pgm))
 print(interv)
 
-mean(interv)  # Mean interval
+mean(interv) # Mean interval
 
 # Now fit log-normal distribution instead of Weibull.
 intervals(composite(pgm), densfun = "lognormal")
-
 \dontrun{
 # Boxplot of fire interval distribution.
 boxplot(intervals(composite(pgm))$intervals)

@@ -19,5 +19,4 @@ Check for duplicate observations in an fhx object.
 data(lgr2)
 data(pgm)
 burnr:::check_duplicates(lgr2 + pgm)
-
 }

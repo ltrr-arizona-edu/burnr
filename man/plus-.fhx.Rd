@@ -21,5 +21,4 @@ Concatenate or combine two fhx objects.
 data(lgr2)
 data(pgm)
 plot(lgr2 + pgm)
-
 }

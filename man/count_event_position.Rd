@@ -34,5 +34,4 @@ count_event_position(pgm, injury_event = TRUE, position = c("unknown", "early", 
 # Using custom `groupby` args.
 grplist <- list(foo = c("dormant_fs", "early_fs"), bar = c("middle_fs", "late_fs"))
 count_event_position(pgm, groupby = grplist)
-
 }

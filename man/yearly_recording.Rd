@@ -20,5 +20,4 @@ Count the number of recording series for each year in an fhx object.
 \examples{
 data(lgr2)
 yearly_recording(lgr2)
-
 }

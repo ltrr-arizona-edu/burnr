@@ -22,5 +22,4 @@ The "year", "series", and "rec_type" in \code{x} will be pass through \code{as.n
 data(lgr2)
 example_dataframe <- as.data.frame(lgr2)
 back_to_fhx <- as.fhx(example_dataframe)
-
 }

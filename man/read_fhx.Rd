@@ -22,7 +22,7 @@ Read FHX2 file and return an \code{fhx} object.
 }
 \examples{
 \dontrun{
-d <- read_fhx('afile.fhx')
+d <- read_fhx("afile.fhx")
 }
 
 }

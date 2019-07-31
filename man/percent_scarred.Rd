@@ -9,11 +9,13 @@ percent_scarred(x, injury_event = FALSE)
 \arguments{
 \item{x}{An fhx object.}
 
-\item{injury_event}{Boolean indicating whether years with injury events should be considered as scars. Defaults to FALSE.}
+\item{injury_event}{Boolean indicating whether years with injury events
+should be considered as scars. Defaults to FALSE.}
 }
 \value{
-A data.frame with four columns: \code{Year}, \code{NumRec} with the number of recording trees,
-\code{NumScars} with the number of fire scars and/or events, and \code{PercScarred} with the proportion of scars/events.
+A data.frame with four columns: \code{Year}, \code{NumRec} with the
+  number of recording trees, \code{NumScars} with the number of fire scars 
+  and/or events, and \code{PercScarred} with the proportion of scars/events.
 }
 \description{
 Percent scarred time series

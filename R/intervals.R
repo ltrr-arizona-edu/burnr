@@ -1,7 +1,8 @@
 #' Constructor for S3 intervals class.
 #'
 #' @param comp A composite fhx instance. Should have only one series in it.
-#' @param densfun String giving desired distribution to fit. Suggest "weibull" or "lognormal". Default is "weibull".
+#' @param densfun String giving desired distribution to fit. Suggest "weibull"
+#'   or "lognormal". Default is "weibull".
 #'
 #' @return An intervals instance.
 #'
@@ -109,7 +110,8 @@ max.intervals <- function(x, ...) {
 #'
 #' @param x An intervals object.
 #' @param q Vector giving the desired quantiles.
-#' @param ... Additional arguments passed to the quantile function of the fit distribution.
+#' @param ... Additional arguments passed to the quantile function of the fit
+#'   distribution.
 #'
 #' @examples
 #' data(pgm)

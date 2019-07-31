@@ -11,7 +11,8 @@
 
 \item{decreasing}{Logical. Decreasing sorting? Defaults to FALSE.}
 
-\item{sort_by}{Either 'first_year' or 'last_year'. Designates the inner or outer year for sorting. Defaults to 'first_year'}
+\item{sort_by}{Either 'first_year' or 'last_year'. Designates the inner or
+outer year for sorting. Defaults to 'first_year'}
 
 \item{...}{Additional arguments that fall off the face of the universe.}
 }

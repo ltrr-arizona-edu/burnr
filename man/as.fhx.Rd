@@ -7,7 +7,8 @@
 as.fhx(x)
 }
 \arguments{
-\item{x}{A data frame or list-like object. Must have named elements or columns for "year", "series", and "rec_type".}
+\item{x}{A data frame or list-like object. Must have named elements or
+columns for "year", "series", and "rec_type".}
 }
 \value{
 `x` cast to an fhx object.
@@ -16,7 +17,9 @@ as.fhx(x)
 Convert to fhx object.
 }
 \details{
-The "year", "series", and "rec_type" in \code{x} will be pass through \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before being passed to \code{burnr::fhx}.
+The "year", "series", and "rec_type" in \code{x} will be pass through 
+  \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before
+  being passed to \code{burnr::fhx}.
 }
 \examples{
 data(lgr2)

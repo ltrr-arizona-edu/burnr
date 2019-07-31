@@ -14,8 +14,9 @@ Plot a sea object.
 }
 \examples{
 \dontrun{
-# Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
-# of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
+# Read in the Cook and Krusic (2004; The North American Drought Atlas) 
+# reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez 
+# Mountains area (gridpoint 133).
 
 data(pgm_pdsi)
 

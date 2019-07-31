@@ -1,8 +1,11 @@
 #' Constructor for S3 fhx class.
 #'
-#' @param year A numeric vector of observation years for each \code{series} and \code{rec_type} argument.
-#' @param series A factor of series names for each \code{year} and \code{rec_type} argument.
-#' @param rec_type A factor of ring types for each element in \code{year} and \code{series}.
+#' @param year A numeric vector of observation years for each \code{series} and
+#'   \code{rec_type} argument.
+#' @param series A factor of series names for each \code{year} and 
+#'   \code{rec_type} argument.
+#' @param rec_type A factor of ring types for each element in \code{year} and
+#'   \code{series}.
 #'
 #' @return An fhx instance.
 #'
@@ -37,11 +40,16 @@ make_rec_type <- function(x) {
 #' Get years with events for an fhx object.
 #'
 #' @param x An \code{fhx} object.
-#' @param scar_event Boolean indicating whether years with scar events should be returned. Default is TRUE.
-#' @param injury_event Boolean indicating whether years with injury events should be returned. Default is FALSE.
-#' @param custom_grep_str Character string to pass a custom grep search pattern to search rec_type column for. Undefined by default.
+#' @param scar_event Boolean indicating whether years with scar events should be
+#'   returned. Default is TRUE.
+#' @param injury_event Boolean indicating whether years with injury events
+#'   should be returned. Default is FALSE.
+#' @param custom_grep_str Character string to pass a custom grep search pattern
+#'   to search rec_type column for. Undefined by default.
 #'
-#' @return A list. Elements of the list are integer vectors giving the years with events for each fhx series. Each element's name reflects the series name.
+#' @return A list. Elements of the list are integer vectors giving the years
+#'   with events for each fhx series. Each element's name reflects the series
+#'   name.
 #'
 #' @examples
 #' data(pgm)
@@ -191,7 +199,8 @@ delete <- function(x, s, yr) {
 #' Subset `rings` data.frame to years that are considered recording.
 #'
 #' @param x A an fhx object dataframe.
-#' @param injury_event Boolean indicating whether injuries should be considered event.
+#' @param injury_event Boolean indicating whether injuries should be considered
+#'   event.
 #'
 #' @examples
 #' require(plyr)
@@ -237,11 +246,18 @@ find_recording <- function(x, injury_event) {
 #' Count of different events
 #'
 #' @param x An fhx object.
-#' @param injury_event Optional boolean indicating whether injuries should be considered event. Default is FALSE.
-#' @param position Optional character vector giving the types of event positions to include in the count. Can any combination of the following: "unknown", "dormant", "early", "middle", "late", "latewd". The default counts all event positions.
-#' @param groupby Optional named list containing character vectors that are used to count the total number of different event types. The names given to each character vector give the group's name in the output data.frame.
+#' @param injury_event Optional boolean indicating whether injuries should be
+#'   considered event. Default is FALSE.
+#' @param position Optional character vector giving the types of event positions
+#'   to include in the count. Can any combination of the following: "unknown",
+#'   "dormant", "early", "middle", "late", "latewd". The default counts all
+#'   event positions.
+#' @param groupby Optional named list containing character vectors that are used
+#'   to count the total number of different event types. The names given to each
+#'   character vector give the group's name in the output data.frame.
 #'
-#' @return A data.frame with a columns giving the event and corresponding number of events for each event type.
+#' @return A data.frame with a columns giving the event and corresponding number
+#'   of events for each event type.
 #'
 #' @examples
 #' data(pgm)
@@ -250,11 +266,18 @@ find_recording <- function(x, injury_event) {
 #' # As above, but considering injuries to be a type of event.
 #' count_event_position(pgm, injury_event = TRUE)
 #'
-#' # Count only events of a certain position, in this case, "unknown", "early", and "middle".
-#' count_event_position(pgm, injury_event = TRUE, position = c("unknown", "early", "middle"))
+#' # Count only events of a certain position, in this case, "unknown", "early",
+#' # and "middle".
+#' count_event_position(pgm,
+#'   injury_event = TRUE,
+#'   position = c("unknown", "early", "middle")
+#' )
 #'
 #' # Using custom `groupby` args.
-#' grplist <- list(foo = c("dormant_fs", "early_fs"), bar = c("middle_fs", "late_fs"))
+#' grplist <- list(
+#'   foo = c("dormant_fs", "early_fs"),
+#'   bar = c("middle_fs", "late_fs")
+#' )
 #' count_event_position(pgm, groupby = grplist)
 #' @export
 count_event_position <- function(x, injury_event = FALSE, position, groupby) {
@@ -295,9 +318,11 @@ count_event_position <- function(x, injury_event = FALSE, position, groupby) {
 #' Count the number of recording series for each year in an fhx object.
 #'
 #' @param x An fhx object.
-#' @param injury_event Boolean indicating whether injuries should be considered event. Default is FALSE.
+#' @param injury_event Boolean indicating whether injuries should be considered
+#'   event. Default is FALSE.
 #'
-#' @return A dataframe with a columns giving the year and corresponding number of recording events for that year.
+#' @return A dataframe with a columns giving the year and corresponding number
+#'   of recording events for that year.
 #'
 #' @examples
 #' data(lgr2)
@@ -310,16 +335,23 @@ yearly_recording <- function(x, injury_event = FALSE) {
   )$recording))
 }
 
-#' Composite fire events in fhx object returning composited object with prominent fires.
+#' Composite fire events in fhx object.
 #'
 #' @param x An fhx instance.
-#' @param filter_prop The minimum proportion of fire events to recording series needed in order to be considered. Default is 0.25.
-#' @param filter_min_rec The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.
-#' @param filter_min_events The minimum number of fire scars needed to be considered a fire event. Default is 1. This includes injuries if injury_event=TRUE.
-#' @param injury_event Boolean indicating whether injuries should be considered events. Default is FALSE.
-#' @param comp_name Character vector of the series name for the returned fhx object composite series. Default is 'COMP'.
+#' @param filter_prop The minimum proportion of fire events to recording series
+#'   needed in order to be considered. Default is 0.25.
+#' @param filter_min_rec The minimum number of recording series needed to be
+#'   considered a fire event. Default is 2 recording series.
+#' @param filter_min_events The minimum number of fire scars needed to be
+#'   considered a fire event. Default is 1. This includes injuries if
+#'   injury_event=TRUE.
+#' @param injury_event Boolean indicating whether injuries should be considered
+#'   events. Default is FALSE.
+#' @param comp_name Character vector of the series name for the returned fhx
+#'   object composite series. Default is 'COMP'.
 #'
-#' @return An fhx object representing the composited series. The object will be empty if there are nocomposite-worthy events.
+#' @return An fhx object representing the composited series. The object will be
+#'   empty if there are nocomposite-worthy events.
 #'
 #' @examples
 #' data(lgr2)
@@ -390,7 +422,8 @@ composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
 #' Sort the series names of fhx object by the earliest or latest year.
 #'
 #' @param x An fhx instance to be sorted.
-#' @param sort_by Either 'first_year' or 'last_year'. Designates the inner or outer year for sorting. Defaults to 'first_year'
+#' @param sort_by Either 'first_year' or 'last_year'. Designates the inner or
+#'   outer year for sorting. Defaults to 'first_year'
 #' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
 #' @param ... Additional arguments that fall off the face of the universe.
 #'
@@ -454,12 +487,15 @@ is.fhx <- function(x) {
 
 #' Convert to fhx object.
 #'
-#' @param x A data frame or list-like object. Must have named elements or columns for "year", "series", and "rec_type".
+#' @param x A data frame or list-like object. Must have named elements or
+#'   columns for "year", "series", and "rec_type".
 #'
 #' @return `x` cast to an fhx object.
 #'
 #' @details
-#' The "year", "series", and "rec_type" in \code{x} will be pass through \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before being passed to \code{burnr::fhx}.
+#' The "year", "series", and "rec_type" in \code{x} will be pass through 
+#'   \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before
+#'   being passed to \code{burnr::fhx}.
 #'
 #' @examples
 #' data(lgr2)

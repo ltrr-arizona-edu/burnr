@@ -10,7 +10,8 @@ inner_type(x)
 \item{x}{An fhx object.}
 }
 \value{
-The a factor giving the type of observation in the first observation of the series.
+The a factor giving the type of observation in the first observation
+  of the series.
 }
 \description{
 Type of observation in the first (earliest) year of an fhx series.

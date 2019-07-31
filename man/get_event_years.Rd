@@ -10,14 +10,19 @@ get_event_years(x, scar_event = TRUE, injury_event = FALSE,
 \arguments{
 \item{x}{An \code{fhx} object.}
 
-\item{scar_event}{Boolean indicating whether years with scar events should be returned. Default is TRUE.}
+\item{scar_event}{Boolean indicating whether years with scar events should be
+returned. Default is TRUE.}
 
-\item{injury_event}{Boolean indicating whether years with injury events should be returned. Default is FALSE.}
+\item{injury_event}{Boolean indicating whether years with injury events
+should be returned. Default is FALSE.}
 
-\item{custom_grep_str}{Character string to pass a custom grep search pattern to search rec_type column for. Undefined by default.}
+\item{custom_grep_str}{Character string to pass a custom grep search pattern
+to search rec_type column for. Undefined by default.}
 }
 \value{
-A list. Elements of the list are integer vectors giving the years with events for each fhx series. Each element's name reflects the series name.
+A list. Elements of the list are integer vectors giving the years
+  with events for each fhx series. Each element's name reflects the series
+  name.
 }
 \description{
 Get years with events for an fhx object.

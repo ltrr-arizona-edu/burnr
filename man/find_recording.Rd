@@ -9,7 +9,8 @@ find_recording(x, injury_event)
 \arguments{
 \item{x}{A an fhx object dataframe.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered event.}
+\item{injury_event}{Boolean indicating whether injuries should be considered
+event.}
 }
 \value{
 A dataframe with a column of each year which is 'recording'.

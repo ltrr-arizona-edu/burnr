@@ -1,7 +1,8 @@
 #' Read FHX2 file and return an \code{fhx} object.
 #'
 #' @param fname Name of target FHX file. Needs to be in format version 2.
-#' @param encoding Encoding to use when reading the FHX file. The default is to use the system.
+#' @param encoding Encoding to use when reading the FHX file. The default is to
+#'   use the system.
 #' @param text Character string. If \code{fname} is not provided and
 #'   \code{text} is, then data is read from \code{text} using a text connection.
 #'

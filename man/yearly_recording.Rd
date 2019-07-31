@@ -9,10 +9,12 @@ yearly_recording(x, injury_event = FALSE)
 \arguments{
 \item{x}{An fhx object.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered event. Default is FALSE.}
+\item{injury_event}{Boolean indicating whether injuries should be considered
+event. Default is FALSE.}
 }
 \value{
-A dataframe with a columns giving the year and corresponding number of recording events for that year.
+A dataframe with a columns giving the year and corresponding number
+  of recording events for that year.
 }
 \description{
 Count the number of recording series for each year in an fhx object.

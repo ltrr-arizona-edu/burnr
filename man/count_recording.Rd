@@ -9,7 +9,8 @@ count_recording(x, injury_event = FALSE)
 \arguments{
 \item{x}{An fhx object.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered event.}
+\item{injury_event}{Boolean indicating whether injuries should be considered
+event.}
 }
 \value{
 The number of recording events observed in the series.

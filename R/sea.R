@@ -1,51 +1,67 @@
 #' Perform superposed epoch analysis.
 #'
-#' @param x A data.frame climate reconstruction or tree-ring series with row names as years.
-#' @param event A vector of event years for superposed epoch, such as fire years, or an fhx object
-#' with a single \code{series} as produced by \code{composite}
-#' @param nbefore  The number of lag years prior to the event year
-#' @param nafter The number of lag years following the event year
-#' @param event_range Logical. Constrain the time series to the time period of key events within the range
-#' of the \code{x} series. FALSE uses the entire series, ignoring the period of key events.
-#' @param n_iter The number of iterations for bootstrap resampling
+#' @param x A data.frame climate reconstruction or tree-ring series with row
+#'   names as years.
+#' @param event A vector of event years for superposed epoch, such as fire
+#'   years, or an fhx object
+#'   with a single \code{series} as produced by \code{composite}.
+#' @param nbefore  The number of lag years prior to the event year.
+#' @param nafter The number of lag years following the event year.
+#' @param event_range Logical. Constrain the time series to the time period of
+#'   key events within the range of the \code{x} series. FALSE uses the entire 
+#'   series, ignoring the period of key events.
+#' @param n_iter The number of iterations for bootstrap resampling.
 #'
 #' @details Superposed epoch analysis (SEA) helps to evaluate fire-climate
-#' relationships in studies of tree-ring fire history. It works by compositing the values of
-#' an annual time series or climate reconstruction for the fire years provided (\code{key}) and both positive and
-#' negative lag years. Bootstrap resampling of the time series is performed to evaluate the statistical
-#' significance of each year's mean value. Users interpret the departure of the actual event year
-#' means from the simulated event year means. Note that there is no rescaling of the climate time series 'x'.
+#' relationships in studies of tree-ring fire history. It works by compositing 
+#' the values of an annual time series or climate reconstruction for the fire
+#' years provided (\code{key}) and both positive and negative lag years. 
+#' Bootstrap resampling of the time series is performed to evaluate the 
+#' statistical significance of each year's mean value. Users interpret the 
+#' departure of the actual event year means from the simulated event year means.
+#' Note that there is no rescaling of the climate time series 'x'.
 #'
-#' The significance of lag-year departures from the average climate condition was first noted by
-#' Baisan and Swetnam (1990) and used in an organized SEA by Swetnam (1993). Since then, the procedure
-#' has been commonly applied in fire history studies. The FORTRAN program EVENT.exe was written by
-#' Richard Holmes and Thomas Swetnam (Holmes and Swetnam 1994) to perform SEA for fire history
-#' specifically. EVENT was incorporated in the FHX2 software by Henri Grissino-Mayer.
-#' Further information about SEA can be found in the FHAES user's manual, http://help.fhaes.org/
+#' The significance of lag-year departures from the average climate condition
+#' was first noted by Baisan and Swetnam (1990) and used in an organized SEA by
+#' Swetnam (1993). Since then, the procedure has been commonly applied in fire
+#' history studies. The FORTRAN program EVENT.exe was written by Richard Holmes 
+#' and Thomas Swetnam (Holmes and Swetnam 1994) to perform SEA for fire history
+#' specifically. EVENT was incorporated in the FHX2 software by Henri 
+#' Grissino-Mayer. Further information about SEA can be found in the FHAES 
+#' user's manual, http://help.fhaes.org/.
 #'
-#' sea was designed to replicate EVENT as closely as possible. We have tried to stay true to their implementation of
-#' SEA, although multiple versions of the analysis exist in the climate literature and for fire
-#' history. The outcome of EVENT and sea should
-#' only differ slightly in the values of the simulated events and the departures, because random
-#' draws are used. The event year and lag significance levels should match, at least in the general
+#' \code{sea} was designed to replicate EVENT as closely as possible. We have
+#' tried to stay true to their implementation of SEA, although multiple versions
+#' of the analysis exist in the climate literature and for fire history. The
+#' outcome of EVENT and sea should only differ slightly in the values of the
+#' simulated events and the departures, because random draws are used. The event
+#' year and lag significance levels should match, at least in the general
 #' pattern.
 #'
-#' We note that our implementation of \code{sea} borrows from the \code{dplR::sea} function in how it performs
-#' the bootstrap procedure, but differs in the kind of output provided for the user.
+#' We note that our implementation of \code{sea} borrows from the 
+#' \code{dplR::sea} function in how it performs the bootstrap procedure, but 
+#' differs in the kind of output provided for the user.
 #'
-#' @return A sea object containing, (1) a vector of event years, (2) a data.frame summary of the actual events composite,
-#' (3) a data.frame summary of the simulated events composite, (4) a data.frame summary of the departures of actual from simulated events,
-#' (5) a matrix of the actual events composite, and (6) a matrix of simulated events composite.
+#' @return A sea object containing, (1) a vector of event years, (2) a 
+#' data.frame summary of the actual events composite, (3) a data.frame summary
+#' of the simulated events composite, (4) a data.frame summary of the departures
+#' of actual from simulated events, (5) a matrix of the actual events composite,
+#' and (6) a matrix of simulated events composite.
 #'
-#' @references Baisan and Swetnam 1990, Fire history on desert mountain range: Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest Research 20:1559-1569.
-#' @references Bunn 2008, A dendrochronology program library in R (dplR), Dendrochronologia 26:115-124
+#' @references Baisan and Swetnam 1990, Fire history on desert mountain range:
+#'   Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest
+#'   Research 20:1559-1569.
+#' @references Bunn 2008, A dendrochronology program library in R (dplR),
+#'   Dendrochronologia 26:115-124
 #' @references Holmes and Swetnam 1994, EVENT program description
-#' @references Swetnam 1993, Fire history and climate change in giant sequoia groves, Science 262:885-889.
+#' @references Swetnam 1993, Fire history and climate change in giant sequoia
+#'   groves, Science 262:885-889.
 #'
 #' @examples
 #' \dontrun{
-#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
-#' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
+#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) 
+#' # reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez 
+#' # Mountains area (gridpoint 133).
 #' target_url <- paste0(
 #'   "http://iridl.ldeo.columbia.edu",
 #'   "/SOURCES/.LDEO/.TRL/.NADA2004",
@@ -269,8 +285,9 @@ is.sea <- function(x) inherits(x, "sea")
 #'
 #' @examples
 #' \dontrun{
-#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) reconstruction
-#' # of Palmer Drought Severity Index (PDSI) for the Jemez Mountains area (gridpoint 133).
+#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) 
+#' # reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez 
+#' # Mountains area (gridpoint 133).
 #'
 #' data(pgm_pdsi)
 #'

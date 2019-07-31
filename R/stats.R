@@ -50,7 +50,8 @@ first_year <- function(x) {
 #'
 #' @param x An fhx object.
 #'
-#' @return The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x$year.
+#' @return The maximum or last year of series in 'x'. 'NA' will be returned if
+#'   'NA' is in x$year.
 #'
 #' @export
 last_year <- function(x) {
@@ -61,7 +62,8 @@ last_year <- function(x) {
 #'
 #' @param x An fhx object.
 #'
-#' @return The difference between the first and last observations in the series. 'NA' will be returned if 'NA' is in 'x$year'.
+#' @return The difference between the first and last observations in the series.
+#'   'NA' will be returned if 'NA' is in 'x$year'.
 #'
 #' @export
 count_year_span <- function(x) {
@@ -72,7 +74,8 @@ count_year_span <- function(x) {
 #'
 #' @param x An fhx object.
 #'
-#' @return The a factor giving the type of observation in the last observation of the series.
+#' @return The a factor giving the type of observation in the last observation
+#'   of the series.
 #'
 #' @export
 outer_type <- function(x) {
@@ -83,7 +86,8 @@ outer_type <- function(x) {
 #'
 #' @param x An fhx object.
 #'
-#' @return The a factor giving the type of observation in the first observation of the series.
+#' @return The a factor giving the type of observation in the first observation
+#'   of the series.
 #'
 #' @export
 inner_type <- function(x) {
@@ -115,7 +119,8 @@ count_injury <- function(x) {
 #' Number of recording years in an fhx series.
 #'
 #' @param x An fhx object.
-#' @param injury_event Boolean indicating whether injuries should be considered event.
+#' @param injury_event Boolean indicating whether injuries should be considered
+#'   event.
 #'
 #' @return The number of recording events observed in the series.
 #'
@@ -126,8 +131,10 @@ count_recording <- function(x, injury_event = FALSE) {
 
 #' Calculate mean fire interval of a single fhx series.
 #'
-#' @param x An fhx object with a single series. For proper fire intervals see `intervals()`.
-#' @param injury_event Boolean indicating whether injuries should be considered event.
+#' @param x An fhx object with a single series. For proper fire intervals see 
+#'   `intervals()`.
+#' @param injury_event Boolean indicating whether injuries should be considered
+#'   event.
 #'
 #' @return The mean fire interval observed in the series.
 #' @seealso intervals()
@@ -204,10 +211,12 @@ summary.fhx <- function(object, ...) {
 #' Percent scarred time series
 #'
 #' @param x An fhx object.
-#' @param injury_event Boolean indicating whether years with injury events should be considered as scars. Defaults to FALSE.
+#' @param injury_event Boolean indicating whether years with injury events
+#'   should be considered as scars. Defaults to FALSE.
 #'
-#' @return A data.frame with four columns: \code{Year}, \code{NumRec} with the number of recording trees,
-#' \code{NumScars} with the number of fire scars and/or events, and \code{PercScarred} with the proportion of scars/events.
+#' @return A data.frame with four columns: \code{Year}, \code{NumRec} with the
+#'   number of recording trees, \code{NumScars} with the number of fire scars 
+#'   and/or events, and \code{PercScarred} with the proportion of scars/events.
 #'
 #' @examples
 #' data("pgm")

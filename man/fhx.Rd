@@ -7,11 +7,14 @@
 fhx(year, series, rec_type)
 }
 \arguments{
-\item{year}{A numeric vector of observation years for each \code{series} and \code{rec_type} argument.}
+\item{year}{A numeric vector of observation years for each \code{series} and
+\code{rec_type} argument.}
 
-\item{series}{A factor of series names for each \code{year} and \code{rec_type} argument.}
+\item{series}{A factor of series names for each \code{year} and 
+\code{rec_type} argument.}
 
-\item{rec_type}{A factor of ring types for each element in \code{year} and \code{series}.}
+\item{rec_type}{A factor of ring types for each element in \code{year} and
+\code{series}.}
 }
 \value{
 An fhx instance.

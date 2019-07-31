@@ -9,7 +9,8 @@ intervals(comp, densfun = "weibull")
 \arguments{
 \item{comp}{A composite fhx instance. Should have only one series in it.}
 
-\item{densfun}{String giving desired distribution to fit. Suggest "weibull" or "lognormal". Default is "weibull".}
+\item{densfun}{String giving desired distribution to fit. Suggest "weibull"
+or "lognormal". Default is "weibull".}
 }
 \value{
 An intervals instance.

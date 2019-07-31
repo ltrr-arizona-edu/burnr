@@ -10,7 +10,8 @@ last_year(x)
 \item{x}{An fhx object.}
 }
 \value{
-The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x$year.
+The maximum or last year of series in 'x'. 'NA' will be returned if
+  'NA' is in x$year.
 }
 \description{
 Last (most recent) year of an fhx series.

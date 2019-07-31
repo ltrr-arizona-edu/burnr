@@ -10,7 +10,8 @@ outer_type(x)
 \item{x}{An fhx object.}
 }
 \value{
-The a factor giving the type of observation in the last observation of the series.
+The a factor giving the type of observation in the last observation
+  of the series.
 }
 \description{
 Type of observation in the last (most recent) year of an fhx series.

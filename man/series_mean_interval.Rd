@@ -7,9 +7,11 @@
 series_mean_interval(x, injury_event = FALSE)
 }
 \arguments{
-\item{x}{An fhx object with a single series. For proper fire intervals see `intervals()`.}
+\item{x}{An fhx object with a single series. For proper fire intervals see 
+`intervals()`.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered event.}
+\item{injury_event}{Boolean indicating whether injuries should be considered
+event.}
 }
 \value{
 The mean fire interval observed in the series.

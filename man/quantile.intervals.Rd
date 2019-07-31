@@ -11,7 +11,8 @@
 
 \item{q}{Vector giving the desired quantiles.}
 
-\item{...}{Additional arguments passed to the quantile function of the fit distribution.}
+\item{...}{Additional arguments passed to the quantile function of the fit
+distribution.}
 }
 \description{
 Fit distribution quantiles.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{composite}
 \alias{composite}
-\title{Composite fire events in fhx object returning composited object with prominent fires.}
+\title{Composite fire events in fhx object.}
 \usage{
 composite(x, filter_prop = 0.25, filter_min_rec = 2,
   filter_min_events = 1, injury_event = FALSE, comp_name = "COMP")
@@ -10,21 +10,28 @@ composite(x, filter_prop = 0.25, filter_min_rec = 2,
 \arguments{
 \item{x}{An fhx instance.}
 
-\item{filter_prop}{The minimum proportion of fire events to recording series needed in order to be considered. Default is 0.25.}
+\item{filter_prop}{The minimum proportion of fire events to recording series
+needed in order to be considered. Default is 0.25.}
 
-\item{filter_min_rec}{The minimum number of recording series needed to be considered a fire event. Default is 2 recording series.}
+\item{filter_min_rec}{The minimum number of recording series needed to be
+considered a fire event. Default is 2 recording series.}
 
-\item{filter_min_events}{The minimum number of fire scars needed to be considered a fire event. Default is 1. This includes injuries if injury_event=TRUE.}
+\item{filter_min_events}{The minimum number of fire scars needed to be
+considered a fire event. Default is 1. This includes injuries if
+injury_event=TRUE.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered events. Default is FALSE.}
+\item{injury_event}{Boolean indicating whether injuries should be considered
+events. Default is FALSE.}
 
-\item{comp_name}{Character vector of the series name for the returned fhx object composite series. Default is 'COMP'.}
+\item{comp_name}{Character vector of the series name for the returned fhx
+object composite series. Default is 'COMP'.}
 }
 \value{
-An fhx object representing the composited series. The object will be empty if there are nocomposite-worthy events.
+An fhx object representing the composited series. The object will be
+  empty if there are nocomposite-worthy events.
 }
 \description{
-Composite fire events in fhx object returning composited object with prominent fires.
+Composite fire events in fhx object.
 }
 \examples{
 data(lgr2)

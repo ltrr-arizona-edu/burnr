@@ -24,4 +24,5 @@ Imports:
     reshape2,
     plyr
 RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

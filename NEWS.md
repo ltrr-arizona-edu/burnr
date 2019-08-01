@@ -10,9 +10,11 @@ Changes in this release:
 
 * Removed deprecated `get_ggplot()`. Please use `plot_demograph()` now.
 
-* Removed broken `site_stats()` function (Issue #138). Please use `intervals()` and `print()` to get the same statistics. 
+* Removed broken `site_stats()` function (Issue #138). Please use `intervals()` and `print()` to get the same statistics.
 
 * `composite()` now returns an empty fhx object if no composite-worthy events are found (Issue #131). Much better than throwing an obtuse error.
+
+* Updated in-package citation information (`citation("burnr")`). Please cite burnr if you use it in your work!
 
 * Added unit tests for basic plotting function options.
 

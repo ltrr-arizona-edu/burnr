@@ -37,7 +37,7 @@ Note that 'year', 'series', and 'rec_type' are pass through \code{\link[=as.nume
 \examples{
 x <- fhx(
   year = c(1900, 1954, 1996),
-  series = as.factor(rep("tree1", 3)),
+  series = rep("tree1", 3),
   rec_type = c("pith_year", "unknown_fs", "bark_year")
 )
 print(x)

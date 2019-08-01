@@ -2,7 +2,7 @@
 
 Changes in this release:
 
-* Added `as_fhx()`. This takes data frames, tibbles, and lists as input. It assumes they have "year", "series", and "rec_type" elements/columns. It returns an `fhx` object. This makes life easier for people who work with the tidyverse. It helps make life easier for users who want to work with thier own non-FHX fire-history file formats (Issue #120). The `fhx()` constructor now also uses type casting for input so that should make life easier (Issue #150).
+* Added `as_fhx()` (Issue #120). This takes data frames, tibbles, and lists as input. It assumes they have "year", "series", and "rec_type" elements/columns. It returns an `fhx` object. Additionally, the `fhx()` constructor now also uses type casting for input (Issue #150) - so no more worrying if your `rec_types` are factors or character vectors. These changes are a big improvement for anyone working in the tidyverse or anyone working with thier own non-FHX fire-history file formats.
 
 * Extensive improvement to documentation (e.g. Issue #145). This includes new "See Also" sections (so users can find cool functions), fixes for spelling errors, and clarifications to dyslexic prose.
 

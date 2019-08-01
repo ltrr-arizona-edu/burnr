@@ -6,7 +6,7 @@ Changes in this release:
 
 * Extensive improvement to documentation (e.g. Issue #145). This includes new "See Also" sections (so users can find cool functions), fixes for spelling errors, and clarifications to dyslexic prose.
 
-* `write_fhx()` will now throw a warning if users try to write an `fhx` object that has records types that violate the FHX2 file standard (Issue #149). I still strongly recommend using `write.csv(...)` on `fhx` objects and `as.fhx(read.csv(...))` for IO with experimental `fhx` data.
+* `write_fhx()` will now throw a warning if users try to write an `fhx` object that has record types violating the FHX2 file convention (Issue #149). I still strongly recommend using `write.csv(...)` on `fhx` objects and `as.fhx(read.csv(...))` for IO with experimental `fhx` data.
 
 * Removed deprecated `run_sea()`. Be sure to use `sea()` now.
 

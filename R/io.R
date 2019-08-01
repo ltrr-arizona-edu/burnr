@@ -204,6 +204,12 @@ write_fhx <- function(x, fname = "") {
     stop("Please specify a character string naming a file or connection open
           for writing.")
   }
+  if (violates_canon(x)) {
+    warning(
+      "`write_fhx()` run on `fhx` object with rec_types that violate FHX2", 
+      " canon - other software may not be able to read the output FHX file"
+    )
+  }
   d <- list_filestrings(x)
   fl <- file(fname, open = "wt")
   cat(paste(d[["head_line"]], "\n", d[["subhead_line"]], "\n", sep = ""),

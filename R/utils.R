@@ -724,3 +724,19 @@ check_duplicates <- function(x) {
     ))
   }
 }
+
+
+#' Test if `fhx` object respects canon FHX2 format
+#'
+#' @param x An `fhx` object.
+#'
+#' @return Boolean. Does `x` violate the canon format?
+#'
+#' @details
+#' Checks `x` "rec_type" to see if it uses experimental or non-canon events
+#' that go against the vanilla FHX2 file format.
+#'
+#' @noRd
+violates_canon <- function(x) {
+  !all(x$rec_type %in% rec_type_canon)  # nolint
+}

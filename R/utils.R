@@ -4,7 +4,8 @@
 #' @param series An n-length factor or character vector of observation series
 #'   names.
 #' @param rec_type An n-length factor or character vector denoting the record
-#'   type for each observations.
+#'   type for each observations. Note that this needs to use a controlled
+#'   vocabulary, see `burnr:::rec_type_all` for all possible values.
 #'
 #' @return An `fhx` object. `fhx` are S3 objects; specialized data frames with 3
 #' columns:
@@ -14,10 +15,14 @@
 #'   * "rec_type": An n-length factor with controlled vocabulary and levels.
 #'     This records the type of ring or record of each observation.
 #'
+#' @details
+#' Note that 'year', 'series', and 'rec_type' are pass through [as.numeric()], 
+#' [as.factor()], and [make_rec_type()] the `fhx` object is created.
+#'
 #' @examples
 #' x <- fhx(
 #'   year = c(1900, 1954, 1996),
-#'   series = as.factor(rep("tree1", 3)),
+#'   series = rep("tree1", 3),
 #'   rec_type = c("pith_year", "unknown_fs", "bark_year")
 #' )
 #' print(x)
@@ -39,10 +44,11 @@
 #'
 #' @export
 fhx <- function(year, series, rec_type) {
-  if (!is.numeric(year)) stop("year must be numeric")
-  if (!is.factor(series)) stop("series must be factor")
-  rec_type <- make_rec_type(rec_type)
-  ringsdf <- data.frame(year = year, series = series, rec_type = rec_type)
+  ringsdf <- data.frame(
+    year = as.numeric(year),
+    series = as.factor(series),
+    rec_type = make_rec_type(rec_type)
+  )
   class(ringsdf) <- c("fhx", "data.frame")
   ringsdf
 }
@@ -51,7 +57,8 @@ fhx <- function(year, series, rec_type) {
 #' Turn character vector into factor with proper `fhx` levels
 #'
 #' @param x A character vector or factor containing one or more rec_type-like
-#'   strings.
+#'   strings. This uses a controlled vocabulary, see `burnr:::rec_type_all`
+#'   for list of all possible rec_type values.
 #'
 #' @return A factor with appropriate `fhx` levels.
 #'
@@ -662,11 +669,6 @@ is.fhx <- function(x) {
 #'
 #' @return `x` cast to an `fhx` object.
 #'
-#' @details
-#' The "year", "series", and "rec_type" in `x` will be pass through
-#'   [as.numeric()], [as.factor()], and [make_rec_type()] before
-#'   being passed to [fhx()].
-#'
 #' @seealso
 #'   * [fhx()] constructs an `fhx` object.
 #'   * [is_fhx()] test whether object is `fhx`.
@@ -684,11 +686,7 @@ as_fhx <- function(x) {
     stop("`x` must have members 'year', 'series', and 'rec_type'")
   }
 
-  yr <- as.numeric(x$year)
-  series <- as.factor(x$series)
-  record <- make_rec_type(x$rec_type)
-
-  fhx(yr, series, record)
+  fhx(x$year, x$series, x$rec_type)
 }
 
 

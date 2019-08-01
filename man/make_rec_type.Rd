@@ -8,7 +8,8 @@ make_rec_type(x)
 }
 \arguments{
 \item{x}{A character vector or factor containing one or more rec_type-like
-strings.}
+strings. This uses a controlled vocabulary, see \code{burnr:::rec_type_all}
+for list of all possible rec_type values.}
 }
 \value{
 A factor with appropriate \code{fhx} levels.

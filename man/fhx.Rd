@@ -13,7 +13,8 @@ fhx(year, series, rec_type)
 names.}
 
 \item{rec_type}{An n-length factor or character vector denoting the record
-type for each observations.}
+type for each observations. Note that this needs to use a controlled
+vocabulary, see \code{burnr:::rec_type_all} for all possible values.}
 }
 \value{
 An \code{fhx} object. \code{fhx} are S3 objects; specialized data frames with 3
@@ -28,6 +29,10 @@ This records the type of ring or record of each observation.
 }
 \description{
 Constructor for \code{fhx} objects
+}
+\details{
+Note that 'year', 'series', and 'rec_type' are pass through \code{\link[=as.numeric]{as.numeric()}},
+\code{\link[=as.factor]{as.factor()}}, and \code{\link[=make_rec_type]{make_rec_type()}} the \code{fhx} object is created.
 }
 \examples{
 x <- fhx(

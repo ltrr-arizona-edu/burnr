@@ -16,11 +16,6 @@ for "year", "series", and "rec_type".}
 \description{
 Alias to \code{\link[=as_fhx]{as_fhx()}}
 }
-\details{
-The "year", "series", and "rec_type" in \code{x} will be pass through
-\code{\link[=as.numeric]{as.numeric()}}, \code{\link[=as.factor]{as.factor()}}, and \code{\link[=make_rec_type]{make_rec_type()}} before
-being passed to \code{\link[=fhx]{fhx()}}.
-}
 \examples{
 data(lgr2)
 example_dataframe <- as.data.frame(lgr2)

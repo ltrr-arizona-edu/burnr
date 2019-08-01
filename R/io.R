@@ -11,7 +11,7 @@
 #' @seealso
 #'   * [write_fhx()] write an `fhx` object to a file.
 #'   * [fhx()] create an `fhx` object.
-#'   * [as.fhx()] cast data frame or similar object to an `fhx` object.
+#'   * [as_fhx()] cast data frame or similar object to an `fhx` object.
 #'
 #' @examples
 #' \dontrun{
@@ -147,7 +147,7 @@ read_fhx <- function(fname, encoding, text) {
 #'
 #' @noRd
 list_filestrings <- function(x) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   out <- x
   out$rec_type <- vapply(out$rec_type, rec_type2abrv, "") # nolint
   year_range <- seq(min(out$year), max(out$year))

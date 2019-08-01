@@ -25,6 +25,6 @@ make_rec_type(c("null_year", "late_fs"))
 \seealso{
 \itemize{
 \item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
-\item \code{\link[=as.fhx]{as.fhx()}} casts data frame-like objects into \code{fhx} objects.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like objects into \code{fhx} objects.
 }
 }

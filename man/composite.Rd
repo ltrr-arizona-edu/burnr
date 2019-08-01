@@ -55,6 +55,6 @@ object.
 \item \code{\link[=yearly_recording]{yearly_recording()}} count the number of "recording" events in each year of
 an \code{fhx} object.
 \item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
-\item \code{\link[=as.fhx]{as.fhx()}} casts data frame-like object into an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into an \code{fhx} object.
 }
 }

@@ -2,7 +2,7 @@
 
 Changes in this release:
 
-* Added `as.fhx()`. This takes data frames, tibbles, and lists as input. It assumes they have "year", "series", and "rec_type" elements/columns. It returns an `fhx` object. This makes life easier for people who work with the tidyverse. It helps make life easier for users who want to work with thier own non-FHX fire-history file formats. (Issue #120)
+* Added `as_fhx()`. This takes data frames, tibbles, and lists as input. It assumes they have "year", "series", and "rec_type" elements/columns. It returns an `fhx` object. This makes life easier for people who work with the tidyverse. It helps make life easier for users who want to work with thier own non-FHX fire-history file formats. (Issue #120)
 
 * Extensive improvement to documentation (e.g. Issue #145). This includes new "See Also" sections so users can find cool functions, fixes for spelling errors, and clarifications to dyslexic prose.
 
@@ -16,7 +16,7 @@ Changes in this release:
 
 * Added unit tests for basic plotting function options.
 
-* Minor internal code cleanup (Issue #130, Issue #88, Issue #133, Issue #136, Issue #88) and code linting.
+* Minor internal code cleanup (Issue #130, Issue #88, Issue #133, Issue #136, Issue #88, Issue #146) and code linting.
 
 
 # burnr v0.4.0

@@ -23,9 +23,9 @@
 #' print(x)
 #'
 #' @seealso
-#'   * [as.fhx()] casts data frame-like object into `fhx` object.
+#'   * [as_fhx()] casts data frame-like object into `fhx` object.
 #'   * [sort.fhx()] sort an `fhx` object.
-#'   * [is.fhx()] test whether object is `fhx`.
+#'   * [is_fhx()] test whether object is `fhx`.
 #'   * [+.fhx()] concatenate multiple `fhx` objects together.
 #'   * [make_rec_type()] helpful to convert `rec_type`-like character vectors to
 #'     full facors with proper levels.
@@ -57,7 +57,7 @@ fhx <- function(year, series, rec_type) {
 #'
 #' @seealso
 #'   * [fhx()] constructs an `fhx` object.
-#'   * [as.fhx()] casts data frame-like objects into `fhx` objects.
+#'   * [as_fhx()] casts data frame-like objects into `fhx` objects.
 #'
 #' @examples
 #' make_rec_type("null_year")
@@ -114,7 +114,7 @@ make_rec_type <- function(x) {
 #' @export
 get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE,
                             custom_grep_str = NULL) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   if (!is.null(custom_grep_str)) {
     message(
       "burnr::get_events(): custom_search_str was defined, ",
@@ -165,7 +165,7 @@ get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE,
 #'
 #' @export
 year_range <- function(x) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   range(x$year)
 }
 
@@ -194,7 +194,7 @@ year_range <- function(x) {
 #'
 #' @export
 series_names <- function(x) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   as.character(unique(x$series))
 }
 
@@ -220,7 +220,7 @@ series_names <- function(x) {
 #'
 #' @export
 get_year <- function(x, yr) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   stopifnot(is.numeric(yr))
   subset(x, x$year %in% yr)
 }
@@ -246,7 +246,7 @@ get_year <- function(x, yr) {
 #'
 #' @export
 get_series <- function(x, s) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   stopifnot(is.character(s))
   subset(x, x$series %in% s)
 }
@@ -265,7 +265,7 @@ get_series <- function(x, s) {
 #'
 #' @seealso
 #'   * [fhx()] constructs an `fhx` object.
-#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
+#'   * [as_fhx()] casts data frame-like object into an `fhx` object.
 #'   * [series_names()] get all the series in an `fhx` object.
 #'   * [year_range()] get earliest and latest year in an `fhx` object.
 #'   * [get_year()] subset an `fhx` object to select years.
@@ -281,7 +281,7 @@ get_series <- function(x, s) {
 #' @export
 delete <- function(x, s, yr) {
   # Hint: It's just an inverse subset.
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   out <- c()
   # I'm sure there is a more clever way to handle this.
   if (missing(s)) {
@@ -400,7 +400,7 @@ find_recording <- function(x, injury_event=FALSE) {
 #'
 #' @export
 count_event_position <- function(x, injury_event = FALSE, position, groupby) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
 
   possible_position <- c(
     "unknown", "dormant", "early", "middle", "late", "latewd"
@@ -484,7 +484,7 @@ yearly_recording <- function(x, injury_event = FALSE) {
 #'   * [yearly_recording()] count the number of "recording" events in each year of
 #'     an `fhx` object.
 #'   * [fhx()] constructs an `fhx` object.
-#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
+#'   * [as_fhx()] casts data frame-like object into an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
@@ -499,7 +499,7 @@ yearly_recording <- function(x, injury_event = FALSE) {
 composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
                       filter_min_events = 1, injury_event = FALSE,
                       comp_name = "COMP") {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
 
   injury <- rec_type_injury  # nolint
   scar <- rec_type_scar  # nolint
@@ -565,7 +565,7 @@ composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
 #'
 #' @seealso
 #'   * [fhx()] constructs an `fhx` object.
-#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
+#'   * [as_fhx()] casts data frame-like object into an `fhx` object.
 #'   * [series_names()] get all the series in an `fhx` object.
 #'   * [delete()] remove observations from an `fhx` object.
 #'   * [+.fhx()] concatenate multiple `fhx` objects together.
@@ -577,7 +577,7 @@ composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
 #'
 #' @export
 sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   stopifnot(sort_by %in% c("first_year", "last_year"))
   if (is.null(sort_by)) sort.order <- min
   if (sort_by == "first_year") sort.order <- min
@@ -617,8 +617,8 @@ sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
 #'
 #' @export
 "+.fhx" <- function(a, b) {
-  stopifnot(is.fhx(a))
-  stopifnot(is.fhx(b))
+  stopifnot(is_fhx(a))
+  stopifnot(is_fhx(b))
   f <- rbind(a, b)
   check_duplicates(f)
 }
@@ -632,16 +632,26 @@ sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
 #'
 #' @seealso
 #'   * [fhx()] constructs an `fhx` object.
-#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
+#'   * [as_fhx()] casts data frame-like object into an `fhx` object.
 #'   * [+.fhx()] concatenate multiple `fhx` objects together.
 #'
 #' @examples
 #' data(lgr2)
-#' is.fhx(lgr2)
+#' is_fhx(lgr2)
+#'
+#' @export
+is_fhx <- function(x) {
+  inherits(x, "fhx")
+}
+
+
+#' Alias to [is_fhx()]
+#'
+#' @inherit is_fhx
 #'
 #' @export
 is.fhx <- function(x) {
-  inherits(x, "fhx")
+  is_fhx(x)
 }
 
 
@@ -659,17 +669,17 @@ is.fhx <- function(x) {
 #'
 #' @seealso
 #'   * [fhx()] constructs an `fhx` object.
-#'   * [is.fhx()] test whether object is `fhx`.
+#'   * [is_fhx()] test whether object is `fhx`.
 #'   * [make_rec_type()] helpful to convert `rec_type`-like character vectors to
 #'     full facors with proper levels.
 #'
 #' @examples
 #' data(lgr2)
 #' example_dataframe <- as.data.frame(lgr2)
-#' back_to_fhx <- as.fhx(example_dataframe)
+#' back_to_fhx <- as_fhx(example_dataframe)
 #'
 #' @export
-as.fhx <- function(x) {
+as_fhx <- function(x) {
   if (!all(c("year", "series", "rec_type") %in% names(x))) {
     stop("`x` must have members 'year', 'series', and 'rec_type'")
   }
@@ -679,6 +689,16 @@ as.fhx <- function(x) {
   record <- make_rec_type(x$rec_type)
 
   fhx(yr, series, record)
+}
+
+
+#' Alias to [as_fhx()]
+#'
+#' @inherit as_fhx
+#'
+#' @export
+as.fhx <- function(x) {
+  as_fhx(x)
 }
 
 
@@ -695,7 +715,7 @@ as.fhx <- function(x) {
 #'
 #' @noRd
 check_duplicates <- function(x) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   if (!anyDuplicated(x)) {
     return(invisible(x))
   } else {

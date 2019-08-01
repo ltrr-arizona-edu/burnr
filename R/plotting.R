@@ -97,7 +97,7 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
   # TODO: Merge ends and events into a single df. with a factor to handle the
   #       different event types... this will allow us to put these "fire events"
   #       and "pith/bark" into a legend.
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   if (composite_rug & !missing("facet_group")) {
     stop("Cannot have composite rug and facet in same plot")
   }

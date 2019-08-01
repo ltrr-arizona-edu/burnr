@@ -40,9 +40,9 @@ print(x)
 }
 \seealso{
 \itemize{
-\item \code{\link[=as.fhx]{as.fhx()}} casts data frame-like object into \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into \code{fhx} object.
 \item \code{\link[=sort.fhx]{sort.fhx()}} sort an \code{fhx} object.
-\item \code{\link[=is.fhx]{is.fhx()}} test whether object is \code{fhx}.
+\item \code{\link[=is_fhx]{is_fhx()}} test whether object is \code{fhx}.
 \item \code{\link[=+.fhx]{+.fhx()}} concatenate multiple \code{fhx} objects together.
 \item \code{\link[=make_rec_type]{make_rec_type()}} helpful to convert \code{rec_type}-like character vectors to
 full facors with proper levels.

@@ -2,25 +2,36 @@
 % Please edit documentation in R/utils.R
 \name{as.fhx}
 \alias{as.fhx}
-\title{Convert to fhx object.}
+\title{Cast data frame or list-like to \code{fhx} object}
 \usage{
 as.fhx(x)
 }
 \arguments{
-\item{x}{A data frame or list-like object. Must have named elements or columns for "year", "series", and "rec_type".}
+\item{x}{A data frame or list-like object to cast. Must have named elements
+for "year", "series", and "rec_type".}
 }
 \value{
-`x` cast to an fhx object.
+\code{x} cast to an \code{fhx} object.
 }
 \description{
-Convert to fhx object.
+Cast data frame or list-like to \code{fhx} object
 }
 \details{
-The "year", "series", and "rec_type" in \code{x} will be pass through \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before being passed to \code{burnr::fhx}.
+The "year", "series", and "rec_type" in \code{x} will be pass through
+\code{\link[=as.numeric]{as.numeric()}}, \code{\link[=as.factor]{as.factor()}}, and \code{\link[=make_rec_type]{make_rec_type()}} before
+being passed to \code{\link[=fhx]{fhx()}}.
 }
 \examples{
 data(lgr2)
 example_dataframe <- as.data.frame(lgr2)
 back_to_fhx <- as.fhx(example_dataframe)
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
+\item \code{\link[=is.fhx]{is.fhx()}} test whether object is \code{fhx}.
+\item \code{\link[=make_rec_type]{make_rec_type()}} helpful to convert \code{rec_type}-like character vectors to
+full facors with proper levels.
+}
 }

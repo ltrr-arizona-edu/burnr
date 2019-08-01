@@ -2,25 +2,32 @@
 % Please edit documentation in R/utils.R
 \name{get_series}
 \alias{get_series}
-\title{Extract fhx observations for given series.}
+\title{Extract \code{fhx} observations for given series}
 \usage{
 get_series(x, s)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 
-\item{s}{Character vector of series you would like extracted from x.}
+\item{s}{Character vector of series to extract from \code{x}.}
 }
 \value{
-A dataframe with extracted observations.
+An \code{fhx} object.
 }
 \description{
-Extract fhx observations for given series.
+Extract \code{fhx} observations for given series
 }
 \examples{
 data(lgr2)
-get_series(lgr2, 'LGR46')
+get_series(lgr2, "LGR46")
 
-get_series(lgr2, c('LGR41', 'LGR46'))
+get_series(lgr2, c("LGR41", "LGR46"))
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
+\item \code{\link[=get_year]{get_year()}} subset an \code{fhx} object to select years
+\item \code{\link[=delete]{delete()}} remove observations from an \code{fhx} object.
+}
 }

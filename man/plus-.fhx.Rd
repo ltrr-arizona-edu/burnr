@@ -2,24 +2,35 @@
 % Please edit documentation in R/utils.R
 \name{+.fhx}
 \alias{+.fhx}
-\title{Concatenate or combine two fhx objects.}
+\title{Concatenate or combine two fhx objects}
 \usage{
 \method{+}{fhx}(a, b)
 }
 \arguments{
-\item{a}{An fhx object.}
+\item{a}{An \code{fhx} object.}
 
-\item{b}{The fhx object to be append.}
+\item{b}{The \code{fhx} object to be append.}
 }
 \value{
-An fhx object with the series from \code{a} and \code{b}.
+An \code{fhx} object with the observations from \code{a} and \code{b}.
 }
 \description{
-Concatenate or combine two fhx objects.
+Concatenate or combine two fhx objects
+}
+\note{
+Throws \code{stop()} if there are duplicate series names in \code{a} and \code{b}.
 }
 \examples{
 data(lgr2)
 data(pgm)
 plot(lgr2 + pgm)
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
+\item \code{\link[=get_series]{get_series()}} subset an \code{fhx} object to select series.
+\item \code{\link[=delete]{delete()}} remove observations from an \code{fhx} object.
+\item \code{\link[=sort.fhx]{sort.fhx()}} sort an \code{fhx} object.
+}
 }

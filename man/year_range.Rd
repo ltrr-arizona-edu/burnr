@@ -2,21 +2,34 @@
 % Please edit documentation in R/utils.R
 \name{year_range}
 \alias{year_range}
-\title{Range of years for \code{fhx} object.}
+\title{Range of years in an \code{fhx} object}
 \usage{
 year_range(x)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 }
 \value{
-An integer vector or \code{NULL}.
+A numeric vector or \code{NULL}.
 }
 \description{
-Range of years for \code{fhx} object.
+Range of years in an \code{fhx} object
 }
 \examples{
 data(lgr2)
 year_range(lgr2)
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
+\item \code{\link[=get_year]{get_year()}} subset an \code{fhx} object to select years.
+\item \code{\link[=get_series]{get_series()}} subset an \code{fhx} object to select series.
+\item \code{\link[=get_event_years]{get_event_years()}} gets years for various events in an \code{fhx} object.
+\item \code{\link[=count_event_position]{count_event_position()}} count the number of different events in an \code{fhx}
+object.
+\item \code{\link[=yearly_recording]{yearly_recording()}} count the number of "recording" events in each year of
+an \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic summary stats for an \code{fhx} object.
+}
 }

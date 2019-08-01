@@ -2,22 +2,28 @@
 % Please edit documentation in R/io.R
 \name{write_fhx}
 \alias{write_fhx}
-\title{Write an fhx object to a new FHX2 file.}
+\title{Write an \code{fhx} object to a new FHX2 file}
 \usage{
 write_fhx(x, fname = "")
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 
 \item{fname}{Output filename.}
 }
 \description{
-Write an fhx object to a new FHX2 file.
+Write an \code{fhx} object to a new FHX2 file
 }
 \examples{
 \dontrun{
 data(lgr2)
-write_fhx(lgr2, 'afile.fhx')
+write_fhx(lgr2, "afile.fhx")
 }
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=write.csv]{write.csv()}} to write a CSV file. Also works on \code{fhx} objects.
+\item \code{\link[=read_fhx]{read_fhx()}} to read an FHX2 file.
+}
 }

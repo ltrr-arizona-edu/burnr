@@ -1,5 +1,5 @@
 library(burnr)
-context('Statistics')
+context("Statistics")
 
 data(lgr2)
 REF_MULTI <- lgr2
@@ -82,11 +82,11 @@ test_that("series_mean_interval on single series without enough events", {
 })
 
 test_that("series_mean_interval on single series", {
-  expect_equal(series_mean_interval(get_series(REF_MULTI, 'LGR46')), 16.5)
+  expect_equal(series_mean_interval(get_series(REF_MULTI, "LGR46")), 16.5)
 })
 
 test_that("series_mean_interval on multi-series object", {
-  expect_warning((series_mean_interval(REF_MULTI)))
+  expect_warning(series_mean_interval(REF_MULTI))
 })
 
 test_that("series_mean_interval on multi-series fhx object", {
@@ -94,29 +94,39 @@ test_that("series_mean_interval on multi-series fhx object", {
 })
 
 test_that("sample_depth on multi-series fhx object", {
-  sdepth <- subset(sample_depth(REF_MULTI),
-                   year %in% c(1366, 1436, 2011, 2012))[['samp_depth']]
+  sdepth <- subset(
+    sample_depth(REF_MULTI),
+    year %in% c(1366, 1436, 2011, 2012)
+  )[["samp_depth"]]
   expect_equal(sdepth, c(1, 2, 13, 2))
 })
 
 test_that("sample_depth on single-series fhx object", {
-  sdepth <- subset(sample_depth(REF_SINGLE),
-                   year %in% 1800)[['samp_depth']]
+  sdepth <- subset(
+    sample_depth(REF_SINGLE),
+    year %in% 1800
+  )[["samp_depth"]]
   expect_equal(sdepth, 1)
 })
 
 test_that("percent scarred works without injury", {
   goal_1773_percent_scarred <- 50
   victim <- percent_scarred(REF_MULTI)
-  expect_equal(victim[victim$year == 1773, ]$percent_scarred,
-               goal_1773_percent_scarred)
-  expect_equal(victim[victim$year == 1774, ]$percent_scarred,
-                0)
+  expect_equal(
+    victim[victim$year == 1773, ]$percent_scarred,
+    goal_1773_percent_scarred
+  )
+  expect_equal(
+    victim[victim$year == 1774, ]$percent_scarred,
+    0
+  )
 })
 
 test_that("percent scarred works with injuries", {
   goal_1806_percent_scarred <- 88
   victim <- percent_scarred(REF_MULTI, injury_event = TRUE)
-  expect_equal(victim[victim$year == 1806, ]$percent_scarred,
-               goal_1806_percent_scarred)
+  expect_equal(
+    victim[victim$year == 1806, ]$percent_scarred,
+    goal_1806_percent_scarred
+  )
 })

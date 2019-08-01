@@ -2,18 +2,22 @@
 % Please edit documentation in R/stats.R
 \name{count_recording}
 \alias{count_recording}
-\title{Number of recording years in an fhx series.}
+\title{Number of recording years in an \code{fhx} object}
 \usage{
 count_recording(x, injury_event = FALSE)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered event.}
+\item{injury_event}{Boolean indicating whether injuries should be considered
+event.}
 }
 \value{
-The number of recording events observed in the series.
+The number of recording events in \code{x}.
 }
 \description{
-Number of recording years in an fhx series.
+Number of recording years in an \code{fhx} object
+}
+\seealso{
+\code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
 }

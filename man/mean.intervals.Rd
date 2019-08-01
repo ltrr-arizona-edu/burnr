@@ -2,18 +2,28 @@
 % Please edit documentation in R/intervals.R
 \name{mean.intervals}
 \alias{mean.intervals}
-\title{Interval arithmetic mean.}
+\title{Fire \code{intervals} arithmetic mean}
 \usage{
 \method{mean}{intervals}(x, ...)
 }
 \arguments{
-\item{x}{An intervals object.}
+\item{x}{An \code{intervals} object.}
 
-\item{...}{Additional arguments passed to \code{mean}.}
+\item{...}{Additional arguments passed to \code{\link[=mean]{mean()}}.}
 }
 \value{
 Numeric or NA.
 }
 \description{
-Interval arithmetic mean.
+Fire \code{intervals} arithmetic mean
+}
+\seealso{
+\itemize{
+\item \code{\link[=intervals]{intervals()}} to create a fire \code{intervals} object.
+\item \code{\link[=median.intervals]{median.intervals()}} gets median fire interval.
+\item \code{\link[=quantile.intervals]{quantile.intervals()}} get fit distribution quantiles.
+\item \code{\link[=min.intervals]{min.intervals()}} gives the minimum fire interval.
+\item \code{\link[=max.intervals]{max.intervals()}} gives the maximum fire interval.
+\item \code{\link[=print.intervals]{print.intervals()}} prints common fire-interval summary statistics.
+}
 }

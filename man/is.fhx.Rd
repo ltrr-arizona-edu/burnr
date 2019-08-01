@@ -2,21 +2,28 @@
 % Please edit documentation in R/utils.R
 \name{is.fhx}
 \alias{is.fhx}
-\title{Check if object is fhx.}
+\title{Check if object is \code{fhx}.}
 \usage{
 is.fhx(x)
 }
 \arguments{
-\item{x}{Any R object.}
+\item{x}{An object.}
 }
 \value{
-Boolean indicating whether `x` is an fhx object.
+Boolean indicating whether \code{x} is an \code{fhx} object.
 }
 \description{
-Check if object is fhx.
+Check if object is \code{fhx}.
 }
 \examples{
 data(lgr2)
 is.fhx(lgr2)
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
+\item \code{\link[=as.fhx]{as.fhx()}} casts data frame-like object into an \code{fhx} object.
+\item \code{\link[=+.fhx]{+.fhx()}} concatenate multiple \code{fhx} objects together.
+}
 }

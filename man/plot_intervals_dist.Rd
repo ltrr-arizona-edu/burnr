@@ -2,18 +2,40 @@
 % Please edit documentation in R/intervals.R
 \name{plot_intervals_dist}
 \alias{plot_intervals_dist}
-\title{Basic intervals distribution plot.}
+\title{Basic fire \code{intervals} distribution plot}
 \usage{
 plot_intervals_dist(x, binwidth = NULL)
 }
 \arguments{
-\item{x}{An intervals object.}
+\item{x}{An \code{intervals} object, from \code{\link[=intervals]{intervals()}}.}
 
-\item{binwidth}{A sea object.}
+\item{binwidth}{The width of the bins. Can be specified as a numeric value
+or as a function that calculates width from unscaled x. Here, "unscaled x"
+refers to the original x values in the data, before application of any
+scale transformation. When specifying a function along with a grouping
+structure, the function will be called once per group.
+The default is to use \code{bins}
+bins that cover the range of the data. You should always override
+this value, exploring multiple widths to find the best to illustrate the
+stories in your data.
+
+The bin width of a date variable is the number of days in each time; the
+bin width of a time variable is the number of seconds.}
 }
 \value{
 A ggplot object.
 }
 \description{
-Basic intervals distribution plot.
+Basic fire \code{intervals} distribution plot
+}
+\seealso{
+\itemize{
+\item \code{\link[=intervals]{intervals()}} to create a fire \code{intervals} object.
+\item \code{\link[=mean.intervals]{mean.intervals()}} gets mean fire interval.
+\item \code{\link[=median.intervals]{median.intervals()}} gets median fire interval.
+\item \code{\link[=quantile.intervals]{quantile.intervals()}} get fit distribution quantiles.
+\item \code{\link[=min.intervals]{min.intervals()}} gives the minimum fire interval.
+\item \code{\link[=max.intervals]{max.intervals()}} gives the maximum fire interval.
+\item \code{\link[=print.intervals]{print.intervals()}} prints common fire-interval summary statistics.
+}
 }

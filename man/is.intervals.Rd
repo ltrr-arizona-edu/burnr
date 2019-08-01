@@ -2,7 +2,7 @@
 % Please edit documentation in R/intervals.R
 \name{is.intervals}
 \alias{is.intervals}
-\title{Check if object is intervals.}
+\title{Check if object is fire \code{intervals}}
 \usage{
 is.intervals(x)
 }
@@ -10,8 +10,11 @@ is.intervals(x)
 \item{x}{An R object.}
 }
 \value{
-Boolean indicating whether `x` is an intervals object.
+Boolean indicating whether x is an \code{intervals} object.
 }
 \description{
-Check if object is intervals.
+Check if object is fire \code{intervals}
+}
+\seealso{
+\code{\link[=intervals]{intervals()}} creates an \code{intervals} object.
 }

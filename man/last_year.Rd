@@ -2,16 +2,23 @@
 % Please edit documentation in R/stats.R
 \name{last_year}
 \alias{last_year}
-\title{Last (most recent) year of an fhx series.}
+\title{Last (most recent) year of an \code{fhx} object}
 \usage{
 last_year(x)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 }
 \value{
-The maximum or last year of series in 'x'. 'NA' will be returned if 'NA' is in x$year.
+The maximum or last year of series in \code{x}. \code{NA} will be returned if
+\code{NA} is in \code{x$year}.
 }
 \description{
-Last (most recent) year of an fhx series.
+Last (most recent) year of an \code{fhx} object
+}
+\seealso{
+\itemize{
+\item \code{\link[=first_year]{first_year()}} get first year of \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
+}
 }

@@ -2,24 +2,33 @@
 % Please edit documentation in R/stats.R
 \name{percent_scarred}
 \alias{percent_scarred}
-\title{Percent scarred time series}
+\title{Percent scarred time series for \code{fhx} object}
 \usage{
 percent_scarred(x, injury_event = FALSE)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 
-\item{injury_event}{Boolean indicating whether years with injury events should be considered as scars. Defaults to FALSE.}
+\item{injury_event}{Boolean indicating whether years with injury events
+should be considered as scars. Default is \code{FALSE}.}
 }
 \value{
-A data.frame with four columns: \code{Year}, \code{NumRec} with the number of recording trees,
-\code{NumScars} with the number of fire scars and/or events, and \code{PercScarred} with the proportion of scars/events.
+\code{data.frame} with four columns:
+\itemize{
+\item "Year": The year.
+\item "NumRec": The number of recording trees.
+\item "NumScars": Number of fire scars and possibly fire injuries.
+\item "PercScarred": The proportion of scars (and possibly injuries) to
+non-scar/injury series in the year.
+}
 }
 \description{
-Percent scarred time series
+Percent scarred time series for \code{fhx} object
 }
 \examples{
 data("pgm")
 percent_scarred(pgm)
-
+}
+\seealso{
+\code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
 }

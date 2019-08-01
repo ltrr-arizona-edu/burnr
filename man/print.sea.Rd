@@ -2,15 +2,48 @@
 % Please edit documentation in R/sea.R
 \name{print.sea}
 \alias{print.sea}
-\title{Print an sea objects.}
+\title{Print a \code{sea} object.}
 \usage{
 \method{print}{sea}(x, ...)
 }
 \arguments{
-\item{x}{An intervals object.}
+\item{x}{A \code{sea} object.}
 
 \item{...}{Additional arguments that are tossed.}
 }
 \description{
-Print an sea objects.
+Print a \code{sea} object.
+}
+\examples{
+\dontrun{
+# Read in the Cook and Krusic (2004; The North American Drought Atlas)
+# reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez
+# Mountains area (gridpoint 133).
+target_url <- paste0(
+  "http://iridl.ldeo.columbia.edu",
+  "/SOURCES/.LDEO/.TRL/.NADA2004",
+  "/pdsiatlashtml/pdsiwebdata/1050w_350n_133.txt"
+)
+pdsi <- read.table(target_url, header = TRUE, row.names = 1)
+pdsi <- subset(pdsi, select = "RECON")
+
+# Run SEA on Peggy Mesa (pgm) data
+data(pgm)
+pgm_comp <- composite(pgm)
+
+pgm_sea <- sea(pdsi, pgm_comp)
+
+# See basic results:
+print(pgm_sea)
+
+# Basic plot:
+plot(pgm_sea)
+}
+
+}
+\seealso{
+\itemize{
+\item \code{\link[=sea]{sea()}} creates a \code{sea} object.
+\item \code{\link[=plot_sealags]{plot_sealags()}} basic plot of \code{sea} object lags.
+}
 }

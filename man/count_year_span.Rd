@@ -2,16 +2,24 @@
 % Please edit documentation in R/stats.R
 \name{count_year_span}
 \alias{count_year_span}
-\title{Number of years of an fhx series.}
+\title{Number of years of an \code{fhx} object}
 \usage{
 count_year_span(x)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 }
 \value{
-The difference between the first and last observations in the series. 'NA' will be returned if 'NA' is in 'x$year'.
+The difference between the first and last observations in the \code{fhx}
+object. \code{NA} will be returned if \code{NA} is in \code{x$year}.
 }
 \description{
-Number of years of an fhx series.
+Number of years of an \code{fhx} object
+}
+\seealso{
+\itemize{
+\item \code{\link[=first_year]{first_year()}} get first year of \code{fhx} object.
+\item \code{\link[=last_year]{last_year()}} get last year of \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
+}
 }

@@ -2,15 +2,15 @@
 % Please edit documentation in R/plotting.R
 \name{plot.fhx}
 \alias{plot.fhx}
-\title{Plot an fhx object.}
+\title{Plot an \code{fhx} object}
 \usage{
 \method{plot}{fhx}(...)
 }
 \arguments{
-\item{...}{Arguments passed on to \code{plot_demograph}.}
+\item{...}{Arguments passed on to \code{\link[=plot_demograph]{plot_demograph()}}.}
 }
 \description{
-Plot an fhx object.
+Plot an \code{fhx} object
 }
 \examples{
 data(lgr2)
@@ -43,4 +43,7 @@ p + annotate("rect",
   xmin = 1750, xmax = 1805,
   ymin = 3.5, ymax = 13.5, alpha = 0.2
 )
+}
+\seealso{
+\code{\link[=plot_demograph]{plot_demograph()}} is what does the actual plotting.
 }

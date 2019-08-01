@@ -1,10 +1,32 @@
-#' Constructor for S3 intervals class.
+#' Calculate fire intervals from a `composite`
 #'
-#' @param comp A composite fhx instance. Should have only one series in it.
-#' @param densfun String giving desired distribution to fit. Suggest "weibull"
+#' @param comp A `composite` instance, usually output from [composite()].
+#'    Should contain only one series.
+#' @param densfun String giving desired distribution to fit. Either "weibull"
 #'   or "lognormal". Default is "weibull".
 #'
-#' @return An intervals instance.
+#' @return An `intervals` object. `intervals` have components:
+#'   * "intervals" an integer vector giving the actual fire intervals.
+#'   * "fitdistr" a `fitdistr` object from [MASS::fitdistr()] representing the
+#'     density function fit.
+#'   * "densfun" a string giving the name of the density function used.
+#'   * "kstest" an `htest` object from [stats::ks.test()] giving the result of a
+#'     one-sample Kolmogorov-Smirnov test.
+#'   * "shapirotest" an `htest` object from [stats::shapiro.test()] giving the
+#'     result of a Shapiro-Wilk normality test.
+#'   * "comp_name" a string giving the name of the interval's input composite.
+#'   * "event_range" an integer vector giving the year range (min, max) of
+#'     events used to create this intervals.
+#'
+#' @seealso
+#'   * [composite()] to create a `composite` object.
+#'   * [mean.intervals()] gets mean fire interval.
+#'   * [median.intervals()] gets median fire interval.
+#'   * [quantile.intervals()] get fit distribution quantiles.
+#'   * [plot_intervals_dist()] plots `intervals`.
+#'   * [min.intervals()] gives the minimum fire interval.
+#'   * [max.intervals()] gives the maximum fire interval.
+#'   * [print.intervals()] prints common fire-interval summary statistics.
 #'
 #' @examples
 #' data(pgm)
@@ -48,33 +70,53 @@ intervals <- function(comp, densfun = "weibull") {
   x
 }
 
-#' Check if object is intervals.
+
+#' Check if object is fire `intervals`
 #'
 #' @param x An R object.
 #'
-#' @return Boolean indicating whether `x` is an intervals object.
+#' @return Boolean indicating whether x is an `intervals` object.
 #'
+#' @seealso [intervals()] creates an `intervals` object.
 #' @export
 is.intervals <- function(x) inherits(x, "intervals")
 
-#' Interval arithmetic mean.
+
+#' Fire `intervals` arithmetic mean
 #'
-#' @param x An intervals object.
-#' @param ... Additional arguments passed to \code{mean}.
+#' @param x An `intervals` object.
+#' @param ... Additional arguments passed to [mean()].
 #'
 #' @return Numeric or NA.
+#'
+#' @seealso
+#'   * [intervals()] to create a fire `intervals` object.
+#'   * [median.intervals()] gets median fire interval.
+#'   * [quantile.intervals()] get fit distribution quantiles.
+#'   * [min.intervals()] gives the minimum fire interval.
+#'   * [max.intervals()] gives the maximum fire interval.
+#'   * [print.intervals()] prints common fire-interval summary statistics.
 #'
 #' @export
 mean.intervals <- function(x, ...) {
   mean(x$intervals, ...)
 }
 
-#' Interval median.
+
+#' Fire `intervals` median
 #'
-#' @param x An intervals object.
-#' @param ... Additional arguments passed to \code{stats::median}.
+#' @param x An `intervals` object.
+#' @param ... Additional arguments passed to [stats::median()].
 #'
 #' @return Numeric or NA.
+#'
+#' @seealso
+#'   * [intervals()] to create a fire `intervals` object.
+#'   * [mean.intervals()] gets mean fire interval.
+#'   * [quantile.intervals()] get fit distribution quantiles.
+#'   * [min.intervals()] gives the minimum fire interval.
+#'   * [max.intervals()] gives the maximum fire interval.
+#'   * [print.intervals()] prints common fire-interval summary statistics.
 #'
 #' @importFrom stats median
 #' @export
@@ -82,36 +124,64 @@ median.intervals <- function(x, ...) {
   median(x$intervals, ...)
 }
 
-#' Minimum interval.
+
+#' Minimum interval in fire `intervals`
 #'
-#' @param x An intervals object.
-#' @param ... Additional arguments passed to \code{min}.
+#' @param x An `intervals` object.
+#' @param ... Additional arguments passed to [min()].
 #'
 #' @return Numeric or NA.
+#'
+#' @seealso
+#'   * [intervals()] to create a fire `intervals` object.
+#'   * [mean.intervals()] gets median fire interval.
+#'   * [median.intervals()] gets median fire interval.
+#'   * [quantile.intervals()] get fit distribution quantiles.
+#'   * [max.intervals()] gives the maximum fire interval.
+#'   * [print.intervals()] prints common fire-interval summary statistics.
 #'
 #' @export
 min.intervals <- function(x, ...) {
   min(x$intervals)
 }
 
-#' Maximum interval.
+
+#' Maximum interval in fire `intervals`
 #'
-#' @param x An intervals object.
-#' @param ... Additional arguments passed to \code{max}.
+#' @param x An `intervals` object.
+#' @param ... Additional arguments passed to [max()].
 #'
 #' @return Numeric or NA.
+#'
+#' @seealso
+#'   * [intervals()] to create a fire `intervals` object.
+#'   * [mean.intervals()] gets median fire interval.
+#'   * [median.intervals()] gets median fire interval.
+#'   * [quantile.intervals()] get fit distribution quantiles.
+#'   * [min.intervals()] gives the minimum fire interval.
+#'   * [print.intervals()] prints common fire-interval summary statistics.
 #'
 #' @export
 max.intervals <- function(x, ...) {
   max(x$intervals)
 }
 
-#' Fit distribution quantiles.
+
+#' Fit distribution quantiles to fire `intervals`
 #'
-#' @param x An intervals object.
+#' @param x An `intervals` object.
 #' @param q Vector giving the desired quantiles.
-#' @param ... Additional arguments passed to the quantile function of the fit
-#'   distribution.
+#' @param ... Additional arguments passed to the [quantile()] method for the
+#'   fit distribution.
+#'
+#' @seealso
+#'   * [intervals()] to create a fire `intervals` object.
+#'   * [mean.intervals()] gets median fire interval.
+#'   * [median.intervals()] gets median fire interval.
+#'   * [quantile.intervals()] get fit distribution quantiles.
+#'   * [min.intervals()] gives the minimum fire interval.
+#'   * [max.intervals()] gives the maximum fire interval.
+#'   * [print.intervals()] prints common fire-interval summary statistics.
 #'
 #' @examples
 #' data(pgm)
@@ -134,10 +204,11 @@ quantile.intervals <- function(x, q = c(0.125, 0.5, 0.875), ...) {
 }
 
 
-
-#' Plot an intervals object.
+#' Plot a fire `intervals` object
 #'
-#' @param ... Arguments passed on to \code{plot_intervals_dist}.
+#' @param ... Arguments passed to [plot_intervals_dist()].
+#'
+#' @seealso [plot_intervals_dist()] plot `intervals` distributions.
 #'
 #' @examples
 #' data(pgm)
@@ -150,13 +221,21 @@ plot.intervals <- function(...) {
 }
 
 
-#' Basic intervals distribution plot.
+#' Basic fire `intervals` distribution plot
 #'
-#' @param x An intervals object.
-#' @param binwidth A sea object.
-#'
+#' @param x An `intervals` object, from [intervals()].
+#' @inheritParams ggplot2::geom_histogram
 #'
 #' @return A ggplot object.
+#'
+#' @seealso
+#'   * [intervals()] to create a fire `intervals` object.
+#'   * [mean.intervals()] gets mean fire interval.
+#'   * [median.intervals()] gets median fire interval.
+#'   * [quantile.intervals()] get fit distribution quantiles.
+#'   * [min.intervals()] gives the minimum fire interval.
+#'   * [max.intervals()] gives the maximum fire interval.
+#'   * [print.intervals()] prints common fire-interval summary statistics.
 #'
 #' @export
 plot_intervals_dist <- function(x, binwidth = NULL) {
@@ -174,10 +253,20 @@ plot_intervals_dist <- function(x, binwidth = NULL) {
 }
 
 
-#' Print an intervals objects.
+#' Print a fire `intervals` object
 #'
-#' @param x An intervals object.
+#' @param x An `intervals` object.
 #' @param ...  Additional arguments that are tossed.
+#'
+#' @seealso [intervals()] to create a fire `intervals` object.
+#'
+#' @examples
+#' data(pgm)
+#' interv <- intervals(composite(pgm))
+#' print(interv)
+#'
+#' # Note, you can also catch the printed table:
+#' summary_stats <- print(interv)
 #'
 #' @export
 print.intervals <- function(x, ...) {

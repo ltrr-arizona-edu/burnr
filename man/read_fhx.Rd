@@ -2,7 +2,7 @@
 % Please edit documentation in R/io.R
 \name{read_fhx}
 \alias{read_fhx}
-\title{Read FHX2 file and return an \code{fhx} object.}
+\title{Read FHX2 file and return an `fhx`` object}
 \usage{
 read_fhx(fname, encoding, text)
 }
@@ -10,20 +10,27 @@ read_fhx(fname, encoding, text)
 \item{fname}{Name of target FHX file. Needs to be in format version 2.}
 
 \item{encoding}{Encoding to use when reading the FHX file. The default is to
-use the system.}
+use the system default in R.}
 
-\item{text}{Character string. If \code{fname} is not provided and
-\code{text} is, then data is read from \code{text} using a text connection.}
+\item{text}{Character string. If \code{fname} is not provided and text is, then
+data is read from text using a text connection.}
 }
 \value{
-An \code{fhx} object.
+An \code{fhx} object, as returned by \code{\link[=fhx]{fhx()}}.
 }
 \description{
-Read FHX2 file and return an \code{fhx} object.
+Read FHX2 file and return an `fhx`` object
 }
 \examples{
 \dontrun{
 d <- read_fhx("afile.fhx")
 }
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=write_fhx]{write_fhx()}} write an \code{fhx} object to a file.
+\item \code{\link[=fhx]{fhx()}} create an \code{fhx} object.
+\item \code{\link[=as.fhx]{as.fhx()}} cast data frame or similar object to an \code{fhx} object.
+}
 }

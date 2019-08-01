@@ -1,13 +1,41 @@
-#' Constructor for S3 fhx class.
+#' Constructor for `fhx` objects
 #'
-#' @param year A numeric vector of observation years for each \code{series} and
-#'   \code{rec_type} argument.
-#' @param series A factor of series names for each \code{year} and 
-#'   \code{rec_type} argument.
-#' @param rec_type A factor of ring types for each element in \code{year} and
-#'   \code{series}.
+#' @param year An n-length numeric vector of observation years.
+#' @param series An n-length factor or character vector of observation series
+#'   names.
+#' @param rec_type An n-length factor or character vector denoting the record
+#'   type for each observations.
 #'
-#' @return An fhx instance.
+#' @return An `fhx` object. `fhx` are S3 objects; specialized data frames with 3
+#' columns:
+#'   * "year": An n-length numeric vector. The year of an observation.
+#'   * "series": An n-length factor. Giving the series name for each
+#'     observation.
+#'   * "rec_type": An n-length factor with controlled vocabulary and levels.
+#'     This records the type of ring or record of each observation.
+#'
+#' @examples
+#' x <- fhx(
+#'   year = c(1900, 1954, 1996),
+#'   series = as.factor(rep("tree1", 3)),
+#'   rec_type = c("pith_year", "unknown_fs", "bark_year")
+#' )
+#' print(x)
+#'
+#' @seealso
+#'   * [as.fhx()] casts data frame-like object into `fhx` object.
+#'   * [sort.fhx()] sort an `fhx` object.
+#'   * [is.fhx()] test whether object is `fhx`.
+#'   * [+.fhx()] concatenate multiple `fhx` objects together.
+#'   * [make_rec_type()] helpful to convert `rec_type`-like character vectors to
+#'     full facors with proper levels.
+#'   * [read_fhx()] Read FHX2 files.
+#'   * [write_fhx()] Write FHX2 files.
+#'   * [plot_demograph()] makes demography plots of `fhx` objects.
+#'   * [series_stats()] basic common statistical summaries of `fhx` objects.
+#'   * [composite()] create fire composites from `fhx` objects.
+#'   * [intervals()] fire interval analysis.
+#'   * [sea()] superposed epoch analysis.
 #'
 #' @export
 fhx <- function(year, series, rec_type) {
@@ -19,16 +47,23 @@ fhx <- function(year, series, rec_type) {
   ringsdf
 }
 
-#' Turn character vector into factor with proper fhx levels.
+
+#' Turn character vector into factor with proper `fhx` levels
 #'
-#' @param x A character vector containing one or more rec_type-like strings.
+#' @param x A character vector or factor containing one or more rec_type-like
+#'   strings.
 #'
-#' @return A factor with appropriate fhx levels.
+#' @return A factor with appropriate `fhx` levels.
+#'
+#' @seealso
+#'   * [fhx()] constructs an `fhx` object.
+#'   * [as.fhx()] casts data frame-like objects into `fhx` objects.
 #'
 #' @examples
 #' make_rec_type("null_year")
 #'
 #' make_rec_type(c("null_year", "late_fs"))
+#'
 #' @export
 make_rec_type <- function(x) {
   possible_levels <- rec_type_all  # nolint
@@ -37,19 +72,32 @@ make_rec_type <- function(x) {
   factor(x, levels = possible_levels)
 }
 
-#' Get years with events for an fhx object.
+
+#' Get years with events for an `fhx` object
 #'
-#' @param x An \code{fhx} object.
+#' @param x An `fhx` object.
 #' @param scar_event Boolean indicating whether years with scar events should be
-#'   returned. Default is TRUE.
+#'   returned. Default is `TRUE`.
 #' @param injury_event Boolean indicating whether years with injury events
-#'   should be returned. Default is FALSE.
+#'   should be returned. Default is `FALSE`.
 #' @param custom_grep_str Character string to pass a custom grep search pattern
-#'   to search rec_type column for. Undefined by default.
+#'   to search `x` "rec_type" column for. `NULL` by default.
 #'
-#' @return A list. Elements of the list are integer vectors giving the years
-#'   with events for each fhx series. Each element's name reflects the series
+#' @return A list. Elements of the list are numeric vectors giving the years
+#'   with events for each `fhx` series. Each element's name reflects the series'
 #'   name.
+#'
+#' @seealso
+#'   * [series_names()] get all the series in an `fhx` object.
+#'   * [year_range()] get earliest and latest year in an `fhx` object.
+#'   * [get_year()] subset an `fhx` object to select years.
+#'   * [get_series()] subset an `fhx` object to select series.
+#'   * [get_event_years()] gets years for various events in an `fhx` object.
+#'   * [count_event_position()] count the number of different events in an `fhx`
+#'     object.
+#'   * [yearly_recording()] count the number of "recording" events in each year of
+#'     an `fhx` object.
+#'   * [series_stats()] basic summary stats for an `fhx` object.
 #'
 #' @examples
 #' data(pgm)
@@ -62,6 +110,7 @@ make_rec_type <- function(x) {
 #' comp <- composite(pgm, comp_name = "pgm")
 #' event_yrs <- get_event_years(comp)[["pgm"]]
 #' print(event_yrs)
+#'
 #' @export
 get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE,
                             custom_grep_str = NULL) {
@@ -92,50 +141,83 @@ get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE,
   plyr::dlply(x, c("series"), function(a) a$year[grepl(search_str, a$rec_type)])
 }
 
-#' Range of years for \code{fhx} object.
+
+#' Range of years in an `fhx` object
 #'
-#' @param x An fhx object.
+#' @param x An `fhx` object.
 #'
-#' @return An integer vector or \code{NULL}.
+#' @return A numeric vector or `NULL`.
 #'
+#' @seealso
+#'   * [series_names()] get all the series in an `fhx` object.
+#'   * [get_year()] subset an `fhx` object to select years.
+#'   * [get_series()] subset an `fhx` object to select series.
+#'   * [get_event_years()] gets years for various events in an `fhx` object.
+#'   * [count_event_position()] count the number of different events in an `fhx`
+#'     object.
+#'   * [yearly_recording()] count the number of "recording" events in each year of
+#'     an `fhx` object.
+#'   * [series_stats()] basic summary stats for an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
 #' year_range(lgr2)
+#'
 #' @export
 year_range <- function(x) {
   stopifnot(is.fhx(x))
   range(x$year)
 }
 
-#' Get \code{fhx} series names.
+
+#' Get `fhx` series names
 #'
-#' @param x An fhx object.
+#' @param x An `fhx` object.
 #'
-#' @return A character vector or \code{NULL}.
+#' @return A character vector or `NULL`.
 #'
+#' @seealso
+#'   * [series_names()] get all the series in an `fhx` object.
+#'   * [get_year()] subset an `fhx` object to select years.
+#'   * [year_range()] get earliest and latest year in an `fhx` object.
+#'   * [get_series()] subset an `fhx` object to select series.
+#'   * [get_event_years()] gets years for various events in an `fhx` object.
+#'   * [count_event_position()] count the number of different events in an `fhx`
+#'     object.
+#'   * [yearly_recording()] count the number of "recording" events in each year of
+#'     an `fhx` object.
+#'   * [series_stats()] basic summary stats for an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
 #' series_names(lgr2)
+#'
 #' @export
 series_names <- function(x) {
   stopifnot(is.fhx(x))
   as.character(unique(x$series))
 }
 
-#' Extract fhx observations for given years.
+
+#' Extract `fhx` observations for given years
 #'
-#' @param x An fhx object.
-#' @param yr Integer vector of year(s) you would like extracted from x.
+#' @param x An `fhx` object.
+#' @param yr Numeric vector of year(s) to extract from `x`.
 #'
-#' @return A dataframe with extracted observations.
+#' @return An `fhx` object.
+#'
+#' @seealso
+#'   * [year_range()] get earliest and latest year in an `fhx` object.
+#'   * [get_series()] subset an `fhx` object to select series.
+#'   * [delete()] remove observations from an `fhx` object.
+#'   * [get_event_years()] gets years for various events in an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
 #' get_year(lgr2, 1806)
 #'
 #' get_year(lgr2, 1805:1807)
+#'
 #' @export
 get_year <- function(x, yr) {
   stopifnot(is.fhx(x))
@@ -143,18 +225,25 @@ get_year <- function(x, yr) {
   subset(x, x$year %in% yr)
 }
 
-#' Extract fhx observations for given series.
+
+#' Extract `fhx` observations for given series
 #'
-#' @param x An fhx object.
-#' @param s Character vector of series you would like extracted from x.
+#' @param x An `fhx` object.
+#' @param s Character vector of series to extract from `x`.
 #'
-#' @return A dataframe with extracted observations.
+#' @return An `fhx` object.
+#'
+#' @seealso
+#'   * [series_names()] get all the series in an `fhx` object.
+#'   * [get_year()] subset an `fhx` object to select years
+#'   * [delete()] remove observations from an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
 #' get_series(lgr2, "LGR46")
 #'
 #' get_series(lgr2, c("LGR41", "LGR46"))
+#'
 #' @export
 get_series <- function(x, s) {
   stopifnot(is.fhx(x))
@@ -162,22 +251,33 @@ get_series <- function(x, s) {
   subset(x, x$series %in% s)
 }
 
-#' Remove series or years from an fhx object.
+
+#' Remove series or years from an `fhx` object
 #'
-#' @param x An fhx object.
-#' @param s Character vector of series to erase from x.
-#' @param yr Integer vector of years to erase from x.
+#' @param x An `fhx` object.
+#' @param s Character vector of series to remove from `x`.
+#' @param yr Integer vector of years to remove from `x`.
 #'
-#' @return An fhx object with observations erased.
+#' @return An fhx `object` with observations removed.
 #'
 #' @details
-#' You can combine s and yr to specify years within select series to remove.
+#' You can combine `s` and `yr` to specify years within select series to remove.
+#'
+#' @seealso
+#'   * [fhx()] constructs an `fhx` object.
+#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
+#'   * [series_names()] get all the series in an `fhx` object.
+#'   * [year_range()] get earliest and latest year in an `fhx` object.
+#'   * [get_year()] subset an `fhx` object to select years.
+#'   * [get_series()] subset an `fhx` object to select series.
+#'   * [get_event_years()] gets years for various events in an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
 #' plot(delete(lgr2, s = "LGR46"))
 #'
 #' plot(delete(lgr2, yr = 1300:1550))
+#'
 #' @export
 delete <- function(x, s, yr) {
   # Hint: It's just an inverse subset.
@@ -196,24 +296,29 @@ delete <- function(x, s, yr) {
   fhx(out$year, out$series, out$rec_type)
 }
 
-#' Subset `rings` data.frame to years that are considered recording.
+
+#' Find years that are considered "recording" in an `fhx` object
 #'
-#' @param x A an fhx object dataframe.
+#' @param x An `fhx` object. This generally should only contain one series, but
+#'    we do not check for this.
 #' @param injury_event Boolean indicating whether injuries should be considered
-#'   event.
+#'   event. Default is `FALSE`.
+#'
+#' @return A data frame with column "recording" indicating years which are
+#' "recording".
 #'
 #' @examples
 #' require(plyr)
 #' data(lgr2)
 #' ddply(lgr2$rings, "series", burnr:::find_recording, injury_event = TRUE)
-#' @return A dataframe with a column of each year which is 'recording'.
-find_recording <- function(x, injury_event) {
+#'
+#' @noRd
+find_recording <- function(x, injury_event=FALSE) {
   # Use with: ddply(lgr2$rings, 'series', recorder_finder)
   x <- x[order(x$year), ]
 
   recorder <- rec_type_recorder  # nolint
   injury <- rec_type_injury  # nolint
-  scar <- rec_type_scar  # nolint
   ends <- rec_type_ends  # nolint
 
   if (injury_event) {
@@ -243,21 +348,34 @@ find_recording <- function(x, injury_event) {
   data.frame(recording = union(rec, active))
 }
 
-#' Count of different events
+
+#' Count different events in an `fhx` object
 #'
-#' @param x An fhx object.
+#' @param x An `fhx` object.
 #' @param injury_event Optional boolean indicating whether injuries should be
-#'   considered event. Default is FALSE.
+#'   considered an "event". Default is `FALSE`.
 #' @param position Optional character vector giving the types of event positions
-#'   to include in the count. Can any combination of the following: "unknown",
-#'   "dormant", "early", "middle", "late", "latewd". The default counts all
-#'   event positions.
+#'   to include in the count. Can be any combination of the following:
+#'   * "unknown"
+#'   * "dormant"
+#'   * "early"
+#'   * "middle"
+#'   * "late"
+#'   * "latewd"
+#'
+#'   The default counts all types of event positions.
 #' @param groupby Optional named list containing character vectors that are used
 #'   to count the total number of different event types. The names given to each
-#'   character vector give the group's name in the output data.frame.
+#'   character vector give the group's name in the output data frame.
 #'
-#' @return A data.frame with a columns giving the event and corresponding number
-#'   of events for each event type.
+#' @return A data frame with a columns giving the event or event group and
+#' values giving the corresponding count for each event type or group.
+#'
+#' @seealso
+#'   * [get_event_years()] gets years for various events in an `fhx` object.
+#'   * [yearly_recording()] count the number of "recording" events in each year of
+#'     an `fhx` object.
+#'   * [series_stats()] basic summary stats for an `fhx` object.
 #'
 #' @examples
 #' data(pgm)
@@ -273,12 +391,13 @@ find_recording <- function(x, injury_event) {
 #'   position = c("unknown", "early", "middle")
 #' )
 #'
-#' # Using custom `groupby` args.
+#' # Using custom "groupby" args.
 #' grplist <- list(
 #'   foo = c("dormant_fs", "early_fs"),
 #'   bar = c("middle_fs", "late_fs")
 #' )
 #' count_event_position(pgm, groupby = grplist)
+#'
 #' @export
 count_event_position <- function(x, injury_event = FALSE, position, groupby) {
   stopifnot(is.fhx(x))
@@ -309,24 +428,24 @@ count_event_position <- function(x, injury_event = FALSE, position, groupby) {
 
     names(outgroup) <- c("event", "count")
     out <- rbind(out, outgroup)
-
   }
 
   out
 }
 
-#' Count the number of recording series for each year in an fhx object.
+
+#' Count the number of recording series for each year in an `fhx` object
 #'
-#' @param x An fhx object.
+#' @param x An `fhx` object.
 #' @param injury_event Boolean indicating whether injuries should be considered
-#'   event. Default is FALSE.
+#'   events. Default is `FALSE`.
 #'
-#' @return A dataframe with a columns giving the year and corresponding number
-#'   of recording events for that year.
+#' @return A data frame with columns giving the year and recording events count.
 #'
 #' @examples
 #' data(lgr2)
 #' yearly_recording(lgr2)
+#'
 #' @export
 yearly_recording <- function(x, injury_event = FALSE) {
   as.data.frame(table(year = plyr::ddply(x, "series",
@@ -335,23 +454,37 @@ yearly_recording <- function(x, injury_event = FALSE) {
   )$recording))
 }
 
-#' Composite fire events in fhx object.
+
+#' Composite fire events in fhx object
 #'
-#' @param x An fhx instance.
-#' @param filter_prop The minimum proportion of fire events to recording series
-#'   needed in order to be considered. Default is 0.25.
-#' @param filter_min_rec The minimum number of recording series needed to be
-#'   considered a fire event. Default is 2 recording series.
-#' @param filter_min_events The minimum number of fire scars needed to be
-#'   considered a fire event. Default is 1. This includes injuries if
-#'   injury_event=TRUE.
+#' @param x An `fhx` object.
+#' @param filter_prop The minimum proportion of fire events in recording series
+#'   needed for fire event to be considered for composite. Default is 0.25.
+#' @param filter_min_rec The minimum number of recording series needed for a
+#'   fire event to be considered for the composite. Default is 2 recording
+#'   series.
+#' @param filter_min_events The minimum number of fire scars needed for a fire
+#'   event to be considered for the composite. Default is 1. Fire injuries are
+#'   included in this count if `injury_event`  is `TRUE`.
 #' @param injury_event Boolean indicating whether injuries should be considered
-#'   events. Default is FALSE.
-#' @param comp_name Character vector of the series name for the returned fhx
+#'   events. Default is `FALSE`.
+#' @param comp_name Character vector of the series name for the returned `fhx`
 #'   object composite series. Default is 'COMP'.
 #'
-#' @return An fhx object representing the composited series. The object will be
-#'   empty if there are nocomposite-worthy events.
+#' @return An `fhx` object representing the composited series. The object will
+#'   be empty if there are nocomposite-worthy events.
+#'
+#' @seealso
+#'   * [intervals()] fire interval analysis from an `fhx` composite.
+#'   * [sea()] superposed epoch analysis.
+#'   * [series_stats()] basic summary stats for an `fhx` object.
+#'   * [get_event_years()] gets years for various events in an `fhx` object.
+#'   * [count_event_position()] count the number of different events in an `fhx`
+#'     object.
+#'   * [yearly_recording()] count the number of "recording" events in each year of
+#'     an `fhx` object.
+#'   * [fhx()] constructs an `fhx` object.
+#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
@@ -361,6 +494,7 @@ yearly_recording <- function(x, injury_event = FALSE) {
 #' comp <- composite(pgm, comp_name = "pgm")
 #' event_yrs <- get_event_years(comp)[["pgm"]]
 #' print(event_yrs)
+#'
 #' @export
 composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
                       filter_min_events = 1, injury_event = FALSE,
@@ -369,7 +503,6 @@ composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
 
   injury <- rec_type_injury  # nolint
   scar <- rec_type_scar  # nolint
-  ends <- rec_type_ends  # nolint
 
   event <- scar
   if (injury_event) {
@@ -419,20 +552,29 @@ composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
   fhx(year = out_year, series = out_series, rec_type = out_rec_type)
 }
 
-#' Sort the series names of fhx object by the earliest or latest year.
+
+#' Sort the series names of `fhx` object by the earliest or latest year
 #'
-#' @param x An fhx instance to be sorted.
-#' @param sort_by Either 'first_year' or 'last_year'. Designates the inner or
-#'   outer year for sorting. Defaults to 'first_year'
-#' @param decreasing Logical. Decreasing sorting? Defaults to FALSE.
+#' @param x An `fhx` object to sort.
+#' @param sort_by Either "first_year" or "last_year". Designates the inner or
+#'   outer year for sorting. Defaults to "first_year"
+#' @param decreasing Logical. Decreasing sorting? Defaults to `FALSE`.
 #' @param ... Additional arguments that fall off the face of the universe.
 #'
-#' @return A copy of \code{x} with reordered series.
+#' @return A copy of `x` with reordered series.
+#'
+#' @seealso
+#'   * [fhx()] constructs an `fhx` object.
+#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
+#'   * [series_names()] get all the series in an `fhx` object.
+#'   * [delete()] remove observations from an `fhx` object.
+#'   * [+.fhx()] concatenate multiple `fhx` objects together.
 #'
 #' @examples
 #' data(lgr2)
 #' plot(sort(lgr2, decreasing = TRUE))
 #' plot(sort(lgr2, sort_by = "last_year"))
+#'
 #' @export
 sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
   stopifnot(is.fhx(x))
@@ -452,17 +594,27 @@ sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
   x
 }
 
-#' Concatenate or combine two fhx objects.
+
+#' Concatenate or combine two fhx objects
 #'
-#' @param a An fhx object.
-#' @param b The fhx object to be append.
+#' @param a An `fhx` object.
+#' @param b The `fhx` object to be append.
 #'
-#' @return An fhx object with the series from \code{a} and \code{b}.
+#' @return An `fhx` object with the observations from `a` and `b`.
+#'
+#' @note Throws `stop()` if there are duplicate series names in `a` and `b`.
+#'
+#' @seealso
+#'   * [series_names()] get all the series in an `fhx` object.
+#'   * [get_series()] subset an `fhx` object to select series.
+#'   * [delete()] remove observations from an `fhx` object.
+#'   * [sort.fhx()] sort an `fhx` object.
 #'
 #' @examples
 #' data(lgr2)
 #' data(pgm)
 #' plot(lgr2 + pgm)
+#'
 #' @export
 "+.fhx" <- function(a, b) {
   stopifnot(is.fhx(a))
@@ -471,36 +623,51 @@ sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
   check_duplicates(f)
 }
 
-#' Check if object is fhx.
+
+#' Check if object is `fhx`.
 #'
-#' @param x Any R object.
+#' @param x An object.
 #'
-#' @return Boolean indicating whether `x` is an fhx object.
+#' @return Boolean indicating whether `x` is an `fhx` object.
+#'
+#' @seealso
+#'   * [fhx()] constructs an `fhx` object.
+#'   * [as.fhx()] casts data frame-like object into an `fhx` object.
+#'   * [+.fhx()] concatenate multiple `fhx` objects together.
 #'
 #' @examples
 #' data(lgr2)
 #' is.fhx(lgr2)
+#'
 #' @export
 is.fhx <- function(x) {
   inherits(x, "fhx")
 }
 
-#' Convert to fhx object.
+
+#' Cast data frame or list-like to `fhx` object
 #'
-#' @param x A data frame or list-like object. Must have named elements or
-#'   columns for "year", "series", and "rec_type".
+#' @param x A data frame or list-like object to cast. Must have named elements
+#'   for "year", "series", and "rec_type".
 #'
-#' @return `x` cast to an fhx object.
+#' @return `x` cast to an `fhx` object.
 #'
 #' @details
-#' The "year", "series", and "rec_type" in \code{x} will be pass through 
-#'   \code{as.numeric}, \code{as.factor}, and \code{burnr::make_rec_type} before
-#'   being passed to \code{burnr::fhx}.
+#' The "year", "series", and "rec_type" in `x` will be pass through
+#'   [as.numeric()], [as.factor()], and [make_rec_type()] before
+#'   being passed to [fhx()].
+#'
+#' @seealso
+#'   * [fhx()] constructs an `fhx` object.
+#'   * [is.fhx()] test whether object is `fhx`.
+#'   * [make_rec_type()] helpful to convert `rec_type`-like character vectors to
+#'     full facors with proper levels.
 #'
 #' @examples
 #' data(lgr2)
 #' example_dataframe <- as.data.frame(lgr2)
 #' back_to_fhx <- as.fhx(example_dataframe)
+#'
 #' @export
 as.fhx <- function(x) {
   if (!all(c("year", "series", "rec_type") %in% names(x))) {
@@ -514,16 +681,19 @@ as.fhx <- function(x) {
   fhx(yr, series, record)
 }
 
-#' Check for duplicate observations in an fhx object.
+
+#' Check for duplicate observations in an `fhx` object
 #'
-#' @param x An fhx object.
+#' @param x An `fhx` object.
 #'
-#' @return A \code{x} or stop() is thrown.
+#' @return An `x`, otherwise `stop()` is thrown.
 #'
 #' @examples
 #' data(lgr2)
 #' data(pgm)
 #' burnr:::check_duplicates(lgr2 + pgm)
+#'
+#' @noRd
 check_duplicates <- function(x) {
   stopifnot(is.fhx(x))
   if (!anyDuplicated(x)) {

@@ -1,12 +1,17 @@
-#' Read FHX2 file and return an \code{fhx} object.
+#' Read FHX2 file and return an `fhx`` object
 #'
 #' @param fname Name of target FHX file. Needs to be in format version 2.
 #' @param encoding Encoding to use when reading the FHX file. The default is to
-#'   use the system.
-#' @param text Character string. If \code{fname} is not provided and
-#'   \code{text} is, then data is read from \code{text} using a text connection.
+#'   use the system default in R.
+#' @param text Character string. If `fname` is not provided and text is, then
+#'   data is read from text using a text connection.
 #'
-#' @return An \code{fhx} object.
+#' @return An `fhx` object, as returned by [fhx()].
+#'
+#' @seealso
+#'   * [write_fhx()] write an `fhx` object to a file.
+#'   * [fhx()] create an `fhx` object.
+#'   * [as.fhx()] cast data frame or similar object to an `fhx` object.
 #'
 #' @examples
 #' \dontrun{
@@ -125,17 +130,22 @@ read_fhx <- function(fname, encoding, text) {
     year = fl_body_melt$year, series = fl_body_melt$series,
     rec_type = fl_body_melt$rec_type
   )
+  f
 }
 
-#' List of character strings to write to FHX file.
+
+#' List of character strings to write to FHX file
 #'
-#' @param x An fhx object.
+#' @param x An `fhx` object.
 #'
-#' @return A list with four members containing vectors: "head_line",
-#'     "subhead_line", "series_heading", and "body". Each referring
-#'     to a portion of an FHX file that the strings are dumped into.
+#' @return A list with four members containing vectors:
+#'   * "head_line"
+#'   * "subhead_line"
+#'   * "series_heading"
+#'   * "body".
+#' Each referring to a portion of an FHX file that the strings are dumped into.
 #'
-#' @seealso write_fhx
+#' @noRd
 list_filestrings <- function(x) {
   stopifnot(is.fhx(x))
   out <- x
@@ -172,10 +182,15 @@ list_filestrings <- function(x) {
   )
 }
 
-#' Write an fhx object to a new FHX2 file.
+
+#' Write an `fhx` object to a new FHX2 file
 #'
-#' @param x An fhx object.
+#' @param x An `fhx` object.
 #' @param fname Output filename.
+#'
+#' @seealso
+#'   * [write.csv()] to write a CSV file. Also works on `fhx` objects.
+#'   * [read_fhx()] to read an FHX2 file.
 #'
 #' @examples
 #' \dontrun{
@@ -208,22 +223,32 @@ write_fhx <- function(x, fname = "") {
   close(fl)
 }
 
-#' Convert abreviated fhx file event char to rec_type char.
+
+#' Convert abreviated `fhx` file event char to rec_type char
 #'
 #' @param x A character string.
 #'
 #' @return A character string.
 #'
+#' @seealso [rec_type2abrc] inverse function, converting an `fhx` rec_type
+#'   string to abbreviated character used in FHX files.
+#'
+#' @noRd
 abrv2rec_type <- function(x) {
   rec_type_all[[as.character(x)]] # nolint
 }
 
-#' Convert rec_type char to abreviated fhx file event char.
+
+#' Convert rec_type char to abreviated FHX file event char
 #'
 #' @param x A character string.
 #'
 #' @return A character string.
 #'
+#' @seealso [abrv2rec_type] inverse function, convert abbreviated character used
+#'   in FHX files to an `fhx` rec_type string.
+#'
+#' @noRd
 rec_type2abrv <- function(x) {
   rec_type_abrv[[as.character(x)]] # nolint
 }

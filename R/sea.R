@@ -1,52 +1,60 @@
-#' Perform superposed epoch analysis.
+#' Perform superposed epoch analysis
 #'
-#' @param x A data.frame climate reconstruction or tree-ring series with row
-#'   names as years.
-#' @param event A vector of event years for superposed epoch, such as fire
-#'   years, or an fhx object
-#'   with a single \code{series} as produced by \code{composite}.
+#' @param x A data frame climate reconstruction or tree-ring series with row
+#'   names as years, and one numeric variable.
+#' @param event An numeric vector of event years for superposed epoch, such as
+#'   fire years, or an `fhx` object with a single series as produced by
+#'   [composite()].
 #' @param nbefore  The number of lag years prior to the event year.
 #' @param nafter The number of lag years following the event year.
 #' @param event_range Logical. Constrain the time series to the time period of
-#'   key events within the range of the \code{x} series. FALSE uses the entire 
+#'   key events within the range of the `x` series. `FALSE` uses the entire
 #'   series, ignoring the period of key events.
 #' @param n_iter The number of iterations for bootstrap resampling.
 #'
 #' @details Superposed epoch analysis (SEA) helps to evaluate fire-climate
-#' relationships in studies of tree-ring fire history. It works by compositing 
+#' relationships in studies of tree-ring fire history. It works by compositing
 #' the values of an annual time series or climate reconstruction for the fire
-#' years provided (\code{key}) and both positive and negative lag years. 
-#' Bootstrap resampling of the time series is performed to evaluate the 
-#' statistical significance of each year's mean value. Users interpret the 
+#' years provided (`event`) and both positive and negative lag years.
+#' Bootstrap resampling of the time series is performed to evaluate the
+#' statistical significance of each year's mean value. Users interpret the
 #' departure of the actual event year means from the simulated event year means.
-#' Note that there is no rescaling of the climate time series 'x'.
+#' Note that there is no rescaling of the climate time series `x`.
 #'
 #' The significance of lag-year departures from the average climate condition
 #' was first noted by Baisan and Swetnam (1990) and used in an organized SEA by
 #' Swetnam (1993). Since then, the procedure has been commonly applied in fire
-#' history studies. The FORTRAN program EVENT.exe was written by Richard Holmes 
+#' history studies. The FORTRAN program EVENT.exe was written by Richard Holmes
 #' and Thomas Swetnam (Holmes and Swetnam 1994) to perform SEA for fire history
-#' specifically. EVENT was incorporated in the FHX2 software by Henri 
-#' Grissino-Mayer. Further information about SEA can be found in the FHAES 
+#' specifically. EVENT was incorporated in the FHX2 software by Henri
+#' Grissino-Mayer. Further information about SEA can be found in the FHAES
 #' user's manual, http://help.fhaes.org/.
 #'
-#' \code{sea} was designed to replicate EVENT as closely as possible. We have
-#' tried to stay true to their implementation of SEA, although multiple versions
-#' of the analysis exist in the climate literature and for fire history. The
-#' outcome of EVENT and sea should only differ slightly in the values of the
-#' simulated events and the departures, because random draws are used. The event
-#' year and lag significance levels should match, at least in the general
-#' pattern.
+#' [sea()] was originally designed to replicate EVENT as closely as possible. We
+#' have tried to stay true to their implementation of SEA, although multiple
+#' versions of the analysis exist in the climate literature and for fire
+#' history. The outcome of EVENT and sea should only differ slightly in the
+#' values of the simulated events and the departures, because random draws are
+#' used. The event year and lag significance levels should match, at least in
+#' the general pattern.
 #'
-#' We note that our implementation of \code{sea} borrows from the 
-#' \code{dplR::sea} function in how it performs the bootstrap procedure, but 
-#' differs in the kind of output provided for the user.
+#' Our SEA implementation borrowed from [dplR::sea()] function in how it
+#' performs the bootstrap procedure, but differs in the kind of output provided
+#' for the user.
 #'
-#' @return A sea object containing, (1) a vector of event years, (2) a 
-#' data.frame summary of the actual events composite, (3) a data.frame summary
-#' of the simulated events composite, (4) a data.frame summary of the departures
-#' of actual from simulated events, (5) a matrix of the actual events composite,
-#' and (6) a matrix of simulated events composite.
+#' @return A `sea` object containing. This contains:
+#'   * "event_years": a numeric vector of event years.
+#'   * "actual": a `data.frame` summary of the actual events composite.
+#'   * "simulated": a `data.frame` summary of the simulated events composite.
+#'   * "departure": a `data.frame` summary of the departures of "actual" from
+#'     "simulated" events.
+#'   * "simulated": a 2D `matrix` of the bootstrapped-values across lags.
+#'   * "observed": a 2D `matrix` of "actual" events and their lags.
+#'
+#' @seealso
+#'   * [plot_sealags()] plots `sea` lags and their statistical significance.
+#'   * [print.sea()] prints a pretty summary of `sea` objects.
+#'   * [composite()] creates fire composites, a common input to [sea()].
 #'
 #' @references Baisan and Swetnam 1990, Fire history on desert mountain range:
 #'   Rincon Mountain Wilderness, Arizona, U.S.A. Canadian Journal of Forest
@@ -59,8 +67,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) 
-#' # reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez 
+#' # Read in the Cook and Krusic (2004; The North American Drought Atlas)
+#' # reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez
 #' # Mountains area (gridpoint 133).
 #' target_url <- paste0(
 #'   "http://iridl.ldeo.columbia.edu",
@@ -82,6 +90,7 @@
 #' # Basic plot:
 #' plot(pgm_sea)
 #' }
+#'
 #' @export
 sea <- function(x, event, nbefore = 6, nafter = 4, event_range = TRUE,
                 n_iter = 1000) {
@@ -269,26 +278,29 @@ sea <- function(x, event, nbefore = 6, nafter = 4, event_range = TRUE,
 }
 
 
-#' Check if object is sea.
+#' Check if object is `sea`
 #'
 #' @param x An R object.
 #'
-#' @return Boolean indicating whether `x` is an sea object.
+#' @return Boolean indicating whether `x` is a `sea` object.
+#'
+#' @seealso [sea()] creates a `sea` object.
 #'
 #' @export
 is.sea <- function(x) inherits(x, "sea")
 
 
-#' Plot a sea object.
+#' Plot a `sea` object
 #'
-#' @param ... Arguments passed on to \code{plot_sealags}.
+#' @param ... Arguments passed on to [plot_sealags()].
+#'
+#' @seealso [plot_sealags()] handles the plotting for this function.
 #'
 #' @examples
 #' \dontrun{
-#' # Read in the Cook and Krusic (2004; The North American Drought Atlas) 
-#' # reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez 
+#' # Read in the Cook and Krusic (2004; The North American Drought Atlas)
+#' # reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez
 #' # Mountains area (gridpoint 133).
-#'
 #' data(pgm_pdsi)
 #'
 #' # Run SEA on Peggy Mesa (pgm) data
@@ -305,11 +317,17 @@ plot.sea <- function(...) {
 }
 
 
-#' Basic SEA lag plot.
+#' Basic SEA lag plot of `sea` object
 #'
-#' @param x A sea object.
+#' @param x A `sea` object.
 #'
-#' @return A ggplot object.
+#' @return A `ggplot` object.
+#'
+#' @seealso
+#'   * [sea()] creates a `sea` object.
+#'   * [print.sea()] prints a pretty summary of a `sea` object.
+#'
+#' @inherit plot.sea examples
 #'
 #' @export
 plot_sealags <- function(x) {
@@ -337,10 +355,16 @@ plot_sealags <- function(x) {
 }
 
 
-#' Print an sea objects.
+#' Print a `sea` object.
 #'
-#' @param x An intervals object.
+#' @param x A `sea` object.
 #' @param ...  Additional arguments that are tossed.
+#'
+#' @seealso
+#'   * [sea()] creates a `sea` object.
+#'   * [plot_sealags()] basic plot of `sea` object lags.
+#'
+#' @inherit sea examples
 #'
 #' @export
 print.sea <- function(x, ...) {

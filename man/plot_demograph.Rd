@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{plot_demograph}
 \alias{plot_demograph}
-\title{Create an ggplot2 object for plotting fhx demographics.}
+\title{Create an ggplot2 object for plotting fhx demographics}
 \usage{
 plot_demograph(x, color_group, color_id, facet_group, facet_id,
   facet_type = "grid", ylabels = TRUE, yearlims = FALSE,
@@ -12,7 +12,7 @@ plot_demograph(x, color_group, color_id, facet_group, facet_id,
   rugbuffer_size = 2, rugdivide_pos = 2)
 }
 \arguments{
-\item{x}{An \code{fhx} instance.}
+\item{x}{An \code{fhx} object, as from \code{\link[=fhx]{fhx()}}}
 
 \item{color_group}{Option to plot series with colors. This is a character
 vector or factor which corresponds to the series names given in
@@ -20,28 +20,28 @@ vector or factor which corresponds to the series names given in
 specified. Default plot gives no color.}
 
 \item{color_id}{Option to plot series with colors. A character vector of
-series names corresponding to groups given in \code{color_group}. Every
+series names corresponding to groups given in \code{color_group.} Every
 unique value in \code{x} series.names needs to have a corresponding
 color_group value. Both \code{color_group} and \code{color_id} need to be
 specified. Default plot gives no species colors.}
 
 \item{facet_group}{Option to plot series with faceted by a factor. A vector
 of factors or character vector which corresponds to the series names given
-in \code{facet_id}. Both \code{facet_group} and \code{facet_id} need to be
+in \code{facet_id.} Both \code{facet_group} and \code{facet_id} need to be
 specified. Default plot is not faceted.}
 
 \item{facet_id}{Option to plot series with faceted by a factor. A vector of
-series names corresponding to species names given in \code{facet_group}.
+series names corresponding to species names given in \code{facet_group.}
 Every unique values in \code{x} series.names needs to have a corresponding
 facet_group value. Both \code{facet_group} and \code{facet_id} need to be
-specified.  Default plot is not faceted. Note that composite_rug and
-facet_group, facet_id cannot be used in the same plot. You must choose
-facets or a composite rug.}
+specified.  Default plot is not faceted. Note that \code{composite_rug},
+\code{facet_group}, and \code{facet_id} cannot be used in the same plot. You must
+choose facets or a composite rug.}
 
-\item{facet_type}{Type of \code{ggplot2} facet to use, if faceting. Must be
-either "grid" or "wrap". Default is "grid". Note that composite_rug and
-facet_group, facet_id cannot be used in the same plot. You must choose
-facets or a composite rug.}
+\item{facet_type}{Type of ggplot2 facet to use, if faceting. Must be
+either "grid" or "wrap". Default is "grid". Note that \code{composite_rug},
+\code{facet_group}, and \code{facet_id} cannot be used in the same plot. You must
+choose facets or a composite rug.}
 
 \item{ylabels}{Optional boolean to remove y-axis (series name) labels and
 tick  marks. Default is TRUE.}
@@ -51,28 +51,27 @@ vector with two integers. The first integer gives the lower year for the
 range while the second integer gives the upper year. The default is to
 plot the full range of data given by \code{x}.}
 
-\item{composite_rug}{A boolean option to plot a rug on the bottom of the 
-plot. Default is FALSE. Note that composite_rug and facet_group, facet_id
-cannot be used in the same plot. You must choose facets or a composite rug.}
+\item{composite_rug}{A boolean option to plot a rug on the bottom of the
+plot. Default is FALSE. Note that \code{composite_rug} and \code{facet_group},
+\code{facet_id} cannot be used in the same plot. You must choose facets or a
+composite rug.}
 
-\item{filter_prop}{An optional argument if the user chooses to include a
-composite rug in their plot. This is passed to \code{composite}. See this
-function for details.}
+\item{filter_prop}{The minimum proportion of fire events in recording series
+needed for fire event to be considered for composite. Default is 0.25.}
 
-\item{filter_min_rec}{An optional argument if the user chooses to include a
-composite rug in their plot. This is passed to \code{composite}. See this
-function for details.}
+\item{filter_min_rec}{The minimum number of recording series needed for a
+fire event to be considered for the composite. Default is 2 recording
+series.}
 
-\item{filter_min_events}{An optional argument if the user chooses to include
-a composite rug in their plot. This is passed to \code{composite}. See
-this function for details.}
+\item{filter_min_events}{The minimum number of fire scars needed for a fire
+event to be considered for the composite. Default is 1. Fire injuries are
+included in this count if \code{injury_event}  is \code{TRUE}.}
 
 \item{injury_event}{Boolean indicating whether injuries should be considered
-recorders. This is passed to \code{composite}. See this function for
-details.}
+events. Default is \code{FALSE}.}
 
 \item{plot_legend}{A boolean option allowing the user to choose whether a
-legend is included in the plot or not. Default is FALSE.}
+legend is included in the plot or not. Default is \code{FALSE}.}
 
 \item{event_size}{An optional numeric vector that adjusts the size of fire
 event symbols on the plot. Default is
@@ -86,10 +85,10 @@ and the main plot. Must be >= 2.}
 placement of the rug divider along the y-axis. Default is 2.}
 }
 \value{
-A ggplot object for plotting or manipulation.
+A \code{ggplot} object for plotting or manipulation.
 }
 \description{
-Create an ggplot2 object for plotting fhx demographics.
+Create an ggplot2 object for plotting fhx demographics
 }
 \examples{
 data(lgr2)
@@ -122,4 +121,5 @@ p + annotate("rect",
   xmin = 1750, xmax = 1805,
   ymin = 3.5, ymax = 13.5, alpha = 0.2
 )
+
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sea.R
 \name{is.sea}
 \alias{is.sea}
-\title{Check if object is sea.}
+\title{Check if object is \code{sea}}
 \usage{
 is.sea(x)
 }
@@ -10,8 +10,11 @@ is.sea(x)
 \item{x}{An R object.}
 }
 \value{
-Boolean indicating whether `x` is an sea object.
+Boolean indicating whether \code{x} is a \code{sea} object.
 }
 \description{
-Check if object is sea.
+Check if object is \code{sea}
+}
+\seealso{
+\code{\link[=sea]{sea()}} creates a \code{sea} object.
 }

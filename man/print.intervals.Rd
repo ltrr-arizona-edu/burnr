@@ -2,15 +2,27 @@
 % Please edit documentation in R/intervals.R
 \name{print.intervals}
 \alias{print.intervals}
-\title{Print an intervals objects.}
+\title{Print a fire \code{intervals} object}
 \usage{
 \method{print}{intervals}(x, ...)
 }
 \arguments{
-\item{x}{An intervals object.}
+\item{x}{An \code{intervals} object.}
 
 \item{...}{Additional arguments that are tossed.}
 }
 \description{
-Print an intervals objects.
+Print a fire \code{intervals} object
+}
+\examples{
+data(pgm)
+interv <- intervals(composite(pgm))
+print(interv)
+
+# Note, you can also catch the printed table:
+summary_stats <- print(interv)
+
+}
+\seealso{
+\code{\link[=intervals]{intervals()}} to create a fire \code{intervals} object.
 }

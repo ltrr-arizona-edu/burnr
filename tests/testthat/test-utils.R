@@ -14,14 +14,14 @@ test_that("spotcheck get_series", {
 test_that("make_rec_type handles single character vector", {
   test_subj <- make_rec_type("late_fs")
   expect_true(is.factor(test_subj))
-  expect_equal(length(levels(test_subj)), 19)
+  expect_equal(length(levels(test_subj)), length(burnr:::rec_type_all))
 })
 
 test_that("make_rec_type handles multiple character vector", {
   test_subj <- make_rec_type(c("null_year", "late_fs"))
   expect_equal(length(test_subj), 2)
   expect_true(is.factor(test_subj))
-  expect_equal(length(levels(test_subj)), 19)
+  expect_equal(length(levels(test_subj)), length(burnr:::rec_type_all))
 })
 
 test_that("make_rec_type throws error on bad levels", {
@@ -207,7 +207,7 @@ test_that("check_duplicates throws error when fhx obj has duplicates", {
   )
 })
 
-test_that("as.fhx works on data.frame input", {
+test_that("as_fhx works on data.frame input", {
   yrs <- c(1850, 2010)
   series_chr <- c("a", "a")
   events_chr <- c("pith_year", "bark_year")
@@ -218,13 +218,13 @@ test_that("as.fhx works on data.frame input", {
     rec_type = events_chr
   )
 
-  new_fhx <- burnr::as.fhx(test_df)
+  new_fhx <- burnr::as_fhx(test_df)
   expect_equal(new_fhx$year, yrs)
   expect_equal(new_fhx$series, factor(series_chr))
   expect_equal(new_fhx$rec_type, burnr::make_rec_type(events_chr))
 })
 
-test_that("as.fhx works on list input", {
+test_that("as_fhx works on list input", {
   yrs <- c(1850, 2010)
   series_chr <- c("a", "a")
   events_chr <- c("pith_year", "bark_year")
@@ -235,13 +235,13 @@ test_that("as.fhx works on list input", {
     rec_type = events_chr
   )
 
-  new_fhx <- burnr::as.fhx(test_df)
+  new_fhx <- burnr::as_fhx(test_df)
   expect_equal(new_fhx$year, yrs)
   expect_equal(new_fhx$series, factor(series_chr))
   expect_equal(new_fhx$rec_type, burnr::make_rec_type(events_chr))
 })
 
-test_that("as.fhx throws error when input missing key element", {
+test_that("as_fhx throws error when input missing key element", {
   yrs <- c(1850, 2010)
   series_chr <- c("a", "a")
   events_chr <- c("pith_year", "bark_year")
@@ -253,7 +253,26 @@ test_that("as.fhx throws error when input missing key element", {
   )
 
   expect_error(
-    burnr:::as.fhx(test_df),
+    burnr:::as_fhx(test_df),
     "`x` must have members 'year', 'series', and 'rec_type'"
   )
 })
+
+
+test_that("internal violates_canon catches bad, passes good", {
+  test_case_good <- fhx(
+    year = c(1850, 2010),
+    series = c("a", "a"),
+    rec_type = c("pith_year", "bark_year")
+  )
+
+  test_case_bad <- fhx(
+    year = c(1850, 2010),
+    series = c("a", "a"),
+    rec_type = c("pith_year", "estimate")
+  )
+
+  expect_true(!burnr:::violates_canon(test_case_good))
+  expect_true(burnr:::violates_canon(test_case_bad))
+})
+

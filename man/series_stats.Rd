@@ -38,7 +38,7 @@ head(sstats)
 \seealso{
 \itemize{
 \item \code{\link[=fhx]{fhx()}} creates an \code{fhx} object.
-\item \code{\link[=as.fhx]{as.fhx()}} casts data frame into an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame into an \code{fhx} object.
 \item \code{\link[=first_year]{first_year()}} gets earliest year in an \code{fhx} object.
 \item \code{\link[=last_year]{last_year()}} gets latest year in an \code{fhx} object.
 \item \code{\link[=count_year_span]{count_year_span()}} counts the year span of an \code{fhx} object.

@@ -3,7 +3,6 @@ library(burnr)
 
 
 type_key <- list(
-  "?" = "estimate", # My own creation for estimated years to pith.
   "." = "null_year",
   "|" = "recorder_year",
   "U" = "unknown_fs",
@@ -21,7 +20,16 @@ type_key <- list(
   "[" = "pith_year",
   "]" = "bark_year",
   "{" = "inner_year",
-  "}" = "outer_year"
+  "}" = "outer_year",
+  "?" = "estimate",  # non-canon for estimated years to pith.
+  "T" = "transition_fs",  # noncanon
+  "t" = "transition_fi",  # noncanon
+  "F" = "falldormant_fs",  # noncanon
+  "f" = "falldormant_fi",  # noncanon
+  "B" = "earlylw_fs",  # noncanon
+  "b" = "earlylw_fi",  # noncanon
+  "C" = "latelw_fs",  # noncanon
+  "c" = "latelw_fi"  # noncanon
 )
 
 rec_type_all <- unlist(type_key)
@@ -38,7 +46,11 @@ rec_type_recorder <- c(
   "early_fs",
   "middle_fs",
   "late_fs",
-  "latewd_fs"
+  "latewd_fs",
+  "transition_fs",  # noncanon
+  "falldormant_fs",  # noncanon
+  "earlylw_fs",  # noncanon
+  "latelw_fs"  # noncanon
 )
 rec_type_injury <- c(
   "unknown_fi",
@@ -46,7 +58,11 @@ rec_type_injury <- c(
   "early_fi",
   "middle_fi",
   "late_fi",
-  "latewd_fi"
+  "latewd_fi",
+  "transition_fi",  # noncanon
+  "falldormant_fi",  # noncanon
+  "earlylw_fi",  # noncanon
+  "latelw_fi"  # noncanon
 )
 rec_type_scar <- c(
   "unknown_fs",
@@ -54,7 +70,11 @@ rec_type_scar <- c(
   "early_fs",
   "middle_fs",
   "late_fs",
-  "latewd_fs"
+  "latewd_fs",
+  "transition_fs",  # noncanon
+  "falldormant_fs",  # noncanon
+  "earlylw_fs",  # noncanon
+  "latelw_fs"  # noncanon
 )
 rec_type_ends <- c(
   "pith_year",
@@ -63,7 +83,30 @@ rec_type_ends <- c(
   "outer_year"
 )
 
+# Only "official" canon rec_types go here:
+rec_type_canon <- c(
+  "null_year",
+  "recorder_year",
+  "unknown_fs",
+  "unknown_fi",
+  "dormant_fs",
+  "dormant_fi",
+  "early_fs",
+  "early_fi",
+  "middle_fs",
+  "middle_fi",
+  "late_fs",
+  "late_fi",
+  "latewd_fs",
+  "latewd_fi",
+  "pith_year",
+  "bark_year",
+  "inner_year",
+  "outer_year"
+)
+
 usethis::use_data(rec_type_all, rec_type_abrv,
   rec_type_recorder, rec_type_injury, rec_type_scar, rec_type_ends,
+  rec_type_canon,
   internal = TRUE, overwrite = TRUE
 )

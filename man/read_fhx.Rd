@@ -31,6 +31,6 @@ d <- read_fhx("afile.fhx")
 \itemize{
 \item \code{\link[=write_fhx]{write_fhx()}} write an \code{fhx} object to a file.
 \item \code{\link[=fhx]{fhx()}} create an \code{fhx} object.
-\item \code{\link[=as.fhx]{as.fhx()}} cast data frame or similar object to an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} cast data frame or similar object to an \code{fhx} object.
 }
 }

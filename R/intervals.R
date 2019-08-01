@@ -44,7 +44,7 @@
 #'
 #' @export
 intervals <- function(comp, densfun = "weibull") {
-  stopifnot(is.fhx(comp))
+  stopifnot(is_fhx(comp))
   stopifnot(densfun %in% c("weibull", "lognormal"))
   if (length(series_names(comp)) > 1) {
     stop("Found multiple series in `comp`. There can only be one.")
@@ -79,7 +79,15 @@ intervals <- function(comp, densfun = "weibull") {
 #'
 #' @seealso [intervals()] creates an `intervals` object.
 #' @export
-is.intervals <- function(x) inherits(x, "intervals")
+is_intervals <- function(x) inherits(x, "intervals")
+
+
+#' Alias to [is_intervals()]
+#'
+#' @inherit is_intervals
+#'
+#' @export
+is.intervals <- function(x) is_intervals(x)
 
 
 #' Fire `intervals` arithmetic mean

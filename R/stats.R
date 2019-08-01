@@ -9,7 +9,7 @@
 #'
 #' @seealso
 #'   * [fhx()] creates an `fhx` object.
-#'   * [as.fhx()] casts data frame into an `fhx` object.
+#'   * [as_fhx()] casts data frame into an `fhx` object.
 #'   * [first_year()] gets earliest year in an `fhx` object.
 #'   * [last_year()] gets latest year in an `fhx` object.
 #'   * [count_year_span()] counts the year span of an `fhx` object.
@@ -48,7 +48,7 @@ series_stats <- function(x, func_list = list(
                            recording_years = count_recording,
                            mean_interval = series_mean_interval
                          )) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   plyr::ddply(x, c("series"),
     function(df) data.frame(lapply(func_list, function(f) f(df)))
   )
@@ -233,7 +233,7 @@ series_mean_interval <- function(x, injury_event = FALSE) {
 #'
 #' @export
 sample_depth <- function(x) {
-  if (!is.fhx(x)) stop("x must be an fhx object")
+  if (!is_fhx(x)) stop("x must be an fhx object")
   x_stats <- series_stats(x)
   n_trees <- nrow(x_stats)
   out <- data.frame(year = min(x_stats$first):max(x_stats$last))

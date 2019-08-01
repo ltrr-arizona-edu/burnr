@@ -11,7 +11,7 @@
 #' @seealso
 #'   * [write_fhx()] write an `fhx` object to a file.
 #'   * [fhx()] create an `fhx` object.
-#'   * [as.fhx()] cast data frame or similar object to an `fhx` object.
+#'   * [as_fhx()] cast data frame or similar object to an `fhx` object.
 #'
 #' @examples
 #' \dontrun{
@@ -147,7 +147,7 @@ read_fhx <- function(fname, encoding, text) {
 #'
 #' @noRd
 list_filestrings <- function(x) {
-  stopifnot(is.fhx(x))
+  stopifnot(is_fhx(x))
   out <- x
   out$rec_type <- vapply(out$rec_type, rec_type2abrv, "") # nolint
   year_range <- seq(min(out$year), max(out$year))
@@ -203,6 +203,12 @@ write_fhx <- function(x, fname = "") {
   if (fname == "") {
     stop("Please specify a character string naming a file or connection open
           for writing.")
+  }
+  if (violates_canon(x)) {
+    warning(
+      "`write_fhx()` run on `fhx` object with rec_types that violate FHX2", 
+      " canon - other software may not be able to read the output FHX file"
+    )
   }
   d <- list_filestrings(x)
   fl <- file(fname, open = "wt")

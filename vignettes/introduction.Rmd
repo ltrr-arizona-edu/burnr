@@ -27,7 +27,7 @@ Please cite our peer-reviewed paper introducing burnr. The preferred citation is
 
 > Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis. 2018. “Burnr: Fire History Analysis and Graphics in R.” Dendrochronologia 49 (June): 9–15. https://doi.org/10.1016/j.dendro.2018.02.005.
 
-If you also need to cite a specific version of the package in R's CRAN repository. You can see this information by running `citation('burnr')` in an R session.
+You can see also this information by running `citation('burnr')` in an R session.
 
 --------
 

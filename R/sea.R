@@ -94,7 +94,7 @@
 #' @export
 sea <- function(x, event, nbefore = 6, nafter = 4, event_range = TRUE,
                 n_iter = 1000) {
-  if (is.fhx(event)) {
+  if (is_fhx(event)) {
     if (length(unique(event$series)) > 1) {
       stop("event must have a single series")
     } else {
@@ -287,7 +287,15 @@ sea <- function(x, event, nbefore = 6, nafter = 4, event_range = TRUE,
 #' @seealso [sea()] creates a `sea` object.
 #'
 #' @export
-is.sea <- function(x) inherits(x, "sea")
+is_sea <- function(x) inherits(x, "sea")
+
+
+#' Alias to [is_sea()]
+#'
+#' @inherit is_sea
+#'
+#' @export
+is.sea <- function(x) is_sea(x)
 
 
 #' Plot a `sea` object

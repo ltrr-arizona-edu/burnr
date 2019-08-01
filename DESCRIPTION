@@ -2,9 +2,9 @@ Package: burnr
 Title: Fire-History Analysis in R
 Version: 0.4.0.9000
 Authors@R: c(
-  person("Steven", "Malevich", email = "malevich@email.arizona.edu", role = c("aut", "cre")),
-  person("Christopher", "Guiterman", role = c("ctb")),
-  person("Ellis", "Margolis", role = c("ctb")))
+  person("Steven", "Malevich", email = "sbmalev@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4752-8190")),
+  person("Christopher", "Guiterman", role = c("ctb"), comment = c(ORCID = "0000-0002-9706-9332")),
+  person("Ellis", "Margolis", role = c("ctb"), comment = c(ORCID = "0000-0002-0595-9005")))
 Description: Basic tools to analyze forest fire history data (e.g. FHX) in R.
 URL: https://github.com/ltrr-arizona-edu/burnr/
 BugReports: https://github.com/ltrr-arizona-edu/burnr/issues

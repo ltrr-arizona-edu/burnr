@@ -32,7 +32,7 @@ plot(delete(lgr2, yr = 1300:1550))
 \seealso{
 \itemize{
 \item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
-\item \code{\link[=as.fhx]{as.fhx()}} casts data frame-like object into an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into an \code{fhx} object.
 \item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
 \item \code{\link[=year_range]{year_range()}} get earliest and latest year in an \code{fhx} object.
 \item \code{\link[=get_year]{get_year()}} subset an \code{fhx} object to select years.

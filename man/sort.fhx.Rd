@@ -31,7 +31,7 @@ plot(sort(lgr2, sort_by = "last_year"))
 \seealso{
 \itemize{
 \item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
-\item \code{\link[=as.fhx]{as.fhx()}} casts data frame-like object into an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into an \code{fhx} object.
 \item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
 \item \code{\link[=delete]{delete()}} remove observations from an \code{fhx} object.
 \item \code{\link[=+.fhx]{+.fhx()}} concatenate multiple \code{fhx} objects together.

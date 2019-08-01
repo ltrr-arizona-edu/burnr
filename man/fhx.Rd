@@ -13,7 +13,8 @@ fhx(year, series, rec_type)
 names.}
 
 \item{rec_type}{An n-length factor or character vector denoting the record
-type for each observations.}
+type for each observations. Note that this needs to use a controlled
+vocabulary, see \code{burnr:::rec_type_all} for all possible values.}
 }
 \value{
 An \code{fhx} object. \code{fhx} are S3 objects; specialized data frames with 3
@@ -29,10 +30,14 @@ This records the type of ring or record of each observation.
 \description{
 Constructor for \code{fhx} objects
 }
+\details{
+Note that 'year', 'series', and 'rec_type' are pass through \code{\link[=as.numeric]{as.numeric()}},
+\code{\link[=as.factor]{as.factor()}}, and \code{\link[=make_rec_type]{make_rec_type()}} the \code{fhx} object is created.
+}
 \examples{
 x <- fhx(
   year = c(1900, 1954, 1996),
-  series = as.factor(rep("tree1", 3)),
+  series = rep("tree1", 3),
   rec_type = c("pith_year", "unknown_fs", "bark_year")
 )
 print(x)
@@ -40,9 +45,9 @@ print(x)
 }
 \seealso{
 \itemize{
-\item \code{\link[=as.fhx]{as.fhx()}} casts data frame-like object into \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into \code{fhx} object.
 \item \code{\link[=sort.fhx]{sort.fhx()}} sort an \code{fhx} object.
-\item \code{\link[=is.fhx]{is.fhx()}} test whether object is \code{fhx}.
+\item \code{\link[=is_fhx]{is_fhx()}} test whether object is \code{fhx}.
 \item \code{\link[=+.fhx]{+.fhx()}} concatenate multiple \code{fhx} objects together.
 \item \code{\link[=make_rec_type]{make_rec_type()}} helpful to convert \code{rec_type}-like character vectors to
 full facors with proper levels.

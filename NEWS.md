@@ -18,6 +18,8 @@ Changes in this release:
 
 * Updated in-package citation information (`citation("burnr")`). Please cite burnr if you use it in your work!
 
+* `yearly_recording()` now returns a data frame with a numeric "year" column (Issue #154). In past versions, the "year" column contained factors.
+
 * Added unit tests for basic plotting function options. We now have test coverage for more than 75% of our code. 
 
 * Minor internal code cleanup (Issue #130, Issue #88, Issue #133, Issue #136, Issue #88, Issue #146) and code linting.

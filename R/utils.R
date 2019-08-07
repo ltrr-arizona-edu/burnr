@@ -455,10 +455,16 @@ count_event_position <- function(x, injury_event = FALSE, position, groupby) {
 #'
 #' @export
 yearly_recording <- function(x, injury_event = FALSE) {
-  as.data.frame(table(year = plyr::ddply(x, "series",
-    find_recording,
-    injury_event = injury_event
-  )$recording))
+  out <- as.data.frame(
+    table(
+      year = plyr::ddply(x, "series", find_recording, 
+        injury_event = injury_event
+      )$recording
+    ),
+    stringsAsFactors=FALSE
+  )
+  out$year <- as.numeric(out$year)
+  out
 }
 
 

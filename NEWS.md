@@ -14,7 +14,7 @@ Changes in this release:
 
 * Removed broken `site_stats()` function (Issue #138). Please use `intervals()` and `print()` to get the same statistics.
 
-* `composite()` now returns an empty `fhx` object if no composite-worthy events are found (Issue #131). Much better than throwing an obtuse error, which is what we used to do.
+* `composite()` now returns an empty `fhx` object if no composite-worthy events are found (Issue #131) or if there are no fire-events (Issue #155). Much better than throwing an obtuse error, which is what we used to do.
 
 * Updated in-package citation information (`citation("burnr")`). Please cite burnr if you use it in your work!
 

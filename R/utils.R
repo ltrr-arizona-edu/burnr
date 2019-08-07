@@ -16,7 +16,7 @@
 #'     This records the type of ring or record of each observation.
 #'
 #' @details
-#' Note that 'year', 'series', and 'rec_type' are pass through [as.numeric()], 
+#' Note that 'year', 'series', and 'rec_type' are pass through [as.numeric()],
 #' [as.factor()], and [make_rec_type()] the `fhx` object is created.
 #'
 #' @examples
@@ -515,9 +515,16 @@ composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
   if (injury_event) {
     event <- c(event, injury)
   }
-  event_count <- as.data.frame(
-    table(year = subset(x, x$rec_type %in% event)$year)
-  )
+
+  event_year <- subset(x, x$rec_type %in% event)$year
+  if (length(event_year) < 1) {
+    return(fhx(as.numeric(c()), as.factor(c()), make_rec_type(c())))
+  } else {
+    event_count <- as.data.frame(
+      table(year = event_year)
+    )
+  }
+
   recording_count <- yearly_recording(x, injury_event = injury_event)
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count,

@@ -67,7 +67,7 @@ values of the simulated events and the departures, because random draws are
 used. The event year and lag significance levels should match, at least in
 the general pattern.
 
-Our SEA implementation borrowed from \code{\link[dplR:sea]{dplR::sea()}} function in how it
+Our SEA implementation borrowed from \code{dplR::sea()} function in how it
 performs the bootstrap procedure, but differs in the kind of output provided
 for the user.
 }

@@ -38,7 +38,7 @@
 #' used. The event year and lag significance levels should match, at least in
 #' the general pattern.
 #'
-#' Our SEA implementation borrowed from [dplR::sea()] function in how it
+#' Our SEA implementation borrowed from `dplR::sea()` function in how it
 #' performs the bootstrap procedure, but differs in the kind of output provided
 #' for the user.
 #'

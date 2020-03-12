@@ -4,18 +4,31 @@
 \name{pgm_meta}
 \alias{pgm_meta}
 \title{Metadata for the Peggy Mesa fire-history dataset}
-\format{A data frame with 41 rows and 5 variables:
+\format{A \code{data.frame} with 41 rows and 5 variables:
 \itemize{
-  \item TreeID: name of tree series
-  \item SpeciesID: abbreviated tree species
-  \item Latitude: latitude of tree in decimal degrees
-  \item Longitude: longitude of tree in decimal degrees
-  \item Elevation: tree elevation in meters
+\item "TreeID": Name of tree series.
+\item "SpeciesID": Abbreviated tree species.
+\item "Latitude": latitude of tree in decimal degrees.
+\item "Longitude": longitude of tree in decimal degrees.
+\item "Elevation": tree elevation in meters.
 }}
+\source{
+Guiterman, Christopher H., Ellis Q. Margolis, and
+Thomas W. Swetnam. 2015. "Dendroecological Methods For Reconstructing
+High-Severity Fire In Pine-Oak Forests." Tree-Ring Research 71 (2): 67-77.
+doi:10.3959/1536-1098-71.2.67.
+}
 \usage{
 pgm_meta
 }
 \description{
-A dataset with species and location information for the Peggy Mesa fire-history dataset (`pgm`). Data from Guiterman, Christopher H., Ellis Q. Margolis, and Thomas W. Swetnam. 2015. "Dendroecological Methods For Reconstructing High-Severity Fire In Pine-Oak Forests." Tree-Ring Research 71 (2): 67-77. doi:10.3959/1536-1098-71.2.67.
+A data frame with species and location information for the Peggy Mesa
+fire-history dataset (\link{pgm}).
+}
+\seealso{
+\itemize{
+\item \link{pgm} Peggy Mesa fire-history data.
+\item \link{pgm_pdsi} PDSI time-series for Peggy Mesa site.
+}
 }
 \keyword{datasets}

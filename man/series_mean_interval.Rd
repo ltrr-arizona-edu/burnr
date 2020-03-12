@@ -2,21 +2,25 @@
 % Please edit documentation in R/stats.R
 \name{series_mean_interval}
 \alias{series_mean_interval}
-\title{Calculate mean fire interval of a single fhx series.}
+\title{Calculate quick mean fire interval of an \code{fhx} object with single series}
 \usage{
 series_mean_interval(x, injury_event = FALSE)
 }
 \arguments{
-\item{x}{An fhx object with a single series. For proper fire intervals see `intervals()`.}
+\item{x}{An \code{fhx} object with a single series.}
 
-\item{injury_event}{Boolean indicating whether injuries should be considered event.}
+\item{injury_event}{Boolean indicating whether injuries should be considered
+event.}
 }
 \value{
-The mean fire interval observed in the series.
+The mean fire interval observed \code{x}.
 }
 \description{
-Calculate mean fire interval of a single fhx series.
+You really should be using \code{\link[=intervals]{intervals()}}.
 }
 \seealso{
-intervals()
+\itemize{
+\item \code{\link[=intervals]{intervals()}} Proper way to do fire-interval analysis of \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
+}
 }

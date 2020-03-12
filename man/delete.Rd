@@ -2,30 +2,41 @@
 % Please edit documentation in R/utils.R
 \name{delete}
 \alias{delete}
-\title{Remove series or years from an fhx object.}
+\title{Remove series or years from an \code{fhx} object}
 \usage{
 delete(x, s, yr)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 
-\item{s}{Character vector of series to erase from x.}
+\item{s}{Character vector of series to remove from \code{x}.}
 
-\item{yr}{Integer vector of years to erase from x.}
+\item{yr}{Integer vector of years to remove from \code{x}.}
 }
 \value{
-An fhx object with observations erased.
+An fhx \code{object} with observations removed.
 }
 \description{
-Remove series or years from an fhx object.
+Remove series or years from an \code{fhx} object
 }
 \details{
-You can combine s and yr to specify years within select series to remove.
+You can combine \code{s} and \code{yr} to specify years within select series to remove.
 }
 \examples{
 data(lgr2)
-plot(delete(lgr2, s = 'LGR46'))
+plot(delete(lgr2, s = "LGR46"))
 
 plot(delete(lgr2, yr = 1300:1550))
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into an \code{fhx} object.
+\item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
+\item \code{\link[=year_range]{year_range()}} get earliest and latest year in an \code{fhx} object.
+\item \code{\link[=get_year]{get_year()}} subset an \code{fhx} object to select years.
+\item \code{\link[=get_series]{get_series()}} subset an \code{fhx} object to select series.
+\item \code{\link[=get_event_years]{get_event_years()}} gets years for various events in an \code{fhx} object.
+}
 }

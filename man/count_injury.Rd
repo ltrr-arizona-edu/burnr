@@ -2,16 +2,22 @@
 % Please edit documentation in R/stats.R
 \name{count_injury}
 \alias{count_injury}
-\title{Number of injury events in an fhx series.}
+\title{Number of injury events in an \code{fhx} object}
 \usage{
 count_injury(x)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 }
 \value{
-The number of injury events observed in the series.
+The number of injury events in \code{x}
 }
 \description{
-Number of injury events in an fhx series.
+Number of injury events in an \code{fhx} object
+}
+\seealso{
+\itemize{
+\item \code{\link[=count_scar]{count_scar()}} Count the injuries in an \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
+}
 }

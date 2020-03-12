@@ -2,18 +2,28 @@
 % Please edit documentation in R/intervals.R
 \name{max.intervals}
 \alias{max.intervals}
-\title{Maximum interval.}
+\title{Maximum interval in fire \code{intervals}}
 \usage{
 \method{max}{intervals}(x, ...)
 }
 \arguments{
-\item{x}{An intervals object.}
+\item{x}{An \code{intervals} object.}
 
-\item{...}{Additional arguments passed to \code{max}.}
+\item{...}{Additional arguments passed to \code{\link[=max]{max()}}.}
 }
 \value{
 Numeric or NA.
 }
 \description{
-Maximum interval.
+Maximum interval in fire \code{intervals}
+}
+\seealso{
+\itemize{
+\item \code{\link[=intervals]{intervals()}} to create a fire \code{intervals} object.
+\item \code{\link[=mean.intervals]{mean.intervals()}} gets median fire interval.
+\item \code{\link[=median.intervals]{median.intervals()}} gets median fire interval.
+\item \code{\link[=quantile.intervals]{quantile.intervals()}} get fit distribution quantiles.
+\item \code{\link[=min.intervals]{min.intervals()}} gives the minimum fire interval.
+\item \code{\link[=print.intervals]{print.intervals()}} prints common fire-interval summary statistics.
+}
 }

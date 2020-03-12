@@ -2,15 +2,15 @@
 % Please edit documentation in R/plotting.R
 \name{plot.fhx}
 \alias{plot.fhx}
-\title{Plot an fhx object.}
+\title{Plot an \code{fhx} object}
 \usage{
 \method{plot}{fhx}(...)
 }
 \arguments{
-\item{...}{Arguments passed on to \code{plot_demograph}.}
+\item{...}{Arguments passed on to \code{\link[=plot_demograph]{plot_demograph()}}.}
 }
 \description{
-Plot an fhx object.
+Plot an \code{fhx} object
 }
 \examples{
 data(lgr2)
@@ -21,23 +21,29 @@ plot(lgr2, ylabels = FALSE, plot_legend = TRUE)
 data(lgr2_meta)
 # With color showing species.
 plot(lgr2,
-     color_group = lgr2_meta$SpeciesID,
-     color_id = lgr2_meta$TreeID,
-     plot_legend = TRUE)
+  color_group = lgr2_meta$SpeciesID,
+  color_id = lgr2_meta$TreeID,
+  plot_legend = TRUE
+)
 # With facets for each species.
 plot(lgr2,
-     facet_group = lgr2_meta$SpeciesID,
-     facet_id = lgr2_meta$TreeID,
-     plot_legend = TRUE)
+  facet_group = lgr2_meta$SpeciesID,
+  facet_id = lgr2_meta$TreeID,
+  plot_legend = TRUE
+)
 
 # Append annotation onto a ggplot object.
 require(ggplot2)
 p <- plot_demograph(lgr2,
-                color_group = lgr2_meta$SpeciesID,
-                color_id = lgr2_meta$TreeID)
+  color_group = lgr2_meta$SpeciesID,
+  color_id = lgr2_meta$TreeID
+)
 # Add transparent box as annotation to plot.
-p + annotate('rect',
-             xmin = 1750, xmax = 1805,
-             ymin = 3.5, ymax = 13.5, alpha = 0.2)
-
+p + annotate("rect",
+  xmin = 1750, xmax = 1805,
+  ymin = 3.5, ymax = 13.5, alpha = 0.2
+)
+}
+\seealso{
+\code{\link[=plot_demograph]{plot_demograph()}} is what does the actual plotting.
 }

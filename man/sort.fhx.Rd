@@ -2,16 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{sort.fhx}
 \alias{sort.fhx}
-\title{Sort the series names of fhx object by the earliest or latest year.}
+\title{Sort the series names of \code{fhx} object by the earliest or latest year}
 \usage{
 \method{sort}{fhx}(x, decreasing = FALSE, sort_by = "first_year", ...)
 }
 \arguments{
-\item{x}{An fhx instance to be sorted.}
+\item{x}{An \code{fhx} object to sort.}
 
-\item{decreasing}{Logical. Decreasing sorting? Defaults to FALSE.}
+\item{decreasing}{Logical. Decreasing sorting? Defaults to \code{FALSE}.}
 
-\item{sort_by}{Either 'first_year' or 'last_year'. Designates the inner or outer year for sorting. Defaults to 'first_year'}
+\item{sort_by}{Either "first_year" or "last_year". Designates the inner or
+outer year for sorting. Defaults to "first_year"}
 
 \item{...}{Additional arguments that fall off the face of the universe.}
 }
@@ -19,11 +20,20 @@
 A copy of \code{x} with reordered series.
 }
 \description{
-Sort the series names of fhx object by the earliest or latest year.
+Sort the series names of \code{fhx} object by the earliest or latest year
 }
 \examples{
 data(lgr2)
 plot(sort(lgr2, decreasing = TRUE))
 plot(sort(lgr2, sort_by = "last_year"))
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into an \code{fhx} object.
+\item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
+\item \code{\link[=delete]{delete()}} remove observations from an \code{fhx} object.
+\item \code{\link[=+.fhx]{+.fhx()}} concatenate multiple \code{fhx} objects together.
+}
 }

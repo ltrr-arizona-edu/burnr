@@ -2,16 +2,19 @@
 % Please edit documentation in R/stats.R
 \name{sample_depth}
 \alias{sample_depth}
-\title{Calculate the sample depth of an fhx object}
+\title{Calculate the sample depth of an \code{fhx} object}
 \usage{
 sample_depth(x)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 }
 \value{
-A data.frame containing the years and number of trees
+A data frame containing the years and number of observations.
 }
 \description{
-Calculate the sample depth of an fhx object
+Calculate the sample depth of an \code{fhx} object
+}
+\seealso{
+\code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
 }

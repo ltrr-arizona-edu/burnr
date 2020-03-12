@@ -1,3 +1,5 @@
-pgm_meta <- read.csv('data-raw/pgm_meta.csv')
+library(usethis)
 
-devtools::use_data(pgm_meta, overwrite = TRUE)
+pgm_meta <- read.csv("data-raw/pgm_meta.csv")
+
+usethis::use_data(pgm_meta, overwrite = TRUE)

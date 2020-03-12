@@ -2,19 +2,20 @@
 % Please edit documentation in R/intervals.R
 \name{quantile.intervals}
 \alias{quantile.intervals}
-\title{Fit distribution quantiles.}
+\title{Fit distribution quantiles to fire \code{intervals}}
 \usage{
 \method{quantile}{intervals}(x, q = c(0.125, 0.5, 0.875), ...)
 }
 \arguments{
-\item{x}{An intervals object.}
+\item{x}{An \code{intervals} object.}
 
 \item{q}{Vector giving the desired quantiles.}
 
-\item{...}{Additional arguments passed to the quantile function of the fit distribution.}
+\item{...}{Additional arguments passed to the \code{\link[=quantile]{quantile()}} method for the
+fit distribution.}
 }
 \description{
-Fit distribution quantiles.
+Fit distribution quantiles to fire \code{intervals}
 }
 \examples{
 data(pgm)
@@ -23,5 +24,15 @@ quantile(intervs)
 
 # Or you can pass in your own quantiles:
 quantile(intervs, q = c(0.25, 0.5, 0.75))
-
+}
+\seealso{
+\itemize{
+\item \code{\link[=intervals]{intervals()}} to create a fire \code{intervals} object.
+\item \code{\link[=mean.intervals]{mean.intervals()}} gets median fire interval.
+\item \code{\link[=median.intervals]{median.intervals()}} gets median fire interval.
+\item \code{\link[=quantile.intervals]{quantile.intervals()}} get fit distribution quantiles.
+\item \code{\link[=min.intervals]{min.intervals()}} gives the minimum fire interval.
+\item \code{\link[=max.intervals]{max.intervals()}} gives the maximum fire interval.
+\item \code{\link[=print.intervals]{print.intervals()}} prints common fire-interval summary statistics.
+}
 }

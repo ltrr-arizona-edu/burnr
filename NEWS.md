@@ -1,8 +1,46 @@
-# burnr v0.3.1.9000
+# burnr v0.4.0.9000
 
-Changes in this patch release:
+Changes in this release:
+
+* Added `as_fhx()` (Issue #120). This takes data frames, tibbles, and lists as input. It assumes they have "year", "series", and "rec_type" elements/columns. It returns an `fhx` object. Additionally, the `fhx()` constructor now also uses type casting for input (Issue #150) - so no more worrying if your `rec_types` are factors or character vectors. These changes are a big improvement for anyone working in the tidyverse or anyone working with thier own non-FHX fire-history file formats.
+
+* Extensive improvement to documentation (e.g. Issue #145). This includes new "See Also" sections (so users can find cool functions), fixes for spelling errors, and clarifications to dyslexic prose.
+
+* `write_fhx()` will now throw a warning if users try to write an `fhx` object that has record types violating the FHX2 file convention (Issue #149). I still strongly recommend using `write.csv(...)` on `fhx` objects and `as.fhx(read.csv(...))` for IO with experimental `fhx` data.
+
+* Removed deprecated `run_sea()`. Be sure to use `sea()` now.
+
+* Removed deprecated `get_ggplot()`. Please use `plot_demograph()` now.
+
+* Removed broken `site_stats()` function (Issue #138). Please use `intervals()` and `print()` to get the same statistics.
+
+* `composite()` now returns an empty `fhx` object if no composite-worthy events are found (Issue #131). Much better than throwing an obtuse error, which is what we used to do.
+
+* Updated in-package citation information (`citation("burnr")`). Please cite burnr if you use it in your work!
+
+* Added unit tests for basic plotting function options. We now have test coverage for more than 75% of our code. 
+
+* Minor internal code cleanup (Issue #130, Issue #88, Issue #133, Issue #136, Issue #88, Issue #146) and code linting.
+
+
+# burnr v0.4.0
+
+Changes in this minor release:
+
+* `read_fhx()` is more tolerant of extra whitespace in series names. Thanks to Chris Guiterman for adding this.
+
+* Fixed documentation examples not rendering for `sea()` (Issue #125).
+
+* Minor argument clarification in `composite()` documentation (Issue #127).
+
+
+# burnr v0.3.1
+
+Changes in this patch:
 
 * Updates to documentation and README.
+
+* Quick fixes to SEA unit tests, forcing them to use R 3.5.0 RNG as a temporary fix to issue #124.
 
 
 # burnr v0.3.0
@@ -11,7 +49,7 @@ Changes in this minor release:
 
 * Change to `sea` objects, added `event_years`.
 
-* Added function `percent_scarred()` for calculating timeseries of number trees recording, scarred, and the percentage.
+* Added function `percent_scarred()` for calculating time series of number trees recording, scarred, and the percentage.
 
 * Update to `sample_depth()` to account for single-series fhx objects
 
@@ -56,7 +94,7 @@ Changes in this minor release:
 
 * Added `year_range()` to give (min, max) years for an `fhx` object.
 
-* Updated `composite()` to include a filter for number of events. This necesitates fixes in other functions (e.g. `plot_demograph()`).
+* Updated `composite()` to include a filter for number of events. This necessitates fixes in other functions (e.g. `plot_demograph()`).
 
 * Added `summary()` function for fhx and intervals objects.
 
@@ -147,7 +185,7 @@ Changes in this patch:
 
 * In `get_ggplot()` the `legend` argument is now `plot_legend` to avoid clash with common functions.
 
-* In `fhx$rings` and all functions, `type` arugment is now `rec_type` to avoid clash with `type` function. `rec_type` is short for "record_type".
+* In `fhx$rings` and all functions, `type` argument is now `rec_type` to avoid clash with `type` function. `rec_type` is short for "record_type".
 
 * Can now read FHX files with a single series (closes bug #43).
 

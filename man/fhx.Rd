@@ -2,22 +2,61 @@
 % Please edit documentation in R/utils.R
 \name{fhx}
 \alias{fhx}
-\title{Constructor for S3 fhx class.}
+\title{Constructor for \code{fhx} objects}
 \usage{
-fhx(year, series, rec_type, metalist = list())
+fhx(year, series, rec_type)
 }
 \arguments{
-\item{year}{A numeric vector of observation years for each \code{series} and \code{rec_type} argument.}
+\item{year}{An n-length numeric vector of observation years.}
 
-\item{series}{A factor of series names for each \code{year} and \code{rec_type} argument.}
+\item{series}{An n-length factor or character vector of observation series
+names.}
 
-\item{rec_type}{A factor of ring types for each element in \code{year} and \code{series}.}
-
-\item{metalist}{An option list of arbitrary metadata to be included in the fhx instance.}
+\item{rec_type}{An n-length factor or character vector denoting the record
+type for each observations. Note that this needs to use a controlled
+vocabulary, see \code{burnr:::rec_type_all} for all possible values.}
 }
 \value{
-An fhx instance.
+An \code{fhx} object. \code{fhx} are S3 objects; specialized data frames with 3
+columns:
+\itemize{
+\item "year": An n-length numeric vector. The year of an observation.
+\item "series": An n-length factor. Giving the series name for each
+observation.
+\item "rec_type": An n-length factor with controlled vocabulary and levels.
+This records the type of ring or record of each observation.
+}
 }
 \description{
-Constructor for S3 fhx class.
+Constructor for \code{fhx} objects
+}
+\details{
+Note that 'year', 'series', and 'rec_type' are pass through \code{\link[=as.numeric]{as.numeric()}},
+\code{\link[=as.factor]{as.factor()}}, and \code{\link[=make_rec_type]{make_rec_type()}} the \code{fhx} object is created.
+}
+\examples{
+x <- fhx(
+  year = c(1900, 1954, 1996),
+  series = rep("tree1", 3),
+  rec_type = c("pith_year", "unknown_fs", "bark_year")
+)
+print(x)
+
+}
+\seealso{
+\itemize{
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into \code{fhx} object.
+\item \code{\link[=sort.fhx]{sort.fhx()}} sort an \code{fhx} object.
+\item \code{\link[=is_fhx]{is_fhx()}} test whether object is \code{fhx}.
+\item \code{\link[=+.fhx]{+.fhx()}} concatenate multiple \code{fhx} objects together.
+\item \code{\link[=make_rec_type]{make_rec_type()}} helpful to convert \code{rec_type}-like character vectors to
+full facors with proper levels.
+\item \code{\link[=read_fhx]{read_fhx()}} Read FHX2 files.
+\item \code{\link[=write_fhx]{write_fhx()}} Write FHX2 files.
+\item \code{\link[=plot_demograph]{plot_demograph()}} makes demography plots of \code{fhx} objects.
+\item \code{\link[=series_stats]{series_stats()}} basic common statistical summaries of \code{fhx} objects.
+\item \code{\link[=composite]{composite()}} create fire composites from \code{fhx} objects.
+\item \code{\link[=intervals]{intervals()}} fire interval analysis.
+\item \code{\link[=sea]{sea()}} superposed epoch analysis.
+}
 }

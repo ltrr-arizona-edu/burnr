@@ -2,20 +2,20 @@
 % Please edit documentation in R/utils.R
 \name{get_year}
 \alias{get_year}
-\title{Extract fhx observations for given years.}
+\title{Extract \code{fhx} observations for given years}
 \usage{
 get_year(x, yr)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 
-\item{yr}{Integer vector of year(s) you would like extracted from x.}
+\item{yr}{Numeric vector of year(s) to extract from \code{x}.}
 }
 \value{
-A dataframe with extracted observations.
+An \code{fhx} object.
 }
 \description{
-Extract fhx observations for given years.
+Extract \code{fhx} observations for given years
 }
 \examples{
 data(lgr2)
@@ -23,4 +23,12 @@ get_year(lgr2, 1806)
 
 get_year(lgr2, 1805:1807)
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=year_range]{year_range()}} get earliest and latest year in an \code{fhx} object.
+\item \code{\link[=get_series]{get_series()}} subset an \code{fhx} object to select series.
+\item \code{\link[=delete]{delete()}} remove observations from an \code{fhx} object.
+\item \code{\link[=get_event_years]{get_event_years()}} gets years for various events in an \code{fhx} object.
+}
 }

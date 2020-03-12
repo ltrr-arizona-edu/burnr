@@ -2,16 +2,23 @@
 % Please edit documentation in R/stats.R
 \name{inner_type}
 \alias{inner_type}
-\title{Type of observation in the first (earliest) year of an fhx series.}
+\title{Type of observation in the first (earliest) year of an \code{fhx} object}
 \usage{
 inner_type(x)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 }
 \value{
-The a factor giving the type of observation in the first observation of the series.
+The a factor giving the type of observation in the first observation
+of \code{x}.
 }
 \description{
-Type of observation in the first (earliest) year of an fhx series.
+Type of observation in the first (earliest) year of an \code{fhx} object
+}
+\seealso{
+\itemize{
+\item \code{\link[=outer_type]{outer_type()}} get observation type in outer-most year of \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
+}
 }

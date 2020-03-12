@@ -2,16 +2,22 @@
 % Please edit documentation in R/stats.R
 \name{first_year}
 \alias{first_year}
-\title{First (earliest) year of an fhx series.}
+\title{First (earliest) year of an \code{fhx} object}
 \usage{
 first_year(x)
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 }
 \value{
-The minimum or first year of series in 'x'.
+The minimum or first year of series in \code{x}.
 }
 \description{
-First (earliest) year of an fhx series.
+First (earliest) year of an \code{fhx} object
+}
+\seealso{
+\itemize{
+\item \code{\link[=last_year]{last_year()}} get last year of \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic statistics for series in an \code{fhx} object.
+}
 }

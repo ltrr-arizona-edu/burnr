@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{series_stats}
 \alias{series_stats}
-\title{Generate series-level descriptive statistics.}
+\title{Generate series-level descriptive statistics for \code{fhx} object}
 \usage{
 series_stats(x, func_list = list(first = first_year, last = last_year,
   years = count_year_span, inner_type = inner_type, outer_type =
@@ -10,17 +10,17 @@ series_stats(x, func_list = list(first = first_year, last = last_year,
   recording_years = count_recording, mean_interval = series_mean_interval))
 }
 \arguments{
-\item{x}{An fhx object.}
+\item{x}{An \code{fhx} object.}
 
 \item{func_list}{A list of named functions that will be run on each series
-in the fhx object. The list name for each function is the corresponding
-column name in the output data.frame.}
+in the \code{fhx} object. The list name for each function is the corresponding
+column name in the output data frame.}
 }
 \value{
-A data.frame containing series-level statistics.
+A \code{data.frame} containing series-level statistics.
 }
 \description{
-Generate series-level descriptive statistics.
+Generate series-level descriptive statistics for \code{fhx} object
 }
 \examples{
 data(lgr2)
@@ -28,9 +28,31 @@ series_stats(lgr2)
 
 # You can create your own list of statistics to output. You can also create
 # your own functions:
-flist <- list(n = count_year_span,
-              xbar_interval = function(x) mean_interval(x, injury_event = TRUE))
+flist <- list(
+  n = count_year_span,
+  xbar_interval = function(x) mean_interval(x, injury_event = TRUE)
+)
 sstats <- series_stats(lgr2)
 head(sstats)
-
+}
+\seealso{
+\itemize{
+\item \code{\link[=fhx]{fhx()}} creates an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame into an \code{fhx} object.
+\item \code{\link[=first_year]{first_year()}} gets earliest year in an \code{fhx} object.
+\item \code{\link[=last_year]{last_year()}} gets latest year in an \code{fhx} object.
+\item \code{\link[=count_year_span]{count_year_span()}} counts the year span of an \code{fhx} object.
+\item \code{\link[=inner_type]{inner_type()}} gets "rec_type" for inner event of an \code{fhx} object.
+\item \code{\link[=outer_type]{outer_type()}} get "rec_type" for outside event of an \code{fhx} object.
+\item \code{\link[=count_scar]{count_scar()}} counts scars in an \code{fhx} object.
+\item \code{\link[=count_injury]{count_injury()}} counts injuries in an \code{fhx} object.
+\item \code{\link[=count_recording]{count_recording()}} counts recording years in \code{fhx} object.
+\item \code{\link[=series_mean_interval]{series_mean_interval()}} quickly estimates mean fire-interval of \code{fhx}
+object.
+\item \code{\link[=sample_depth]{sample_depth()}} gets sample depth of an \code{fhx} object.
+\item \code{\link[=summary.fhx]{summary.fhx()}} brief summary of an \code{fhx} object.
+\item \code{\link[=composite]{composite()}} create a fire \code{composite} from an \code{fhx} object.
+\item \code{\link[=intervals]{intervals()}} get fire \code{intervals} analysis from \code{composite}.
+\item \code{\link[=sea]{sea()}} superposed epoch analysis.
+}
 }

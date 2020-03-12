@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{get_event_years}
 \alias{get_event_years}
-\title{Get years with events for an fhx object.}
+\title{Get years with events for an \code{fhx} object}
 \usage{
 get_event_years(x, scar_event = TRUE, injury_event = FALSE,
   custom_grep_str = NULL)
@@ -10,28 +10,47 @@ get_event_years(x, scar_event = TRUE, injury_event = FALSE,
 \arguments{
 \item{x}{An \code{fhx} object.}
 
-\item{scar_event}{Boolean indicating whether years with scar events should be returned. Default is TRUE.}
+\item{scar_event}{Boolean indicating whether years with scar events should be
+returned. Default is \code{TRUE}.}
 
-\item{injury_event}{Boolean indicating whether years with injury events should be returned. Default is FALSE.}
+\item{injury_event}{Boolean indicating whether years with injury events
+should be returned. Default is \code{FALSE}.}
 
-\item{custom_grep_str}{Character string to pass a custom grep search pattern to search rec_type column for. Undefined by default.}
+\item{custom_grep_str}{Character string to pass a custom grep search pattern
+to search \code{x} "rec_type" column for. \code{NULL} by default.}
 }
 \value{
-A list. Elements of the list are integer vectors giving the years with events for each fhx series. Each element's name reflects the series name.
+A list. Elements of the list are numeric vectors giving the years
+with events for each \code{fhx} series. Each element's name reflects the series'
+name.
 }
 \description{
-Get years with events for an fhx object.
+Get years with events for an \code{fhx} object
 }
 \examples{
 data(pgm)
 get_event_years(pgm, scar_event = TRUE, injury_event = TRUE)
 
 # Passing a custom string to grep. This one identified recorder years:
-get_event_years(pgm, custom_grep_str = 'recorder_')
+get_event_years(pgm, custom_grep_str = "recorder_")
 
 # Use with composite to get composite years:
-comp <- composite(pgm, comp_name = 'pgm')
-event_yrs <- get_event_years(comp)[['pgm']]
+comp <- composite(pgm, comp_name = "pgm")
+event_yrs <- get_event_years(comp)[["pgm"]]
 print(event_yrs)
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=series_names]{series_names()}} get all the series in an \code{fhx} object.
+\item \code{\link[=year_range]{year_range()}} get earliest and latest year in an \code{fhx} object.
+\item \code{\link[=get_year]{get_year()}} subset an \code{fhx} object to select years.
+\item \code{\link[=get_series]{get_series()}} subset an \code{fhx} object to select series.
+\item \code{\link[=get_event_years]{get_event_years()}} gets years for various events in an \code{fhx} object.
+\item \code{\link[=count_event_position]{count_event_position()}} count the number of different events in an \code{fhx}
+object.
+\item \code{\link[=yearly_recording]{yearly_recording()}} count the number of "recording" events in each year of
+an \code{fhx} object.
+\item \code{\link[=series_stats]{series_stats()}} basic summary stats for an \code{fhx} object.
+}
 }

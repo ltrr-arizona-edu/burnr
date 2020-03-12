@@ -2,34 +2,60 @@
 % Please edit documentation in R/intervals.R
 \name{intervals}
 \alias{intervals}
-\title{Constructor for S3 intervals class.}
+\title{Calculate fire intervals from a \code{composite}}
 \usage{
 intervals(comp, densfun = "weibull")
 }
 \arguments{
-\item{comp}{A composite fhx instance. Should have only one series in it.}
+\item{comp}{A \code{composite} instance, usually output from \code{\link[=composite]{composite()}}.
+Should contain only one series.}
 
-\item{densfun}{String giving desired distribution to fit. Suggest "weibull" or "lognormal". Default is "weibull".}
+\item{densfun}{String giving desired distribution to fit. Either "weibull"
+or "lognormal". Default is "weibull".}
 }
 \value{
-An intervals instance.
+An \code{intervals} object. \code{intervals} have components:
+\itemize{
+\item "intervals" an integer vector giving the actual fire intervals.
+\item "fitdistr" a \code{fitdistr} object from \code{\link[MASS:fitdistr]{MASS::fitdistr()}} representing the
+density function fit.
+\item "densfun" a string giving the name of the density function used.
+\item "kstest" an \code{htest} object from \code{\link[stats:ks.test]{stats::ks.test()}} giving the result of a
+one-sample Kolmogorov-Smirnov test.
+\item "shapirotest" an \code{htest} object from \code{\link[stats:shapiro.test]{stats::shapiro.test()}} giving the
+result of a Shapiro-Wilk normality test.
+\item "comp_name" a string giving the name of the interval's input composite.
+\item "event_range" an integer vector giving the year range (min, max) of
+events used to create this intervals.
+}
 }
 \description{
-Constructor for S3 intervals class.
+Calculate fire intervals from a \code{composite}
 }
 \examples{
 data(pgm)
 interv <- intervals(composite(pgm))
 print(interv)
 
-mean(interv)  # Mean interval
+mean(interv) # Mean interval
 
 # Now fit log-normal distribution instead of Weibull.
 intervals(composite(pgm), densfun = "lognormal")
-
 \dontrun{
 # Boxplot of fire interval distribution.
 boxplot(intervals(composite(pgm))$intervals)
 }
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=composite]{composite()}} to create a \code{composite} object.
+\item \code{\link[=mean.intervals]{mean.intervals()}} gets mean fire interval.
+\item \code{\link[=median.intervals]{median.intervals()}} gets median fire interval.
+\item \code{\link[=quantile.intervals]{quantile.intervals()}} get fit distribution quantiles.
+\item \code{\link[=plot_intervals_dist]{plot_intervals_dist()}} plots \code{intervals}.
+\item \code{\link[=min.intervals]{min.intervals()}} gives the minimum fire interval.
+\item \code{\link[=max.intervals]{max.intervals()}} gives the maximum fire interval.
+\item \code{\link[=print.intervals]{print.intervals()}} prints common fire-interval summary statistics.
+}
 }

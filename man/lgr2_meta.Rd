@@ -4,15 +4,19 @@
 \name{lgr2_meta}
 \alias{lgr2_meta}
 \title{Metadata for the Los Griegos Peak fire-history dataset}
-\format{A data frame with 26 rows and 2 variables:
+\format{A \code{data.frame} with 26 rows and 2 variables:
 \itemize{
-  \item TreeID: name of tree series
-  \item SpeciesID: abbreviated tree species
+\item "TreeID": Name of tree series.
+\item "SpeciesID": Abbreviated tree species
 }}
 \usage{
 lgr2_meta
 }
 \description{
-A dataset with species information for the Los Griegos Peak plot2 fire-history dataset (`lgr2`).
+A data frame with species information for the Los Griegos Peak plot2
+fire-history dataset (\link{lgr2}).
+}
+\seealso{
+\link{lgr2} Log Griegos Peak fire-history data.
 }
 \keyword{datasets}

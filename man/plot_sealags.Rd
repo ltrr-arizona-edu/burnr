@@ -2,16 +2,38 @@
 % Please edit documentation in R/sea.R
 \name{plot_sealags}
 \alias{plot_sealags}
-\title{Basic SEA lag plot.}
+\title{Basic SEA lag plot of \code{sea} object}
 \usage{
 plot_sealags(x)
 }
 \arguments{
-\item{x}{A sea object.}
+\item{x}{A \code{sea} object.}
 }
 \value{
-A ggplot object.
+A \code{ggplot} object.
 }
 \description{
-Basic SEA lag plot.
+Basic SEA lag plot of \code{sea} object
+}
+\examples{
+\dontrun{
+# Read in the Cook and Krusic (2004; The North American Drought Atlas)
+# reconstruction of Palmer Drought Severity Index (PDSI) for the Jemez
+# Mountains area (gridpoint 133).
+data(pgm_pdsi)
+
+# Run SEA on Peggy Mesa (pgm) data
+data(pgm)
+pgm_comp <- composite(pgm)
+
+pgm_sea <- sea(pgm_pdsi, pgm_comp)
+
+plot(pgm_sea)
+}
+}
+\seealso{
+\itemize{
+\item \code{\link[=sea]{sea()}} creates a \code{sea} object.
+\item \code{\link[=print.sea]{print.sea()}} prints a pretty summary of a \code{sea} object.
+}
 }

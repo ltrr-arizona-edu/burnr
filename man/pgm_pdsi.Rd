@@ -4,14 +4,29 @@
 \name{pgm_pdsi}
 \alias{pgm_pdsi}
 \title{Reconstructed PDSI time series for the Peggy Mesa fire-history dataset}
-\format{A data frame with 2004 rows and 1 variables. Row names give the year for the reconstructed value:
+\format{A \code{data.frame} with 2004 rows and 1 variables. Row names give the
+year for the reconstructed value:
 \itemize{
-  \item RECON: The reconstructed PDSI series.
+\item "RECON": The reconstructed PDSI series.
 }}
+\source{
+Cook, E. R., and Krusic, P. J. (2004). The North American Drought
+Atlas. Retrieved September 13, 2017, from
+http://iridl.ldeo.columbia.edu/SOURCES/.LDEO/.TRL/.NADA2004/.pdsi-atlas.html
+}
 \usage{
 pgm_pdsi
 }
 \description{
-A tree-ring reconstructed Palmer Drought-Severity Index time series corresponding to the Peggy Mesa fire-history dataset (`pgm`) -- specifically, the Jemez Mountains area (gridpoint 133). The reconstruction is from The North American Drought Atlas (Cook and Krusic 2004).
+A tree-ring reconstructed Palmer Drought-Severity Index time series
+corresponding to the Peggy Mesa fire-history dataset (\link{pgm}) -- specifically,
+the Jemez Mountains area (gridpoint 133). The reconstruction is from The
+North American Drought Atlas (Cook and Krusic 2004).
+}
+\seealso{
+\itemize{
+\item \link{pgm} Peggy Mesa fire-history data.
+\item \link{pgm_meta} Peggy Mesa metadata.
+}
 }
 \keyword{datasets}

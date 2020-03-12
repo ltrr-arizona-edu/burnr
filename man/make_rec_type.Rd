@@ -2,22 +2,30 @@
 % Please edit documentation in R/utils.R
 \name{make_rec_type}
 \alias{make_rec_type}
-\title{Turn character vector into factor with proper fhx levels.}
+\title{Turn character vector into factor with proper \code{fhx} levels}
 \usage{
 make_rec_type(x)
 }
 \arguments{
-\item{x}{A character vector containing one or more rec_type-like strings.}
+\item{x}{A character vector or factor containing one or more rec_type-like
+strings. This uses a controlled vocabulary, see \code{burnr:::rec_type_all}
+for list of all possible rec_type values.}
 }
 \value{
-A factor with appropriate fhx levels.
+A factor with appropriate \code{fhx} levels.
 }
 \description{
-Turn character vector into factor with proper fhx levels.
+Turn character vector into factor with proper \code{fhx} levels
 }
 \examples{
-make_rec_type('null_year')
+make_rec_type("null_year")
 
-make_rec_type(c('null_year', 'late_fs'))
+make_rec_type(c("null_year", "late_fs"))
 
+}
+\seealso{
+\itemize{
+\item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
+\item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like objects into \code{fhx} objects.
+}
 }

@@ -22,8 +22,11 @@ This gives you a basic plot. There are more advanced options. For example, we ca
 ```R
 data(lgr2_meta)
 
-plot(lgr2, color_group = lgr2_meta$SpeciesID, color_id = lgr2_meta$TreeID,
-     plot_legend = TRUE)
+plot(lgr2,
+  color_group = lgr2_meta$SpeciesID,
+  color_id = lgr2_meta$TreeID,
+  plot_legend = TRUE
+)
 ```
 
 Cool, eh?
@@ -64,8 +67,8 @@ Citations help us to identify user needs and justify additional time developing 
 
 ## Development
 
-Want to contribute? Great! We're following [Hadley's packaging workflow](http://r-pkgs.had.co.nz/) and [code style](http://adv-r.had.co.nz/Style.html). Fork away.
-
 Please file bugs in the [bug tracker](https://github.com/ltrr-arizona-edu/burnr/issues).
+
+Want to contribute? Great! We're following [Hadley's packaging workflow](https://r-pkgs.had.co.nz/) and [style guide](https://style.tidyverse.org). Fork away.
 
 If you're not a developer, don't worry! We also welcome help with documentation and tutorials.

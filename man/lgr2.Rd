@@ -4,11 +4,14 @@
 \name{lgr2}
 \alias{lgr2}
 \title{Los Griegos Peak plot2 fire-history data}
-\format{An fhx object with 26 series from 1366 to 2012 CE. Each series is a string with 5 characters.}
+\format{An fhx object with 26 series from 1366 to 2012 CE.}
 \usage{
 lgr2
 }
 \description{
-An fhx object with fire-history data from Los Griegos Peak, New Mexico.
+An \code{fhx} object with fire-history data from Los Griegos Peak, New Mexico.
+}
+\seealso{
+\link{lgr2_meta} Los Griegos Peak metadata.
 }
 \keyword{datasets}

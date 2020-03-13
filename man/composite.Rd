@@ -4,8 +4,14 @@
 \alias{composite}
 \title{Composite fire events in fhx object}
 \usage{
-composite(x, filter_prop = 0.25, filter_min_rec = 2,
-  filter_min_events = 1, injury_event = FALSE, comp_name = "COMP")
+composite(
+  x,
+  filter_prop = 0.25,
+  filter_min_rec = 2,
+  filter_min_events = 1,
+  injury_event = FALSE,
+  comp_name = "COMP"
+)
 }
 \arguments{
 \item{x}{An \code{fhx} object.}

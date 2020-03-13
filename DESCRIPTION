@@ -23,6 +23,6 @@ Imports:
     ggplot2,
     reshape2,
     plyr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

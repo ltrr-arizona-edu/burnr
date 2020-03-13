@@ -4,8 +4,12 @@
 \alias{get_event_years}
 \title{Get years with events for an \code{fhx} object}
 \usage{
-get_event_years(x, scar_event = TRUE, injury_event = FALSE,
-  custom_grep_str = NULL)
+get_event_years(
+  x,
+  scar_event = TRUE,
+  injury_event = FALSE,
+  custom_grep_str = NULL
+)
 }
 \arguments{
 \item{x}{An \code{fhx} object.}

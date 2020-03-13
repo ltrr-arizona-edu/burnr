@@ -4,8 +4,7 @@
 \alias{sea}
 \title{Perform superposed epoch analysis}
 \usage{
-sea(x, event, nbefore = 6, nafter = 4, event_range = TRUE,
-  n_iter = 1000)
+sea(x, event, nbefore = 6, nafter = 4, event_range = TRUE, n_iter = 1000)
 }
 \arguments{
 \item{x}{A data frame climate reconstruction or tree-ring series with row

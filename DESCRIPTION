@@ -16,7 +16,9 @@ LazyData: true
 Suggests:
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    forcats,
+    stringr
 Imports:
     MASS,
     stats,

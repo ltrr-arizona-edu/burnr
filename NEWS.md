@@ -2,7 +2,7 @@
 
 Changes in this release:
 
-*
+* Update `count_event_position()` to accommodate newly (and future) added positions in rec_ype
 
 
 

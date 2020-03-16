@@ -4,7 +4,13 @@
 \alias{count_event_position}
 \title{Count different events in an \code{fhx} object}
 \usage{
-count_event_position(x, injury_event = FALSE, position, groupby)
+count_event_position(
+  x,
+  injury_event = FALSE,
+  position,
+  drop_unknown = FALSE,
+  groupby
+)
 }
 \arguments{
 \item{x}{An \code{fhx} object.}
@@ -43,14 +49,11 @@ count_event_position(pgm)
 # As above, but considering injuries to be a type of event.
 count_event_position(pgm, injury_event = TRUE)
 
-# Count only events of a certain position, in this case, "unknown", "early",
-# and "middle".
-count_event_position(pgm,
-  injury_event = TRUE,
-  position = c("unknown", "early", "middle")
-)
+# Often we only quantify known intra-ring positions.
+# Remove the "unknown_fs" and/or "unknown_fi" with
+count_event_position(pgm, drop_unknown = TRUE)
 
-# Using custom "groupby" args.
+# Using custom "groupby" args in a named list, as
 grplist <- list(
   foo = c("dormant_fs", "early_fs"),
   bar = c("middle_fs", "late_fs")

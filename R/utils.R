@@ -16,7 +16,7 @@
 #'     This records the type of ring or record of each observation.
 #'
 #' @details
-#' Note that 'year', 'series', and 'rec_type' are pass through [as.numeric()], 
+#' Note that 'year', 'series', and 'rec_type' are pass through [as.numeric()],
 #' [as.factor()], and [make_rec_type()] the `fhx` object is created.
 #'
 #' @examples
@@ -391,14 +391,11 @@ find_recording <- function(x, injury_event=FALSE) {
 #' # As above, but considering injuries to be a type of event.
 #' count_event_position(pgm, injury_event = TRUE)
 #'
-#' # Count only events of a certain position, in this case, "unknown", "early",
-#' # and "middle".
-#' count_event_position(pgm,
-#'   injury_event = TRUE,
-#'   position = c("unknown", "early", "middle")
-#' )
+#' # Often we only quantify known intra-ring positions.
+#' # Remove the "unknown_fs" and/or "unknown_fi" with
+#' count_event_position(pgm, drop_unknown = TRUE)
 #'
-#' # Using custom "groupby" args.
+#' # Using custom "groupby" args in a named list, as
 #' grplist <- list(
 #'   foo = c("dormant_fs", "early_fs"),
 #'   bar = c("middle_fs", "late_fs")
@@ -406,36 +403,39 @@ find_recording <- function(x, injury_event=FALSE) {
 #' count_event_position(pgm, groupby = grplist)
 #'
 #' @export
-count_event_position <- function(x, injury_event = FALSE, position, groupby) {
+count_event_position <- function(x, injury_event = FALSE, position,
+                                   drop_unknown = FALSE, groupby) {
   stopifnot(is_fhx(x))
 
-  possible_position <- c(
-    "unknown", "dormant", "early", "middle", "late", "latewd"
-  )
-  if (missing(position)) {
-    position <- possible_position
-  }
-  stopifnot(all(position %in% possible_position))
-
-  target_events <- paste0(position, "_fs")
-  if (injury_event == TRUE) {
-    target_events <- c(target_events, paste0(position, "_fi"))
+  if (!missing(position)) {
+    warning("The 'position' argument is depreciated, please see examples for
+            new argument usage.",
+            call. = FALSE)
   }
 
-  msk <- x$rec_type %in% target_events
+  scars <- burnr:::rec_type_scar
+  injuries <- burnr:::rec_type_injury
 
-  out <- plyr::count(x$rec_type[msk])
-  names(out) <- c("event", "count")
+  if (injury_event) {
+    target_events <-  c(scars, injuries)
+  }
+  else target_events <- scars
+
+  if (drop_unknown) {
+    target_events <- stringr::str_subset(target_events, "unknown",
+                                         negate = TRUE)
+  }
+
+  evnt_dat <- subset(x, x$rec_type %in% target_events)
 
   if (!missing(groupby)) {
-
-    outgroup <- plyr::ldply(groupby,
-      function(g) sum(subset(out, out$event %in% g)$count)
-    )
-
-    names(outgroup) <- c("event", "count")
-    out <- rbind(out, outgroup)
+    evnt_dat$rec_type <- forcats::fct_collapse(evnt_dat$rec_type,
+                                               !!! groupby,
+                                               other_level = NULL)
   }
+  evnt_dat$rec_type <- factor(evnt_dat$rec_type)
+  out <- forcats::fct_count(evnt_dat$rec_type, sort = TRUE, prop = TRUE)
+  names(out) <- c("event", "count", "prop")
 
   out
 }

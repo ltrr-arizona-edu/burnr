@@ -1,4 +1,4 @@
-citHeader("To cite lubridate in publications use:")
+citHeader("To cite burnr in publications use:")
 
 citEntry(entry = "Article",
 	title = "burnr: Fire history analysis and graphics in R",
@@ -6,7 +6,7 @@ citEntry(entry = "Article",
 	issn = "1125-7865",
 	doi = "10.1016/j.dendro.2018.02.005",
 	journal = "Dendrochronologia",
-	author = personList(as.person("Steven B. Malevich"), 
+	author = personList(as.person("Steven B. Malevich"),
                         as.person("Christopher H. Guiterman"),
                         as.person("Ellis Q. Margolis")
     ),

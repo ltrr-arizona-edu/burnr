@@ -278,3 +278,30 @@ test_that("internal violates_canon catches bad, passes good", {
   expect_true(burnr:::violates_canon(test_case_bad))
 })
 
+
+test_that("composite returns empty fhx when no fire events", {
+  test_case <- fhx(
+    year = c(1850, 2010),
+    series = c("a", "a"),
+    rec_type = c("pith_year", "bark_year")
+  )
+  test_comp <- composite(test_case)
+
+  empty_fhx <- fhx(as.numeric(c()), as.factor(c()), make_rec_type(c()))
+
+  expect_equal(test_comp, empty_fhx)
+})
+
+
+test_that("composite returns empty fhx when no worthy fire events", {
+  test_case <- fhx(
+    year = c(1850, 2010, 1860, 2005),
+    series = c("a", "a", "b", "b"),
+    rec_type = c("pith_year", "unknown_fs", "inner_year", "unknown_fs")
+  )
+  test_comp <- composite(test_case)
+
+  empty_fhx <- fhx(as.numeric(c()), as.factor(c()), make_rec_type(c()))
+
+  expect_equal(test_comp, empty_fhx)
+})

@@ -452,10 +452,16 @@ count_event_position <- function(x, injury_event = FALSE, position,
 #'
 #' @export
 yearly_recording <- function(x, injury_event = FALSE) {
-  as.data.frame(table(year = plyr::ddply(x, "series",
-    find_recording,
-    injury_event = injury_event
-  )$recording))
+  out <- as.data.frame(
+    table(
+      year = plyr::ddply(x, "series", find_recording, 
+        injury_event = injury_event
+      )$recording
+    ),
+    stringsAsFactors=FALSE
+  )
+  out$year <- as.numeric(out$year)
+  out
 }
 
 
@@ -512,9 +518,16 @@ composite <- function(x, filter_prop = 0.25, filter_min_rec = 2,
   if (injury_event) {
     event <- c(event, injury)
   }
-  event_count <- as.data.frame(
-    table(year = subset(x, x$rec_type %in% event)$year)
-  )
+
+  event_year <- subset(x, x$rec_type %in% event)$year
+  if (length(event_year) < 1) {
+    return(fhx(as.numeric(c()), as.factor(c()), make_rec_type(c())))
+  } else {
+    event_count <- as.data.frame(
+      table(year = event_year)
+    )
+  }
+
   recording_count <- yearly_recording(x, injury_event = injury_event)
   # `Var1` in the _count data.frames is the year, `Freq` is the count.
   counts <- merge(event_count, recording_count,

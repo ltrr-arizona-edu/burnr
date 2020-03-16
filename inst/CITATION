@@ -4,7 +4,6 @@ citEntry(entry = "Article",
 	title = "burnr: Fire history analysis and graphics in R",
 	volume = "49",
 	issn = "1125-7865",
-	url = "http://www.sciencedirect.com/science/article/pii/S1125786517301418",
 	doi = "10.1016/j.dendro.2018.02.005",
 	journal = "Dendrochronologia",
 	author = personList(as.person("Steven B. Malevich"), 
@@ -19,5 +18,5 @@ citEntry(entry = "Article",
   paste("Steven Malevich, Christopher Guiterman, Ellis Margolis (2018).",
         "burnr: Fire History Analysis and Graphics in R.",
         "Dendrochronologia 49 (June): 9–15.",
-        "https://doi.org/10.1016/j.dendro.2018.02.005.")
+        "doi: 10.1016/j.dendro.2018.02.005.")
 )

@@ -28,12 +28,12 @@ series, ignoring the period of key events.}
 A \code{sea} object containing. This contains:
 \itemize{
 \item "event_years": a numeric vector of event years.
-\item "actual": a \code{data.frame} summary of the actual events composite.
-\item "simulated": a \code{data.frame} summary of the simulated events composite.
-\item "departure": a \code{data.frame} summary of the departures of "actual" from
-"simulated" events.
-\item "simulated": a 2D \code{matrix} of the bootstrapped-values across lags.
-\item "observed": a 2D \code{matrix} of "actual" events and their lags.
+\item "actual": a \code{data.frame} summary of the actual events.
+\item "random": a \code{data.frame} summary of the bootstrapped events.
+\item "departure": a \code{data.frame} summary of the departures of actual from
+bootstrapped events.
+\item "simulated": a full 2D \code{matrix} of the bootstrapped-values across lags.
+\item "observed": a ful 2D \code{matrix} of "actual" events across lags.
 }
 }
 \description{
@@ -66,7 +66,7 @@ values of the simulated events and the departures, because random draws are
 used. The event year and lag significance levels should match, at least in
 the general pattern.
 
-Our SEA implementation borrowed from \code{\link[dplR:sea]{dplR::sea()}} function in how it
+Our SEA implementation borrowed from \code{dplR::sea()} function in how it
 performs the bootstrap procedure, but differs in the kind of output provided
 for the user.
 }

@@ -1,4 +1,12 @@
-# burnr v0.4.0.9000
+# burnr v0.5.0.9000
+
+Changes in this release:
+
+*
+
+
+
+# burnr v0.5.0
 
 Changes in this release:
 
@@ -14,9 +22,11 @@ Changes in this release:
 
 * Removed broken `site_stats()` function (Issue #138). Please use `intervals()` and `print()` to get the same statistics.
 
-* `composite()` now returns an empty `fhx` object if no composite-worthy events are found (Issue #131). Much better than throwing an obtuse error, which is what we used to do.
+* `composite()` now returns an empty `fhx` object if no composite-worthy events are found (Issue #131) or if there are no fire-events (Issue #155). Much better than throwing an obtuse error, which is what we used to do.
 
 * Updated in-package citation information (`citation("burnr")`). Please cite burnr if you use it in your work!
+
+* `yearly_recording()` now returns a data frame with a numeric "year" column (Issue #154). In past versions, the "year" column contained factors.
 
 * Added unit tests for basic plotting function options. We now have test coverage for more than 75% of our code. 
 

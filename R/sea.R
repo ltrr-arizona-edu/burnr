@@ -38,18 +38,18 @@
 #' used. The event year and lag significance levels should match, at least in
 #' the general pattern.
 #'
-#' Our SEA implementation borrowed from [dplR::sea()] function in how it
+#' Our SEA implementation borrowed from `dplR::sea()` function in how it
 #' performs the bootstrap procedure, but differs in the kind of output provided
 #' for the user.
 #'
 #' @return A `sea` object containing. This contains:
 #'   * "event_years": a numeric vector of event years.
-#'   * "actual": a `data.frame` summary of the actual events composite.
-#'   * "simulated": a `data.frame` summary of the simulated events composite.
-#'   * "departure": a `data.frame` summary of the departures of "actual" from
-#'     "simulated" events.
-#'   * "simulated": a 2D `matrix` of the bootstrapped-values across lags.
-#'   * "observed": a 2D `matrix` of "actual" events and their lags.
+#'   * "actual": a `data.frame` summary of the actual events.
+#'   * "random": a `data.frame` summary of the bootstrapped events.
+#'   * "departure": a `data.frame` summary of the departures of actual from
+#'     bootstrapped events.
+#'   * "simulated": a full 2D `matrix` of the bootstrapped-values across lags.
+#'   * "observed": a ful 2D `matrix` of "actual" events across lags.
 #'
 #' @seealso
 #'   * [plot_sealags()] plots `sea` lags and their statistical significance.

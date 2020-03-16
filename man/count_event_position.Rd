@@ -18,18 +18,12 @@ count_event_position(
 \item{injury_event}{Optional boolean indicating whether injuries should be
 considered an "event". Default is \code{FALSE}.}
 
-\item{position}{Optional character vector giving the types of event positions
-to include in the count. Can be any combination of the following:
-\itemize{
-\item "unknown"
-\item "dormant"
-\item "early"
-\item "middle"
-\item "late"
-\item "latewd"
-}
+\item{position}{Depreciated. This allowed users to specify which intra-ring
+positions to include in the summary output table. The default counts all
+types of event positions.}
 
-The default counts all types of event positions.}
+\item{drop_unknown}{Boolean. Defaults to FALSE. If TRUE will remove the
+"unknown_fs" and/or "unknown_fi" from rec_type.}
 
 \item{groupby}{Optional named list containing character vectors that are used
 to count the total number of different event types. The names given to each
@@ -59,13 +53,16 @@ grplist <- list(
   bar = c("middle_fs", "late_fs")
 )
 count_event_position(pgm, groupby = grplist)
+# Note that if a position in the groupby list is
+# not included in rec_type, forcats::fct_count()
+# will throw a flag for an "Unknown levels in 'f':"
 
 }
 \seealso{
 \itemize{
-\item \code{\link[=get_event_years]{get_event_years()}} gets years for various events in an \code{fhx} object.
-\item \code{\link[=yearly_recording]{yearly_recording()}} count the number of "recording" events in each year of
-an \code{fhx} object.
-\item \code{\link[=series_stats]{series_stats()}} basic summary stats for an \code{fhx} object.
+\item \code{\link[=get_event_years]{get_event_years()}} gets years for various events in an \code{fhx}
+object. * \code{\link[=yearly_recording]{yearly_recording()}} count the number of "recording" events in
+each year of an \code{fhx} object. * \code{\link[=series_stats]{series_stats()}} basic summary stats for an
+\code{fhx} object.
 }
 }

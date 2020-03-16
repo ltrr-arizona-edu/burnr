@@ -361,28 +361,22 @@ find_recording <- function(x, injury_event=FALSE) {
 #' @param x An `fhx` object.
 #' @param injury_event Optional boolean indicating whether injuries should be
 #'   considered an "event". Default is `FALSE`.
-#' @param position Optional character vector giving the types of event positions
-#'   to include in the count. Can be any combination of the following:
-#'   * "unknown"
-#'   * "dormant"
-#'   * "early"
-#'   * "middle"
-#'   * "late"
-#'   * "latewd"
-#'
-#'   The default counts all types of event positions.
+#' @param position Depreciated. This allowed users to specify which intra-ring
+#'   positions to include in the summary output table. The default counts all
+#'   types of event positions.
+#' @param drop_unknown Boolean. Defaults to FALSE. If TRUE will remove the
+#'   "unknown_fs" and/or "unknown_fi" from rec_type.
 #' @param groupby Optional named list containing character vectors that are used
 #'   to count the total number of different event types. The names given to each
 #'   character vector give the group's name in the output data frame.
 #'
 #' @return A data frame with a columns giving the event or event group and
-#' values giving the corresponding count for each event type or group.
+#'   values giving the corresponding count for each event type or group.
 #'
-#' @seealso
-#'   * [get_event_years()] gets years for various events in an `fhx` object.
-#'   * [yearly_recording()] count the number of "recording" events in each year of
-#'     an `fhx` object.
-#'   * [series_stats()] basic summary stats for an `fhx` object.
+#' @seealso * [get_event_years()] gets years for various events in an `fhx`
+#'   object. * [yearly_recording()] count the number of "recording" events in
+#'   each year of an `fhx` object. * [series_stats()] basic summary stats for an
+#'   `fhx` object.
 #'
 #' @examples
 #' data(pgm)
@@ -401,6 +395,9 @@ find_recording <- function(x, injury_event=FALSE) {
 #'   bar = c("middle_fs", "late_fs")
 #' )
 #' count_event_position(pgm, groupby = grplist)
+#' # Note that if a position in the groupby list is
+#' # not included in rec_type, forcats::fct_count()
+#' # will throw a flag for an "Unknown levels in 'f':"
 #'
 #' @export
 count_event_position <- function(x, injury_event = FALSE, position,
@@ -413,8 +410,8 @@ count_event_position <- function(x, injury_event = FALSE, position,
             call. = FALSE)
   }
 
-  scars <- burnr:::rec_type_scar
-  injuries <- burnr:::rec_type_injury
+  scars <- rec_type_scar
+  injuries <- rec_type_injury
 
   if (injury_event) {
     target_events <-  c(scars, injuries)

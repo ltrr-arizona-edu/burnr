@@ -374,7 +374,7 @@ find_recording <- function(x, injury_event=FALSE) {
 #'
 #' @noRd
 get_rec_tbl <- function(x, injury_event = FALSE) {
-  rec_list <- lapply(series_names(x), function(i) {
+  rec_list <- lapply(levels(x$series), function(i) {
     rec_per <- find_recording(x[x$series == i, ], injury_event = injury_event)
     if (dim(rec_per)[1] < 1) { # if a series has 1 year recording, skip it
       return()

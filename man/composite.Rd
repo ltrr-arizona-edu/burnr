@@ -58,8 +58,8 @@ print(event_yrs)
 \item \code{\link[=get_event_years]{get_event_years()}} gets years for various events in an \code{fhx} object.
 \item \code{\link[=count_event_position]{count_event_position()}} count the number of different events in an \code{fhx}
 object.
-\item \code{\link[=yearly_recording]{yearly_recording()}} count the number of "recording" events in each year of
-an \code{fhx} object.
+\item \code{\link[=yearly_recording]{yearly_recording()}} count the number of "recording" events in each year
+of an \code{fhx} object.
 \item \code{\link[=fhx]{fhx()}} constructs an \code{fhx} object.
 \item \code{\link[=as_fhx]{as_fhx()}} casts data frame-like object into an \code{fhx} object.
 }

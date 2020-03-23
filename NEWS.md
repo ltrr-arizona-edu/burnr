@@ -2,10 +2,12 @@
 
 Changes in this release:
 
-* Update `count_event_position()` to accommodate newly (and future) added positions in rec_ype
+* Update `count_event_position()` to accommodate newly added (and future) positions in rec_ype
 * Bug fix in `plot_demograph()` to handle discontinuous recording periods. #78
   * Bug fix required a new function (`get_rec_tbl()`) to generate table of recording segments. Not exported.
 * Added spring dormant to set of rec_types. Another "noncanon" descriptor for fire scar seasonality. This aids in canonizing "D" dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere) 
+* [Internal] Update README to Rmarkdown (.Rmd) file with `usethis::use_readme_rmd()`
+* Fix typo in citation file
 
 
 

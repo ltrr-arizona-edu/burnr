@@ -102,8 +102,8 @@ make_rec_type <- function(x) {
 #'   * [get_event_years()] gets years for various events in an `fhx` object.
 #'   * [count_event_position()] count the number of different events in an `fhx`
 #'     object.
-#'   * [yearly_recording()] count the number of "recording" events in each year of
-#'     an `fhx` object.
+#'   * [yearly_recording()] count the number of "recording" events in each
+#'     year of an `fhx` object.
 #'   * [series_stats()] basic summary stats for an `fhx` object.
 #'
 #' @examples
@@ -162,8 +162,8 @@ get_event_years <- function(x, scar_event = TRUE, injury_event = FALSE,
 #'   * [get_event_years()] gets years for various events in an `fhx` object.
 #'   * [count_event_position()] count the number of different events in an `fhx`
 #'     object.
-#'   * [yearly_recording()] count the number of "recording" events in each year of
-#'     an `fhx` object.
+#'   * [yearly_recording()] count the number of "recording" events in each year
+#'     of an `fhx` object.
 #'   * [series_stats()] basic summary stats for an `fhx` object.
 #'
 #' @examples
@@ -191,8 +191,8 @@ year_range <- function(x) {
 #'   * [get_event_years()] gets years for various events in an `fhx` object.
 #'   * [count_event_position()] count the number of different events in an `fhx`
 #'     object.
-#'   * [yearly_recording()] count the number of "recording" events in each year of
-#'     an `fhx` object.
+#'   * [yearly_recording()] count the number of "recording" events in each year
+#'     of an `fhx` object.
 #'   * [series_stats()] basic summary stats for an `fhx` object.
 #'
 #' @examples
@@ -296,7 +296,7 @@ delete <- function(x, s, yr) {
   } else if (missing(yr)) {
     out <- subset(x, !(x$series %in% s))
   } else if (!missing(yr) & !missing(s)) {
-    out <- subset(x, !( (x$series %in% s) & (x$year %in% yr) ))
+    out <- subset(x, !((x$series %in% s) & (x$year %in% yr)))
   } else {
     out <- x
   }
@@ -355,34 +355,78 @@ find_recording <- function(x, injury_event=FALSE) {
   data.frame(recording = union(rec, active))
 }
 
+#' Generate a table of recording period segments for each series
+#'
+#' Called by [plot_demograph()], this function produces a table of recording
+#' period segments. It allows for more than one segment per series, in cases
+#' where the recording period is non-continuous.
+#'
+#' @param x An `fhx` object
+#' @param injury_event Boolean indicating whether injuries should be considered
+#'   event. Default is `FALSE`. Passed to [burnr:::find_recording()]
+#'
+#' @return A data frame with a row for each continuous recording segment, and
+#'   columns 'series', 'first', 'last', 'rec_type'.
+#'
+#' @example
+#' data(pgm)
+#' get_rec_tbl(pgm, injury_event = TRUE)
+#'
+#' @noRd
+get_rec_tbl <- function(x, injury_event = FALSE) {
+  rec_list <- lapply(levels(x$series), function(i) {
+    rec_per <- find_recording(x[x$series == i, ], injury_event = injury_event)
+    if (dim(rec_per)[1] < 1) { # if a series has 1 year recording, skip it
+      return()
+    }
+    else {
+      rec_per$lag <- c(NA, diff(rec_per$recording))
+      rlx <- rle(rec_per$lag %in% c(NA, 1))
+      if (length(rlx$lengths) > 1) {
+        ind <- cumsum(rlx$lengths)
+        pos <- which(rlx$values == TRUE)
+        ends <- ind[pos]
+        newind <- ifelse(pos > 1, pos - 1, 0)
+        starts <- ind[newind] + 1
+        if (0 %in% newind) starts <- c(1, starts)
+        out <- data.frame(series = i,
+                          first = rec_per$recording[starts],
+                          last = rec_per$recording[ends])
+      }
+      else out <- data.frame(series = i,
+                             first = min(rec_per$recording),
+                             last = max(rec_per$recording))
+      return(out)
+    }
+  })
+  rec_tbl <- do.call(rbind, rec_list)
+  rec_tbl <- subset(rec_tbl, rec_tbl$last - rec_tbl$first > 0)
+  rec_tbl$rec_type <- factor("recording")
+
+  rec_tbl
+}
 
 #' Count different events in an `fhx` object
 #'
 #' @param x An `fhx` object.
 #' @param injury_event Optional boolean indicating whether injuries should be
 #'   considered an "event". Default is `FALSE`.
-#' @param position Optional character vector giving the types of event positions
-#'   to include in the count. Can be any combination of the following:
-#'   * "unknown"
-#'   * "dormant"
-#'   * "early"
-#'   * "middle"
-#'   * "late"
-#'   * "latewd"
-#'
-#'   The default counts all types of event positions.
+#' @param position Depreciated. This allowed users to specify which intra-ring
+#'   positions to include in the summary output table. The default counts all
+#'   types of event positions.
+#' @param drop_unknown Boolean. Defaults to FALSE. If TRUE will remove the
+#'   "unknown_fs" and/or "unknown_fi" from rec_type.
 #' @param groupby Optional named list containing character vectors that are used
 #'   to count the total number of different event types. The names given to each
 #'   character vector give the group's name in the output data frame.
 #'
 #' @return A data frame with a columns giving the event or event group and
-#' values giving the corresponding count for each event type or group.
+#'   values giving the corresponding count for each event type or group.
 #'
-#' @seealso
-#'   * [get_event_years()] gets years for various events in an `fhx` object.
-#'   * [yearly_recording()] count the number of "recording" events in each year of
-#'     an `fhx` object.
-#'   * [series_stats()] basic summary stats for an `fhx` object.
+#' @seealso * [get_event_years()] gets years for various events in an `fhx`
+#'   object. * [yearly_recording()] count the number of "recording" events in
+#'   each year of an `fhx` object. * [series_stats()] basic summary stats for an
+#'   `fhx` object.
 #'
 #' @examples
 #' data(pgm)
@@ -391,51 +435,54 @@ find_recording <- function(x, injury_event=FALSE) {
 #' # As above, but considering injuries to be a type of event.
 #' count_event_position(pgm, injury_event = TRUE)
 #'
-#' # Count only events of a certain position, in this case, "unknown", "early",
-#' # and "middle".
-#' count_event_position(pgm,
-#'   injury_event = TRUE,
-#'   position = c("unknown", "early", "middle")
-#' )
+#' # Often we only quantify known intra-ring positions.
+#' # Remove the "unknown_fs" and/or "unknown_fi" with
+#' count_event_position(pgm, drop_unknown = TRUE)
 #'
-#' # Using custom "groupby" args.
+#' # Using custom "groupby" args in a named list, as
 #' grplist <- list(
 #'   foo = c("dormant_fs", "early_fs"),
 #'   bar = c("middle_fs", "late_fs")
 #' )
 #' count_event_position(pgm, groupby = grplist)
+#' # Note that if a position in the groupby list is
+#' # not included in rec_type, forcats::fct_count()
+#' # will throw a flag for an "Unknown levels in 'f':"
 #'
 #' @export
-count_event_position <- function(x, injury_event = FALSE, position, groupby) {
+count_event_position <- function(x, injury_event = FALSE, position,
+                                   drop_unknown = FALSE, groupby) {
   stopifnot(is_fhx(x))
 
-  possible_position <- c(
-    "unknown", "dormant", "early", "middle", "late", "latewd"
-  )
-  if (missing(position)) {
-    position <- possible_position
-  }
-  stopifnot(all(position %in% possible_position))
-
-  target_events <- paste0(position, "_fs")
-  if (injury_event == TRUE) {
-    target_events <- c(target_events, paste0(position, "_fi"))
+  if (!missing(position)) {
+    warning("The 'position' argument is depreciated, please see examples for
+            new argument usage.",
+            call. = FALSE)
   }
 
-  msk <- x$rec_type %in% target_events
+  scars <- rec_type_scar
+  injuries <- rec_type_injury
 
-  out <- plyr::count(x$rec_type[msk])
-  names(out) <- c("event", "count")
+  if (injury_event) {
+    target_events <-  c(scars, injuries)
+  }
+  else target_events <- scars
+
+  if (drop_unknown) {
+    target_events <- stringr::str_subset(target_events, "unknown",
+                                         negate = TRUE)
+  }
+
+  evnt_dat <- subset(x, x$rec_type %in% target_events)
 
   if (!missing(groupby)) {
-
-    outgroup <- plyr::ldply(groupby,
-      function(g) sum(subset(out, out$event %in% g)$count)
-    )
-
-    names(outgroup) <- c("event", "count")
-    out <- rbind(out, outgroup)
+    evnt_dat$rec_type <- forcats::fct_collapse(evnt_dat$rec_type,
+                                               !!! groupby,
+                                               other_level = NULL)
   }
+  evnt_dat$rec_type <- factor(evnt_dat$rec_type)
+  out <- forcats::fct_count(evnt_dat$rec_type, sort = TRUE, prop = TRUE)
+  names(out) <- c("event", "count", "prop")
 
   out
 }
@@ -457,11 +504,11 @@ count_event_position <- function(x, injury_event = FALSE, position, groupby) {
 yearly_recording <- function(x, injury_event = FALSE) {
   out <- as.data.frame(
     table(
-      year = plyr::ddply(x, "series", find_recording, 
+      year = plyr::ddply(x, "series", find_recording,
         injury_event = injury_event
       )$recording
     ),
-    stringsAsFactors=FALSE
+    stringsAsFactors = FALSE
   )
   out$year <- as.numeric(out$year)
   out
@@ -494,8 +541,8 @@ yearly_recording <- function(x, injury_event = FALSE) {
 #'   * [get_event_years()] gets years for various events in an `fhx` object.
 #'   * [count_event_position()] count the number of different events in an `fhx`
 #'     object.
-#'   * [yearly_recording()] count the number of "recording" events in each year of
-#'     an `fhx` object.
+#'   * [yearly_recording()] count the number of "recording" events in each year
+#'     of an `fhx` object.
 #'   * [fhx()] constructs an `fhx` object.
 #'   * [as_fhx()] casts data frame-like object into an `fhx` object.
 #'

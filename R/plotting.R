@@ -132,22 +132,8 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
     last = live$x[, 2],
     rec_type = rep("non-recording", dim(live)[1])
   )
-  recorder <- x[x$rec_type == "recorder_year", ]
-  # If there are recorder_years...
+  recorder <- get_rec_tbl(x, injury_event)
   if (dim(recorder)[1] > 0) {
-    # Get the min and max of the recorder_years.
-    recorder <- stats::aggregate(
-      recorder$year, # TODO: rename this var.
-      by = list(recorder$series, recorder$rec_type),
-      FUN = range,
-      na.rm = TRUE
-    )
-    recorder <- data.frame(
-      series = recorder$Group.1,
-      first = recorder$x[, 1],
-      last = recorder$x[, 2],
-      rec_type = rep("recording", dim(recorder)[1])
-    )
     segs <- rbind(recorder, live)
   } else {
     # If there are no recorder_years...

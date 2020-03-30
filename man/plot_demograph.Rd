@@ -4,12 +4,25 @@
 \alias{plot_demograph}
 \title{Create an ggplot2 object for plotting fhx demographics}
 \usage{
-plot_demograph(x, color_group, color_id, facet_group, facet_id,
-  facet_type = "grid", ylabels = TRUE, yearlims = FALSE,
-  composite_rug = FALSE, filter_prop = 0.25, filter_min_rec = 2,
-  filter_min_events = 1, injury_event = FALSE, plot_legend = FALSE,
+plot_demograph(
+  x,
+  color_group,
+  color_id,
+  facet_group,
+  facet_id,
+  facet_type = "grid",
+  ylabels = TRUE,
+  yearlims = FALSE,
+  composite_rug = FALSE,
+  filter_prop = 0.25,
+  filter_min_rec = 2,
+  filter_min_events = 1,
+  injury_event = FALSE,
+  plot_legend = FALSE,
   event_size = c(Scar = 4, Injury = 2, `Pith/Bark` = 1.5),
-  rugbuffer_size = 2, rugdivide_pos = 2)
+  rugbuffer_size = 2,
+  rugdivide_pos = 2
+)
 }
 \arguments{
 \item{x}{An \code{fhx} object, as from \code{\link[=fhx]{fhx()}}}

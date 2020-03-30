@@ -89,15 +89,16 @@ test_that("count_event_position on FHX object with injuries as events", {
   expect_equal(subset(test_subj, event == "unknown_fi")$count, 6)
 })
 
-test_that("count_event_position on FHX object with multiple select positions", {
-  test_subj <- count_event_position(
-    REF_MULTI,
-    position = c("unknown", "dormant")
-  )
-  expect_equal(subset(test_subj, event == "dormant_fs")$count, 3)
-  expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
-  expect_false("early_fs" %in% as.character(test_subj$event))
-})
+## Depreciated argument
+# test_that("count_event_position on FHX object with multiple select positions", {
+#   test_subj <- count_event_position(
+#     REF_MULTI,
+#     position = c("unknown", "dormant")
+#   )
+#   expect_equal(subset(test_subj, event == "dormant_fs")$count, 3)
+#   expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
+#   expect_false("early_fs" %in% as.character(test_subj$event))
+# })
 
 test_that("count_event_position on FHX object groupby list", {
   grplist <- list(
@@ -105,8 +106,9 @@ test_that("count_event_position on FHX object groupby list", {
     bar = c("dormant_fs", "unknown_fi")
   )
   test_subj <- count_event_position(REF_MULTI, groupby = grplist)
-  expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
-  expect_equal(subset(test_subj, event == "early_fs")$count, 4)
+  ## Events not listed in groupby are not inlcuded in output
+  # expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
+  # expect_equal(subset(test_subj, event == "early_fs")$count, 4)
   expect_equal(subset(test_subj, event == "foo")$count, 6)
   expect_equal(subset(test_subj, event == "bar")$count, 3)
 })

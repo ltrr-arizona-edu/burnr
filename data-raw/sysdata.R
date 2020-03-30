@@ -26,6 +26,8 @@ type_key <- list(
   "t" = "transition_fi",  # noncanon
   "F" = "falldormant_fs",  # noncanon
   "f" = "falldormant_fi",  # noncanon
+  "S" = "springdormant_fs", # noncanon
+  "s" = "springdormant_fi", # noncanon
   "B" = "earlylw_fs",  # noncanon
   "b" = "earlylw_fi",  # noncanon
   "C" = "latelw_fs",  # noncanon
@@ -61,6 +63,7 @@ rec_type_injury <- c(
   "latewd_fi",
   "transition_fi",  # noncanon
   "falldormant_fi",  # noncanon
+  "springdormant_fi", # noncanon
   "earlylw_fi",  # noncanon
   "latelw_fi"  # noncanon
 )
@@ -73,6 +76,7 @@ rec_type_scar <- c(
   "latewd_fs",
   "transition_fs",  # noncanon
   "falldormant_fs",  # noncanon
+  "springdormant_fs", # noncanon
   "earlylw_fs",  # noncanon
   "latelw_fs"  # noncanon
 )

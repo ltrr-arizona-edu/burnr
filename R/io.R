@@ -110,18 +110,18 @@ read_fhx <- function(fname, encoding, text) {
   if (length(series_names) == 1) {
     # For whatever reason R wants to flip our dims when we have a single series.
     fl_body <- as.data.frame(sapply(fl_body, function(x) x[1:describe[2]]),
-      stringsAsFactors = FALSE
+                             stringsAsFactors = FALSE
     )
   } else {
     fl_body <- as.data.frame(t(sapply(fl_body, function(x) x[1:describe[2]])),
-      stringsAsFactors = FALSE
+                             stringsAsFactors = FALSE
     )
   }
   names(fl_body) <- series_names
   fl_body$year <- seq(first_year, first_year + dim(fl_body)[1] - 1)
   fl_body_melt <- reshape2::melt(fl_body,
-    id.vars = "year", value.name = "rec_type",
-    variable.name = "series", na.rm = TRUE
+                                 id.vars = "year", value.name = "rec_type",
+                                 variable.name = "series", na.rm = TRUE
   )
   fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != ".", ]
   fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, abrv2rec_type, "") # nolint
@@ -206,25 +206,25 @@ write_fhx <- function(x, fname = "") {
   }
   if (violates_canon(x)) {
     warning(
-      "`write_fhx()` run on `fhx` object with rec_types that violate FHX2", 
+      "`write_fhx()` run on `fhx` object with rec_types that violate FHX2",
       " canon - other software may not be able to read the output FHX file"
     )
   }
   d <- list_filestrings(x)
   fl <- file(fname, open = "wt")
   cat(paste(d[["head_line"]], "\n", d[["subhead_line"]], "\n", sep = ""),
-    file = fl, sep = ""
+      file = fl, sep = ""
   )
   utils::write.table(d[["series_heading"]], fl,
-    append = TRUE, quote = FALSE,
-    sep = "", na = "!",
-    row.names = FALSE, col.names = FALSE
+                     append = TRUE, quote = FALSE,
+                     sep = "", na = "!",
+                     row.names = FALSE, col.names = FALSE
   )
   cat("\n", file = fl, sep = "", append = TRUE)
   utils::write.table(d[["body"]], fl,
-    append = TRUE, quote = FALSE,
-    sep = "", na = "!",
-    row.names = FALSE, col.names = FALSE
+                     append = TRUE, quote = FALSE,
+                     sep = "", na = "!",
+                     row.names = FALSE, col.names = FALSE
   )
   close(fl)
 }

@@ -123,7 +123,7 @@ read_fhx <- function(fname, encoding, text) {
                                  id.vars = "year", value.name = "rec_type",
                                  variable.name = "series", na.rm = TRUE
   )
-  fl_body_melt <- fl_body_melt[fl_body_melt$rec_type != ".", ]
+  fl_body_melt <- fl_body_melt[! fl_body_melt$rec_type %in% c(".", "\032"), ]
   fl_body_melt$rec_type <- vapply(fl_body_melt$rec_type, abrv2rec_type, "") # nolint
   fl_body_melt$rec_type <- make_rec_type(fl_body_melt$rec_type)
   f <- fhx(

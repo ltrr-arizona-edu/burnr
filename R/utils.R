@@ -368,7 +368,7 @@ find_recording <- function(x, injury_event=FALSE) {
 #' @return A data frame with a row for each continuous recording segment, and
 #'   columns 'series', 'first', 'last', 'rec_type'.
 #'
-#' @example
+#' @examples
 #' data(pgm)
 #' get_rec_tbl(pgm, injury_event = TRUE)
 #'

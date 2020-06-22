@@ -130,3 +130,13 @@ test_that("percent scarred works with injuries", {
     goal_1806_percent_scarred
   )
 })
+
+test_that("Summary output is consistent", {
+  lgr_summ <- unlist(summary(lgr2))
+  target <- c("number_series" = 26,
+              "first_year" = 1366,
+              "last_year" = 2012,
+              "number_scars" = 9,
+              "number_injuries" = 6)
+  expect_equal(lgr_summ, target)
+})

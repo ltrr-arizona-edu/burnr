@@ -729,3 +729,26 @@ test_that("list_filestrings() on basic FHX obj", {
   expect_equal(target[["body"]]$b1, c("[", ".", "]", "."))
   expect_equal(target[["body"]]$yr, seq(1998, 2001))
 })
+
+test_that("read_fhx() catches errors in files", {
+  BAD_FILE <- TEST_LGR2[-35]
+  expect_error(read_fhx(BAD_FILE))
+})
+
+test_that("violates_canon() warns users of new seasonality designations", {
+  series <- "ABC123"
+  year <- 1950:1952
+  rec_type <- c("pith_year", "falldormant_fs", "bark_year")
+  df <- fhx(year, series, rec_type)
+  tempFile <- file.path(tempdir(), "temp.fhx")
+  expect_warning(write_fhx(df, tempFile))
+  unlink(tempFile)
+})
+
+# https://github.com/awalker89/openxlsx/blob/master/tests/testthat/test-write_data_to_sheetData.R
+test_that("Write a .fhx file", {
+  tempFile <- file.path(tempdir(), "temp.fhx")
+  write_fhx(TEST_FHX, tempFile)
+  unlink(tempFile)
+})
+

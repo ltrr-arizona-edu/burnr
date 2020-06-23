@@ -11,6 +11,8 @@ Status](https://travis-ci.org/ltrr-arizona-edu/burnr.svg?branch=master)](https:/
 [![Coverage
 Status](https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master)](https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master)
 [![downloads](https://cranlogs.r-pkg.org/badges/burnr)](https://cran.r-project.org/package=burnr)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1134832.svg)](https://doi.org/10.5281/zenodo.1134832)
+
 <!-- badges: end -->
 
 Basic tools to analyze forest fire history data (e.g. FHX) in R. This is

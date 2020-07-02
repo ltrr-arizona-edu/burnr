@@ -51,6 +51,7 @@ rec_type_recorder <- c(
   "latewd_fs",
   "transition_fs",  # noncanon
   "falldormant_fs",  # noncanon
+  "springdormant_fs", #noncanon
   "earlylw_fs",  # noncanon
   "latelw_fs"  # noncanon
 )

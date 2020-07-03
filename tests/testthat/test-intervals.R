@@ -31,3 +31,14 @@ test_that("quantile.intervals() basic cases", {
     tolerance = 1e-3
   )
 })
+
+test_that("The intervals object prints", {
+  prnt_int <- capture_output(print(TEST_INTER))
+  expect_equal(nchar(prnt_int), 771)
+})
+
+test_that("Plotting intervals works", {
+  p <- plot(TEST_INTER)
+  expect_is(p, "ggplot")
+})
+

@@ -20,11 +20,13 @@ Suggests:
     forcats,
     stringr
 Imports:
-    MASS,
-    stats,
     ggplot2,
+    MASS,
+    plyr,
     reshape2,
-    plyr
+    rlang,
+    stats,
+    tidyr
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

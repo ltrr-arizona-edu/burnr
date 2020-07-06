@@ -145,6 +145,9 @@ read_fhx <- function(fname, encoding, text) {
 #'   * "body".
 #' Each referring to a portion of an FHX file that the strings are dumped into.
 #'
+#' @importFrom tidyr pivot_wider
+#' @importFrom rlang .data
+#'
 #' @noRd
 list_filestrings <- function(x) {
   stopifnot(is_fhx(x))
@@ -157,10 +160,14 @@ list_filestrings <- function(x) {
     rec_type = rep(".", length(year_range))
   )
   out <- rbind(out, filler)
-  out <- reshape2::dcast(out, year ~ series, value.var = "rec_type", fill = ".")
+  out <- pivot_wider(out,
+                     names_from = .data$series,
+                     values_from = .data$rec_type,
+                     values_fill = list(rec_type = "."))
+  out <- out[order(out$year), ]
   out$hackishsolution <- NULL
   # Weird thing to move year to the last column of the data.frame:
-  out$yr <- out$year
+  out$yr <- paste0(" ", out$year)
   out$year <- NULL
   series_names <- as.character(unique(x$series))
   no_series <- length(series_names)

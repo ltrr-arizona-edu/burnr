@@ -8,7 +8,7 @@ Changes in this release:
 * Added spring dormant to set of rec_types. Another "noncanon" descriptor for fire scar seasonality. This aids in canonizing "D" dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere) 
 * [Internal] Update README to Rmarkdown (.Rmd) file with `usethis::use_readme_rmd()`
 * Fix typo in citation file
-
+* Bug fix -- "springdormant_fs" was omitted from the list of scar types in `burnr:::rec_type_recording`. This caused problems in the calculation of `percent_scarred()` because too few trees were recognized as recording in the year of fire. I would have also caused problems in `composite()`. Thanks to @GuobaoXu for finding the error and tracing its origin.
 
 
 # burnr v0.5.0

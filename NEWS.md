@@ -8,7 +8,11 @@ Changes in this release:
 * Added spring dormant to set of rec_types. Another "noncanon" descriptor for fire scar seasonality. This aids in canonizing "D" dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere) 
 * [Internal] Update README to Rmarkdown (.Rmd) file with `usethis::use_readme_rmd()`
 * Fix typo in citation file
-
+* Added unit tests to increase coverage and enhance error checks on future additions
+* Slight change to format of FHX2 files from `write_fhx()` to include a space between the data block and years.
+* Added flexibility to `read_fhx()` to handle extra space at bottom of file (present in some non-standardized FHX files available on the IMPD)
+* Added DOI badge to the README 
+* Adding {rlang} and {tidyr} to package imports as we transition to updated {tidyverse} workflows
 
 
 # burnr v0.5.0

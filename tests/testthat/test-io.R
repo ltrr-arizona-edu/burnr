@@ -727,7 +727,7 @@ test_that("list_filestrings() on basic FHX obj", {
   )
   expect_equal(target[["body"]]$a1, c(".", "[", ".", "]"))
   expect_equal(target[["body"]]$b1, c("[", ".", "]", "."))
-  expect_equal(target[["body"]]$yr, seq(1998, 2001))
+  expect_equal(target[["body"]]$yr, paste0(" ", seq(1998, 2001)))
 })
 
 test_that("read_fhx() catches errors in files", {
@@ -749,6 +749,7 @@ test_that("violates_canon() warns users of new seasonality designations", {
 test_that("Write a .fhx file", {
   tempFile <- file.path(tempdir(), "temp.fhx")
   write_fhx(TEST_FHX, tempFile)
+  expect_equal(readLines(tempFile), TEST_LGR2[- c(1:34)])
   unlink(tempFile)
 })
 

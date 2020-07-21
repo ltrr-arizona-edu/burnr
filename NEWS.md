@@ -16,7 +16,6 @@ Changes in this release:
 * Bug fix -- "springdormant_fs" was omitted from the list of scar types in `burnr:::rec_type_recording`. This caused problems in the calculation of `percent_scarred()` because too few trees were recognized as recording in the year of fire. I would have also caused problems in `composite()`. Thanks to @GuobaoXu for finding the error and tracing its origin.
 
 
-
 # burnr v0.5.0
 
 Changes in this release:

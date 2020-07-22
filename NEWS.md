@@ -13,6 +13,7 @@ Changes in this release:
 * Added flexibility to `read_fhx()` to handle extra space at bottom of file (present in some non-standardized FHX files available on the IMPD)
 * Added DOI badge to the README 
 * Adding {rlang} and {tidyr} to package imports as we transition to updated {tidyverse} workflows
+* Bug fix -- "springdormant_fs" was omitted from the list of scar types in `burnr:::rec_type_recording`. This caused problems in the calculation of `percent_scarred()` because too few trees were recognized as recording in the year of fire. I would have also caused problems in `composite()`. Thanks to @GuobaoXu for finding the error and tracing its origin.
 
 
 # burnr v0.5.0

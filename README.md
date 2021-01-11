@@ -63,9 +63,10 @@ still under construction.
 
 Please cite the original `burnr` paper if you use it in your research:
 
-    Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis. 2018. 
-    “Burnr: Fire History Analysis and Graphics in R.” Dendrochronologia 49 
-    (June): 9–15. https://doi.org/10.1016/j.dendro.2018.02.005.
+> Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis
+> (2018) [Burnr: Fire History Analysis and Graphics in
+> R](https://www.sciencedirect.com/science/article/abs/pii/S1125786517301418?via%3Dihub).
+> *Dendrochronologia* 49: 9–15. DOI: 10.1016/j.dendro.2018.02.005.
 
 Citations help us to identify user needs and justify additional time
 developing and maintaining `burnr`.

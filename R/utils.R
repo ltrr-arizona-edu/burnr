@@ -370,7 +370,7 @@ find_recording <- function(x, injury_event=FALSE) {
 #'
 #' @param x An `fhx` object
 #' @param injury_event Boolean indicating whether injuries should be considered
-#'   event. Default is `FALSE`. Passed to [burnr:::find_recording()]
+#'   event. Default is `FALSE`. Passed to `burnr:::find_recording()`
 #'
 #' @return A data frame with a row for each continuous recording segment, and
 #'   columns 'series', 'first', 'last', 'rec_type'.

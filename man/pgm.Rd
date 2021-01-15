@@ -4,7 +4,9 @@
 \name{pgm}
 \alias{pgm}
 \title{Peggy Mesa fire-history data}
-\format{An \code{fhx} object with 41 series from 1555 to 2013 CE.}
+\format{
+An \code{fhx} object with 41 series from 1555 to 2013 CE.
+}
 \source{
 Guiterman, Christopher H., Ellis Q. Margolis, and
 Thomas W. Swetnam. 2015. "Dendroecological Methods For Reconstructing

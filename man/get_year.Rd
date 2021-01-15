@@ -23,6 +23,13 @@ get_year(lgr2, 1806)
 
 get_year(lgr2, 1805:1807)
 
+\dontrun{
+# Subsetting before/after a specific year requires a
+# call to year_range(). For example, to extract all observations
+# prior to 1900, use
+get_year(lgr2, year_range(lgr2)[1]:1900)
+}
+
 }
 \seealso{
 \itemize{

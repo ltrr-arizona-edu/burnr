@@ -4,11 +4,13 @@
 \name{pgm_pdsi}
 \alias{pgm_pdsi}
 \title{Reconstructed PDSI time series for the Peggy Mesa fire-history dataset}
-\format{A \code{data.frame} with 2004 rows and 1 variables. Row names give the
+\format{
+A \code{data.frame} with 2004 rows and 1 variables. Row names give the
 year for the reconstructed value:
 \itemize{
 \item "RECON": The reconstructed PDSI series.
-}}
+}
+}
 \source{
 Cook, E. R., and Krusic, P. J. (2004). The North American Drought
 Atlas. Retrieved September 13, 2017, from

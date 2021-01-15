@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "Introduction to burnr"
 author: "S. Brewster Malevich"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

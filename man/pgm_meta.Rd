@@ -4,14 +4,16 @@
 \name{pgm_meta}
 \alias{pgm_meta}
 \title{Metadata for the Peggy Mesa fire-history dataset}
-\format{A \code{data.frame} with 41 rows and 5 variables:
+\format{
+A \code{data.frame} with 41 rows and 5 variables:
 \itemize{
 \item "TreeID": Name of tree series.
 \item "SpeciesID": Abbreviated tree species.
 \item "Latitude": latitude of tree in decimal degrees.
 \item "Longitude": longitude of tree in decimal degrees.
 \item "Elevation": tree elevation in meters.
-}}
+}
+}
 \source{
 Guiterman, Christopher H., Ellis Q. Margolis, and
 Thomas W. Swetnam. 2015. "Dendroecological Methods For Reconstructing

@@ -1,0 +1,10 @@
+articles:
+  - title: Start here
+    navbar: ~
+    contents:
+    - introduction
+
+  - title: Helpful tips and tricks
+    navbar: ~
+    contents:
+    - facet_comps

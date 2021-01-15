@@ -225,6 +225,13 @@ series_names <- function(x) {
 #'
 #' get_year(lgr2, 1805:1807)
 #'
+#' \dontrun{
+#' # Subsetting before/after a specific year requires a
+#' # call to year_range(). For example, to extract all observations
+#' # prior to 1900, use
+#' get_year(lgr2, year_range(lgr2)[1]:1900)
+#' }
+#'
 #' @export
 get_year <- function(x, yr) {
   stopifnot(is_fhx(x))
@@ -548,7 +555,7 @@ yearly_recording <- function(x, injury_event = FALSE) {
 #'
 #' @examples
 #' data(lgr2)
-#' composite(lgr2)
+#' plot(composite(lgr2))
 #'
 #' # Use with composite to get composite years:
 #' comp <- composite(pgm, comp_name = "pgm")

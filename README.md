@@ -6,10 +6,10 @@
 <!-- badges: start -->
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/burnr)](https://cran.r-project.org/package=burnr)
-[![Build
-Status](https://travis-ci.org/ltrr-arizona-edu/burnr.svg?branch=master)](https://travis-ci.org/ltrr-arizona-edu/burnr)
 [![Coverage
 Status](https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master)](https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master)
+[![R build
+status](https://github.com/ltrr-arizona-edu/burnr/workflows/R-CMD-check/badge.svg)](https://github.com/ltrr-arizona-edu/burnr/actions)
 [![downloads](https://cranlogs.r-pkg.org/badges/burnr)](https://cran.r-project.org/package=burnr)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1134832.svg)](https://doi.org/10.5281/zenodo.1134832)
 
@@ -23,34 +23,28 @@ designed for power users and projects with special needs.
 You can install the released version of burnr from
 [CRAN](https://CRAN.R-project.org) with:
 
-``` r
-install.packages("burnr")
-```
+    install.packages("burnr")
 
 And the development version from [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("devtools")
-devtools::install_github("ltrr-arizona-edu/burnr")
-```
+    # install.packages("devtools")
+    devtools::install_github("ltrr-arizona-edu/burnr")
 
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
-library(burnr)
+    library(burnr)
 
-# This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.
+    # This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.
 
-data(lgr2_meta)
+    data(lgr2_meta)
 
-plot(lgr2,
-  color_group = lgr2_meta$SpeciesID,
-  color_id = lgr2_meta$TreeID,
-  plot_legend = TRUE
-)
-```
+    plot(lgr2,
+      color_group = lgr2_meta$SpeciesID,
+      color_id = lgr2_meta$TreeID,
+      plot_legend = TRUE
+    )
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
@@ -69,9 +63,10 @@ still under construction.
 
 Please cite the original `burnr` paper if you use it in your research:
 
-    Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis. 2018. 
-    “Burnr: Fire History Analysis and Graphics in R.” Dendrochronologia 49 
-    (June): 9–15. https://doi.org/10.1016/j.dendro.2018.02.005.
+> Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis
+> (2018) [Burnr: Fire History Analysis and Graphics in
+> R](https://www.sciencedirect.com/science/article/abs/pii/S1125786517301418?via%3Dihub).
+> *Dendrochronologia* 49: 9–15. DOI: 10.1016/j.dendro.2018.02.005.
 
 Citations help us to identify user needs and justify additional time
 developing and maintaining `burnr`.
@@ -81,9 +76,9 @@ developing and maintaining `burnr`.
 Please file bugs in the [bug
 tracker](https://github.com/ltrr-arizona-edu/burnr/issues).
 
-Want to contribute? Great\! We’re following [Hadley’s packaging
+Want to contribute? Great! We’re following [Hadley’s packaging
 workflow](http://r-pkgs.had.co.nz/) and [style
 guide](http://style.tidyverse.org). Fork away.
 
-If you’re not a developer, don’t worry\! We also welcome help with
+If you’re not a developer, don’t worry! We also welcome help with
 documentation and tutorials.

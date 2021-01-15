@@ -42,7 +42,7 @@ Composite fire events in fhx object
 }
 \examples{
 data(lgr2)
-composite(lgr2)
+plot(composite(lgr2))
 
 # Use with composite to get composite years:
 comp <- composite(pgm, comp_name = "pgm")

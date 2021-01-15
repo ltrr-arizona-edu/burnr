@@ -370,7 +370,7 @@ find_recording <- function(x, injury_event=FALSE) {
 #'
 #' @param x An `fhx` object
 #' @param injury_event Boolean indicating whether injuries should be considered
-#'   event. Default is `FALSE`. Passed to [burnr:::find_recording()]
+#'   event. Default is `FALSE`. Passed to `burnr:::find_recording()`
 #'
 #' @return A data frame with a row for each continuous recording segment, and
 #'   columns 'series', 'first', 'last', 'rec_type'.
@@ -381,6 +381,7 @@ find_recording <- function(x, injury_event=FALSE) {
 #'
 #' @noRd
 get_rec_tbl <- function(x, injury_event = FALSE) {
+  series_order <- levels(x$series)
   rec_list <- lapply(levels(x$series), function(i) {
     rec_per <- find_recording(x[x$series == i, ], injury_event = injury_event)
     if (dim(rec_per)[1] < 1) { # if a series has 1 year recording, skip it
@@ -408,6 +409,9 @@ get_rec_tbl <- function(x, injury_event = FALSE) {
   })
   rec_tbl <- do.call(rbind, rec_list)
   rec_tbl <- subset(rec_tbl, rec_tbl$last - rec_tbl$first > 0)
+  rec_tbl$series <- factor(rec_tbl$series,
+                           levels = series_order,
+                           ordered = TRUE)
   rec_tbl$rec_type <- factor("recording")
 
   rec_tbl

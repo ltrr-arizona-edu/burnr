@@ -1,10 +1,96 @@
-articles:
-  - title: Start here
-    navbar: ~
+navbar:
+  type: default
+  left:
+    - text: Introduction
+      href: articles/Introduction.html
+    - text: Function help
+      href: reference/index.html
+    - text: Articles
+      menu:
+        - text: Add composites to facet plots
+          href: articles/facet_comps.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/ltrr-arizona-edu/burnr
+reference:
+  - title: Import and export data
+    desc: >
+      Read/write FHX file formats. These are specialized text files for
+      storing tree-ring fire history data. FHX files can be created
+      in [FHAES](https://www.frames.gov/fhaes/download), or by our
+      [specialized MS Access Database](https://github.com/chguiterman/Fire_History_Database).
     contents:
-    - introduction
+      - read_fhx
+      - write_fhx
+  - title: Included data
+    desc: >
+      Two fire historie site collections are included in the package for convenience.
+      Both are from the Jemez Mountains in northcentral New Mexico, USA.
+    contents:
+      - starts_with("pgm")
+      - starts_with("lgr2")
+  - title: Data manipulation
+    contents:
+      - "`+.fhx`"
+      - sort.fhx
+      - composite
+      - delete
+      - get_series
+      - get_year
+      - is_fhx
+      - make_rec_type
+      - outer_type
+      - last_year
+  - title: Graphics
+    contents:
+      - plot_demograph
+      - plot.fhx
+      - plot.intervals
+      - plot.sea
+      - plot_intervals_dist
+  - title: Statistical summaries
+    contents:
+      - series_stats
+      - intervals
+      - count_event_position
+      - count_scar
+      - count_injury
+      - count_recording
+      - count_year_span
+      - get_event_years
+  - title: Derrived time series
+    contents:
+      - percent_scarred
+      - sample_depth
+  - title: Fire-climate relationship
+    contents:
+      - sea
+  - title: MISC
+    contents:
+      - as.fhx
+      - as_fhx
+      - fhx
+      - first_year
+      - inner_type
+      - is.fhx
+      - is.intervals
+      - is.sea
+      - is_fhx
+      - is_intervals
+      - is_sea
+      - max.intervals
+      - mean.intervals
+      - median.intervals
+      - min.intervals
+      - plot_sealags
+      - print.intervals
+      - print.sea
+      - quantile.intervals
+      - series_mean_interval
+      - series_names
+      - summary.fhx
+      - yearly_recording
+      - year_range
 
-  - title: Helpful tips and tricks
-    navbar: ~
-    contents:
-    - facet_comps
+
+

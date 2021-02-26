@@ -2,20 +2,18 @@
 
 Changes in this release:
 
-* Update `count_event_position()` to accommodate newly added (and future) positions in rec_ype
-* Bug fix in `plot_demograph()` to handle discontinuous recording periods. #78
-  * Bug fix required a new function (`get_rec_tbl()`) to generate table of recording segments. Not exported.
-  * Thanks to Mannie Lopez (USGS, non-GitHub), for finding that this addition disrupted the series sorting.
-* Added spring dormant to set of rec_types. Another "noncanon" descriptor for fire scar seasonality. This aids in canonizing "D" dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere) 
-* [Internal] Update README to Rmarkdown (.Rmd) file with `usethis::use_readme_rmd()`
-* Fix typo in citation file
-* Added unit tests to increase coverage and enhance error checks on future additions
-* Slight change to format of FHX2 files from `write_fhx()` to include a space between the data block and years.
-* Added flexibility to `read_fhx()` to handle extra space at bottom of file (present in some non-standardized FHX files available on the IMPD)
-* Added DOI badge to the README 
-* Adding {rlang} and {tidyr} to package imports as we transition to updated {tidyverse} workflows
-* Bug fix -- "springdormant_fs" was omitted from the list of scar types in `burnr:::rec_type_recording`. This caused problems in the calculation of `percent_scarred()` because too few trees were recognized as recording in the year of fire. I would have also caused problems in `composite()`. Thanks to @GuobaoXu for finding the error and tracing its origin.
-* Added a new example to `get_year()` to aid users subsetting an `fhx` object based on before/after a particular cut-off year.
+* Fix bug in `plot_demograph()` to handle discontinuous recording periods (#78). Thanks to Mannie Lopez (USGS, non-GitHub), for finding that this addition disrupted the series sorting.
+* Fix bug where `"springdormant_fs"` was omitted from the list of scar types in `burnr:::rec_type_recording`. This caused problems in the calculation of `percent_scarred()` because too few trees were recognized as recording in the year of fire. This would have also caused problems in `composite()`. Thanks to @GuobaoXu for finding the error and tracing its origin.
+* Change to format of FHX2 files output from `write_fhx()` to include a space between the data block and years.
+* Add flexibility to `read_fhx()` to handle extra space at bottom of file. This is commonly present in some non-standardized FHX files available on the IMPD.
+* Add DOI badge to the README.
+* Add {rlang} and {tidyr} to package imports as we transition to updated {tidyverse} workflows.
+* Add a new example to `get_year()` documentation to aid users subsetting an `fhx` object based on before/after a particular cut-off year.
+* Update `count_event_position()` to accommodate non-standard positions in `rec_type`.
+* Add "spring dormant" to the set of `rec_types`. This is a non-standard descriptor for fire scar seasonality. This aids with cases where `"D"` dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere).
+* Update README creation to Rmarkdown (.Rmd) file with `usethis::use_readme_rmd()`.
+* Fix typo in citation file.
+* Add general unit tests to increase test coverage.
 
 
 # burnr v0.5.0

@@ -192,47 +192,47 @@ each year of an <code>fhx</code> object. * <code><a href='series_stats.html'>ser
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>pgm</span><span class='op'>)</span>
 <span class='fu'>count_event_position</span><span class='op'>(</span><span class='va'>pgm</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 5 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span><span>
 #&gt;   event      count   prop
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> unknown_fs    17 0.370 
-#&gt; </span><span style='color: #555555;'>2</span><span> dormant_fs    15 0.326 
-#&gt; </span><span style='color: #555555;'>3</span><span> middle_fs     10 0.217 
-#&gt; </span><span style='color: #555555;'>4</span><span> early_fs       3 0.065</span><span style='text-decoration: underline;'>2</span><span>
-#&gt; </span><span style='color: #555555;'>5</span><span> late_fs        1 0.021</span><span style='text-decoration: underline;'>7</span><span></div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> unknown_fs    17 0.370 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dormant_fs    15 0.326 
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> middle_fs     10 0.217 
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> early_fs       3 0.065</span><span style='text-decoration: underline;'>2</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> late_fs        1 0.021</span><span style='text-decoration: underline;'>7</span><span></div><div class='input'>
 <span class='co'># As above, but considering injuries to be a type of event.</span>
 <span class='fu'>count_event_position</span><span class='op'>(</span><span class='va'>pgm</span>, injury_event <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 3</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 3</span><span>
 #&gt;   event      count  prop
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> unknown_fs    17  0.34
-#&gt; </span><span style='color: #555555;'>2</span><span> dormant_fs    15  0.3 
-#&gt; </span><span style='color: #555555;'>3</span><span> middle_fs     10  0.2 
-#&gt; </span><span style='color: #555555;'>4</span><span> unknown_fi     4  0.08
-#&gt; </span><span style='color: #555555;'>5</span><span> early_fs       3  0.06
-#&gt; </span><span style='color: #555555;'>6</span><span> late_fs        1  0.02</div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> unknown_fs    17  0.34
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> dormant_fs    15  0.3 
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> middle_fs     10  0.2 
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> unknown_fi     4  0.08
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> early_fs       3  0.06
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> late_fs        1  0.02</div><div class='input'>
 <span class='co'># Often we only quantify known intra-ring positions.</span>
 <span class='co'># Remove the "unknown_fs" and/or "unknown_fi" with</span>
 <span class='fu'>count_event_position</span><span class='op'>(</span><span class='va'>pgm</span>, drop_unknown <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 3</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 3</span><span>
 #&gt;   event      count   prop
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> dormant_fs    15 0.517 
-#&gt; </span><span style='color: #555555;'>2</span><span> middle_fs     10 0.345 
-#&gt; </span><span style='color: #555555;'>3</span><span> early_fs       3 0.103 
-#&gt; </span><span style='color: #555555;'>4</span><span> late_fs        1 0.034</span><span style='text-decoration: underline;'>5</span><span></div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> dormant_fs    15 0.517 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> middle_fs     10 0.345 
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> early_fs       3 0.103 
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> late_fs        1 0.034</span><span style='text-decoration: underline;'>5</span><span></div><div class='input'>
 <span class='co'># Using custom "groupby" args in a named list, as</span>
 <span class='va'>grplist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
   foo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dormant_fs"</span>, <span class='st'>"early_fs"</span><span class='op'>)</span>,
   bar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"middle_fs"</span>, <span class='st'>"late_fs"</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='fu'>count_event_position</span><span class='op'>(</span><span class='va'>pgm</span>, groupby <span class='op'>=</span> <span class='va'>grplist</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 3</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 3</span><span>
 #&gt;   event      count  prop
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> foo           18 0.391
-#&gt; </span><span style='color: #555555;'>2</span><span> unknown_fs    17 0.370
-#&gt; </span><span style='color: #555555;'>3</span><span> bar           11 0.239</div><div class='input'><span class='co'># Note that if a position in the groupby list is</span>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> foo           18 0.391
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> unknown_fs    17 0.370
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> bar           11 0.239</div><div class='input'><span class='co'># Note that if a position in the groupby list is</span>
 <span class='co'># not included in rec_type, forcats::fct_count()</span>
 <span class='co'># will throw a flag for an "Unknown levels in 'f':"</span>
 

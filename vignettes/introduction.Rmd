@@ -197,4 +197,4 @@ p + annotate('text', x = 1650, y = 7.5, label = 'important!')
 
 We can use the same approach to change plot colors, labels, etc. Try adding ggplot2's `theme_grey()` and see what happens! Using what you've learned, try to combine the `lgr2` and `pgm` objects and create a plot with facets for each of these locations. You can load burnr's `pgm_meta` if you need.
 
-Check out ggplot2 (http://docs.ggplot2.org/) to learn more.
+Check out ggplot2 (https://ggplot2.tidyverse.org/) to learn more.

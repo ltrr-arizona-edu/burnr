@@ -135,18 +135,18 @@
 </h1>
 <p>Changes in this release:</p>
 <ul>
-<li>Fix bug in <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code> to handle discontinuous recording periods (<a href='https://github.com/ltrr-arizona-edu/burnr/issues/78'>#78</a>). Thanks to Mannie Lopez (USGS, non-GitHub), for finding that this addition disrupted the series sorting.</li>
-<li>Fix bug where <code>"springdormant_fs"</code> was omitted from the list of scar types in <code>burnr:::rec_type_recording</code>. This caused problems in the calculation of <code><a href="../reference/percent_scarred.html">percent_scarred()</a></code> because too few trees were recognized as recording in the year of fire. This would have also caused problems in <code><a href="../reference/composite.html">composite()</a></code>. Thanks to <a href='https://github.com/GuobaoXu'>@GuobaoXu</a> for finding the error and tracing its origin.</li>
-<li>Change to format of FHX2 files output from <code><a href="../reference/write_fhx.html">write_fhx()</a></code> to include a space between the data block and years.</li>
-<li>Add flexibility to <code><a href="../reference/read_fhx.html">read_fhx()</a></code> to handle extra space at bottom of file. This is commonly present in some non-standardized FHX files available on the IMPD.</li>
-<li>Add DOI badge to the README.</li>
-<li>Add {rlang} and {tidyr} to package imports as we transition to updated {tidyverse} workflows.</li>
-<li>Add a new example to <code><a href="../reference/get_year.html">get_year()</a></code> documentation to aid users subsetting an <code>fhx</code> object based on before/after a particular cut-off year.</li>
-<li>Update <code><a href="../reference/count_event_position.html">count_event_position()</a></code> to accommodate non-standard positions in <code>rec_type</code>.</li>
-<li>Add “spring dormant” to the set of <code>rec_types</code>. This is a non-standard descriptor for fire scar seasonality. This aids with cases where <code>"D"</code> dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere).</li>
-<li>Update README creation to Rmarkdown (.Rmd) file with <code>usethis::use_readme_rmd()</code>.</li>
-<li>Fix typo in citation file.</li>
-<li>Add general unit tests to increase test coverage.</li>
+<li><p>Add rlang, stringr, forcats, and tidyr as package dependencies.</p></li>
+<li><p>Fix bug in <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code> to handle discontinuous recording periods. Thanks to Mannie Lopez for finding that this addition disrupted the series sorting. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/78'>#78</a>)</p></li>
+<li><p>Fix bug where <code>"springdormant_fs"</code> was omitted from the list of scar types in <code>burnr:::rec_type_recording</code>. This caused problems in the calculation of <code><a href="../reference/percent_scarred.html">percent_scarred()</a></code> because too few trees were recognized as recording in the year of fire. This would have also caused problems in <code><a href="../reference/composite.html">composite()</a></code>. Thanks to <a href='https://github.com/GuobaoXu'>@GuobaoXu</a> for finding the error and tracing its origin. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/162'>#162</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/167'>#167</a>)</p></li>
+<li><p>Change to format of FHX2 files output from <code><a href="../reference/write_fhx.html">write_fhx()</a></code> to include a space between the data block and years. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/162'>#162</a>)</p></li>
+<li><p>Add flexibility to <code><a href="../reference/read_fhx.html">read_fhx()</a></code> to handle extra space at bottom of file. This is commonly present in some non-standardized FHX files available on the IMPD. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/162'>#162</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/164'>#164</a>)</p></li>
+<li><p>Add DOI badge to the README. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/162'>#162</a>)</p></li>
+<li><p>Add a new example to <code><a href="../reference/get_year.html">get_year()</a></code> documentation to aid users subsetting an <code>fhx</code> object based on before/after a particular cut-off year. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/173'>#173</a>)</p></li>
+<li><p>Update <code><a href="../reference/count_event_position.html">count_event_position()</a></code> to accommodate non-standard positions in <code>rec_type</code>. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/161'>#161</a>)</p></li>
+<li><p>Add “spring dormant” to the set of <code>rec_types</code>. This is a non-standard descriptor for fire scar seasonality. This aids with cases where <code>"D"</code> dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere). (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/161'>#161</a>)</p></li>
+<li><p>Update README creation to Rmarkdown (.Rmd) file with <code>usethis::use_readme_rmd()</code>. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/161'>#161</a>)</p></li>
+<li><p>Fix typo in citation file. (<a href='https://github.com/chguiterman'>@chguiterman</a>, <a href='https://github.com/ltrr-arizona-edu/burnr/issues/161'>#161</a>)</p></li>
+<li><p>Add general unit tests to increase test coverage.</p></li>
 </ul>
 </div>
     <div id="burnr-v050" class="section level1">

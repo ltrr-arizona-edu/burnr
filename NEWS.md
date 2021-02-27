@@ -2,27 +2,27 @@
 
 Changes in this release:
 
-* Fix bug in `plot_demograph()` to handle discontinuous recording periods (#78). Thanks to Mannie Lopez for finding that this addition disrupted the series sorting.
+* Add rlang, stringr, forcats, and tidyr as package dependencies.
 
-* Fix bug where `"springdormant_fs"` was omitted from the list of scar types in `burnr:::rec_type_recording`. This caused problems in the calculation of `percent_scarred()` because too few trees were recognized as recording in the year of fire. This would have also caused problems in `composite()`. Thanks to @GuobaoXu for finding the error and tracing its origin.
+* Fix bug in `plot_demograph()` to handle discontinuous recording periods. Thanks to Mannie Lopez for finding that this addition disrupted the series sorting. (@chguiterman, #78)
 
-* Change to format of FHX2 files output from `write_fhx()` to include a space between the data block and years.
+* Fix bug where `"springdormant_fs"` was omitted from the list of scar types in `burnr:::rec_type_recording`. This caused problems in the calculation of `percent_scarred()` because too few trees were recognized as recording in the year of fire. This would have also caused problems in `composite()`. Thanks to @GuobaoXu for finding the error and tracing its origin. (@chguiterman, #162, #167)
 
-* Add flexibility to `read_fhx()` to handle extra space at bottom of file. This is commonly present in some non-standardized FHX files available on the IMPD.
+* Change to format of FHX2 files output from `write_fhx()` to include a space between the data block and years. (@chguiterman, #162)
 
-* Add DOI badge to the README.
+* Add flexibility to `read_fhx()` to handle extra space at bottom of file. This is commonly present in some non-standardized FHX files available on the IMPD. (@chguiterman, #162, #164)
 
-* Add rlang, stringr, forcats, and tidyr to package imports.
+* Add DOI badge to the README. (@chguiterman, #162)
 
-* Add a new example to `get_year()` documentation to aid users subsetting an `fhx` object based on before/after a particular cut-off year.
+* Add a new example to `get_year()` documentation to aid users subsetting an `fhx` object based on before/after a particular cut-off year. (@chguiterman, #173)
 
-* Update `count_event_position()` to accommodate non-standard positions in `rec_type`.
+* Update `count_event_position()` to accommodate non-standard positions in `rec_type`. (@chguiterman, #161)
 
-* Add "spring dormant" to the set of `rec_types`. This is a non-standard descriptor for fire scar seasonality. This aids with cases where `"D"` dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere).
+* Add "spring dormant" to the set of `rec_types`. This is a non-standard descriptor for fire scar seasonality. This aids with cases where `"D"` dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere). (@chguiterman, #161)
 
-* Update README creation to Rmarkdown (.Rmd) file with `usethis::use_readme_rmd()`.
+* Update README creation to Rmarkdown (.Rmd) file with `usethis::use_readme_rmd()`. (@chguiterman, #161)
 
-* Fix typo in citation file.
+* Fix typo in citation file. (@chguiterman, #161)
 
 * Add general unit tests to increase test coverage.
 

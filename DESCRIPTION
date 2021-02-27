@@ -16,16 +16,16 @@ LazyData: true
 Suggests:
     testthat,
     knitr,
-    rmarkdown,
-    forcats,
-    stringr
+    rmarkdown
 Imports:
+    forcats,
     ggplot2,
     MASS,
     plyr,
     reshape2,
     rlang,
     stats,
+    stringr,
     tidyr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)

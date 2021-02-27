@@ -7,7 +7,7 @@ Changes in this release:
 * Change to format of FHX2 files output from `write_fhx()` to include a space between the data block and years.
 * Add flexibility to `read_fhx()` to handle extra space at bottom of file. This is commonly present in some non-standardized FHX files available on the IMPD.
 * Add DOI badge to the README.
-* Add {rlang} and {tidyr} to package imports as we transition to updated {tidyverse} workflows.
+* Add rlang, stringr, forcats, and tidyr to package imports.
 * Add a new example to `get_year()` documentation to aid users subsetting an `fhx` object based on before/after a particular cut-off year.
 * Update `count_event_position()` to accommodate non-standard positions in `rec_type`.
 * Add "spring dormant" to the set of `rec_types`. This is a non-standard descriptor for fire scar seasonality. This aids with cases where `"D"` dormant scars as the unknown year of a dormant scar (in the Northern Hemisphere).

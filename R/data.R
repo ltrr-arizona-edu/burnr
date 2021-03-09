@@ -84,3 +84,36 @@
 #'   * [pgm] Peggy Mesa fire-history data.
 #'   * [pgm_meta] Peggy Mesa metadata.
 "pgm_pdsi"
+
+#' Pajarito Mountain East fire-history data
+#'
+#' @description
+#' An `fhx` object with fire-history data.
+#'
+#' @format An `fhx` object with 17 series from 1702 to 1993 CE.
+#'
+#' @source https://www1.ncdc.noaa.gov/pub/data/paleo/firehistory/firescar/northamerica/uspme001.fhx
+#'
+"pme"
+
+#' Pajarito Mountain West fire-history data
+#'
+#' @description
+#' An `fhx` object with fire-history data.
+#'
+#' @format An `fhx` object with 11 series from 1617 to 1993 CE.
+#'
+#' @source https://www1.ncdc.noaa.gov/pub/data/paleo/firehistory/firescar/northamerica/uspmw001.fhx
+#'
+"pmw"
+
+#' Pajarito Mountain Ridge fire-history data
+#'
+#' @description
+#' An `fhx` object with fire-history data.
+#'
+#' @format An `fhx` object with 23 series from 1626 to 1993 CE.
+#'
+#' @source https://www1.ncdc.noaa.gov/pub/data/paleo/firehistory/firescar/northamerica/uspmr001.fhx
+#'
+"pmr"

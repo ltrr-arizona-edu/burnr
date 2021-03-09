@@ -88,7 +88,7 @@
       <h1 data-toc-skip>Add composites to facet plots</h1>
                         <h4 class="author">Chris Guiterman</h4>
             
-            <h4 class="date">2021-02-27</h4>
+            <h4 class="date">2021-03-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ltrr-arizona-edu/burnr/blob/master/vignettes/facet_comps.Rmd"><code>vignettes/facet_comps.Rmd</code></a></small>
       <div class="hidden name"><code>facet_comps.Rmd</code></div>
@@ -103,10 +103,12 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ltrr-arizona-edu/burnr/">burnr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
-<span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://www1.ncdc.noaa.gov/pub/data/paleo/firehistory/firescar/northamerica/"</span>
-<span class="va">pmr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fhx.html">read_fhx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">url</span>, <span class="st">'uspmr001.fhx'</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pme</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fhx.html">read_fhx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">url</span>, <span class="st">'uspme001.fhx'</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pmw</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fhx.html">read_fhx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">url</span>, <span class="st">'uspmw001.fhx'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="co">## Files were obtained from the IMPD</span>
+<span class="co"># url &lt;- "https://www1.ncdc.noaa.gov/pub/data/paleo/firehistory/firescar/northamerica/"</span>
+
+<span class="va">pmr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fhx.html">read_fhx</a></span><span class="op">(</span><span class="st">"uspmr001.fhx"</span><span class="op">)</span>
+<span class="va">pme</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fhx.html">read_fhx</a></span><span class="op">(</span><span class="st">"uspme001.fhx"</span><span class="op">)</span>
+<span class="va">pmw</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fhx.html">read_fhx</a></span><span class="op">(</span><span class="st">"uspmw001.fhx"</span><span class="op">)</span></code></pre></div>
 <p>To designate the different sites and data type (tree vs. composite in this case) we create metadata tables for each site from the fhx objects. If we had species information we color by species as well, and would add “composite” as a sort of species.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pmr.meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>series <span class="op">=</span> <span class="fu"><a href="../reference/series_names.html">series_names</a></span><span class="op">(</span><span class="va">pmr</span><span class="op">)</span>, site <span class="op">=</span> <span class="st">'PMR'</span>, type <span class="op">=</span> <span class="st">'Tree'</span><span class="op">)</span>

@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Updated redirecting URLs, changed "http" to "https", and otherwise added trailing backslashes to URLs in README.md.
+
 ## Test environments
 * local Ubuntu 20.04 install, R 4.0.4
 * Github Actions: ubuntu-20.04 (devel, release), windows-latest (release) macOS-latest (release).

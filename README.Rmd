@@ -78,6 +78,6 @@ Citations help us to identify user needs and justify additional time developing 
 
 Please file bugs in the [bug tracker](https://github.com/ltrr-arizona-edu/burnr/issues).
 
-Want to contribute? Great! We're following [Hadley's packaging workflow](http://r-pkgs.had.co.nz/) and [style guide](http://style.tidyverse.org). Fork away.
+Want to contribute? Great! We're following [Hadley's packaging workflow](https://r-pkgs.org/) and [style guide](https://style.tidyverse.org/). Fork away.
 
 If you're not a developer, don't worry! We also welcome help with documentation and tutorials.

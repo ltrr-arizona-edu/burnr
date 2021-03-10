@@ -23,28 +23,34 @@ designed for power users and projects with special needs.
 You can install the released version of burnr from
 [CRAN](https://CRAN.R-project.org) with:
 
-    install.packages("burnr")
+``` r
+install.packages("burnr")
+```
 
 And the development version from [GitHub](https://github.com/) with:
 
-    # install.packages("devtools")
-    devtools::install_github("ltrr-arizona-edu/burnr")
+``` r
+# install.packages("devtools")
+devtools::install_github("ltrr-arizona-edu/burnr")
+```
 
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-    library(burnr)
+``` r
+library(burnr)
 
-    # This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.
+# This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.
 
-    data(lgr2_meta)
+data(lgr2_meta)
 
-    plot(lgr2,
-      color_group = lgr2_meta$SpeciesID,
-      color_id = lgr2_meta$TreeID,
-      plot_legend = TRUE
-    )
+plot(lgr2,
+  color_group = lgr2_meta$SpeciesID,
+  color_id = lgr2_meta$TreeID,
+  plot_legend = TRUE
+)
+```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
@@ -76,9 +82,9 @@ developing and maintaining `burnr`.
 Please file bugs in the [bug
 tracker](https://github.com/ltrr-arizona-edu/burnr/issues).
 
-Want to contribute? Great! We’re following [Hadley’s packaging
-workflow](http://r-pkgs.had.co.nz/) and [style
-guide](http://style.tidyverse.org). Fork away.
+Want to contribute? Great\! We’re following [Hadley’s packaging
+workflow](https://r-pkgs.org/) and [style
+guide](https://style.tidyverse.org/). Fork away.
 
-If you’re not a developer, don’t worry! We also welcome help with
+If you’re not a developer, don’t worry\! We also welcome help with
 documentation and tutorials.

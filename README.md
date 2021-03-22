@@ -11,7 +11,7 @@ Status](https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branc
 [![R build
 status](https://github.com/ltrr-arizona-edu/burnr/workflows/R-CMD-check/badge.svg)](https://github.com/ltrr-arizona-edu/burnr/actions)
 [![downloads](https://cranlogs.r-pkg.org/badges/burnr)](https://cran.r-project.org/package=burnr)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1134832.svg)](https://doi.org/10.5281/zenodo.1134832)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.594459.svg)](https://doi.org/10.5281/zenodo.594459)
 
 <!-- badges: end -->
 
@@ -23,34 +23,28 @@ designed for power users and projects with special needs.
 You can install the released version of burnr from
 [CRAN](https://CRAN.R-project.org) with:
 
-``` r
-install.packages("burnr")
-```
+    install.packages("burnr")
 
 And the development version from [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("devtools")
-devtools::install_github("ltrr-arizona-edu/burnr")
-```
+    # install.packages("devtools")
+    devtools::install_github("ltrr-arizona-edu/burnr")
 
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
-library(burnr)
+    library(burnr)
 
-# This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.
+    # This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.
 
-data(lgr2_meta)
+    data(lgr2_meta)
 
-plot(lgr2,
-  color_group = lgr2_meta$SpeciesID,
-  color_id = lgr2_meta$TreeID,
-  plot_legend = TRUE
-)
-```
+    plot(lgr2,
+      color_group = lgr2_meta$SpeciesID,
+      color_id = lgr2_meta$TreeID,
+      plot_legend = TRUE
+    )
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
@@ -59,11 +53,15 @@ plot(lgr2,
 Documentation is included in the code. If you’re new to `burnr`, our
 [2018 paper in
 Dendrochronologia](https://doi.org/10.1016/j.dendro.2018.02.005) is a
-nice survey of the package with many examples. We have also an
-[introduction](https://cran.r-project.org/package=burnr/vignettes/introduction.html).
-More information can be found on the [project’s
-wiki](https://github.com/ltrr-arizona-edu/burnr/wiki). Note, this is
-still under construction.
+nice survey of the package with many examples. We also have
+instructional vignettes on the project website,
+<a href="https://ltrr-arizona-edu.github.io/burnr/" class="uri">https://ltrr-arizona-edu.github.io/burnr/</a>.
+And you can work through examples, with included data, in an R project
+hosted by @chguiterman on GitHub:
+<a href="https://github.com/chguiterman/burnr_demo" class="uri">https://github.com/chguiterman/burnr_demo</a>.
+We’re working to enhance our instruction and add to these demos on the
+burnr website, so please send us requests for new tips and tricks, or
+create your own and share with us!
 
 ## Citation
 
@@ -82,9 +80,9 @@ developing and maintaining `burnr`.
 Please file bugs in the [bug
 tracker](https://github.com/ltrr-arizona-edu/burnr/issues).
 
-Want to contribute? Great\! We’re following [Hadley’s packaging
+Want to contribute? Great! We’re following [Hadley’s packaging
 workflow](https://r-pkgs.org/) and [style
 guide](https://style.tidyverse.org/). Fork away.
 
-If you’re not a developer, don’t worry\! We also welcome help with
+If you’re not a developer, don’t worry! We also welcome help with
 documentation and tutorials.

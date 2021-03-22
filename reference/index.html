@@ -78,13 +78,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../articles/Introduction.html">Introduction</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">Function help</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -94,21 +91,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/introduction.html">Introduction to burnr</a>
-    </li>
-    <li>
       <a href="../articles/facet_comps.html">Add composites to facet plots</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/ltrr-arizona-edu/burnr/">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="https://github.com/ltrr-arizona-edu/burnr">
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -139,7 +130,296 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-import-and-export-data" class="hasAnchor"><a href="#section-import-and-export-data" class="anchor"></a>Import and export data</h2>
+          <p class="section-desc"><p>Read/write FHX file formats. These are specialized text files for storing tree-ring fire history data. FHX files can be created in <a href="https://www.frames.gov/fhaes/download">FHAES</a>, or by our <a href="https://github.com/chguiterman/Fire_History_Database">specialized MS Access Database</a>.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="read_fhx.html">read_fhx()</a></code> </p>
+        </td>
+        <td><p>Read FHX2 file and return an `fhx`` object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="write_fhx.html">write_fhx()</a></code> </p>
+        </td>
+        <td><p>Write an <code>fhx</code> object to a new FHX2 file</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-included-data" class="hasAnchor"><a href="#section-included-data" class="anchor"></a>Included data</h2>
+          <p class="section-desc"><p>Two fire historie site collections are included in the package for convenience. Both are from the Jemez Mountains in northcentral New Mexico, USA.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="pgm.html">pgm</a></code> </p>
+        </td>
+        <td><p>Peggy Mesa fire-history data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pgm_meta.html">pgm_meta</a></code> </p>
+        </td>
+        <td><p>Metadata for the Peggy Mesa fire-history dataset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pgm_pdsi.html">pgm_pdsi</a></code> </p>
+        </td>
+        <td><p>Reconstructed PDSI time series for the Peggy Mesa fire-history dataset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="lgr2.html">lgr2</a></code> </p>
+        </td>
+        <td><p>Los Griegos Peak plot2 fire-history data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="lgr2_meta.html">lgr2_meta</a></code> </p>
+        </td>
+        <td><p>Metadata for the Los Griegos Peak fire-history dataset</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-manipulation" class="hasAnchor"><a href="#section-data-manipulation" class="anchor"></a>Data manipulation</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="plus-.fhx.html">`+`(<i>&lt;fhx&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Concatenate or combine two fhx objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sort.fhx.html">sort(<i>&lt;fhx&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Sort the series names of <code>fhx</code> object by the earliest or latest year</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="composite.html">composite()</a></code> </p>
+        </td>
+        <td><p>Composite fire events in fhx object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="delete.html">delete()</a></code> </p>
+        </td>
+        <td><p>Remove series or years from an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_series.html">get_series()</a></code> </p>
+        </td>
+        <td><p>Extract <code>fhx</code> observations for given series</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_year.html">get_year()</a></code> </p>
+        </td>
+        <td><p>Extract <code>fhx</code> observations for given years</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="is_fhx.html">is_fhx()</a></code> </p>
+        </td>
+        <td><p>Check if object is <code>fhx</code>.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="make_rec_type.html">make_rec_type()</a></code> </p>
+        </td>
+        <td><p>Turn character vector into factor with proper <code>fhx</code> levels</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="outer_type.html">outer_type()</a></code> </p>
+        </td>
+        <td><p>Type of observation in the last (most recent) year of an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="last_year.html">last_year()</a></code> </p>
+        </td>
+        <td><p>Last (most recent) year of an <code>fhx</code> object</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-graphics" class="hasAnchor"><a href="#section-graphics" class="anchor"></a>Graphics</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="plot_demograph.html">plot_demograph()</a></code> </p>
+        </td>
+        <td><p>Create an ggplot2 object for plotting fhx demographics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot.fhx.html">plot(<i>&lt;fhx&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plot an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot.intervals.html">plot(<i>&lt;intervals&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plot a fire <code>intervals</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot.sea.html">plot(<i>&lt;sea&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plot a <code>sea</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_intervals_dist.html">plot_intervals_dist()</a></code> </p>
+        </td>
+        <td><p>Basic fire <code>intervals</code> distribution plot</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-statistical-summaries" class="hasAnchor"><a href="#section-statistical-summaries" class="anchor"></a>Statistical summaries</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="series_stats.html">series_stats()</a></code> </p>
+        </td>
+        <td><p>Generate series-level descriptive statistics for <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="intervals.html">intervals()</a></code> </p>
+        </td>
+        <td><p>Calculate fire intervals from a <code>composite</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="count_event_position.html">count_event_position()</a></code> </p>
+        </td>
+        <td><p>Count different events in an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="count_scar.html">count_scar()</a></code> </p>
+        </td>
+        <td><p>Number of scar events in an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="count_injury.html">count_injury()</a></code> </p>
+        </td>
+        <td><p>Number of injury events in an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="count_recording.html">count_recording()</a></code> </p>
+        </td>
+        <td><p>Number of recording years in an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="count_year_span.html">count_year_span()</a></code> </p>
+        </td>
+        <td><p>Number of years of an <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_event_years.html">get_event_years()</a></code> </p>
+        </td>
+        <td><p>Get years with events for an <code>fhx</code> object</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-derrived-time-series" class="hasAnchor"><a href="#section-derrived-time-series" class="anchor"></a>Derrived time series</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="percent_scarred.html">percent_scarred()</a></code> </p>
+        </td>
+        <td><p>Percent scarred time series for <code>fhx</code> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sample_depth.html">sample_depth()</a></code> </p>
+        </td>
+        <td><p>Calculate the sample depth of an <code>fhx</code> object</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-fire-climate-relationship" class="hasAnchor"><a href="#section-fire-climate-relationship" class="anchor"></a>Fire-climate relationship</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="sea.html">sea()</a></code> </p>
+        </td>
+        <td><p>Perform superposed epoch analysis</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-misc" class="hasAnchor"><a href="#section-misc" class="anchor"></a>MISC</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -163,48 +443,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="composite.html">composite()</a></code> </p>
-        </td>
-        <td><p>Composite fire events in fhx object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="count_event_position.html">count_event_position()</a></code> </p>
-        </td>
-        <td><p>Count different events in an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="count_injury.html">count_injury()</a></code> </p>
-        </td>
-        <td><p>Number of injury events in an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="count_recording.html">count_recording()</a></code> </p>
-        </td>
-        <td><p>Number of recording years in an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="count_scar.html">count_scar()</a></code> </p>
-        </td>
-        <td><p>Number of scar events in an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="count_year_span.html">count_year_span()</a></code> </p>
-        </td>
-        <td><p>Number of years of an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="delete.html">delete()</a></code> </p>
-        </td>
-        <td><p>Remove series or years from an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="fhx.html">fhx()</a></code> </p>
         </td>
         <td><p>Constructor for <code>fhx</code> objects</p></td>
@@ -217,33 +455,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="get_event_years.html">get_event_years()</a></code> </p>
-        </td>
-        <td><p>Get years with events for an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_series.html">get_series()</a></code> </p>
-        </td>
-        <td><p>Extract <code>fhx</code> observations for given series</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_year.html">get_year()</a></code> </p>
-        </td>
-        <td><p>Extract <code>fhx</code> observations for given years</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="inner_type.html">inner_type()</a></code> </p>
         </td>
         <td><p>Type of observation in the first (earliest) year of an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="intervals.html">intervals()</a></code> </p>
-        </td>
-        <td><p>Calculate fire intervals from a <code>composite</code></p></td>
       </tr><tr>
         
         <td>
@@ -283,30 +497,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="last_year.html">last_year()</a></code> </p>
-        </td>
-        <td><p>Last (most recent) year of an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="lgr2.html">lgr2</a></code> </p>
-        </td>
-        <td><p>Los Griegos Peak plot2 fire-history data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="lgr2_meta.html">lgr2_meta</a></code> </p>
-        </td>
-        <td><p>Metadata for the Los Griegos Peak fire-history dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="make_rec_type.html">make_rec_type()</a></code> </p>
-        </td>
-        <td><p>Turn character vector into factor with proper <code>fhx</code> levels</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="max.intervals.html">max(<i>&lt;intervals&gt;</i>)</a></code> </p>
         </td>
         <td><p>Maximum interval in fire <code>intervals</code></p></td>
@@ -331,93 +521,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="outer_type.html">outer_type()</a></code> </p>
-        </td>
-        <td><p>Type of observation in the last (most recent) year of an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="percent_scarred.html">percent_scarred()</a></code> </p>
-        </td>
-        <td><p>Percent scarred time series for <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pgm.html">pgm</a></code> </p>
-        </td>
-        <td><p>Peggy Mesa fire-history data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pgm_meta.html">pgm_meta</a></code> </p>
-        </td>
-        <td><p>Metadata for the Peggy Mesa fire-history dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pgm_pdsi.html">pgm_pdsi</a></code> </p>
-        </td>
-        <td><p>Reconstructed PDSI time series for the Peggy Mesa fire-history dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.fhx.html">plot(<i>&lt;fhx&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Plot an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.intervals.html">plot(<i>&lt;intervals&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Plot a fire <code>intervals</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.sea.html">plot(<i>&lt;sea&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Plot a <code>sea</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_demograph.html">plot_demograph()</a></code> </p>
-        </td>
-        <td><p>Create an ggplot2 object for plotting fhx demographics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_intervals_dist.html">plot_intervals_dist()</a></code> </p>
-        </td>
-        <td><p>Basic fire <code>intervals</code> distribution plot</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="plot_sealags.html">plot_sealags()</a></code> </p>
         </td>
         <td><p>Basic SEA lag plot of <code>sea</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plus-.fhx.html">`+`(<i>&lt;fhx&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Concatenate or combine two fhx objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pme.html">pme</a></code> </p>
-        </td>
-        <td><p>Pajarito Mountain East fire-history data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pmr.html">pmr</a></code> </p>
-        </td>
-        <td><p>Pajarito Mountain Ridge fire-history data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pmw.html">pmw</a></code> </p>
-        </td>
-        <td><p>Pajarito Mountain West fire-history data</p></td>
       </tr><tr>
         
         <td>
@@ -439,24 +545,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="read_fhx.html">read_fhx()</a></code> </p>
-        </td>
-        <td><p>Read FHX2 file and return an `fhx`` object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sample_depth.html">sample_depth()</a></code> </p>
-        </td>
-        <td><p>Calculate the sample depth of an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sea.html">sea()</a></code> </p>
-        </td>
-        <td><p>Perform superposed epoch analysis</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="series_mean_interval.html">series_mean_interval()</a></code> </p>
         </td>
         <td><p>Calculate quick mean fire interval of an <code>fhx</code> object with single series</p></td>
@@ -469,39 +557,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="series_stats.html">series_stats()</a></code> </p>
-        </td>
-        <td><p>Generate series-level descriptive statistics for <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sort.fhx.html">sort(<i>&lt;fhx&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Sort the series names of <code>fhx</code> object by the earliest or latest year</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="summary.fhx.html">summary(<i>&lt;fhx&gt;</i>)</a></code> </p>
         </td>
         <td><p>Summary of <code>fhx</code> object</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="write_fhx.html">write_fhx()</a></code> </p>
+          <p><code><a href="yearly_recording.html">yearly_recording()</a></code> </p>
         </td>
-        <td><p>Write an <code>fhx</code> object to a new FHX2 file</p></td>
+        <td><p>Count the number of recording series for each year in an <code>fhx</code> object</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="year_range.html">year_range()</a></code> </p>
         </td>
         <td><p>Range of years in an <code>fhx</code> object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="yearly_recording.html">yearly_recording()</a></code> </p>
-        </td>
-        <td><p>Count the number of recording series for each year in an <code>fhx</code> object</p></td>
       </tr>
     </tbody>
     </table>

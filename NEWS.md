@@ -2,6 +2,7 @@
 
 Changes in this release:
 
+* Update DOI badge and support documentation on main website and README. (@chguiterman, PR #182).
 * Updated error checking for `+` operator, specifically targeting duplicated series names (#186)
 
 

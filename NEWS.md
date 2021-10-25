@@ -2,7 +2,7 @@
 
 Changes in this release:
 
-* 
+* Updated error checking for `+` operator, specifically targeting duplicated series names (#186)
 
 
 # burnr v0.6.0

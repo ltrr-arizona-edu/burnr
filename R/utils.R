@@ -697,8 +697,8 @@ sort.fhx <- function(x, decreasing = FALSE, sort_by = "first_year", ...) {
 "+.fhx" <- function(a, b) {
   stopifnot(is_fhx(a))
   stopifnot(is_fhx(b))
+  check_duplicates(a, b)
   f <- rbind(a, b)
-  check_duplicates(f)
 }
 
 
@@ -771,28 +771,33 @@ as.fhx <- function(x) {
 }
 
 
-#' Check for duplicate observations in an `fhx` object
+#' Check for duplicate observations in combining `fhx` objects via [+]
 #'
 #' @param x An `fhx` object.
+#' @param y An `fhx` object.
 #'
-#' @return An `x`, otherwise `stop()` is thrown.
+#' @return Nothing unless duplicate [series_names()] are found, for which an
+#'   error message is shown.
 #'
-#' @examples
-#' data(lgr2)
-#' data(pgm)
-#' burnr:::check_duplicates(lgr2 + pgm)
+#' @importFrom rlang abort
+#' @importFrom glue glue
 #'
 #' @noRd
-check_duplicates <- function(x) {
+check_duplicates <- function(x, y) {
   stopifnot(is_fhx(x))
-  if (!anyDuplicated(x)) {
-    return(invisible(x))
+  stopifnot(is_fhx(y))
+  series_x <- series_names(x)
+  series_y <- series_names(y)
+  dupl_series <- series_x[series_x %in% series_y]
+  n_dupl_series <- length(dupl_series)
+    if (n_dupl_series == 0) {
+    return(invisible())
   } else {
-    duplicates <- x[duplicated(x), ]
-    stop(duplicates, "\n", c(
-      dim(duplicates)[1],
-      " duplicate(s) found. Please resolve duplicate records."
-    ))
+    abort(
+      message = c(glue("Cannot combine objects, found {n_dupl_series} duplicate series names:"),
+                  glue("{dupl_series}")
+      )
+    )
   }
 }
 

@@ -788,18 +788,20 @@ check_duplicates <- function(x, y) {
   stopifnot(is_fhx(y))
   series_x <- series_names(x)
   series_y <- series_names(y)
-  dupl_series <- series_x[series_x %in% series_y]
-  n_dupl_series <- length(dupl_series)
-    if (n_dupl_series == 0) {
-    return(invisible())
-  } else {
+  dupl_names <- series_x[series_x %in% series_y]
+  if (length(dupl_names) > 0) {
+    dupl_list <- unlist(lapply(dupl_names, function(s) {
+      setequal(get_series(x, s), get_series(x, s))
+    }))
+    dupl_series <- dupl_names[dupl_list]
+    n_dupl_series <- length(dupl_series)
     abort(
       message = c(glue("Cannot combine objects, found {n_dupl_series} duplicate series names:"),
                   glue("{dupl_series}")
-      )
-    )
-  }
+      ))
+  } else return(invisible())
 }
+
 
 
 #' Test if `fhx` object respects canon FHX2 format

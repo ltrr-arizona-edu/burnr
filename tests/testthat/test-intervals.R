@@ -34,7 +34,8 @@ test_that("quantile.intervals() basic cases", {
 
 test_that("The intervals object prints", {
   prnt_int <- capture_output(print(TEST_INTER))
-  expect_equal(nchar(prnt_int), 771)
+  # or 793 chars to support change in ks.test output in R>=6.0.0:
+  expect_true((nchar(prnt_int) == 793) || (nchar(prnt_int) == 771))
 })
 
 test_that("Plotting intervals works", {

@@ -2,7 +2,9 @@
 
 Changes in this release:
 
-* Update DOI badge and support documentation on main website and README. (@chguiterman, PR #182).
+* Update DOI badge and support documentation on main website and README. (@chguiterman, PR #182)
+
+* Test for new ks.test behavior in r-devel. (@brews, PR #191)
 
 
 # burnr v0.6.0

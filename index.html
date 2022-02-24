@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">burnr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0.9000</span>
       </span>
     </div>
 
@@ -58,8 +60,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ltrr-arizona-edu/burnr">
-    <span class="fas fa-github fa-lg"></span>
+  <a href="https://github.com/ltrr-arizona-edu/burnr" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -75,59 +77,61 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="burnr" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#burnr" class="anchor"></a>burnr</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="burnr">burnr<a class="anchor" aria-label="anchor" href="#burnr"></a>
+</h1></div>
 <!-- badges: start -->
 
 <!-- badges: end -->
 <p>Basic tools to analyze forest fire history data (e.g. FHX) in R. This is designed for power users and projects with special needs.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of burnr from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"burnr"</span>)</span></code></pre></div>
-<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># install.packages("devtools")</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"ltrr-arizona-edu/burnr"</span>)</span></code></pre></div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the released version of burnr from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"burnr"</span><span class="op">)</span></code></pre></div>
+<p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ltrr-arizona-edu/burnr"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(burnr)</span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">data</span>(lgr2_meta)</span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">plot</span>(lgr2,</span>
-<span id="cb3-8"><a href="#cb3-8"></a>  <span class="dt">color_group =</span> lgr2_meta<span class="op">$</span>SpeciesID,</span>
-<span id="cb3-9"><a href="#cb3-9"></a>  <span class="dt">color_id =</span> lgr2_meta<span class="op">$</span>TreeID,</span>
-<span id="cb3-10"><a href="#cb3-10"></a>  <span class="dt">plot_legend =</span> <span class="ot">TRUE</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ltrr-arizona-edu/burnr/" class="external-link">burnr</a></span><span class="op">)</span>
+
+<span class="co"># This gives you a basic plot. There are more advanced options. For example, we can color our plot by sample species.</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lgr2_meta</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lgr2</span>,
+  color_group <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">SpeciesID</span>,
+  color_id <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">TreeID</span>,
+  plot_legend <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 </div>
-<div id="support" class="section level2">
-<h2 class="hasAnchor">
-<a href="#support" class="anchor"></a>Support</h2>
-<p>Documentation is included in the code. If you’re new to <code>burnr</code>, our <a href="https://doi.org/10.1016/j.dendro.2018.02.005">2018 paper in Dendrochronologia</a> is a nice survey of the package with many examples. We also have instructional vignettes on the project website, <a href="https://ltrr-arizona-edu.github.io/burnr/" class="uri">https://ltrr-arizona-edu.github.io/burnr/</a>. And you can work through examples, with included data, in an R project hosted by @chguiterman on GitHub: <a href="https://github.com/chguiterman/burnr_demo" class="uri">https://github.com/chguiterman/burnr_demo</a>. We’re working to enhance our instruction and add to these demos on the burnr website, so please send us requests for new tips and tricks, or create your own and share with us!</p>
+<div class="section level2">
+<h2 id="support">Support<a class="anchor" aria-label="anchor" href="#support"></a>
+</h2>
+<p>Documentation is included in the code. If you’re new to <code>burnr</code>, our <a href="https://doi.org/10.1016/j.dendro.2018.02.005" class="external-link">2018 paper in Dendrochronologia</a> is a nice survey of the package with many examples. We also have instructional vignettes on the project website, <a href="https://ltrr-arizona-edu.github.io/burnr/" class="external-link uri">https://ltrr-arizona-edu.github.io/burnr/</a>. And you can work through examples, with included data, in an R project hosted by @chguiterman on GitHub: <a href="https://github.com/chguiterman/burnr_demo" class="external-link uri">https://github.com/chguiterman/burnr_demo</a>. We’re working to enhance our instruction and add to these demos on the burnr website, so please send us requests for new tips and tricks, or create your own and share with us!</p>
 </div>
-<div id="citation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#citation" class="anchor"></a>Citation</h2>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
 <p>Please cite the original <code>burnr</code> paper if you use it in your research:</p>
 <blockquote>
-<p>Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis</p>
-<p>(2018) <a href="https://www.sciencedirect.com/science/article/abs/pii/S1125786517301418?via%3Dihub">Burnr: Fire History Analysis and Graphics in R</a>. <em>Dendrochronologia</em> 49: 9–15. DOI: 10.1016/j.dendro.2018.02.005.</p>
+<p>Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis (2018) <a href="https://www.sciencedirect.com/science/article/abs/pii/S1125786517301418?via%3Dihub" class="external-link">Burnr: Fire History Analysis and Graphics in R</a>. <em>Dendrochronologia</em> 49: 9–15. DOI: 10.1016/j.dendro.2018.02.005.</p>
 </blockquote>
 <p>Citations help us to identify user needs and justify additional time developing and maintaining <code>burnr</code>.</p>
 </div>
-<div id="development" class="section level2">
-<h2 class="hasAnchor">
-<a href="#development" class="anchor"></a>Development</h2>
-<p>Please file bugs in the <a href="https://github.com/ltrr-arizona-edu/burnr/issues">bug tracker</a>.</p>
-<p>Want to contribute? Great! We’re following <a href="https://r-pkgs.org/">Hadley’s packaging workflow</a> and <a href="https://style.tidyverse.org/">style guide</a>. Fork away.</p>
+<div class="section level2">
+<h2 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
+</h2>
+<p>Please file bugs in the <a href="https://github.com/ltrr-arizona-edu/burnr/issues" class="external-link">bug tracker</a>.</p>
+<p>Want to contribute? Great! We’re following <a href="https://r-pkgs.org/" class="external-link">Hadley’s packaging workflow</a> and <a href="https://style.tidyverse.org/" class="external-link">style guide</a>. Fork away.</p>
 <p>If you’re not a developer, don’t worry! We also welcome help with documentation and tutorials.</p>
 </div>
 </div>
@@ -135,57 +139,61 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=burnr">https://​cloud.r-project.org/​package=burnr</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/ltrr-arizona-edu/burnr/">https://​github.com/​ltrr-arizona-edu/​burnr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/ltrr-arizona-edu/burnr/issues">https://​github.com/​ltrr-arizona-edu/​burnr/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=burnr" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/ltrr-arizona-edu/burnr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ltrr-arizona-edu/burnr/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 3)</li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing burnr</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Steven Malevich <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4752-8190" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Christopher Guiterman <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-9706-9332" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Ellis Margolis <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-0595-9005" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html#citation">Citing burnr</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=burnr"><img src="https://www.r-pkg.org/badges/version/burnr" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master"><img src="https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master" alt="Coverage Status"></a></li>
-<li><a href="https://github.com/ltrr-arizona-edu/burnr/actions"><img src="https://github.com/ltrr-arizona-edu/burnr/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://cran.r-project.org/package=burnr"><img src="https://cranlogs.r-pkg.org/badges/burnr" alt="downloads"></a></li>
-<li><a href="https://doi.org/10.5281/zenodo.594459"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.594459.svg" alt="DOI"></a></li>
+<li>Steven Malevich <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4752-8190" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Christopher Guiterman <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-9706-9332" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ellis Margolis <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-0595-9005" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=burnr" class="external-link"><img src="https://www.r-pkg.org/badges/version/burnr" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://coveralls.io/github/ltrr-arizona-edu/burnr?branch=master" class="external-link"><img src="https://coveralls.io/repos/github/ltrr-arizona-edu/burnr/badge.svg?branch=master" alt="Coverage Status"></a></li>
+<li><a href="https://github.com/ltrr-arizona-edu/burnr/actions" class="external-link"><img src="https://github.com/ltrr-arizona-edu/burnr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://cran.r-project.org/package=burnr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/burnr" alt="downloads"></a></li>
+<li><a href="https://doi.org/10.5281/zenodo.594459" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.594459.svg" alt="DOI"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Steven Malevich, Christopher Guiterman, Ellis Margolis.</p>
+  <p></p>
+<p>Developed by Steven Malevich, Christopher Guiterman, Ellis Margolis.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -193,6 +201,8 @@
 
   
 
+
+  
 
   </body>
 </html>

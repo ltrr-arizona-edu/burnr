@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">burnr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0.9000</span>
       </span>
     </div>
 
@@ -58,8 +60,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ltrr-arizona-edu/burnr">
-    <span class="fas fa-github fa-lg"></span>
+  <a href="https://github.com/ltrr-arizona-edu/burnr" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -77,54 +79,54 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to burnr</h1>
-                        <h4 class="author">S. Brewster Malevich</h4>
+                        <h4 data-toc-skip class="author">S. Brewster Malevich</h4>
             
-            <h4 class="date">2021-03-22</h4>
+            <h4 data-toc-skip class="date">2022-02-24</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ltrr-arizona-edu/burnr/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ltrr-arizona-edu/burnr/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
 
     </div>
 
     
     
-<p>This is a brief tutorial to cover some general ideas and basic features in burnr. This is a simple tutorial so you won’t need crazy coding skills. I am going to assume that you have a <a href="https://www.r-project.org">recent version of R</a> installed and are familiar with the basics of R.</p>
+<p>This is a brief tutorial to cover some general ideas and basic features in burnr. This is a simple tutorial so you won’t need crazy coding skills. I am going to assume that you have a <a href="https://www.r-project.org" class="external-link">recent version of R</a> installed and are familiar with the basics of R.</p>
 <p>If you are not familiar with R, hit Google with the search “R stat tutorial”, or some variation there of. You will find a plethora of useful learning material and helpful people from a wide array of backgrounds.</p>
 <p>People pickup this coding stuff more quickly if they try the examples I give and play around with the interesting things they discover. I recommend you open a terminal with an R session and follow along as you read this. It’s more fun that way.</p>
-<div id="whats-burnr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#whats-burnr" class="anchor"></a>What’s burnr?</h2>
+<div class="section level2">
+<h2 id="whats-burnr">What’s burnr?<a class="anchor" aria-label="anchor" href="#whats-burnr"></a>
+</h2>
 <p>burnr is a package for forest fire history analysis in the R statistical environment. This package isn’t designed to be a comprehensive suite for fire analysis. Rather the idea is to provide a transparent, flexible, and powerful set of core tools.</p>
 <hr>
 </div>
-<div id="citing-burnr-in-your-research" class="section level2">
-<h2 class="hasAnchor">
-<a href="#citing-burnr-in-your-research" class="anchor"></a>Citing burnr in your research</h2>
+<div class="section level2">
+<h2 id="citing-burnr-in-your-research">Citing burnr in your research<a class="anchor" aria-label="anchor" href="#citing-burnr-in-your-research"></a>
+</h2>
 <p>Please cite our peer-reviewed paper introducing burnr. The preferred citation is:</p>
 <blockquote>
-<p>Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis. 2018. “Burnr: Fire History Analysis and Graphics in R.” Dendrochronologia 49 (June): 9–15. <a href="https://doi.org/10.1016/j.dendro.2018.02.005" class="uri">https://doi.org/10.1016/j.dendro.2018.02.005</a>.</p>
+<p>Malevich, Steven B., Christopher H. Guiterman, and Ellis Q. Margolis. 2018. “Burnr: Fire History Analysis and Graphics in R.” Dendrochronologia 49 (June): 9–15. <a href="https://doi.org/10.1016/j.dendro.2018.02.005" class="external-link uri">https://doi.org/10.1016/j.dendro.2018.02.005</a>.</p>
 </blockquote>
-<p>You can see also this information by running <code><a href="https://rdrr.io/r/utils/citation.html">citation('burnr')</a></code> in an R session.</p>
+<p>You can see also this information by running <code>citation('burnr')</code> in an R session.</p>
 <hr>
 </div>
-<div id="install-burnr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#install-burnr" class="anchor"></a>Install burnr</h2>
+<div class="section level2">
+<h2 id="install-burnr">Install burnr<a class="anchor" aria-label="anchor" href="#install-burnr"></a>
+</h2>
 <p>You can install burnr from the CRAN repository with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'burnr'</span><span class="op">)</span></code></pre></div>
-<p>Most burnr development is centered at <a href="https://github.com/ltrr-arizona-edu/burnr" class="uri">https://github.com/ltrr-arizona-edu/burnr</a>. If I get hit by a bus, the people at the Laboratory of Tree-Ring Research will hopefully make sure that burnr doesn’t disappear. You can download burnr directly from this github repository with the <code>devtools</code> package:</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'burnr'</span><span class="op">)</span></code></pre></div>
+<p>Most burnr development is centered at <a href="https://github.com/ltrr-arizona-edu/burnr" class="external-link uri">https://github.com/ltrr-arizona-edu/burnr</a>. If I get hit by a bus, the people at the Laboratory of Tree-Ring Research will hopefully make sure that burnr doesn’t disappear. You can download burnr directly from this github repository with the <code>devtools</code> package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'ltrr-arizona-edu/burnr'</span><span class="op">)</span></code></pre></div>
 <p>Note that this will give you the bleeding-edge, development version of the package. It changes often and it may be unstable. Beware.</p>
 <p>Once burnr has been installed, you can load it just as you’d load any other R package</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ltrr-arizona-edu/burnr/">'burnr'</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/ltrr-arizona-edu/burnr/" class="external-link">'burnr'</a></span><span class="op">)</span></code></pre></div>
 <p>and you’re good to go.</p>
 </div>
-<div id="reading-and-writing-fire-history-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reading-and-writing-fire-history-data" class="anchor"></a>Reading and writing fire history data</h2>
+<div class="section level2">
+<h2 id="reading-and-writing-fire-history-data">Reading and writing fire history data<a class="anchor" aria-label="anchor" href="#reading-and-writing-fire-history-data"></a>
+</h2>
 <p>Loading data from FHX files is fairly straightforward.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fhx.html">read_fhx</a></span><span class="op">(</span><span class="st">'my_fhx_file.fhx'</span><span class="op">)</span></code></pre></div>
@@ -134,51 +136,51 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_fhx.html">write_fhx</a></span><span class="op">(</span><span class="va">d</span>, fname <span class="op">=</span> <span class="st">'notacreativeoutputfilename.fhx'</span><span class="op">)</span></code></pre></div>
 <p>Fairly straightforward stuff.</p>
 </div>
-<div id="manipulating-fhx-objects" class="section level2">
-<h2 class="hasAnchor">
-<a href="#manipulating-fhx-objects" class="anchor"></a>Manipulating fhx objects</h2>
+<div class="section level2">
+<h2 id="manipulating-fhx-objects">Manipulating fhx objects<a class="anchor" aria-label="anchor" href="#manipulating-fhx-objects"></a>
+</h2>
 <p>The fhx objects are like very specialized data.frames. We can do some useful things with these fhx objects. Let’s use some example fhx objects that we bundled with burnr (or you can read in your own FHX files).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span>  <span class="co"># fire data from Los Griegos Peak, New Mexico</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span>  <span class="co"># fire data from Los Griegos Peak, New Mexico</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span></code></pre></div>
-<pre><code>##   year series      rec_type
-## 1 1366  LGR54    inner_year
-## 2 1423  LGR54    unknown_fi
-## 3 1424  LGR54 recorder_year
-## 4 1425  LGR54 recorder_year
-## 5 1426  LGR54 recorder_year
-## 6 1427  LGR54 recorder_year</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   year series      rec_type</span>
+<span class="co">## 1 1366  LGR54    inner_year</span>
+<span class="co">## 2 1423  LGR54    unknown_fi</span>
+<span class="co">## 3 1424  LGR54 recorder_year</span>
+<span class="co">## 4 1425  LGR54 recorder_year</span>
+<span class="co">## 5 1426  LGR54 recorder_year</span>
+<span class="co">## 6 1427  LGR54 recorder_year</span></code></pre>
 <p>Peaking at the head of the <code>lgr2</code> data shows that we have information about the years of observations, the series (which can correspond to a tree, sample, plot, site, whatever you like), and the type of record for a given year. You’ll notice that we don’t keep track of “null” years. Removing null years lets us keep the code quick and nimble (usually).</p>
 <p>Looking at the structure of the <code>lgr2</code> object can give us some more technical details, if that’s your thing:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span></code></pre></div>
-<pre><code>## Classes 'fhx' and 'data.frame':  2681 obs. of  3 variables:
-##  $ year    : int  1366 1423 1424 1425 1426 1427 1428 1429 1430 1431 ...
-##  $ series  : Factor w/ 26 levels "LGR54","LGR44",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ rec_type: Factor w/ 19 levels "null_year","recorder_year",..: 17 4 2 2 2 2 2 2 2 2 ...</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Classes 'fhx' and 'data.frame':  2681 obs. of  3 variables:</span>
+<span class="co">##  $ year    : int  1366 1423 1424 1425 1426 1427 1428 1429 1430 1431 ...</span>
+<span class="co">##  $ series  : Factor w/ 26 levels "LGR54","LGR44",..: 1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="co">##  $ rec_type: Factor w/ 19 levels "null_year","recorder_year",..: 17 4 2 2 2 2 2 2 2 2 ...</span></code></pre>
 <p>The important thing to keep in mind is you can parse these fhx objects all you like, but be careful modifying or changing an fhx object’s data with your own functions as this might have unintended consequences. Manually modifying the data is something I recommend for advanced (or brave) users with a working knowledge of R’s S3 classes and generic function.</p>
 <p>Let’s pull in another example dataset and combine it with <code>lgr2</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">pgm</span><span class="op">)</span>  <span class="co"># Peggy Mesa fire data.</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pgm</span><span class="op">)</span>  <span class="co"># Peggy Mesa fire data.</span>
 
 <span class="va">both</span> <span class="op">&lt;-</span> <span class="va">lgr2</span> <span class="op">+</span> <span class="va">pgm</span></code></pre></div>
 <p>As you might suspect, <code>both</code> is a concatenation, combing the fire information in <code>lgr2</code> and <code>pgm</code>. We can prove this by looking at the series names.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/series_names.html">series_names</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "LGR54" "LGR44" "LGR47" "LGR48" "LGR46" "LGR41" "LGR52" "LGR51" "LGR45"
-## [10] "LGR49" "LGR53" "LGR43" "LGR55" "LGR56" "LGR36" "LGR33" "LGR31" "LGR32"
-## [19] "LGR27" "LGR29" "LGR25" "LGR35" "LGR30" "LGR26" "LGR42" "LGR34"</code></pre>
+<pre><code><span class="co">##  [1] "LGR54" "LGR44" "LGR47" "LGR48" "LGR46" "LGR41" "LGR52" "LGR51" "LGR45"</span>
+<span class="co">## [10] "LGR49" "LGR53" "LGR43" "LGR55" "LGR56" "LGR36" "LGR33" "LGR31" "LGR32"</span>
+<span class="co">## [19] "LGR27" "LGR29" "LGR25" "LGR35" "LGR30" "LGR26" "LGR42" "LGR34"</span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/series_names.html">series_names</a></span><span class="op">(</span><span class="va">both</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "LGR54" "LGR44" "LGR47" "LGR48" "LGR46" "LGR41" "LGR52" "LGR51" "LGR45"
-## [10] "LGR49" "LGR53" "LGR43" "LGR55" "LGR56" "LGR36" "LGR33" "LGR31" "LGR32"
-## [19] "LGR27" "LGR29" "LGR25" "LGR35" "LGR30" "LGR26" "LGR42" "LGR34" "PGM45"
-## [28] "PGM44" "PGM43" "PGM42" "PGM38" "PGM37" "PGM34" "PGM33" "PGM30" "PGM29"
-## [37] "PGM28" "PGM27" "PGM22" "PGM21" "PGM20" "PGM19" "PGM18" "PGM16" "PGM14"
-## [46] "PGM13" "PGM2"  "PGM15" "PGM5"  "PGM40" "PGM36" "PGM3"  "PGM17" "PGM11"
-## [55] "PGM7"  "PGM23" "PGM25" "PGM10" "PGM6"  "PGM1"  "PGM26" "PGM9"  "PGM39"
-## [64] "PGM35" "PGM12" "PGM31" "PGM32"</code></pre>
+<pre><code><span class="co">##  [1] "LGR54" "LGR44" "LGR47" "LGR48" "LGR46" "LGR41" "LGR52" "LGR51" "LGR45"</span>
+<span class="co">## [10] "LGR49" "LGR53" "LGR43" "LGR55" "LGR56" "LGR36" "LGR33" "LGR31" "LGR32"</span>
+<span class="co">## [19] "LGR27" "LGR29" "LGR25" "LGR35" "LGR30" "LGR26" "LGR42" "LGR34" "PGM45"</span>
+<span class="co">## [28] "PGM44" "PGM43" "PGM42" "PGM38" "PGM37" "PGM34" "PGM33" "PGM30" "PGM29"</span>
+<span class="co">## [37] "PGM28" "PGM27" "PGM22" "PGM21" "PGM20" "PGM19" "PGM18" "PGM16" "PGM14"</span>
+<span class="co">## [46] "PGM13" "PGM2"  "PGM15" "PGM5"  "PGM40" "PGM36" "PGM3"  "PGM17" "PGM11"</span>
+<span class="co">## [55] "PGM7"  "PGM23" "PGM25" "PGM10" "PGM6"  "PGM1"  "PGM26" "PGM9"  "PGM39"</span>
+<span class="co">## [64] "PGM35" "PGM12" "PGM31" "PGM32"</span></code></pre>
 <p>We can also delete specific series or years from an fhx object.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/delete.html">delete</a></span><span class="op">(</span><span class="va">lgr2</span>, s <span class="op">=</span> <span class="st">'LGR46'</span><span class="op">)</span>             <span class="co"># Remove series.</span>
@@ -187,33 +189,33 @@
 <p>Note that our use of <code><a href="../reference/delete.html">delete()</a></code> is not modifying <code>lgr2</code> in place. <code>lgr2</code> is unchanged unless we assign the output of <code><a href="../reference/delete.html">delete()</a></code> back to the <code>lgr2</code> variable.</p>
 <p>Use <code>help()</code> to find more information on these functions. Be sure to check out <code><a href="../reference/get_series.html">get_series()</a></code>, <code><a href="../reference/get_year.html">get_year()</a></code>, and <code><a href="../reference/sort.fhx.html">sort.fhx()</a></code>.</p>
 </div>
-<div id="basic-plotting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#basic-plotting" class="anchor"></a>Basic plotting</h2>
-<p>Now that we have some fire data in R, let’s put this into real use! The simplest way to plot an fhx object, is to use the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
+<div class="section level2">
+<h2 id="basic-plotting">Basic plotting<a class="anchor" aria-label="anchor" href="#basic-plotting"></a>
+</h2>
+<p>Now that we have some fire data in R, let’s put this into real use! The simplest way to plot an fhx object, is to use the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lgr2</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>This gives us a fire history demographic plot. Solid circles indicate “solid” starting and stopping dates (i.e. “pith-date”, “bark-date”). Triangles indicate any kind of fire event. You will also notice that solid lines in a series are periods when the tree is sensitive to fire events (“recording”). The dashed line indicates periods when the tree is not sensitive to fire events. Back when I first started writing burnr in 2011 - 2012, one of the main goals of the package was to easily plot a <em>ridiculous</em> amount of fire-history data. The package’s spartan plotting design is a consequence of this.</p>
 <p>We can clean things up by removing the labels on the y-axis.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lgr2</span>, ylabels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lgr2</span>, ylabels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <p>We can also add color to our plots. This is one of the fancier features of burnr, that will hopefully become standard for fire-history analysis tools. First, we’ll load in some metadata for the <code>lgr2</code> object.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">lgr2_meta</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lgr2_meta</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lgr2_meta</span><span class="op">)</span></code></pre></div>
-<pre><code>##   TreeID SpeciesID
-## 1  LGR54      PIPO
-## 2  LGR44      PIPO
-## 3  LGR47      PIPO
-## 4  LGR48      PIPO
-## 5  LGR46      PIPO
-## 6  LGR41      PSME</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lgr2_meta</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   TreeID SpeciesID</span>
+<span class="co">## 1  LGR54      PIPO</span>
+<span class="co">## 2  LGR44      PIPO</span>
+<span class="co">## 3  LGR47      PIPO</span>
+<span class="co">## 4  LGR48      PIPO</span>
+<span class="co">## 5  LGR46      PIPO</span>
+<span class="co">## 6  LGR41      PSME</span></code></pre>
 <p><code>lgr2_meta</code> is just a data.frame that links series names with extra information like sample species. These can easily be made for your own data. The cool thing is how we use this information in our plots.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lgr2</span>,
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lgr2</span>,
      color_group <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">SpeciesID</span>,
      color_id <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">TreeID</span>,
      ylabels <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -222,38 +224,38 @@
 <p>Now that we add color, we can see our data suggests a change in species composition from PIPO (<em>Pinus ponderosa</em>) to PSME (<em>Pseudotsuga menziesii</em>) and POTR (<em>Populus tremuloides</em>). The help function, <code><a href="../reference/lgr2.html">help(lgr2)</a></code>, will give you more information on <code>lgr2</code> if you’re curious.</p>
 <p>Alternatively, we can create a faceted plot using the same information.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lgr2</span>,
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lgr2</span>,
      facet_group <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">SpeciesID</span>,
      facet_id <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">TreeID</span>,
      ylabels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <p>Generally, people use the color to represent species and then use facets for different sample locations (yes, you can use colors and facets together). I’ve seen facets from site data create plots large enough to plaster across an office wall. It looks cool. Some people find it helpful.</p>
 </div>
-<div id="advanced-plotting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#advanced-plotting" class="anchor"></a>Advanced plotting</h2>
+<div class="section level2">
+<h2 id="advanced-plotting">Advanced plotting<a class="anchor" aria-label="anchor" href="#advanced-plotting"></a>
+</h2>
 <p>Plotting in burnr does not use the base plotting system in R. Instead, our plotting is handled by the grid-based ggplot2 package. This give us a way to create sophisticated plots that are modular and user customizable. The drawback to this is that ggplot2 graphics have a steep learning curve and can seem obtuse to new (or advanced) users who are used to other plotting systems.</p>
-<p>Beneath its simple exterior the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method passes its plotting to <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code>. The key here is that <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code> returns ggplot objects which you can modify. So, lets load the ggplot2 package and create the same colored fire demographic plots that we created above. But this time, we’ll capture the function’s output.</p>
+<p>Beneath its simple exterior the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method passes its plotting to <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code>. The key here is that <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code> returns ggplot objects which you can modify. So, lets load the ggplot2 package and create the same colored fire demographic plots that we created above. But this time, we’ll capture the function’s output.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_demograph.html">plot_demograph</a></span><span class="op">(</span><span class="va">lgr2</span>,
              color_group <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">SpeciesID</span>,
              color_id <span class="op">=</span> <span class="va">lgr2_meta</span><span class="op">$</span><span class="va">TreeID</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <p>Same as before, but without the legend. Now, let’s can use the output from <code>plot_demographic()</code> to add an annotation:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Add transparent box as annotation to plot.</span>
-<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">'rect'</span>,
+<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">'rect'</span>,
           xmin <span class="op">=</span> <span class="fl">1750</span>, xmax <span class="op">=</span> <span class="fl">1805</span>,
           ymin <span class="op">=</span> <span class="fl">3.5</span>, ymax <span class="op">=</span> <span class="fl">13.5</span>, alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <p>We can annotate with text to point out something “important” (ha ha).</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">'text'</span>, x <span class="op">=</span> <span class="fl">1650</span>, y <span class="op">=</span> <span class="fl">7.5</span>, label <span class="op">=</span> <span class="st">'important!'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">'text'</span>, x <span class="op">=</span> <span class="fl">1650</span>, y <span class="op">=</span> <span class="fl">7.5</span>, label <span class="op">=</span> <span class="st">'important!'</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
-<p>We can use the same approach to change plot colors, labels, etc. Try adding ggplot2’s <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_grey()</a></code> and see what happens! Using what you’ve learned, try to combine the <code>lgr2</code> and <code>pgm</code> objects and create a plot with facets for each of these locations. You can load burnr’s <code>pgm_meta</code> if you need.</p>
-<p>Check out ggplot2 (<a href="https://ggplot2.tidyverse.org/" class="uri">https://ggplot2.tidyverse.org/</a>) to learn more.</p>
+<p>We can use the same approach to change plot colors, labels, etc. Try adding ggplot2’s <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_grey()</a></code> and see what happens! Using what you’ve learned, try to combine the <code>lgr2</code> and <code>pgm</code> objects and create a plot with facets for each of these locations. You can load burnr’s <code>pgm_meta</code> if you need.</p>
+<p>Check out ggplot2 (<a href="https://ggplot2.tidyverse.org/" class="external-link uri">https://ggplot2.tidyverse.org/</a>) to learn more.</p>
 </div>
   </div>
 
@@ -268,11 +270,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Steven Malevich, Christopher Guiterman, Ellis Margolis.</p>
+  <p></p>
+<p>Developed by Steven Malevich, Christopher Guiterman, Ellis Margolis.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -280,6 +284,8 @@
 
   
 
+
+  
 
   </body>
 </html>

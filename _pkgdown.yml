@@ -23,12 +23,12 @@ reference:
       - read_fhx
       - write_fhx
   - title: Included data
-    desc: >
-      Two fire historie site collections are included in the package for convenience.
-      Both are from the Jemez Mountains in northcentral New Mexico, USA.
     contents:
       - starts_with("pgm")
       - starts_with("lgr2")
+      - pme
+      - pmw
+      - pmr
   - title: Data manipulation
     contents:
       - "`+.fhx`"

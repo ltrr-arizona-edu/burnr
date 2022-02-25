@@ -412,8 +412,9 @@ get_rec_tbl <- function(x, injury_event = FALSE) {
   rec_tbl$series <- factor(rec_tbl$series,
                            levels = series_order,
                            ordered = TRUE)
-  rec_tbl$rec_type <- factor("recording")
-
+  if (dim(rec_tbl)[1] > 0) {
+    rec_tbl$rec_type <- factor("recording")
+  }
   rec_tbl
 }
 

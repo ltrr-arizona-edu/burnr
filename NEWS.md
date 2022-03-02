@@ -1,4 +1,11 @@
-# burnr v0.6.0.9000
+# burnr v0.6.1.9000
+
+Changes in this release:
+
+* 
+
+
+# burnr v0.6.1
 
 Changes in this release:
 

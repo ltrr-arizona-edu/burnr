@@ -1,6 +1,6 @@
 Package: burnr
 Title: Forest Fire History Analysis
-Version: 0.6.1
+Version: 0.6.1.9000
 Authors@R: c(
   person("Steven", "Malevich", email = "sbmalev@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4752-8190")),
   person("Christopher", "Guiterman", role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-9706-9332")),

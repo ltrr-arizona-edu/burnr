@@ -18,7 +18,6 @@ Changes in this release:
 * Update DOI badge and support documentation on main website and README. (@chguiterman, PR #182)
 
 
-
 # burnr v0.6.0
 
 Changes in this release:

@@ -3,7 +3,7 @@
 Changes in this release:
 
 * Add {glue} as package dependency. This helps to elaborate error messages (@chguiterman, #196)
-
+* Updated error checking for `+` operator, specifically targeting duplicated series names. (@chguiterman, PR #196)
 
 
 # burnr v0.6.1

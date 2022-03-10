@@ -20,6 +20,7 @@ Suggests:
 Imports:
     forcats,
     ggplot2,
+    glue,
     MASS,
     plyr,
     reshape2,

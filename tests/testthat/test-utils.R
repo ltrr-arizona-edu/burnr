@@ -170,22 +170,24 @@ test_that("+.fhx on FHX objects", {
     series = factor(series2),
     rec_type = rt2
   )
-  test_fhx3 <- rbind(test_fhx1, test_fhx2)
-  test_fhx4 <- test_fhx1 + test_fhx2
+
+  test_fhx3 <- test_fhx1 + test_fhx2
 
   expect_equal(test_fhx3$year, c(year1, year2))
   expect_equal(test_fhx3$series, factor(c(series1, series2)))
   expect_equal(test_fhx3$rec_type, make_rec_type(c(rt1, rt2)))
-
-  checked <- burnr:::check_duplicates(test_fhx1, test_fhx2)
-  expect_equal(test_fhx3, test_fhx1 + test_fhx2)
-
-  expect_error(
-    burnr:::check_duplicates(test_fhx1, test_fhx1)
-  )
-  expect_error(test_fhx1 + test_fhx1)
 })
 
+test_that("+.fhx throws error when fhx obj has duplicates", {
+  test_fhx <- fhx(
+    year = c(1850, 2010),
+    series = factor(c("a", "a")),
+    rec_type = c(
+      "pith_year", "bark_year"
+    )
+  )
+  expect_error(test_fhx + test_fhx, regexp = "duplicate series", fixed = TRUE)
+})
 
 test_that("as_fhx works on data.frame input", {
   yrs <- c(1850, 2010)

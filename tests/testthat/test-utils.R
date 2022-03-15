@@ -1,14 +1,9 @@
 library(burnr)
 context("Utils")
 
-data(lgr2)
-TARGET_SERIES <- "LGR53"
-REF_MULTI <- lgr2
-REF_SINGLE <- get_series(REF_MULTI, TARGET_SERIES)
-
 test_that("spotcheck get_series", {
-  test_subj <- get_series(REF_MULTI, TARGET_SERIES)
-  expect_true(all(test_subj$series == TARGET_SERIES))
+  test_subj <- get_series(burnr::lgr2, "LGR53")
+  expect_true(all(test_subj$series == "LGR53"))
 })
 
 test_that("make_rec_type handles single character vector", {
@@ -30,7 +25,7 @@ test_that("make_rec_type throws error on bad levels", {
 })
 
 test_that("series_names on single series", {
-  expect_match(series_names(REF_SINGLE), TARGET_SERIES)
+  expect_match(series_names(get_series(burnr::lgr2, "LGR53")), "LGR53")
 })
 
 test_that("series_names on multi-series FHX object", {
@@ -40,51 +35,52 @@ test_that("series_names on multi-series FHX object", {
     "LGR36", "LGR33", "LGR31", "LGR32", "LGR27", "LGR29", "LGR25",
     "LGR35", "LGR30", "LGR26", "LGR42", "LGR34"
   )
-  test_subj <- series_names(REF_MULTI)
+  test_subj <- series_names(burnr::lgr2)
   expect_true(length(union(a, test_subj)) == length(a))
 })
 
 test_that("get_year on single series", {
-  test_subj <- get_year(REF_SINGLE, 1825)
-  expect_match(as.character(test_subj$series), TARGET_SERIES)
+  lgr53 <- get_series(burnr::lgr2, "LGR53")
+  test_subj <- get_year(lgr53, 1825)
+  expect_match(as.character(test_subj$series), "LGR53")
   expect_equal(test_subj$year, 1825)
   expect_match(as.character(test_subj$rec_type), "recorder_year")
 })
 
 test_that("delete series on multi-series FHX object", {
-  test_subj <- delete(REF_MULTI, s = TARGET_SERIES)
-  expect_false(TARGET_SERIES %in% series_names(test_subj))
+  test_subj <- delete(burnr::lgr2, s = "LGR53")
+  expect_false("LGR53" %in% series_names(test_subj))
 })
 
 test_that("delete year on multi-series FHX object", {
   target_year <- 1825
-  test_subj <- delete(REF_MULTI, yr = target_year)
+  test_subj <- delete(burnr::lgr2, yr = target_year)
   expect_false(target_year %in% series_names(test_subj))
 })
 
 test_that("delete series and year on multi-series FHX object", {
   target_year <- 1825
-  test_subj <- delete(REF_MULTI, s = TARGET_SERIES, yr = target_year)
+  test_subj <- delete(burnr::lgr2, s = "LGR53", yr = target_year)
   expect_false(
-    as.character(TARGET_SERIES)
+    as.character("LGR53")
     %in% as.character(series_names(get_year(test_subj, target_year)))
   )
-  expect_false(target_year %in% get_series(test_subj, TARGET_SERIES)$year)
+  expect_false(target_year %in% get_series(test_subj, "LGR53")$year)
 })
 
 test_that("year_range on multi-series FHX object", {
-  test_subj <- year_range(REF_MULTI)
+  test_subj <- year_range(burnr::lgr2)
   expect_true(all(test_subj == c(1366, 2012)))
 })
 
 test_that("count_event_position on FHX object without injuries as events", {
-  test_subj <- count_event_position(REF_MULTI)
+  test_subj <- count_event_position(burnr::lgr2)
   expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
   expect_equal(subset(test_subj, event == "early_fs")$count, 4)
 })
 
 test_that("count_event_position on FHX object with injuries as events", {
-  test_subj <- count_event_position(REF_MULTI, injury_event = TRUE)
+  test_subj <- count_event_position(burnr::lgr2, injury_event = TRUE)
   expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
   expect_equal(subset(test_subj, event == "unknown_fi")$count, 6)
 })
@@ -92,7 +88,7 @@ test_that("count_event_position on FHX object with injuries as events", {
 ## Depreciated argument
 # test_that("count_event_position on FHX object with multiple select positions", {
 #   test_subj <- count_event_position(
-#     REF_MULTI,
+#     burnr::lgr2,
 #     position = c("unknown", "dormant")
 #   )
 #   expect_equal(subset(test_subj, event == "dormant_fs")$count, 3)
@@ -105,7 +101,7 @@ test_that("count_event_position on FHX object groupby list", {
     foo = c("unknown_fs", "early_fs"),
     bar = c("dormant_fs", "unknown_fi")
   )
-  test_subj <- count_event_position(REF_MULTI, groupby = grplist)
+  test_subj <- count_event_position(burnr::lgr2, groupby = grplist)
   ## Events not listed in groupby are not inlcuded in output
   # expect_equal(subset(test_subj, event == "unknown_fs")$count, 2)
   # expect_equal(subset(test_subj, event == "early_fs")$count, 4)
@@ -157,42 +153,40 @@ test_that("sort.fhx on FHX object by last_year", {
   expect_equal(goal, levels(sorted$series))
 })
 
-# Testing `+` operator
-year1 <- c(1850, 2010)
-series1 <- c("a", "a")
-rt1 <- c("pith_year", "bark_year")
-year2 <- c(1900, 2000)
-series2 <- c("b", "b")
-rt2 <- c("pith_year", "bark_year")
-test_fhx1 <- fhx(
-  year = year1,
-  series = factor(series1),
-  rec_type = rt1
-)
-test_fhx2 <- fhx(
-  year = year2,
-  series = factor(series2),
-  rec_type = rt2
-)
-test_fhx3 <- rbind(test_fhx1, test_fhx2)
-
 test_that("+.fhx on FHX objects", {
-  test_fhx4 <- test_fhx1 + test_fhx2
+  year1 <- c(1850, 2010)
+  series1 <- c("a", "a")
+  rt1 <- c("pith_year", "bark_year")
+  year2 <- c(1900, 2000)
+  series2 <- c("b", "b")
+  rt2 <- c("pith_year", "bark_year")
+  test_fhx1 <- fhx(
+    year = year1,
+    series = factor(series1),
+    rec_type = rt1
+  )
+  test_fhx2 <- fhx(
+    year = year2,
+    series = factor(series2),
+    rec_type = rt2
+  )
+
+  test_fhx3 <- test_fhx1 + test_fhx2
+
   expect_equal(test_fhx3$year, c(year1, year2))
   expect_equal(test_fhx3$series, factor(c(series1, series2)))
   expect_equal(test_fhx3$rec_type, make_rec_type(c(rt1, rt2)))
 })
 
-test_that("check_duplicates returns with OK fhx obj", {
-  checked <- burnr:::check_duplicates(test_fhx1, test_fhx2)
-  expect_equal(test_fhx3, test_fhx1 + test_fhx2)
-})
-
-test_that("check_duplicates throws error when fhx obj has duplicates", {
-  expect_error(
-    burnr:::check_duplicates(test_fhx1, test_fhx1)
+test_that("+.fhx throws error when fhx obj has duplicates", {
+  test_fhx <- fhx(
+    year = c(1850, 2010),
+    series = factor(c("a", "a")),
+    rec_type = c(
+      "pith_year", "bark_year"
+    )
   )
-  expect_error(test_fhx1 + test_fhx1)
+  expect_error(test_fhx + test_fhx, regexp = "duplicate series", fixed = TRUE)
 })
 
 test_that("as_fhx works on data.frame input", {

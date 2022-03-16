@@ -412,6 +412,8 @@ get_rec_tbl <- function(x, injury_event = FALSE) {
   rec_tbl$series <- factor(rec_tbl$series,
                            levels = series_order,
                            ordered = TRUE)
+  # Statement to exclude instances where no trees are recording. Prevents
+  # internal error
   if (dim(rec_tbl)[1] > 0) {
     rec_tbl$rec_type <- factor("recording")
   }

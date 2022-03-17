@@ -199,10 +199,11 @@ plot_demograph <- function(x, color_group, color_id, facet_group, facet_id,
       data = events, ggplot2::aes_string(shape = "rec_type", size = "rec_type"),
       color = "black"
     )
-  + ggplot2::scale_size_manual(values = event_size)
+  + ggplot2::scale_size_manual(values = event_size, drop=FALSE)
     + ggplot2::scale_shape_manual(
       guide = "legend",
-      values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20)
+      values = c("Scar" = 124, "Injury" = 6, "Pith/Bark" = 20),
+      drop=FALSE
     )) # `shape` 25 is empty triangles
 
   if (composite_rug) {

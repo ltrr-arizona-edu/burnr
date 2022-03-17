@@ -2,6 +2,8 @@
 
 Changes in this release:
 
+* Update `plot_demograph()` code to allow for dropped aethesthetics and resolve erroneous legends (@chguiterman, #199)
+
 * Add `glue` as package dependency. This helps to elaborate error messages (@chguiterman, #196)
 
 * Updated error checking for `+` operator, specifically targeting duplicated series names. (@chguiterman, PR #196)

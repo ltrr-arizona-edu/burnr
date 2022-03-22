@@ -265,7 +265,7 @@ sea <- function(x, event, nbefore = 6, nafter = 4, event_range = TRUE,
   departure_table <- round(departure_table, 3)
 
   out <- list(
-    "event_years" = event,
+    "event_years" = event.cut, # report only used event years
     "actual" = actual_event_table,
     "random" = rand_event_table,
     "departure" = departure_table,

@@ -8,6 +8,8 @@ Changes in this release:
 
 * Updated error checking for `+` operator, specifically targeting duplicated series names. (@chguiterman, PR #196)
 
+* Update `sea()` so that only event years that are used are provided in the list output (@chguiterman, #187)
+
 
 # burnr v0.6.1
 

@@ -283,7 +283,7 @@ print.intervals <- function(x, ...) {
   weib_invshape <- 1 / wfit$estimate["shape"]
   weibull_median <- wfit$estimate["scale"] * log(2)^weib_invshape  # nolint
 
-  quants <- quantile(x, q = c(0.125, 0.5, 0.847))
+  quants <- quantile(x, q = c(0.125, 0.5, 0.875))
   cat(strwrap("Interval Analysis", prefix = "\t"), sep = "\n")
   cat(strwrap("=================", prefix = "\t"), sep = "\n")
   cat("\n")

@@ -60,7 +60,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.1.9000" id="burnr-v0619000">burnr v0.6.1.9000<a class="anchor" aria-label="anchor" href="#burnr-v0619000"></a></h2>
 <p>Changes in this release:</p>
-<ul><li><p>Update <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code> code to allow for dropped aethesthetics and resolve erroneous legends (<a href="https://github.com/chguiterman" class="external-link">@chguiterman</a>, <a href="https://github.com/ltrr-arizona-edu/burnr/issues/199" class="external-link">#199</a>)</p></li>
+<ul><li><p>Fixes <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> for <code>intervals</code> objects so they print the correct quantiles, in the correct order. Prevously, the order was reversed and the 0.875 quantile was actually the 0.847 quantile. (<a href="https://github.com/chguiterman" class="external-link">@chguiterman</a>, <a href="https://github.com/ltrr-arizona-edu/burnr/issues/202" class="external-link">#202</a>)</p></li>
+<li><p>Update <code><a href="../reference/plot_demograph.html">plot_demograph()</a></code> code to allow for dropped aethesthetics and resolve erroneous legends (<a href="https://github.com/chguiterman" class="external-link">@chguiterman</a>, <a href="https://github.com/ltrr-arizona-edu/burnr/issues/199" class="external-link">#199</a>)</p></li>
 <li><p>Add <code>glue</code> as package dependency. This helps to elaborate error messages (<a href="https://github.com/chguiterman" class="external-link">@chguiterman</a>, <a href="https://github.com/ltrr-arizona-edu/burnr/issues/196" class="external-link">#196</a>)</p></li>
 <li><p>Updated error checking for <code>+</code> operator, specifically targeting duplicated series names. (<a href="https://github.com/chguiterman" class="external-link">@chguiterman</a>, PR <a href="https://github.com/ltrr-arizona-edu/burnr/issues/196" class="external-link">#196</a>)</p></li>
 <li><p>Update <code><a href="../reference/sea.html">sea()</a></code> so that only event years that are used are provided in the list output (<a href="https://github.com/chguiterman" class="external-link">@chguiterman</a>, <a href="https://github.com/ltrr-arizona-edu/burnr/issues/187" class="external-link">#187</a>)</p></li>
@@ -229,7 +230,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

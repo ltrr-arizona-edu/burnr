@@ -2,6 +2,8 @@
 
 Changes in this release:
 
+* Fixes `print()` for `intervals` objects so they print the correct quantiles, in the correct order. Prevously, the order was reversed and the 0.875 quantile was actually the 0.847 quantile. (@chguiterman, #202)
+
 * Update `plot_demograph()` code to allow for dropped aethesthetics and resolve erroneous legends (@chguiterman, #199)
 
 * Add `glue` as package dependency. This helps to elaborate error messages (@chguiterman, #196)

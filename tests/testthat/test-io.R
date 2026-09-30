@@ -735,13 +735,59 @@ test_that("read_fhx() catches errors in files", {
   expect_error(read_fhx(BAD_FILE))
 })
 
+test_that("check_series() is silent with good behavior", {
+  expect_invisible(check_series(TEST_FHX))
+})
+
+test_that("check_series() warns of empty series", {
+  series <- "ABC123"
+  year <- c(1950, 1952)
+  rec_type <- c("pith_year", "bark_year")
+  df <- fhx(year, series, rec_type) + TEST_FHX
+  expect_message(check_series(df))
+})
+
+test_that("check_series() alerts of series with inner codes after scars", {
+  series <- "ABC123"
+  year <- c(1935, 1950, 1952)
+  rec_type <- c("dormant_fs", "pith_year", "bark_year")
+  df <- fhx(year, series, rec_type) + TEST_FHX
+  expect_message(check_series(df))
+})
+
+test_that("check_series() alerts of series with outer codes before scars", {
+  series <- "ABC123"
+  year <- c(1935, 1950, 1952)
+  rec_type <- c("pith_year", "bark_year", "dormant_fs")
+  df <- fhx(year, series, rec_type) + TEST_FHX
+  expect_message(check_series(df))
+})
+
+test_that("check_series() alerts of series with two event codes in the same year", {
+  series <- "ABC123"
+  year <- c(1935, 1950, 1950, 1952)
+  rec_type <- c("pith_year", "dormant_fs", "unknown_fs", "bark_year")
+  df <- fhx(year, series, rec_type) + TEST_FHX
+  expect_message(check_series(df))
+})
+
 test_that("violates_canon() warns users of new seasonality designations", {
   series <- "ABC123"
   year <- 1950:1952
   rec_type <- c("pith_year", "falldormant_fs", "bark_year")
   df <- fhx(year, series, rec_type)
   tempFile <- file.path(tempdir(), "temp.fhx")
-  expect_warning(write_fhx(df, tempFile))
+  expect_message(write_fhx(df, tempFile))
+  unlink(tempFile)
+})
+
+test_that("write_fhx() aborts with duplicate years in a series", {
+  series <- "ABC123"
+  year <- c(1950:1952, 1952)
+  rec_type <- c("pith_year", "dormant_fs", "bark_year", "unknown_fi")
+  df <- fhx(year, series, rec_type)
+  tempFile <- file.path(tempdir(), "temp.fhx")
+  expect_error(write_fhx(df, tempFile))
   unlink(tempFile)
 })
 

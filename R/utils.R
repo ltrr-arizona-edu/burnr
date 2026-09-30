@@ -821,3 +821,72 @@ check_duplicates <- function(x, y) {
 violates_canon <- function(x) {
   !all(x$rec_type %in% rec_type_canon)  # nolint
 }
+
+#' Remove duplicate end-years in FHX objects
+#'
+#' FHX files will not handle duplicate rec_types in a single year. Often the
+#' duplication occurs at the series ends -- either the beginning or end -- where
+#' one might note a scar or injury that starts or ends the series. To generate
+#' an FHX file, one of the duplicate rec_types must be removed, or its year
+#' changed. This function removes one of the duplicate rec_types to allow for
+#' FHX files to be written via [write_fhx()].
+#'
+#' @param x An `fhx` object
+#' @param s One or more series to correct. If left blank, the function will find
+#'   and fix all series. Use this if you would like to specify which outer ring
+#'   type to keep for different series
+#' @param keep_event Boolean, defaults to TRUE to keep the event codes (scars or
+#'   injuries). FALSE will select the inner/outer ring codes instead
+#'
+#' @return A revised `fhx` object with corrected series end years. Check your
+#'   work via [check_series]
+#'
+#' @importFrom dplyr %>% group_by reframe filter anti_join
+#' @importFrom cli cli_alert_success cli_ul cli_end
+#'
+#' @export
+
+remove_duplicate_series_end <- function(x, s, keep_event = TRUE) {
+  stopifnot(is_fhx(x))
+  out <- x
+  yr_dups <- x %>%
+    group_by(.data$series, .data$year) %>%
+    reframe(n_rec = n()) %>%
+    filter(.data$n_rec > 1) %>%
+    suppressMessages()
+
+  if (nrow(yr_dups) == 0) {
+    cli_alert_success("No repeated years found for any series. Nothing to fix")
+  }
+
+  if (! missing(s)) {
+    yr_dups <- yr_dups %>%
+      filter(.data$series %in% s)
+  }
+
+  if (nrow(yr_dups) > 0) {
+    for (i in seq_len(nrow(yr_dups))) {
+      dup_data <- x[x$series == yr_dups$series[i] & x$year == yr_dups$year[i], ]
+      if (keep_event) {
+        keep_row <- filter(dup_data, ! .data$rec_type %in% rec_type_ends)
+      } else {
+        keep_row <- filter(dup_data, .data$rec_type %in% rec_type_ends)
+      }
+    out <- out %>%
+      anti_join(dup_data, by = c("series", "year", "rec_type")) %>%
+      rbind(keep_row)
+    }
+  }
+
+  report <- function() {
+    keeper = ifelse(keep_event, "event year(s)", "Inner/outer year(s)")
+    cli_alert_success(c("Duplicate ending years corrected to the {keeper} ",
+                        "for the following series"))
+    cli_ul(paste(yr_dups$series))
+    cli_end()
+  }
+
+  report()
+  out
+}
+

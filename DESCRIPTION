@@ -18,7 +18,9 @@ Suggests:
     knitr,
     rmarkdown
 Imports:
+    cli,
     forcats,
+    dplyr,
     ggplot2,
     glue,
     MASS,
@@ -28,6 +30,6 @@ Imports:
     stats,
     stringr,
     tidyr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

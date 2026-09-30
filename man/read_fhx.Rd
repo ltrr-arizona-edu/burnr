@@ -4,7 +4,7 @@
 \alias{read_fhx}
 \title{Read FHX2 file and return an `fhx`` object}
 \usage{
-read_fhx(fname, encoding, text)
+read_fhx(fname, encoding, text, verbose = TRUE)
 }
 \arguments{
 \item{fname}{Name of target FHX file. Needs to be in format version 2.}
@@ -14,6 +14,8 @@ use the system default in R.}
 
 \item{text}{Character string. If \code{fname} is not provided and text is, then
 data is read from text using a text connection.}
+
+\item{verbose}{When TRUE (default) provides feedback regarding the file}
 }
 \value{
 An \code{fhx} object, as returned by \code{\link[=fhx]{fhx()}}.

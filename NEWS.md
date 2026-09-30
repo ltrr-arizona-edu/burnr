@@ -2,15 +2,19 @@
 
 Changes in this release:
 
-* Fixes `print()` for `intervals` objects so they print the correct quantiles, in the correct order. Prevously, the order was reversed and the 0.875 quantile was actually the 0.847 quantile. (@chguiterman, #202)
+* Fixes `print()` for `intervals` objects so they print the correct quantiles, in the correct order. Previously, the order was reversed and the 0.875 quantile was actually the 0.847 quantile. (@chguiterman, #202)
 
-* Update `plot_demograph()` code to allow for dropped aethesthetics and resolve erroneous legends (@chguiterman, #199)
+* Update `plot_demograph()` code to allow for dropped aesthetics and resolve erroneous legends (@chguiterman, #199)
 
 * Add `glue` as package dependency. This helps to elaborate error messages (@chguiterman, #196)
 
 * Updated error checking for `+` operator, specifically targeting duplicated series names. (@chguiterman, PR #196)
 
 * Update `sea()` so that only event years that are used are provided in the list output (@chguiterman, #187)
+
+* Add new function, `check_series()`, to provide feedback on potential data quality issues. This is called by `read_fhx()` and `write_fhx()` to warn users, but in the latter will trigger an error because data issues violate the creation of an FHX file or in some cases should be corrected before the data are passed on. These additions address issue #77
+
+* Add new function, `remove_duplicate_series_end()`, to remove duplicate years in a series. Often users will provide two rec_types at the beginning or end of a series, as its common for samples to degrade along the boundary of a scar or injury. These duplicate rec_types cannot be written into an FHX file, and so must be corrected. One way is to remove one of the rec_types, which is what this function does. A future function will provide the means to change the year of a rec_type.
 
 
 # burnr v0.6.1
